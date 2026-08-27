@@ -21,6 +21,7 @@ MO§ES™ curates a company's system intelligence — how effectively people dri
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![MCP](https://img.shields.io/badge/protocol-MCP-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
 [![Glama](https://glama.ai/mcp/servers/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_/badges/score.svg)](https://glama.ai/mcp/servers/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_)
+[![Smithery](https://smithery.ai/badge/burnmydays/SystemIntelPilot)](https://smithery.ai/servers/burnmydays/SystemIntelPilot)
 
 </div>
 
