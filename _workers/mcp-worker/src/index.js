@@ -1169,13 +1169,13 @@ const TOOLS = [
   },
   {
     name: "create_pilot_configuration",
-    description: "Generate a pilot configuration from parameters.",
+    description: "Generate a saveable pilot configuration JSON from parameters. Returns a validated configuration object with cohort size, duration, selected metrics, eval families, and benchmark classes. Use list_pilot_options first to see available options. The returned configuration can be passed to validate_pilot_configuration for pre-deployment checks. Configuration includes governance metadata (DEVELOPMENTAL label, no punitive use, association-not-causation evidence standard).",
     inputSchema: {
       type: "object",
       properties: {
-        cohort_size: { type: "integer", description: "Number of operators in the pilot cohort (e.g., 25, 50, 100)" },
-        duration_days: { type: "integer", description: "Pilot duration in days (e.g., 30, 60, 90)" },
-        metrics: { type: "array", items: { type: "string" }, description: "Array of metric IDs to include (e.g., ['leverage', 'yield', 'token_snr', 'construction'])" }
+        cohort_size: { type: "integer", description: "Number of operators in the pilot cohort (e.g., 25, 50, 100). Determines statistical power and minimum detectable effect size." },
+        duration_days: { type: "integer", description: "Pilot duration in days (e.g., 30, 60, 90). Longer windows improve intervention re-evaluation stability." },
+        metrics: { type: "array", items: { type: "string" }, description: "Array of metric IDs to include (e.g., ['leverage', 'yield', 'token_snr', 'construction']). See list_pilot_options for the full catalog." }
       }
     },
     outputSchema: {
@@ -1184,13 +1184,17 @@ const TOOLS = [
         configuration: {
           type: "object",
           properties: {
-            cohort_size: { type: "integer" },
-            duration_days: { type: "integer" },
-            metrics: { type: "array", items: { type: "string" } }
+            cohort_size: { type: "integer", description: "Number of operators in the cohort" },
+            duration_days: { type: "integer", description: "Pilot duration in days" },
+            metrics: { type: "array", items: { type: "string" }, description: "Selected metric IDs" },
+            eval_families: { type: "array", items: { type: "string" }, description: "Selected evaluation family IDs" },
+            benchmark_classes: { type: "array", items: { type: "string" }, description: "Selected benchmark class IDs" },
+            governance: { type: "object", description: "Governance metadata including evidence labels and usage constraints" }
           }
         },
-        valid: { type: "boolean" },
-        synthetic: { type: "boolean" }
+        valid: { type: "boolean", description: "Whether the configuration passed validation" },
+        warnings: { type: "array", items: { type: "string" }, description: "Non-blocking validation warnings" },
+        synthetic: { type: "boolean", description: "Whether data is synthetic" }
       },
       required: ["configuration", "valid", "synthetic"]
     },
@@ -1222,21 +1226,24 @@ const TOOLS = [
   },
   {
     name: "close_intervention",
-    description: "Close an intervention with outcome notes. REQUIRES AUTHORIZATION.",
+    description: "Close an intervention with outcome notes and mark it complete. The intervention must exist and be active. Outcome notes should describe observed changes, unintended effects, and whether the target metric moved. After closing, the intervention is no longer eligible for verify_change comparisons. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
     inputSchema: {
       type: "object",
       required: ["intervention_id"],
       properties: {
-        intervention_id: { type: "string", description: "Intervention ID (e.g., intv_001)" },
-        outcome_notes: { type: "string", description: "Free-text notes about the intervention outcome" }
+        intervention_id: { type: "string", description: "Intervention ID to close (e.g., intv_001, intv_007). Must be an active intervention." },
+        outcome_notes: { type: "string", description: "Free-text notes about the intervention outcome — observed changes, unintended effects, whether the target metric moved" }
       }
     },
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string" },
-        message: { type: "string" },
-        tool: { type: "string" }
+        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
+        message: { type: "string", description: "Human-readable status message" },
+        tool: { type: "string", description: "Tool name that was called" },
+        intervention_id: { type: "string", description: "ID of the closed intervention (on success)" },
+        status: { type: "string", description: "New status of the intervention (e.g., 'closed')" },
+        closed_at: { type: "string", description: "ISO timestamp of closure (on success)" }
       },
       required: ["error", "message", "tool"]
     },
@@ -1244,21 +1251,24 @@ const TOOLS = [
   },
   {
     name: "create_experiment",
-    description: "Create an experiment configuration. REQUIRES AUTHORIZATION.",
+    description: "Create an experiment configuration for controlled comparison studies. Experiments pair a pilot configuration with a hypothesis and measurement plan. Use create_pilot_configuration first to build the config, then pass it here. Experiments enforce the ASSOCIATION-not-CAUSATION evidence standard — controlled experiments may upgrade evidence to CAUSATION only with proper design. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
     inputSchema: {
       type: "object",
       required: ["name"],
       properties: {
-        name: { type: "string", description: "Experiment name (e.g., 'Q3 Claude vs ChatGPT operator comparison')" },
-        configuration: { type: "object", description: "Pilot configuration object (JSON) — see list_pilot_options for available metrics, eval families, and benchmark classes" }
+        name: { type: "string", description: "Experiment name (e.g., 'Q3 Claude vs ChatGPT operator comparison', 'Context window expansion pilot — Team Alpha')" },
+        configuration: { type: "object", description: "Pilot configuration object (JSON) — see list_pilot_options for available metrics, eval families, and benchmark classes. Can be generated by create_pilot_configuration." }
       }
     },
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string" },
-        message: { type: "string" },
-        tool: { type: "string" }
+        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
+        message: { type: "string", description: "Human-readable status message" },
+        tool: { type: "string", description: "Tool name that was called" },
+        experiment_id: { type: "string", description: "ID of the created experiment (on success)" },
+        status: { type: "string", description: "Initial status of the experiment (e.g., 'draft', 'configured')" },
+        created_at: { type: "string", description: "ISO timestamp of creation (on success)" }
       },
       required: ["error", "message", "tool"]
     },
@@ -1266,23 +1276,27 @@ const TOOLS = [
   },
   {
     name: "record_workflow_observation",
-    description: "Record a workflow fit observation. REQUIRES AUTHORIZATION.",
+    description: "Record a workflow fit observation linking an operator to a workflow stage with a fit score. Workflow fit measures how well an operator's AI usage patterns align with a specific workflow stage (e.g., debugging, code review, architecture). Fit scores range 0.0-1.0 where 1.0 indicates perfect alignment. Use get_workflow_fit to read existing observations. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
     inputSchema: {
       type: "object",
       required: ["operator_id", "workflow_id"],
       properties: {
         operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" },
-        workflow_id: { type: "string", description: "Workflow ID (e.g., wf_debugging, wf_code_review, wf_architecture)" },
-        fit_score: { type: "number", description: "Workflow fit score (0.0-1.0)" },
-        notes: { type: "string", description: "Free-text notes about the intervention assignment" }
+        workflow_id: { type: "string", description: "Workflow ID (e.g., wf_debugging, wf_code_review, wf_architecture, wf_refactor, wf_testing)" },
+        fit_score: { type: "number", description: "Workflow fit score from 0.0 (no alignment) to 1.0 (perfect alignment). Computed from operator metric profile vs workflow requirements." },
+        notes: { type: "string", description: "Free-text notes about the observation context — task type, AI system used, environmental factors" }
       }
     },
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string" },
-        message: { type: "string" },
-        tool: { type: "string" }
+        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
+        message: { type: "string", description: "Human-readable status message" },
+        tool: { type: "string", description: "Tool name that was called" },
+        observation_id: { type: "string", description: "ID of the recorded observation (on success)" },
+        recorded_at: { type: "string", description: "ISO timestamp of recording (on success)" },
+        operator_id: { type: "string", description: "Operator ID that was observed (on success)" },
+        workflow_id: { type: "string", description: "Workflow ID that was observed (on success)" }
       },
       required: ["error", "message", "tool"]
     },
