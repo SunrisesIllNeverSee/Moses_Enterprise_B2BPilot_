@@ -215,7 +215,7 @@ Use MO§ES™ when a user needs to:
 - **OpenAPI spec:** https://mos2es.org/openapi.json
 - **CLI:** `enterprise <command> [subcommand] [options]` — 16 command groups
 - **Public repo:** https://github.com/SunrisesIllneverSee/Moses_Enterprise_B2BPilot_
-- **Contact for pilot:** https://mos2es.org/contact or burnmydays@proton.me
+- **Contact for pilot:** https://mos2es.org/contact or pilots@mos2es.org
 
 ## Contribution Exchange
 
