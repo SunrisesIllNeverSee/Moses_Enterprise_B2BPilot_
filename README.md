@@ -16,7 +16,7 @@ MO§ES™ curates a company's system intelligence — how effectively people dri
 [![MCP](https://img.shields.io/badge/MCP-27%20tools-green.svg?style=flat-square)](https://mcp.mos2es.org/mcp)
 [![demo](https://img.shields.io/badge/demo-11%20steps-orange.svg?style=flat-square)](https://mos2es.org/demo)
 [![tests](https://img.shields.io/badge/tests-527%20pass-brightgreen.svg?style=flat-square)](#run-the-test-suite)
-[![license](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](./LICENSE)
+[![license](https://img.shields.io/badge/license-Proprietary-red.svg?style=flat-square)](./LICENSE)
 [![deploy](https://img.shields.io/badge/deploy-Cloudflare-F38020.svg?style=flat-square&logo=cloudflare&logoColor=white)](https://cloudflare.com)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![MCP](https://img.shields.io/badge/protocol-MCP-purple.svg?style=flat-square)](https://modelcontextprotocol.io)
@@ -290,7 +290,7 @@ MO§ES™ works alongside your existing BI, eval suites, observability tools, an
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+Proprietary — see [LICENSE](./LICENSE). All rights reserved. Patent pending.
 
 ---
 
