@@ -1,22 +1,22 @@
 MO§ES™ — Enterprise AI Operator Evaluations
 
-Copyright (c) 2026 Deric J. McHenry / SunrisesIllNeverSee
+Copyright (c) 2026 Deric J. McHenry / SunrisesIllneverSee
 
-All rights reserved.
+Licensed under the PolyForm Noncommercial License, Version 1.0.0.
 
-No part of this software, documentation, specifications, or website
-content may be copied, modified, distributed, or used to create
-derivative works without the express written permission of the
-copyright holder.
+You may use, modify, and distribute this software for any noncommercial
+purpose, including personal research, experimentation, testing, study,
+hobby projects, and use by charitable organizations, educational
+institutions, public research organizations, public safety or health
+organizations, environmental protection organizations, and government
+institutions.
 
-This includes but is not limited to:
-- The platform source code (_01_platform/)
-- The specification documents (_00_specs/)
-- The demo and marketing websites (_02_demo-website/, _03_promo-site/,
-  _04_onepager/)
-- The Cloudflare Worker configurations (_workers/)
-- The metric registry, benchmark engine, and composite score algorithms
+Commercial use is not permitted under this license. For commercial
+licensing, enterprise pilots, and bespoke evaluation engagements,
+contact: pilots@mos2es.org
 
-For licensing inquiries, contact: pilots@mos2es.org
+Full license terms: https://polyformproject.org/licenses/noncommercial/1.0.0
+
+Required Notice: Copyright (c) 2026 Deric J. McHenry / SunrisesIllneverSee
 
 Patent Pending: Serial No. 63/877,177

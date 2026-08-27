@@ -1,0 +1,25 @@
+name = "moses-analytics"
+main = "src/index.js"
+compatibility_date = "2025-07-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+routes = [
+  { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
+  { pattern = "mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+  { pattern = "enterprise.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "enterprise.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
+  { pattern = "enterprise.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+  { pattern = "mcp.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "mcp.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
+  { pattern = "mcp.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+]
+
+[[kv_namespaces]]
+binding = "ANALYTICS_KV"
+id = "eeebad0bd19c4cefadd032b6fcdcb72c"
+
+[[analytics_engine_datasets]]
+binding = "ANALYTICS_ENGINE"
+dataset = "moses_analytics"
