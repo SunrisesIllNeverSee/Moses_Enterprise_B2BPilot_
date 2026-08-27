@@ -10,7 +10,7 @@ Or if you have the repo cloned:
   python3 -m src.cli.main demo full
 
 This script clones the repo to a temp directory, installs the one
-dependency (rich), and runs the full 10-step demo pipeline.
+dependency (rich), and runs the full 11-step demo pipeline.
 Requires Python 3.10+ and git.
 """
 
@@ -69,7 +69,7 @@ def main():
         # Run the demo
         print()
         print("=" * 60)
-        print("  MO§ES™ DEMO — 10-step operator evaluation pipeline")
+        print("  MO§ES™ DEMO — 11-step operator evaluation pipeline")
         print("=" * 60)
         print()
 

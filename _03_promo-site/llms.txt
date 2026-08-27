@@ -20,7 +20,7 @@ the work that actually matters. The core commercial proposition:
 - [Research](https://mos2es.org/research): Commitment Theory, Conservation Law of Commitment, operationalization, epistemic status
 - [Contact](https://mos2es.org/contact): build a bespoke eval, best-fit buyers, what to expect
 - [Pilot Readout](https://mos2es.org/pilot-readout): real demo data from a 50-operator synthetic pilot — cohort stats, score distribution, metric distributions, divergence findings, intervention outcomes
-- [Demo](https://mos2es.org/demo): run the full 10-step operator evaluation pipeline on 50 synthetic operators — one-liner install, CLI commands, MCP server, test suite, web walkthrough
+- [Demo](https://mos2es.org/demo): run the full 11-step operator evaluation pipeline on 50 synthetic operators — one-liner install, CLI commands, MCP server, test suite, web walkthrough
 - [FAQ](https://mos2es.org/faq): frequently asked questions about AI operator evaluation
 - [Docs](https://mos2es.org/docs): developer documentation — OpenAPI spec, MCP server with 27 tools, CLI, telemetry schema, governance constraints, demo instructions
 - [About](https://mos2es.org/about): MO§ES™ is an enterprise AI operator evaluation platform built by Deric J. McHenry — content-free token telemetry, no prompt text required

@@ -856,7 +856,7 @@ def _demo_status(args, json_mode):
 def _demo_full(args, json_mode):
     """Run the complete MO§ES flow end-to-end.
 
-    Executes the 10-step demo flow:
+    Executes the 11-step demo flow:
       1. LOAD          — load demo cohort
       2. EVALUATE      — compute per-observation metrics
       3. BENCHMARK     — compute percentile positions
