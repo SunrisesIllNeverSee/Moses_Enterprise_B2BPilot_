@@ -847,7 +847,25 @@ const TOOLS = [
   {
     name: "get_pilot_status",
     description: "Get pilot status overview — cohort size, observation count, date range, data quality, active interventions. Computed from raw observations. Data is from a 50-operator synthetic pilot (labeled synthetic).",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        cohort_id: { type: "string" },
+        window: { type: "object", properties: { start: { type: "string" }, end: { type: "string" } } },
+        eligible_operators: { type: "integer" },
+        total_operators: { type: "integer" },
+        providers: { type: "array", items: { type: "string" } },
+        observation_count: { type: "integer" },
+        metric_registry_version: { type: "string" },
+        reference_field_version: { type: "string" },
+        active_interventions: { type: "integer" },
+        data_quality: { type: "object", properties: { OK: { type: "integer" }, WARNING: { type: "integer" }, BLOCKING: { type: "integer" } } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["cohort_id", "total_operators", "observation_count", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_operator_profile",
@@ -856,7 +874,34 @@ const TOOLS = [
       type: "object",
       required: ["operator_id"],
       properties: { operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" } }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        pseudonym: { type: "string" },
+        team: { type: "string" },
+        role_family: { type: "string" },
+        level: { type: "string" },
+        primary_platform: { type: "string" },
+        measurements: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              metric_id: { type: "string" },
+              value: { type: "number" },
+              percentile: { type: "number" },
+              status: { type: "string" },
+              eligibility: { type: "string" }
+            }
+          }
+        },
+        synthetic: { type: "boolean" }
+      },
+      required: ["operator_id", "measurements", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_cohort_distribution",
@@ -864,7 +909,27 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: { metric: { type: "string", default: "leverage", description: "Metric: leverage, yield, token_snr, log_leverage, construction" } }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        metric: { type: "string" },
+        count: { type: "integer" },
+        min: { type: "number" },
+        p10: { type: "number" },
+        p25: { type: "number" },
+        median: { type: "number" },
+        p75: { type: "number" },
+        p90: { type: "number" },
+        max: { type: "number" },
+        mean: { type: "number" },
+        std: { type: "number" },
+        outliers: { type: "array", items: { type: "string" } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["metric", "count", "median", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_composite_score",
@@ -872,13 +937,46 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       required: ["operator_id"],
-      properties: { operator_id: { type: "string" } }
-    }
+      properties: { operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" } }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        score: { type: "number" },
+        score_id: { type: "string" },
+        name: { type: "string" },
+        components: { type: "object" },
+        label: { type: "string" },
+        caveats: { type: "array", items: { type: "string" } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["operator_id", "score", "components", "label", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_composite_score_summary",
     description: "Get cohort composite score summary — count, min, max, median, mean, Q1, Q3. Computed from per-operator scores. No individual rankings exposed. Label is DEVELOPMENTAL.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        count: { type: "integer" },
+        min: { type: "number" },
+        max: { type: "number" },
+        median: { type: "number" },
+        mean: { type: "number" },
+        q1: { type: "number" },
+        q3: { type: "number" },
+        score_id: { type: "string" },
+        name: { type: "string" },
+        label: { type: "string" },
+        weights: { type: "object" }
+      },
+      required: ["count", "min", "max", "median", "mean", "score_id", "label"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_diagnostics",
@@ -886,41 +984,124 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       required: ["operator_id"],
-      properties: { operator_id: { type: "string" } }
-    }
+      properties: { operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" } }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        patterns: { type: "array", items: { type: "object" } },
+        diagnoses: { type: "array", items: { type: "object" } },
+        status: { type: "string" },
+        synthetic: { type: "boolean" }
+      },
+      required: ["operator_id", "patterns", "diagnoses", "status", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_data_quality",
     description: "Get data quality summary — completeness, coverage, validity across the cohort. Computed from raw observations.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        total_observations: { type: "integer" },
+        operators_covered: { type: "integer" },
+        completeness: { type: "number" },
+        coverage: { type: "number" },
+        validity: { type: "number" },
+        issues: { type: "object", properties: { zero_input_observations: { type: "integer" }, zero_output_observations: { type: "integer" } } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["total_observations", "operators_covered", "completeness", "coverage", "validity", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "find_usage_operation_divergence",
     description: "Find operators with usage-operation divergence. Computes usage percentile from raw token totals and compares to yield percentile. Returns all 50 operators with divergence class (LOW_USAGE_HIGH_OPERATION, HIGH_USAGE_LOW_OPERATION, etc.).",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        divergent_operators: { type: "array", items: { type: "object" } },
+        all_operators: { type: "array", items: { type: "object" } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["divergent_operators", "all_operators", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_workflow_fit",
     description: "Get workflow fit analysis — operator/workflow fit scores across workflow stages.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        workflow_id: { type: "string" },
+        stages: { type: "array", items: { type: "object" } },
+        observations: { type: "integer" },
+        synthetic: { type: "boolean" },
+        note: { type: "string" }
+      },
+      required: ["workflow_id", "stages", "observations", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_intervention_status",
     description: "Get all interventions — 12 active interventions with operator IDs, catalog IDs, reason patterns, target metrics, start dates, followup periods, and synthetic outcomes.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        active: { type: "array", items: { type: "object" } },
+        closed: { type: "array", items: { type: "object" } },
+        all: { type: "array", items: { type: "object" } },
+        count: { type: "integer" },
+        synthetic: { type: "boolean" }
+      },
+      required: ["active", "closed", "all", "count", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "list_pilot_options",
     description: "List available pilot options — 5 canonical metrics, 15 eval families, 13 benchmark classes, 5 intervention types.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        canonical_metrics: { type: "array", items: { type: "object" } },
+        eval_families: { type: "integer" },
+        benchmark_classes: { type: "integer" },
+        intervention_types: { type: "array", items: { type: "string" } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["canonical_metrics", "eval_families", "benchmark_classes", "intervention_types", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "validate_pilot_configuration",
     description: "Validate a pilot configuration before deployment. Returns valid status with warnings and errors.",
     inputSchema: {
       type: "object",
-      properties: { configuration: { type: "object" } }
-    }
+      properties: { configuration: { type: "object", description: "Pilot configuration object (JSON) — see list_pilot_options for available metrics, eval families, and benchmark classes" } }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        valid: { type: "boolean" },
+        warnings: { type: "array", items: { type: "string" } },
+        errors: { type: "array", items: { type: "string" } },
+        message: { type: "string" }
+      },
+      required: ["valid", "warnings", "errors"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "compare_operator_to_reference",
@@ -929,15 +1110,38 @@ const TOOLS = [
       type: "object",
       required: ["operator_id"],
       properties: {
-        operator_id: { type: "string" },
+        operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" },
         reference: { type: "string", description: "Reference population name" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        reference: { type: "string" },
+        reference_version: { type: "string" },
+        comparisons: { type: "array", items: { type: "object" } },
+        synthetic: { type: "boolean" }
+      },
+      required: ["operator_id", "reference", "comparisons", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_executive_dashboard",
     description: "Get executive dashboard info — the dashboard is a self-contained HTML file generated by the CLI (enterprise export dashboard --output file.html).",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        message: { type: "string" },
+        command: { type: "string" },
+        features: { type: "array", items: { type: "string" } },
+        governance: { type: "string" }
+      },
+      required: ["message", "command", "features", "governance"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "verify_change",
@@ -946,10 +1150,22 @@ const TOOLS = [
       type: "object",
       required: ["operator_id"],
       properties: {
-        operator_id: { type: "string" },
-        intervention_id: { type: "string" }
+        operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" },
+        intervention_id: { type: "string", description: "Intervention ID (e.g., intv_001)" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        composite_score: { type: "number" },
+        label: { type: "string" },
+        message: { type: "string" },
+        synthetic: { type: "boolean" }
+      },
+      required: ["operator_id", "composite_score", "label", "message", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "create_pilot_configuration",
@@ -957,25 +1173,52 @@ const TOOLS = [
     inputSchema: {
       type: "object",
       properties: {
-        cohort_size: { type: "integer" },
-        duration_days: { type: "integer" },
-        metrics: { type: "array", items: { type: "string" } }
+        cohort_size: { type: "integer", description: "Number of operators in the pilot cohort (e.g., 25, 50, 100)" },
+        duration_days: { type: "integer", description: "Pilot duration in days (e.g., 30, 60, 90)" },
+        metrics: { type: "array", items: { type: "string" }, description: "Array of metric IDs to include (e.g., ['leverage', 'yield', 'token_snr', 'construction'])" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        configuration: {
+          type: "object",
+          properties: {
+            cohort_size: { type: "integer" },
+            duration_days: { type: "integer" },
+            metrics: { type: "array", items: { type: "string" } }
+          }
+        },
+        valid: { type: "boolean" },
+        synthetic: { type: "boolean" }
+      },
+      required: ["configuration", "valid", "synthetic"]
+    },
+    annotations: { readOnlyHint: true }
   },
   // ─── Write tools (require authorization) ───
   {
     name: "assign_intervention",
-    description: "Assign a targeted intervention to an operator. REQUIRES AUTHORIZATION. Contact burnmydays@proton.me for pilot access.",
+    description: "Assign a targeted intervention to an operator. REQUIRES AUTHORIZATION. Contact pilots@mos2es.org for pilot access.",
     inputSchema: {
       type: "object",
       required: ["operator_id", "intervention_type"],
       properties: {
-        operator_id: { type: "string" },
-        intervention_type: { type: "string" },
-        notes: { type: "string" }
+        operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" },
+        intervention_type: { type: "string", description: "Intervention type from catalog (e.g., prompt_template, context_window_expansion, model_switch)" },
+        notes: { type: "string", description: "Free-text notes about the intervention assignment" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        error: { type: "string" },
+        message: { type: "string" },
+        tool: { type: "string" }
+      },
+      required: ["error", "message", "tool"]
+    },
+    annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: true }
   },
   {
     name: "close_intervention",
@@ -984,10 +1227,20 @@ const TOOLS = [
       type: "object",
       required: ["intervention_id"],
       properties: {
-        intervention_id: { type: "string" },
-        outcome_notes: { type: "string" }
+        intervention_id: { type: "string", description: "Intervention ID (e.g., intv_001)" },
+        outcome_notes: { type: "string", description: "Free-text notes about the intervention outcome" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        error: { type: "string" },
+        message: { type: "string" },
+        tool: { type: "string" }
+      },
+      required: ["error", "message", "tool"]
+    },
+    annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: true }
   },
   {
     name: "create_experiment",
@@ -996,10 +1249,20 @@ const TOOLS = [
       type: "object",
       required: ["name"],
       properties: {
-        name: { type: "string" },
-        configuration: { type: "object" }
+        name: { type: "string", description: "Experiment name (e.g., 'Q3 Claude vs ChatGPT operator comparison')" },
+        configuration: { type: "object", description: "Pilot configuration object (JSON) — see list_pilot_options for available metrics, eval families, and benchmark classes" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        error: { type: "string" },
+        message: { type: "string" },
+        tool: { type: "string" }
+      },
+      required: ["error", "message", "tool"]
+    },
+    annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: true }
   },
   {
     name: "record_workflow_observation",
@@ -1008,12 +1271,22 @@ const TOOLS = [
       type: "object",
       required: ["operator_id", "workflow_id"],
       properties: {
-        operator_id: { type: "string" },
-        workflow_id: { type: "string" },
-        fit_score: { type: "number" },
-        notes: { type: "string" }
+        operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)" },
+        workflow_id: { type: "string", description: "Workflow ID (e.g., wf_debugging, wf_code_review, wf_architecture)" },
+        fit_score: { type: "number", description: "Workflow fit score (0.0-1.0)" },
+        notes: { type: "string", description: "Free-text notes about the intervention assignment" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        error: { type: "string" },
+        message: { type: "string" },
+        tool: { type: "string" }
+      },
+      required: ["error", "message", "tool"]
+    },
+    annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: true }
   },
   {
     name: "attach_outcome_dataset",
@@ -1022,10 +1295,20 @@ const TOOLS = [
       type: "object",
       required: ["source"],
       properties: {
-        source: { type: "string" },
-        format: { type: "string" }
+        source: { type: "string", description: "External outcome data source name (e.g., 'jira', 'github', 'linear')" },
+        format: { type: "string", description: "Data format (e.g., 'json', 'csv', 'jsonl')" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        error: { type: "string" },
+        message: { type: "string" },
+        tool: { type: "string" }
+      },
+      required: ["error", "message", "tool"]
+    },
+    annotations: { destructiveHint: false, idempotentHint: false, openWorldHint: true }
   },
   // ─── Operator×System, Lineage, Topology, Similarity ───
   {
@@ -1036,7 +1319,20 @@ const TOOLS = [
       properties: {
         operator_id: { type: "string", description: "Optional: filter to a single operator's decomposition" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        operator_id: { type: "string" },
+        systems_compared: { type: "array", items: { type: "string" } },
+        operators_analyzed: { type: "integer" },
+        total_observations: { type: "integer" },
+        metrics: { type: "array", items: { type: "object" } },
+        summary: { type: "string" }
+      },
+      required: ["systems_compared", "operators_analyzed", "total_observations", "metrics", "summary"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_lineage_chain",
@@ -1047,22 +1343,87 @@ const TOOLS = [
       properties: {
         operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_046)" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        lineage: { type: "object", properties: { operator_id: { type: "string" }, chains: { type: "array", items: { type: "object" } } } },
+        synthetic: { type: "boolean" },
+        metric_registry_version: { type: "string" },
+        data_window: { type: "object", properties: { start: { type: "string" }, end: { type: "string" } } },
+        reference_version: { type: "string" },
+        privacy_class: { type: "string" },
+        validation_status: { type: "string" }
+      },
+      required: ["lineage", "synthetic", "metric_registry_version", "data_window", "reference_version", "privacy_class", "validation_status"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_lineage_summary",
     description: "Get lineage summary across the cohort — total lineages, workflow breakdown, average micro-eval metrics, outcomes linked. Computed from raw lineage data.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        lineage_summary: {
+          type: "object",
+          properties: {
+            total: { type: "integer" },
+            by_workflow: { type: "object" },
+            avg_micro_eval: { type: "object" },
+            outcomes_linked: { type: "integer" },
+            outcomes_total: { type: "integer" }
+          }
+        },
+        synthetic: { type: "boolean" },
+        metric_registry_version: { type: "string" },
+        data_window: { type: "object", properties: { start: { type: "string" }, end: { type: "string" } } },
+        reference_version: { type: "string" },
+        privacy_class: { type: "string" },
+        validation_status: { type: "string" }
+      },
+      required: ["lineage_summary", "synthetic", "metric_registry_version", "data_window", "reference_version", "privacy_class", "validation_status"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_outcome_correlation",
     description: "Correlate micro-eval metrics with outcome quality scores and cycle times through lineage. Computed via Pearson r from raw lineage + outcome data. Results labeled ASSOCIATION with evidence grade OBSERVATIONAL, never CAUSATION.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        correlations: { type: "array", items: { type: "object" } },
+        operators_analyzed: { type: "integer" },
+        lineages_with_outcomes: { type: "integer" },
+        evidence_grade: { type: "string" },
+        claim_status: { type: "string" },
+        summary: { type: "string" }
+      },
+      required: ["correlations", "operators_analyzed", "lineages_with_outcomes", "evidence_grade", "claim_status", "summary"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_org_topology",
     description: "Organization-level AI topology map — team-level metric distributions, median canonical metrics per team, capability concentration (Gini coefficient), platform adoption, single-point-of-failure detection, cross-team complementarity. Computed from raw measurements.",
-    inputSchema: { type: "object", properties: {} }
+    inputSchema: { type: "object", properties: {} },
+    outputSchema: {
+      type: "object",
+      properties: {
+        total_operators: { type: "integer" },
+        total_teams: { type: "integer" },
+        team_topologies: { type: "array", items: { type: "object" } },
+        capability_concentration: { type: "array", items: { type: "object" } },
+        platform_adoption: { type: "array", items: { type: "object" } },
+        single_points_of_failure: { type: "array", items: { type: "object" } },
+        cross_team_complementarity: { type: "object" },
+        summary: { type: "string" }
+      },
+      required: ["total_operators", "total_teams", "team_topologies", "capability_concentration", "platform_adoption", "single_points_of_failure", "cross_team_complementarity", "summary"]
+    },
+    annotations: { readOnlyHint: true }
   },
   {
     name: "get_operator_similarity",
@@ -1074,7 +1435,21 @@ const TOOLS = [
         operator_id: { type: "string", description: "Pseudonymous operator ID (e.g., op_001)" },
         n_neighbors: { type: "integer", default: 5, description: "Number of nearest neighbors to return" }
       }
-    }
+    },
+    outputSchema: {
+      type: "object",
+      properties: {
+        query_operator_id: { type: "string" },
+        normalization: { type: "string" },
+        distance_metric: { type: "string" },
+        nearest_neighbors: { type: "array", items: { type: "object" } },
+        cluster_quality: { type: "string" },
+        cluster_description: { type: "string" },
+        note: { type: "string" }
+      },
+      required: ["query_operator_id", "normalization", "distance_metric", "nearest_neighbors", "cluster_quality", "cluster_description", "note"]
+    },
+    annotations: { readOnlyHint: true }
   }
 ];
 
@@ -1091,7 +1466,7 @@ function handleToolCall(name, args) {
         type: "text",
         text: JSON.stringify({
           error: "AUTHORIZATION_REQUIRED",
-          message: "This write tool requires authorization. Contact burnmydays@proton.me for pilot access.",
+          message: "This write tool requires authorization. Contact pilots@mos2es.org for pilot access.",
           tool: name
         })
       }],

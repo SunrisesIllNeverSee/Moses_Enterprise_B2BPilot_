@@ -1,0 +1,834 @@
+// MO§ES™ analytics + crawl control + agent readiness worker
+// Serves: analytics beacon, crawl control config, agent readiness manifest,
+// analytics query API, bot/AI-crawler tracking via Analytics Engine + KV
+//
+// Routes (via wrangler.toml):
+//   /api/analytics/beacon      — POST: record a page/agent event
+//   /api/analytics/stats       — GET:  query aggregated stats
+//   /api/analytics/bots        — GET:  bot/AI-crawler visit log
+//   /api/analytics/ai-overview — GET:  AI engine visibility tracker
+//   /crawl-control.json        — GET:  machine-readable crawl rules
+//   /crawl-control             — GET:  human-readable crawl control page
+//   /.well-known/agent.json    — GET:  agent readiness manifest
+//   /.well-known/ai-crawler-log— POST:  AI crawler self-report endpoint
+
+const AI_CRAWLERS = {
+  'gptbot': { engine: 'OpenAI/ChatGPT', type: 'training' },
+  'oai-searchbot': { engine: 'OpenAI/Search', type: 'search' },
+  'chatgpt-user': { engine: 'OpenAI/ChatGPT', type: 'user' },
+  'perplexitybot': { engine: 'Perplexity', type: 'search' },
+  'perplexity-ai': { engine: 'Perplexity', type: 'search' },
+  'claudebot': { engine: 'Anthropic/Claude', type: 'training' },
+  'anthropic-ai': { engine: 'Anthropic/Claude', type: 'training' },
+  'claude-user': { engine: 'Anthropic/Claude', type: 'user' },
+  'google-extended': { engine: 'Google/Gemini', type: 'training' },
+  'googlebot': { engine: 'Google/Search', type: 'search' },
+  'bingbot': { engine: 'Microsoft/Copilot', type: 'search' },
+  'bingpreview': { engine: 'Microsoft/Copilot', type: 'search' },
+  'bytespider': { engine: 'ByteDance/Doubao', type: 'training' },
+  'applebot': { engine: 'Apple/Intelligence', type: 'search' },
+  'applebot-extended': { engine: 'Apple/Intelligence', type: 'training' },
+  'meta-externalagent': { engine: 'Meta/LLaMA', type: 'training' },
+  'cohere-ai': { engine: 'Cohere', type: 'training' },
+  'amazonbot': { engine: 'Amazon/Rufus', type: 'search' },
+  'yandexbot': { engine: 'Yandex', type: 'search' },
+  'baiduspider': { engine: 'Baidu', type: 'search' },
+  'ccbot': { engine: 'Common Crawl', type: 'training' },
+  'facebookbot': { engine: 'Meta', type: 'search' },
+  'linkedinbot': { engine: 'LinkedIn', type: 'search' },
+  'x-bot': { engine: 'X/Grok', type: 'search' },
+  'grok': { engine: 'X/Grok', type: 'search' },
+};
+
+const SITE_CONFIG = {
+  'mos2es.org': {
+    name: 'MO§ES™ Promo Site',
+    description: 'Enterprise AI operator evaluations and performative benchmarks.',
+    sitemap: 'https://mos2es.org/sitemap.xml',
+    llms_txt: 'https://mos2es.org/llms.txt',
+    openapi: 'https://mos2es.org/openapi.json',
+    mcp: 'https://mcp.mos2es.org/mcp',
+    ai_search: 'https://f8f5e9c3-29e1-4698-8866-dad70ae2bf23.search.ai.cloudflare.com/mcp',
+    pages: 52,
+  },
+  'enterprise.mos2es.org': {
+    name: 'MO§ES™ Enterprise Demo',
+    description: 'Interactive enterprise pilot demo with real synthetic data.',
+    sitemap: null,
+    llms_txt: null,
+    openapi: null,
+    mcp: 'https://mcp.mos2es.org/mcp',
+    ai_search: null,
+    pages: 20,
+  },
+  'mcp.mos2es.org': {
+    name: 'MO§ES™ MCP Server',
+    description: '27-tool MCP server for AI agent integration (22 read + 5 write).',
+    sitemap: null,
+    llms_txt: null,
+    openapi: 'https://mos2es.org/openapi.json',
+    mcp: 'https://mcp.mos2es.org/mcp',
+    ai_search: null,
+    pages: 0,
+    tools: 27,
+  },
+};
+
+function detectBot(userAgent) {
+  if (!userAgent) return null;
+  const ua = userAgent.toLowerCase();
+  for (const [bot, info] of Object.entries(AI_CRAWLERS)) {
+    if (ua.includes(bot)) return { bot, ...info };
+  }
+  // Generic bot patterns
+  if (ua.includes('bot') || ua.includes('crawler') || ua.includes('spider') || ua.includes('scraper')) {
+    return { bot: 'generic', engine: 'Unknown', type: 'unknown' };
+  }
+  return null;
+}
+
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+function jsonResponse(data, status = 200, extra = {}) {
+  return new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Vary': 'Accept',
+      ...corsHeaders(),
+      ...extra,
+    },
+  });
+}
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+    const method = request.method;
+    const host = url.hostname;
+
+    // CORS preflight
+    if (method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders() });
+    }
+
+    // ─── /api/analytics/beacon — record event ───────────────────────────
+    if (path === '/api/analytics/beacon' && method === 'POST') {
+      return handleBeacon(request, env, host);
+    }
+
+    // ─── /api/analytics/stats — aggregated stats ────────────────────────
+    if (path === '/api/analytics/stats' && method === 'GET') {
+      return handleStats(request, env, host, url);
+    }
+
+    // ─── /api/analytics/bots — bot/AI crawler visits ────────────────────
+    if (path === '/api/analytics/bots' && method === 'GET') {
+      return handleBotStats(request, env, host, url);
+    }
+
+    // ─── /api/analytics/ai-overview — AI engine visibility ──────────────
+    if (path === '/api/analytics/ai-overview' && method === 'GET') {
+      return handleAiOverview(request, env, host);
+    }
+
+    // ─── /api/analytics/realtime — real-time counters ───────────────────
+    if (path === '/api/analytics/realtime' && method === 'GET') {
+      return handleRealtime(request, env, host);
+    }
+
+    // ─── /dashboard — live analytics dashboard ──────────────────────────
+    if (path === '/dashboard' && method === 'GET') {
+      return handleDashboard(host);
+    }
+
+    // ─── /crawl-control.json — machine-readable crawl rules ─────────────
+    if (path === '/crawl-control.json' && method === 'GET') {
+      return handleCrawlControlJson(host);
+    }
+
+    // ─── /crawl-control — human-readable page ───────────────────────────
+    if (path === '/crawl-control' && method === 'GET') {
+      return handleCrawlControlPage(host);
+    }
+
+    // ─── /.well-known/agent.json — agent readiness manifest ─────────────
+    if (path === '/.well-known/agent.json' && method === 'GET') {
+      return handleAgentManifest(host);
+    }
+
+    // ─── /.well-known/ai-crawler-log — AI crawler self-report ───────────
+    if (path === '/.well-known/ai-crawler-log' && method === 'POST') {
+      return handleCrawlerSelfReport(request, env, host);
+    }
+
+    // 404
+    return jsonResponse({ error: 'NOT_FOUND', path }, 404);
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+// Beacon — record a page view or agent event
+// ═══════════════════════════════════════════════════════════════════════
+async function handleBeacon(request, env, host) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ error: 'INVALID_JSON' }, 400);
+  }
+
+  const userAgent = request.headers.get('User-Agent') || '';
+  const cf = request.cf || {};
+  const botInfo = detectBot(userAgent);
+
+  const event = {
+    type: body.type || 'pageview',
+    path: body.path || '/',
+    host,
+    timestamp: Date.now(),
+    userAgent,
+    bot: botInfo?.bot || null,
+    botEngine: botInfo?.engine || null,
+    botType: botInfo?.type || null,
+    country: cf.country || null,
+    region: cf.region || null,
+    city: cf.city || null,
+    colo: cf.colo || null,
+    referrer: body.referrer || request.headers.get('Referer') || null,
+    // AI overview tracking
+    aiEngine: body.aiEngine || null,
+    aiQuery: body.aiQuery || null,
+    aiPosition: body.aiPosition || null,
+    aiCited: body.aiCited || null,
+  };
+
+  // Write to Analytics Engine (time-series, SQL-queryable)
+  if (env.ANALYTICS_ENGINE) {
+    env.ANALYTICS_ENGINE.writeDataPoint({
+      blobs: [
+        event.type, event.path, event.host, event.bot || '',
+        event.botEngine || '', event.country || '', event.city || '',
+        event.referrer || '', event.aiEngine || '', event.aiQuery || '',
+      ],
+      doubles: [event.timestamp, event.aiPosition || 0, event.aiCited ? 1 : 0],
+      indexes: [event.host, event.bot || 'human'],
+    });
+  }
+
+  // Update KV real-time counters
+  if (env.ANALYTICS_KV) {
+    const today = new Date().toISOString().slice(0, 10);
+    const keys = [
+      `${host}:total`,
+      `${host}:day:${today}`,
+      `${host}:type:${event.type}`,
+      `${host}:day:${today}:type:${event.type}`,
+    ];
+    if (botInfo) {
+      keys.push(`${host}:bots:${botInfo.bot}`);
+      keys.push(`${host}:bots:day:${today}:${botInfo.bot}`);
+      keys.push(`${host}:bots:engine:${botInfo.engine}`);
+    } else {
+      keys.push(`${host}:human`);
+      keys.push(`${host}:human:day:${today}`);
+    }
+    if (event.country) keys.push(`${host}:country:${event.country}`);
+    if (event.aiEngine) keys.push(`${host}:ai:${event.aiEngine}`);
+
+    await Promise.all(keys.map(async (key) => {
+      const current = parseInt(await env.ANALYTICS_KV.get(key) || '0', 10);
+      await env.ANALYTICS_KV.put(key, String(current + 1));
+    }));
+
+    // Log recent bot visits (keep last 100)
+    if (botInfo) {
+      const logKey = `${host}:bot-log`;
+      const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
+      const log = JSON.parse(logRaw);
+      log.unshift({
+        bot: botInfo.bot, engine: botInfo.engine, type: botInfo.type,
+        path: event.path, country: event.country, timestamp: event.timestamp,
+      });
+      await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 100)));
+    }
+
+    // Log AI overview events
+    if (event.aiEngine) {
+      const aiKey = `${host}:ai-overview-log`;
+      const aiRaw = await env.ANALYTICS_KV.get(aiKey) || '[]';
+      const aiLog = JSON.parse(aiRaw);
+      aiLog.unshift({
+        engine: event.aiEngine, query: event.aiQuery,
+        position: event.aiPosition, cited: event.aiCited,
+        path: event.path, timestamp: event.timestamp,
+      });
+      await env.ANALYTICS_KV.put(aiKey, JSON.stringify(aiLog.slice(0, 100)));
+    }
+  }
+
+  return jsonResponse({ success: true, recorded: true });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Stats — aggregated analytics
+// ═══════════════════════════════════════════════════════════════════════
+async function handleStats(request, env, host, url) {
+  const days = parseInt(url.searchParams.get('days') || '7', 10);
+  const stats = { host, days, totals: {}, byDay: {}, byType: {}, byCountry: {}, bots: {} };
+
+  if (!env.ANALYTICS_KV) return jsonResponse(stats);
+
+  const today = new Date();
+  const total = await env.ANALYTICS_KV.get(`${host}:total`) || '0';
+  const human = await env.ANALYTICS_KV.get(`${host}:human`) || '0';
+  stats.totals = { all: parseInt(total, 10), human: parseInt(human, 10), bots: parseInt(total, 10) - parseInt(human, 10) };
+
+  // By day
+  for (let i = 0; i < days; i++) {
+    const d = new Date(today.getTime() - i * 86400000).toISOString().slice(0, 10);
+    const dayCount = await env.ANALYTICS_KV.get(`${host}:day:${d}`) || '0';
+    const humanCount = await env.ANALYTICS_KV.get(`${host}:human:day:${d}`) || '0';
+    stats.byDay[d] = { total: parseInt(dayCount, 10), human: parseInt(humanCount, 10), bots: parseInt(dayCount, 10) - parseInt(humanCount, 10) };
+  }
+
+  // By type
+  for (const type of ['pageview', 'agent_query', 'ai_overview', 'mcp_call']) {
+    const count = await env.ANALYTICS_KV.get(`${host}:type:${type}`) || '0';
+    if (parseInt(count, 10) > 0) stats.byType[type] = parseInt(count, 10);
+  }
+
+  // Bot log
+  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  stats.bots.recentVisits = botLog.slice(0, 20);
+  const botCounts = {};
+  for (const entry of botLog) {
+    botCounts[entry.bot] = (botCounts[entry.bot] || 0) + 1;
+  }
+  stats.bots.byBot = botCounts;
+
+  return jsonResponse(stats);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Bot stats — AI crawler visit detail
+// ═══════════════════════════════════════════════════════════════════════
+async function handleBotStats(request, env, host, url) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, bots: [] });
+
+  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  const byBot = {};
+  const byEngine = {};
+
+  for (const entry of botLog) {
+    byBot[entry.bot] = (byBot[entry.bot] || 0) + 1;
+    byEngine[entry.engine] = (byEngine[entry.engine] || 0) + 1;
+  }
+
+  // Per-bot totals (all time)
+  const botTotals = {};
+  for (const bot of Object.keys(AI_CRAWLERS)) {
+    const count = await env.ANALYTICS_KV.get(`${host}:bots:${bot}`) || '0';
+    if (parseInt(count, 10) > 0) botTotals[bot] = { count: parseInt(count, 10), ...AI_CRAWLERS[bot] };
+  }
+
+  return jsonResponse({
+    host,
+    recentVisits: botLog.slice(0, 50),
+    byBot,
+    byEngine,
+    allTimeTotals: botTotals,
+    knownCrawlers: Object.keys(AI_CRAWLERS).length,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// AI Overview — track which AI engines cite/reference the site
+// ═══════════════════════════════════════════════════════════════════════
+async function handleAiOverview(request, env, host) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, aiOverviews: [] });
+
+  const aiLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:ai-overview-log`) || '[]');
+  const byEngine = {};
+  const byQuery = {};
+
+  for (const entry of aiLog) {
+    byEngine[entry.engine] = (byEngine[entry.engine] || 0) + 1;
+    if (entry.query) {
+      byQuery[entry.query] = (byQuery[entry.query] || 0) + 1;
+    }
+  }
+
+  // Check which known AI crawlers have visited (proxy for indexing)
+  const crawlerPresence = {};
+  for (const [bot, info] of Object.entries(AI_CRAWLERS)) {
+    const count = await env.ANALYTICS_KV.get(`${host}:bots:${bot}`) || '0';
+    if (parseInt(count, 10) > 0) {
+      crawlerPresence[info.engine] = { bot, visits: parseInt(count, 10), type: info.type };
+    }
+  }
+
+  return jsonResponse({
+    host,
+    aiOverviewEvents: aiLog.slice(0, 50),
+    byEngine,
+    byQuery,
+    crawlerPresence,
+    readinessScore: Object.keys(crawlerPresence).length,
+    totalKnownEngines: new Set(Object.values(AI_CRAWLERS).map(c => c.engine)).size,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Realtime — current counters
+// ═══════════════════════════════════════════════════════════════════════
+async function handleRealtime(request, env, host) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, realtime: {} });
+
+  const today = new Date().toISOString().slice(0, 10);
+  const keys = [
+    `${host}:total`, `${host}:human`, `${host}:day:${today}`,
+    `${host}:human:day:${today}`,
+  ];
+  const values = await Promise.all(keys.map(k => env.ANALYTICS_KV.get(k)));
+
+  return jsonResponse({
+    host,
+    date: today,
+    realtime: {
+      totalAllTime: parseInt(values[0] || '0', 10),
+      humanAllTime: parseInt(values[1] || '0', 10),
+      todayTotal: parseInt(values[2] || '0', 10),
+      todayHuman: parseInt(values[3] || '0', 10),
+      todayBots: parseInt(values[2] || '0', 10) - parseInt(values[3] || '0', 10),
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Crawl Control — machine-readable
+// ═══════════════════════════════════════════════════════════════════════
+function handleCrawlControlJson(host) {
+  const config = SITE_CONFIG[host] || SITE_CONFIG['mos2es.org'];
+  return jsonResponse({
+    site: host,
+    version: '1.0',
+    generated: new Date().toISOString(),
+    crawlPolicy: {
+      default: 'allow',
+      aiTraining: 'allow',
+      aiSearch: 'allow',
+      aiAgents: 'allow',
+      rateLimit: '120req/min',
+    },
+    allowedCrawlers: Object.entries(AI_CRAWLERS).map(([bot, info]) => ({
+      userAgent: bot,
+      engine: info.engine,
+      type: info.type,
+      policy: 'allow',
+    })),
+    disallowedPaths: [
+      '/api/analytics/*',
+      '/crawl-control*',
+    ],
+    sitemap: config.sitemap,
+    llms_txt: config.llms_txt,
+    openapi: config.openapi,
+    mcp: config.mcp,
+    ai_search: config.ai_search,
+    agentManifest: `https://${host}/.well-known/agent.json`,
+    beacon: `https://${host}/api/analytics/beacon`,
+    selfReport: `https://${host}/.well-known/ai-crawler-log`,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Crawl Control — human-readable
+// ═══════════════════════════════════════════════════════════════════════
+function handleCrawlControlPage(host) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crawl Control — ${host}</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem;line-height:1.6}
+h1{font-size:1.5rem}h2{font-size:1.2rem;margin-top:2rem}
+table{width:100%;border-collapse:collapse;margin:1rem 0}
+th,td{padding:0.5rem;text-align:left;border-bottom:1px solid #e0e0e0}
+.allow{color:green}.deny{color:red}
+code{background:#f5f5f5;padding:0.2rem 0.4rem;border-radius:3px}
+</style>
+</head>
+<body>
+<h1>Crawl Control — ${host}</h1>
+<p>Machine-readable config: <a href="/crawl-control.json"><code>/crawl-control.json</code></a></p>
+<h2>Policy</h2>
+<table>
+<tr><th>Category</th><th>Policy</th></tr>
+<tr><td>Default</td><td class="allow">Allow</td></tr>
+<tr><td>AI Training</td><td class="allow">Allow</td></tr>
+<tr><td>AI Search</td><td class="allow">Allow</td></tr>
+<tr><td>AI Agents</td><td class="allow">Allow</td></tr>
+<tr><td>Rate Limit</td><td>120 req/min</td></tr>
+</table>
+<h2>Allowed AI Crawlers (${Object.keys(AI_CRAWLERS).length})</h2>
+<table>
+<tr><th>User-Agent</th><th>Engine</th><th>Type</th><th>Policy</th></tr>
+${Object.entries(AI_CRAWLERS).map(([bot, info]) =>
+  `<tr><td>${bot}</td><td>${info.engine}</td><td>${info.type}</td><td class="allow">Allow</td></tr>`
+).join('')}
+</table>
+<h2>Agent Endpoints</h2>
+<ul>
+<li><a href="/.well-known/agent.json"><code>/.well-known/agent.json</code></a> — Agent readiness manifest</li>
+<li><a href="/crawl-control.json"><code>/crawl-control.json</code></a> — Machine-readable crawl rules</li>
+<li><code>/api/analytics/beacon</code> — Event beacon (POST)</li>
+<li><code>/.well-known/ai-crawler-log</code> — AI crawler self-report (POST)</li>
+</ul>
+</body>
+</html>`;
+  return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Agent Readiness Manifest
+// ═══════════════════════════════════════════════════════════════════════
+function handleAgentManifest(host) {
+  const config = SITE_CONFIG[host] || SITE_CONFIG['mos2es.org'];
+  return jsonResponse({
+    schema: 'agent-readiness/v1',
+    site: host,
+    name: config.name,
+    description: config.description,
+    generated: new Date().toISOString(),
+    capabilities: {
+      searchable: config.sitemap !== null,
+      llmsTxt: config.llms_txt !== null,
+      openApi: config.openapi !== null,
+      mcpServer: config.mcp !== null,
+      aiSearch: config.ai_search !== null,
+      crawlControl: true,
+      analytics: true,
+    },
+    endpoints: {
+      sitemap: config.sitemap,
+      llms_txt: config.llms_txt,
+      openapi: config.openapi,
+      mcp: config.mcp,
+      ai_search: config.ai_search,
+      crawl_control: `https://${host}/crawl-control.json`,
+      agent_manifest: `https://${host}/.well-known/agent.json`,
+      analytics_beacon: `https://${host}/api/analytics/beacon`,
+      analytics_stats: `https://${host}/api/analytics/stats`,
+      analytics_bots: `https://${host}/api/analytics/bots`,
+      analytics_ai_overview: `https://${host}/api/analytics/ai-overview`,
+      analytics_realtime: `https://${host}/api/analytics/realtime`,
+      crawler_self_report: `https://${host}/.well-known/ai-crawler-log`,
+    },
+    crawlPolicy: {
+      default: 'allow',
+      aiTraining: 'allow',
+      aiSearch: 'allow',
+      aiAgents: 'allow',
+    },
+    contentStats: {
+      pages: config.pages,
+      tools: config.tools || 0,
+    },
+    aiCrawlerAllowList: Object.keys(AI_CRAWLERS),
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// AI Crawler Self-Report — crawlers can POST their visit
+// ═══════════════════════════════════════════════════════════════════════
+async function handleCrawlerSelfReport(request, env, host) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ error: 'INVALID_JSON' }, 400);
+  }
+
+  const userAgent = request.headers.get('User-Agent') || '';
+  const botInfo = detectBot(userAgent) || detectBot(body.userAgent || '');
+
+  if (!botInfo) {
+    return jsonResponse({ error: 'UNKNOWN_CRAWLER', message: 'Could not identify crawler from User-Agent' }, 400);
+  }
+
+  const event = {
+    type: 'crawler_self_report',
+    bot: botInfo.bot,
+    engine: botInfo.engine,
+    crawlerType: botInfo.type,
+    path: body.path || '/',
+    pagesCrawled: body.pagesCrawled || 1,
+    purpose: body.purpose || 'unknown',
+    timestamp: Date.now(),
+    host,
+  };
+
+  // Write to Analytics Engine
+  if (env.ANALYTICS_ENGINE) {
+    env.ANALYTICS_ENGINE.writeDataPoint({
+      blobs: [event.type, event.path, event.host, event.bot, event.engine, event.purpose, ''],
+      doubles: [event.timestamp, event.pagesCrawled, 0],
+      indexes: [event.host, event.bot],
+    });
+  }
+
+  // Update KV
+  if (env.ANALYTICS_KV) {
+    const logKey = `${host}:bot-log`;
+    const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
+    const log = JSON.parse(logRaw);
+    log.unshift({
+      bot: event.bot, engine: event.engine, type: event.crawlerType,
+      path: event.path, purpose: event.purpose, pagesCrawled: event.pagesCrawled,
+      selfReported: true, timestamp: event.timestamp,
+    });
+    await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 100)));
+
+    const countKey = `${host}:bots:${event.bot}`;
+    const current = parseInt(await env.ANALYTICS_KV.get(countKey) || '0', 10);
+    await env.ANALYTICS_KV.put(countKey, String(current + (event.pagesCrawled || 1)));
+  }
+
+  return jsonResponse({ success: true, crawler: botInfo.bot, engine: botInfo.engine });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Dashboard — live HTML analytics dashboard
+// ═══════════════════════════════════════════════════════════════════════
+function handleDashboard(host) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics Dashboard — ${host}</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+  --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 1rem; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.grid { display: grid; gap: 0.75rem; }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.stat { text-align: center; }
+.stat .num { font-size: 1.8rem; font-weight: 700; }
+.stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+.stat.human .num { color: var(--green); }
+.stat.bot .num { color: var(--yellow); }
+.stat.total .num { color: var(--accent); }
+.stat.ai .num { color: var(--purple); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+.badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+.badge.green { background: rgba(63,185,80,0.2); color: var(--green); }
+.badge.yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
+.badge.blue { background: rgba(88,166,255,0.2); color: var(--accent); }
+.badge.purple { background: rgba(188,140,255,0.2); color: var(--purple); }
+.badge.red { background: rgba(248,81,73,0.2); color: var(--red); }
+.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 0.5rem; }
+.bar { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; position: relative; transition: height 0.3s; }
+.bar:hover { background: var(--purple); }
+.bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: var(--muted); }
+.bar-container { padding-bottom: 1.5rem; }
+.empty { color: var(--muted); font-style: italic; padding: 1rem 0; }
+.refresh { position: fixed; top: 1rem; right: 1rem; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+.refresh:hover { border-color: var(--accent); }
+.loading { opacity: 0.5; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.endpoints { font-size: 0.75rem; }
+.endpoints code { background: var(--bg); padding: 0.2rem 0.4rem; border-radius: 3px; color: var(--green); }
+</style>
+</head>
+<body>
+<button class="refresh" onclick="loadAll()">Refresh</button>
+<h1>MO\u00a7ES\u2122 Analytics Dashboard</h1>
+<p class="subtitle">${host} \u2014 live agent + visitor + crawler monitoring</p>
+
+<h2>Realtime</h2>
+<div class="grid grid-4" id="realtime">
+  <div class="card stat total"><div class="num" id="rt-total">-</div><div class="label">Total Today</div></div>
+  <div class="card stat human"><div class="num" id="rt-human">-</div><div class="label">Human Today</div></div>
+  <div class="card stat bot"><div class="num" id="rt-bots">-</div><div class="label">Bots Today</div></div>
+  <div class="card stat total"><div class="num" id="rt-all">-</div><div class="label">All Time</div></div>
+</div>
+
+<h2>7-Day Activity</h2>
+<div class="card bar-container">
+  <div class="bar-chart" id="bar-chart"></div>
+</div>
+
+<h2>AI Crawler Presence</h2>
+<div class="card" id="bots-card">
+  <table>
+    <thead><tr><th>Engine</th><th>Bot</th><th>Type</th><th>Visits</th><th>Last Seen</th></tr></thead>
+    <tbody id="bots-table"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<h2>AI Overview Citations</h2>
+<div class="card" id="ai-card">
+  <table>
+    <thead><tr><th>Engine</th><th>Query</th><th>Position</th><th>Cited</th><th>Time</th></tr></thead>
+    <tbody id="ai-table"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<h2>By Type</h2>
+<div class="card" id="types-card">
+  <table>
+    <thead><tr><th>Event Type</th><th>Count</th></tr></thead>
+    <tbody id="types-table"><tr><td colspan="2" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<h2>Agent Readiness</h2>
+<div class="card" id="readiness-card">
+  <div id="readiness" class="empty">Loading...</div>
+</div>
+
+<h2>API Endpoints</h2>
+<div class="card endpoints">
+  <code>GET /api/analytics/realtime</code> \u2014 current counters<br>
+  <code>GET /api/analytics/stats?days=7</code> \u2014 aggregated stats<br>
+  <code>GET /api/analytics/bots</code> \u2014 AI crawler visits<br>
+  <code>GET /api/analytics/ai-overview</code> \u2014 AI engine visibility<br>
+  <code>POST /api/analytics/beacon</code> \u2014 record event<br>
+  <code>GET /.well-known/agent.json</code> \u2014 agent manifest<br>
+  <code>GET /crawl-control.json</code> \u2014 crawl rules<br>
+  <code>GET /dashboard</code> \u2014 this page
+</div>
+
+<script>
+async function fetchJSON(url) {
+  try {
+    const r = await fetch(url);
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+function timeAgo(ts) {
+  if (!ts) return '-';
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+async function loadRealtime() {
+  const d = await fetchJSON('/api/analytics/realtime');
+  if (!d || !d.realtime) return;
+  const r = d.realtime;
+  document.getElementById('rt-total').textContent = r.todayTotal;
+  document.getElementById('rt-human').textContent = r.todayHuman;
+  document.getElementById('rt-bots').textContent = r.todayBots;
+  document.getElementById('rt-all').textContent = r.totalAllTime;
+}
+
+async function loadStats() {
+  const d = await fetchJSON('/api/analytics/stats?days=7');
+  if (!d || !d.byDay) return;
+  const days = Object.entries(d.byDay).sort();
+  const max = Math.max(...days.map(([,v]) => v.total), 1);
+  const chart = document.getElementById('bar-chart');
+  chart.innerHTML = days.map(([date, v]) => {
+    const h = (v.total / max) * 70;
+    const label = date.slice(5);
+    return '<div class="bar" style="height:' + h + 'px" title="' + label + ': ' + v.total + ' (H:' + v.human + ' B:' + v.bots + ')"><span class="bar-label">' + label + '</span></div>';
+  }).join('');
+
+  if (d.byType) {
+    const types = Object.entries(d.byType).sort((a,b) => b[1] - a[1]);
+    document.getElementById('types-table').innerHTML = types.length
+      ? types.map(([t,c]) => '<tr><td><span class="badge blue">' + t + '</span></td><td>' + c + '</td></tr>').join('')
+      : '<tr><td colspan="2" class="empty">No events yet</td></tr>';
+  }
+}
+
+async function loadBots() {
+  const d = await fetchJSON('/api/analytics/bots');
+  if (!d) return;
+  const visits = d.recentVisits || [];
+  const totals = d.allTimeTotals || {};
+  const rows = [];
+  for (const [bot, info] of Object.entries(totals)) {
+    const lastVisit = visits.find(v => v.bot === bot);
+    rows.push('<tr><td><strong>' + info.engine + '</strong></td><td>' + bot + '</td><td><span class="badge ' + (info.type === 'training' ? 'yellow' : 'blue') + '">' + info.type + '</span></td><td>' + info.count + '</td><td>' + (lastVisit ? timeAgo(lastVisit.timestamp) : '-') + '</td></tr>');
+  }
+  if (rows.length === 0 && visits.length > 0) {
+    for (const v of visits.slice(0, 10)) {
+      rows.push('<tr><td><strong>' + v.engine + '</strong></td><td>' + v.bot + '</td><td><span class="badge ' + (v.type === 'training' ? 'yellow' : 'blue') + '">' + v.type + '</span></td><td>1</td><td>' + timeAgo(v.timestamp) + '</td></tr>');
+    }
+  }
+  document.getElementById('bots-table').innerHTML = rows.length
+    ? rows.join('')
+    : '<tr><td colspan="5" class="empty">No AI crawlers detected yet</td></tr>';
+}
+
+async function loadAiOverview() {
+  const d = await fetchJSON('/api/analytics/ai-overview');
+  if (!d) return;
+  const events = d.aiOverviewEvents || [];
+  const rows = events.slice(0, 20).map(e => {
+    const cited = e.cited ? '<span class="badge green">Yes</span>' : '<span class="badge red">No</span>';
+    return '<tr><td><strong>' + e.engine + '</strong></td><td>' + (e.query || '-') + '</td><td>' + (e.position || '-') + '</td><td>' + cited + '</td><td>' + timeAgo(e.timestamp) + '</td></tr>';
+  });
+  document.getElementById('ai-table').innerHTML = rows.length
+    ? rows.join('')
+    : '<tr><td colspan="5" class="empty">No AI overview events yet</td></tr>';
+
+  const presence = d.crawlerPresence || {};
+  const score = d.readinessScore || 0;
+  const total = d.totalKnownEngines || 18;
+  const pct = Math.round((score / total) * 100);
+  const engines = Object.entries(presence).map(([engine, info]) =>
+    '<span class="badge ' + (info.type === 'training' ? 'yellow' : 'blue') + '">' + engine + ' (' + info.visits + ')</span>'
+  ).join(' ');
+  document.getElementById('readiness').innerHTML =
+    '<div style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem">' + pct + '% <span style="font-size:0.85rem;color:var(--muted)">(' + score + '/' + total + ' engines)</span></div>' +
+    '<div>' + (engines || '<span class="empty">No AI engines have crawled this site yet</span>') + '</div>';
+}
+
+async function loadAll() {
+  document.body.classList.add('loading');
+  await Promise.all([loadRealtime(), loadStats(), loadBots(), loadAiOverview()]);
+  document.body.classList.remove('loading');
+}
+
+loadAll();
+setInterval(loadAll, 30000);
+</script>
+</body>
+</html>`;
+  return new Response(html, {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-cache',
+    },
+  });
+}

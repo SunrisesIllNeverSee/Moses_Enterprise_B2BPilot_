@@ -8,18 +8,24 @@ routes = [
   { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+  { pattern = "mos2es.org/dashboard", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+  { pattern = "enterprise.mos2es.org/dashboard", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
+  { pattern = "mcp.mos2es.org/dashboard", zone_name = "mos2es.org" },
 ]
 
 [[kv_namespaces]]
 binding = "ANALYTICS_KV"
 id = "eeebad0bd19c4cefadd032b6fcdcb72c"
 
-[[analytics_engine_datasets]]
-binding = "ANALYTICS_ENGINE"
-dataset = "moses_analytics"
+# Analytics Engine — enable in dashboard first:
+# https://dash.cloudflare.com/8251078af351cd5b19cb73a3435e446f/workers/analytics-engine
+# Then uncomment these lines and redeploy:
+# [[analytics_engine_datasets]]
+# binding = "ANALYTICS_ENGINE"
+# dataset = "moses_analytics"

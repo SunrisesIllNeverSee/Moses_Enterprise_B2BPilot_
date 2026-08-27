@@ -100,47 +100,78 @@ export default {
     if (path !== '/' && !path.includes('.')) {
       // Try path as-is first (for directories with index.html)
       const directResponse = await env.ASSETS.fetch(request);
-      if (directResponse.ok) return addHeaders(directResponse, request);
+      if (directResponse.ok) return await addHeaders(directResponse, request);
       // Try with .html extension
       const htmlRequest = new Request(new URL(`${path}.html`, url.origin), request);
       const htmlResponse = await env.ASSETS.fetch(htmlRequest);
-      if (htmlResponse.ok) return addHeaders(htmlResponse, request);
+      if (htmlResponse.ok) return await addHeaders(htmlResponse, request);
       // Try subdirectory paths (e.g., /concepts/leverage → /concepts/leverage.html)
       const subHtmlRequest = new Request(new URL(`${assetPath}.html`, url.origin), request);
       const subHtmlResponse = await env.ASSETS.fetch(subHtmlRequest);
-      if (subHtmlResponse.ok) return addHeaders(subHtmlResponse, request);
+      if (subHtmlResponse.ok) return await addHeaders(subHtmlResponse, request);
     }
 
     // ─── Default: pass through to assets ─────────────────────────────────
     const response = await env.ASSETS.fetch(request);
 
     // Add Vary header to all responses
-    return addHeaders(response, request);
+    return await addHeaders(response, request);
   },
 };
 
-function addHeaders(response, request) {
-  const newResponse = new Response(response.body, response);
+async function addHeaders(response, request) {
   const url = new URL(request.url);
   const path = url.pathname;
-
-  newResponse.headers.set('Vary', 'Accept, Accept-Encoding');
-  newResponse.headers.set('X-Content-Type-Options', 'nosniff');
-  newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
-  newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  newResponse.headers.set('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://mcp.mos2es.org https://www.google-analytics.com https://www.googletagmanager.com;");
+  const contentType = response.headers.get('Content-Type') || '';
+  const isHtmlPage = contentType.includes('text/html');
 
   // Link headers for agent discoverability (homepage and HTML pages)
-  const isHtmlPage = !path.includes('.') || path.endsWith('.html') || path === '/';
-  if (isHtmlPage) {
+  if (isHtmlPage || (!path.includes('.') || path.endsWith('.html') || path === '/')) {
     const links = [
       '<https://mos2es.org/llms.txt>; rel="service"; type="text/plain"; title="llms.txt"',
       '<https://mos2es.org/sitemap.xml>; rel="sitemap"; type="application/xml"',
       '<https://mos2es.org/openapi.json>; rel="service-desc"; type="application/json"; title="OpenAPI"',
       '<https://mcp.mos2es.org/mcp>; rel="service"; type="application/json"; title="MCP Server"',
+      '<https://mos2es.org/.well-known/agent.json>; rel="service"; type="application/json"; title="Agent Manifest"',
+      '<https://mos2es.org/crawl-control.json>; rel="service"; type="application/json"; title="Crawl Control"',
     ];
+
+    // Inject analytics beacon into HTML pages via HTML Rewriter
+    if (isHtmlPage) {
+      const linkHeader = links.join(', ');
+      // Read the full body, inject the script, return modified response
+      const html = await response.text();
+      const modified = html.replace('</body>', '<script src="/analytics-beacon.js"></script></body>');
+      return new Response(modified, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Vary': 'Accept, Accept-Encoding',
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'SAMEORIGIN',
+          'Referrer-Policy': 'strict-origin-when-cross-origin',
+          'Content-Security-Policy': "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://mcp.mos2es.org https://www.google-analytics.com https://www.googletagmanager.com;",
+          'Link': linkHeader,
+        },
+      });
+    }
+
+    const newResponse = new Response(response.body, response);
+    newResponse.headers.set('Vary', 'Accept, Accept-Encoding');
+    newResponse.headers.set('X-Content-Type-Options', 'nosniff');
+    newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
+    newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    newResponse.headers.set('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://mcp.mos2es.org https://www.google-analytics.com https://www.googletagmanager.com;");
     newResponse.headers.set('Link', links.join(', '));
+    return newResponse;
   }
 
+  const newResponse = new Response(response.body, response);
+  newResponse.headers.set('Vary', 'Accept, Accept-Encoding');
+  newResponse.headers.set('X-Content-Type-Options', 'nosniff');
+  newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  newResponse.headers.set('Content-Security-Policy', "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; font-src 'self'; connect-src 'self' https://mcp.mos2es.org https://www.google-analytics.com https://www.googletagmanager.com;");
   return newResponse;
 }
