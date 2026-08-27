@@ -1608,6 +1608,25 @@ export default {
       });
     }
 
+    // Server card for MCP directories (Smithery, Glama, etc.)
+    if (url.pathname === "/.well-known/mcp/server-card.json") {
+      return new Response(JSON.stringify({
+        serverInfo: {
+          name: "MO\u00a7ES\u2122 MCP Server",
+          version: "0.4.0"
+        },
+        authentication: {
+          required: false,
+          schemes: []
+        },
+        tools: TOOLS,
+        resources: [],
+        prompts: []
+      }, null, 2), {
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+      });
+    }
+
     // 404
     return new Response(JSON.stringify({
       error: "NOT_FOUND",
