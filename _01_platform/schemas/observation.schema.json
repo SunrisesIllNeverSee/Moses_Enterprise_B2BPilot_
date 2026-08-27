@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Enterprise Canonical Observation",
+  "type": "object",
+  "required": [
+    "observation_id",
+    "operator_id",
+    "timestamp",
+    "input_tokens",
+    "output_tokens",
+    "cache_read_tokens",
+    "cache_write_tokens",
+    "synthetic"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string"
+    },
+    "operator_id": {
+      "type": "string"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "input_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "output_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cache_read_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cache_write_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "provenance": {
+      "type": "string"
+    },
+    "source_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"],
+      "description": "Confidence level for the source data quality. Gates cross-provider comparisons: low-confidence sources should not be directly compared to high-confidence sources without an explicit caveat."
+    },
+    "raw_source_reference": {
+      "type": "string",
+      "description": "Pointer back to the original raw record in the provider system (e.g. export file name + row, API response ID, log line). Enables traceability without storing the raw payload."
+    }
+  }
+}

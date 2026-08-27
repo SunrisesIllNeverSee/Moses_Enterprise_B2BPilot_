@@ -1,0 +1,70 @@
+EVIDENCE LADDER — What conclusions are valid at each rung
+═════════════════════════════════════════════════════════════════════════════════
+
+  STRONGEST -> +-----------------------------------------------------------------+
+               | RUNG 8: Controlled Experiment                                  |
+               | Data: baseline + intervention + control + post + randomization |
+               | Valid: causal attribution, intervention effectiveness          |
+               | NOT valid: long-term effects without longitudinal extension     |
+               | Example: CTX-001 with op_004 as control for op_005              |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 7: Complete Interaction + Outcome                         |
+               | Data: interaction telemetry + external outcome data joined     |
+               | Valid: operator-to-outcome correlation, intervention class.    |
+               | NOT valid: causal attribution without control group            |
+               | Example: 12 operators with external_outcomes.csv               |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 6: Strong Observational Telemetry                         |
+               | Data: complete I/O/R/W per session (all 4 token pillars)       |
+               | Valid: operator baseline, archetype, stability, percentiles    |
+               | NOT valid: causal claims about intervention effectiveness      |
+               | Example: 50 operators, 12,842 observations, baseline window    |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 5: Partial Telemetry                                      |
+               | Data: some interactions captured, gaps in coverage              |
+               | Valid: directional trends, provisional rankings                 |
+               | NOT valid: precise comparison or intervention recommendation    |
+               | Example: operators using platforms with incomplete audit logs   |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 4: Activity Metadata                                      |
+               | Data: usage logs, session counts, token totals                  |
+               | Valid: adoption/volume assessment                              |
+               | NOT valid: operator quality or capability                       |
+               | Example: "op_005 has 98th percentile usage" — says nothing      |
+               |          about operator quality                                |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 3: Customer-Supplied Outcome                              |
+               | Data: external metric provided by customer                      |
+               | Valid: outcome correlation only                                |
+               | NOT valid: causal attribution to operator behavior              |
+               | Example: cycle_time_change_pct, quality_change_pct              |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+               +---------------------------v-------------------------------------+
+               | RUNG 2: Inferred Signal                                        |
+               | Data: model-based inference, no direct observation              |
+               | Valid: hypothesis generation only                              |
+               | NOT valid: any definitive claim                                |
+               | Example: archetype assignment for operators with <10 sessions   |
+               +---------------------------+-------------------------------------+
+                                           | stronger evidence
+  WEAKEST  -> +---------------------------v-------------------------------------+
+               | RUNG 1: Insufficient Evidence                                  |
+               | Data: no data or <5 observations                               |
+               | Valid: nothing — collect more data                              |
+               | NOT valid: any ranking or comparison                            |
+               | Example: op_009 in first 3 days (only 2 sessions)               |
+               +-----------------------------------------------------------------+
+
+  RULE: Every MO§ES finding carries its rung number. No finding is presented
+  without its evidence grade. The audience always knows how strong the evidence is.

@@ -1,0 +1,16 @@
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌───────────────────┐
+│  MICRO EVAL  │───▶│   OPERATOR   │───▶│    SYSTEM    │───▶│   WORKFLOW   │───▶│     TEAM     │───▶│  ORGANIZATION     │
+│              │    │              │    │              │    │              │    │              │    │                   │
+│ Upsilon      │    │ Stability    │    │ System comp  │    │ Stage fit    │    │ Capability   │    │ Capability        │
+│ Leverage     │    │ Trajectory   │    │ Op×Sys fit   │    │ Bottlenecks  │    │ concentration│    │ topology          │
+│ Yield        │    │ Archetype    │    │ Model sens.  │    │ Stage excel. │    │ Team diffs   │    │ Risk concentration│
+│ Token SNR    │    │ Field pos.   │    │              │    │              │    │ Cross-team   │    │ Adoption-vs-op    │
+│ Construction │    │ Divergence   │    │              │    │              │    │              │    │                   │
+│              │    │              │    │              │    │              │    │              │    │                   │
+│ Source:      │    │ Source:      │    │ Source:      │    │ Source:      │    │ Source:      │    │ Source:           │
+│ raw obs      │    │ agg. Micro   │    │ op×sys       │    │ stage events │    │ op profiles  │    │ all levels        │
+│              │    │ Evals        │    │ cross-tab    │    │ + metrics    │    │ by team      │    │                   │
+│ Output:      │    │ Output:      │    │ Output:      │    │ Output:      │    │ Output:      │    │ Output:           │
+│ metric       │    │ operator     │    │ system       │    │ stage-fit    │    │ team         │    │ org operating     │
+│ vector       │    │ baseline     │    │ profile      │    │ scores       │    │ aggregate    │    │ map               │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘    └───────────────────┘

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo — MO§ES™ AI Operator Evaluation Platform</title>
+<meta name="description" content="Run the MO§ES™ demo: 10-step operator evaluation pipeline with 50 synthetic operators, 5 AI platforms, scoring, benchmarking, diagnostics, operator×system decomposition, outcome lineage, and full pilot readout.">
+<link rel="canonical" href="https://mos2es.org/demo">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/demo">
+<meta property="og:title" content="Demo — MO§ES™ AI Operator Evaluation Platform">
+<meta property="og:description" content="Run the 10-step demo: 50 operators, 5 platforms, scoring, benchmarking, diagnostics, decomposition, outcome lineage, pilot readout.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Demo — MO§ES™ AI Operator Evaluation Platform">
+<meta name="twitter:description" content="Run the 10-step demo pipeline end-to-end.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+[
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"Demo","item":"https://mos2es.org/demo"}]},
+  {"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://mos2es.org/#software","name":"MO§ES™","url":"https://mos2es.org","description":"Enterprise AI operator evaluation platform. Measures how people operate AI systems, benchmarks performance, builds bespoke evals, and tests interventions.","applicationCategory":"BusinessApplication","operatingSystem":"Cross-platform","publisher":{"@id":"https://mos2es.org/#org"},"offers":{"@type":"Offer","description":"30-day enterprise pilot. 6 commercial packages: Baseline, Diagnostic, Evaluation, Monitor, Meta-Pilot, MO§E§.","url":"https://mos2es.org/pilot"}}
+]
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="demo.html">Demo</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Demo</div>
+<h1>Run the full 10-step evaluation pipeline.</h1>
+<p class="lead">The MO§ES™ demo runs a complete operator evaluation on 50 synthetic operators across 5 AI platforms (ChatGPT, Claude, Codex, Copilot, Cursor). It scores, benchmarks, diagnoses, decomposes operator vs system effects, traces outcome lineage, and generates a full pilot readout. No real data. No API keys. No prompt text. Pure token telemetry.</p>
+<a class="btn" href="#cli">Run it now</a>
+<a class="btn-outline" href="https://enterprise.mos2es.org">Web walkthrough</a>
+</div>
+
+<!-- ═══ WHAT THE DEMO DOES ═══ -->
+<section>
+<div class="eyebrow">The 10-step pipeline</div>
+<h2>What runs when you type one command.</h2>
+<p class="sec-intro">Every step is real code from the platform. No mocks, no stubs. The demo loads synthetic data, runs the actual scoring engine, benchmark engine, diagnostic engine, decomposition analysis, and outcome correlation, then writes a markdown and PDF report.</p>
+
+<div class="grid2">
+<div class="card blue">
+<div class="num">01</div>
+<h3>LOAD</h3>
+<p>50 operators, 1,668 observations, 5 platforms, 50 lineages, 50 outcomes. Synthetic data with realistic distributions.</p>
+</div>
+<div class="card blue">
+<div class="num">02</div>
+<h3>EVALUATE</h3>
+<p>Compute 5 canonical metrics per observation: leverage, yield, token SNR, construction, upsilon. The scoring engine runs on every observation.</p>
+</div>
+<div class="card blue">
+<div class="num">03</div>
+<h3>BENCHMARK</h3>
+<p>Percentile-rank every operator against the cohort. 13 benchmark classes. Cross-operator, cross-system, cross-workflow comparisons.</p>
+</div>
+<div class="card blue">
+<div class="num">04</div>
+<h3>DIAGNOSE</h3>
+<p>Pattern detection across 7 dimensions: capability, concentration, friction, dependency, instability, system differences, workflow fit. Every diagnosis is a hypothesis with evidence grade.</p>
+</div>
+<div class="card blue">
+<div class="num">05</div>
+<h3>OPERATOR×SYSTEM</h3>
+<p>Two-way ANOVA-style decomposition. Partitions metric variance into operator effect, system effect, and interaction. Demo data shows operator effect dominates at 96-97%.</p>
+</div>
+<div class="card blue">
+<div class="num">06</div>
+<h3>INTERVENE</h3>
+<p>Load intervention assignments. Each intervention has a target metric, a hypothesis, and an alternative explanation.</p>
+</div>
+<div class="card blue">
+<div class="num">07</div>
+<h3>RE-EVALUATE</h3>
+<p>Re-score after intervention. Compute declared deltas. Verify whether the intervention moved the target metric.</p>
+</div>
+<div class="card blue">
+<div class="num">08</div>
+<h3>OUTCOME LINEAGE</h3>
+<p>Trace the full lineage chain: observation to transformation to committed artifact to outcome. Correlate operating metrics with external quality scores and cycle times. ASSOCIATION, not causation.</p>
+</div>
+<div class="card blue">
+<div class="num">09</div>
+<h3>REPORT</h3>
+<p>Generate a full pilot readout in markdown and PDF. Includes cohort stats, score distributions, metric distributions, divergence findings, intervention outcomes, and graphics.</p>
+</div>
+<div class="card blue">
+<div class="num">10</div>
+<h3>VISUALIZE</h3>
+<p>9 graphics: measurement architecture, evaluation loop, connection architecture, operator-system matrix, transformation lineage, before/after intervention, capability topology, evidence ladder, sample customer report.</p>
+</div>
+</div>
+</section>
+
+<!-- ═══ HOW TO RUN ═══ -->
+<section id="cli">
+<div class="eyebrow">Run it</div>
+<h2>One command. No API keys. No real data.</h2>
+<p class="sec-intro">The demo runs entirely on synthetic data. No external services are called. No prompt text is read. No real operator data is used. You need Python 3.10+ and the repo.</p>
+
+<h3>Option 1: One-liner (no clone needed)</h3>
+<pre><code>curl -sL https://mos2es.org/demo/run.py | python3 -</code></pre>
+<p>Clones the repo to a temp directory, installs <code>rich</code>, runs all 10 steps, prints output. Requires Python 3.10+ and git.</p>
+
+<h3>Option 2: Clone and run</h3>
+<pre><code>git clone https://github.com/SunrisesIllneverSee/Moses_Enterprise_B2BPilot_.git
+cd Moses_Enterprise_B2BPilot_/_01_platform
+pip install rich
+python3 -m src.cli.main demo full</code></pre>
+
+<p>That's it. The demo runs all 10 steps and writes outputs to <code>demo_data/graphics/</code>:</p>
+<ul>
+<li><code>demo_full_pilot_readout.md</code> — full markdown pilot report</li>
+<li><code>g09_sample_customer_report.pdf</code> — PDF version of the report</li>
+<li>9 diagram files (Mermaid + text + HTML)</li>
+</ul>
+
+<h3>Option 3: Run individual commands</h3>
+<pre><code># Score a single operator
+python3 -m src.cli.main score operator op_001
+
+# Compare operators across the cohort
+python3 -m src.cli.main compare cohort
+
+# Run diagnostics on an operator
+python3 -m src.cli.main diagnose operator op_001
+
+# Operator×System decomposition
+python3 -m src.cli.main compare operator-system
+
+# Lineage chain for an operator
+python3 -m src.cli.main lineage show op_046
+
+# Outcome correlation across the cohort
+python3 -m src.cli.main lineage outcomes
+
+# Org AI topology (team-level analysis)
+python3 -m src.cli.main compare topology
+
+# Operator similarity search
+python3 -m src.cli.main compare similarity op_001
+
+# Export the executive dashboard as HTML
+python3 -m src.cli.main export dashboard --output dashboard.html</code></pre>
+
+<h3>Option 4: Run the test suite</h3>
+<pre><code>cd Moses_Enterprise_B2BPilot_/_01_platform
+python3 -m pytest tests/ -q
+# 527 tests pass</code></pre>
+
+<h3>Option 5: Run the MCP server</h3>
+<pre><code>cd Moses_Enterprise_B2BPilot_/_01_platform
+pip install mcp
+python3 -m src.mcp_server.server</code></pre>
+<p>The MCP server exposes 27 tools that Claude, ChatGPT, Cursor, and other AI agents can call natively. See the <a href="docs.html">developer docs</a> for the full tool list and API spec.</p>
+</section>
+
+<!-- ═══ WEB WALKTHROUGH ═══ -->
+<section>
+<div class="eyebrow">Prefer a visual walkthrough?</div>
+<h2>The interactive web demo.</h2>
+<p class="sec-intro">If you want to see what the product looks like without running code, the web walkthrough at <a href="https://enterprise.mos2es.org">enterprise.mos2es.org</a> walks through each stage of the evaluation pipeline with visual explanations of the canonical primitives, metrics, diagnostics, workflow fit, and intervention testing.</p>
+<a class="btn" href="https://enterprise.mos2es.org">Open the web walkthrough</a>
+</section>
+
+<!-- ═══ WHAT YOU GET ═══ -->
+<section>
+<div class="eyebrow">Outputs</div>
+<h2>What the demo produces.</h2>
+<div class="grid2">
+<div class="card">
+<h3>Pilot readout (markdown + PDF)</h3>
+<p>A full sample customer report with cohort statistics, score distributions, metric distributions, divergence findings, intervention outcomes, and the evidence ladder. This is the same format a real pilot delivers.</p>
+</div>
+<div class="card">
+<h3>9 architecture diagrams</h3>
+<p>Mermaid + text diagrams covering measurement architecture, evaluation loop, connection architecture, operator-system matrix, transformation lineage, before/after intervention, capability topology, and evidence ladder.</p>
+</div>
+<div class="card">
+<h3>Executive dashboard (HTML)</h3>
+<p>Self-contained HTML dashboard with inline SVG charts. Shows composite score distribution, cohort-level metric summaries, and operator rankings. Generated by <code>enterprise export dashboard</code>.</p>
+</div>
+<div class="card">
+<h3>Console output</h3>
+<p>Every step prints structured output to the console. Add <code>--json</code> to any command for machine-readable JSON output suitable for piping into other tools or agents.</p>
+</div>
+</div>
+</section>
+
+<!-- ═══ DEMO DATA ═══ -->
+<section>
+<div class="eyebrow">The synthetic dataset</div>
+<h2>50 operators. 5 platforms. 1,668 observations.</h2>
+<p class="sec-intro">The demo data is fully synthetic. No real operators, no real prompt text, no real API calls. The dataset is designed to exercise every analysis path in the platform:</p>
+<ul>
+<li><strong>50 operators</strong> with pseudonymous IDs (op_001 through op_050)</li>
+<li><strong>5 AI platforms</strong>: ChatGPT, Claude, Codex, Copilot, Cursor</li>
+<li><strong>1,668 observations</strong> with INPUT, OUTPUT, CACHE READ, CACHE WRITE token counts</li>
+<li><strong>50 lineages</strong> linking observations to transformations to artifacts to outcomes</li>
+<li><strong>50 outcomes</strong> with external quality scores and cycle times</li>
+<li><strong>5 teams</strong> for org topology analysis</li>
+<li><strong>7 workflow stages</strong> for workflow fit analysis</li>
+<li><strong>Intervention assignments</strong> with pre/post measurement</li>
+</ul>
+<p class="note">Synthetic markers are preserved across all import/export operations. The demo data is deterministic — running the demo twice produces identical results.</p>
+</section>
+
+</main>
+
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="product.html">Product</a><a href="pilot.html">Pilot</a><a href="methodology.html">Methodology</a><a href="research.html">Research</a></div>
+<div><a href="demo.html">Demo</a><a href="demo.html">Demo</a><a href="concepts/leverage.html">Concepts</a><a href="guides/how-to-evaluate-ai-operators.html">Guides</a><a href="faq.html">FAQ</a><a href="vs/workera.html">Comparisons</a></div>
+<div><a href="contact.html">Contact</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="docs.html">Docs</a><a href="pilot-readout.html">Pilot Readout</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div></body>
+</html>

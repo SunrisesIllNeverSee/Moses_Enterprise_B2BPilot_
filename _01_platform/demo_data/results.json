@@ -1,0 +1,206 @@
+[
+  {
+    "result_id": "res_001",
+    "operator_id": "op_047",
+    "intervention_id": "int_001",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": -1.27,
+      "yield_pct": 20.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": 4.7,
+      "quality_pct": 1.7
+    },
+    "classification": "improved_internal_only",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_002",
+    "operator_id": "op_004",
+    "intervention_id": "int_002",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 11.97,
+      "yield_pct": 2.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": 9.7,
+      "quality_pct": 3.4
+    },
+    "classification": "no_change",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_003",
+    "operator_id": "op_030",
+    "intervention_id": "int_003",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 2.65,
+      "yield_pct": 55.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": 6.2,
+      "quality_pct": 1.3
+    },
+    "classification": "improved_internal_and_external",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_004",
+    "operator_id": "op_045",
+    "intervention_id": "int_004",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 7.63,
+      "yield_pct": 55.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": -15.4,
+      "quality_pct": 4.8
+    },
+    "classification": "improved_internal_and_external",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_005",
+    "operator_id": "op_031",
+    "intervention_id": "int_005",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": -18.0,
+      "yield_pct": 16.86
+    },
+    "external_deltas": {
+      "cycle_time_pct": 5.8,
+      "quality_pct": 4.2
+    },
+    "classification": "degraded",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_006",
+    "operator_id": "op_038",
+    "intervention_id": "int_006",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 7.84,
+      "yield_pct": -18.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": 4.0,
+      "quality_pct": -1.4
+    },
+    "classification": "degraded",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_007",
+    "operator_id": "op_010",
+    "intervention_id": "int_007",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 55.0,
+      "yield_pct": 6.03
+    },
+    "external_deltas": {
+      "cycle_time_pct": 0.8,
+      "quality_pct": 4.6
+    },
+    "classification": "improved_internal_and_external",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_008",
+    "operator_id": "op_026",
+    "intervention_id": "int_008",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 55.0,
+      "yield_pct": 14.26
+    },
+    "external_deltas": {
+      "cycle_time_pct": 7.1,
+      "quality_pct": 4.0
+    },
+    "classification": "improved_internal_and_external",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_009",
+    "operator_id": "op_025",
+    "intervention_id": "int_009",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 2.52,
+      "yield_pct": 2.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": -1.3,
+      "quality_pct": 1.5
+    },
+    "classification": "no_change",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_010",
+    "operator_id": "op_020",
+    "intervention_id": "int_010",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": -18.0,
+      "yield_pct": 19.26
+    },
+    "external_deltas": {
+      "cycle_time_pct": -2.1,
+      "quality_pct": 1.0
+    },
+    "classification": "degraded",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_011",
+    "operator_id": "op_029",
+    "intervention_id": "int_011",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 7.21,
+      "yield_pct": 55.0
+    },
+    "external_deltas": {
+      "cycle_time_pct": -3.3,
+      "quality_pct": -1.3
+    },
+    "classification": "improved_internal_and_external",
+    "status": "synthetic_demo"
+  },
+  {
+    "result_id": "res_012",
+    "operator_id": "op_005",
+    "intervention_id": "int_012",
+    "baseline_window": "2026-07-01/2026-07-30",
+    "post_window": "2026-08-01/2026-08-14",
+    "internal_deltas": {
+      "leverage_pct": 20.0,
+      "yield_pct": 13.67
+    },
+    "external_deltas": {
+      "cycle_time_pct": -13.3,
+      "quality_pct": 2.1
+    },
+    "classification": "improved_internal_only",
+    "status": "synthetic_demo"
+  }
+]

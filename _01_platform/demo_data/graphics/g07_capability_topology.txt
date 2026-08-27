@@ -1,0 +1,46 @@
+CAPABILITY TOPOLOGY — acme_50 Organization (50 operators, 6 teams)
+═════════════════════════════════════════════════════════════════════════════════
+
+    Product Engineering          Platform / Infrastructure
+    +-----------------+         +------------------+
+    |   *op_002 23.91 |         |  *op_025 23.37   |
+    |   *op_004 23.92 |..same archetype..|  *op_027 24.75   |
+    |   *op_017 24.10 |         |                  |
+    |   *op_011 29.31 |         |  oop_020  3.49   |
+    |   *op_016 18.16 |         |  oop_026  3.51   |
+    |   oop_005  3.55 |         +------------------+
+    +--------+--------+                |
+             | cross-team              |
+             | bridge                  |
+             v                         |
+    +-----------------+         +------------------+
+    | Customer Eng    |         | Data / Analytics |
+    |                 |         |                  |
+    | *op_045 23.51 <-+---------+--*op_033 30.48   |
+    | *op_044 29.52   |         |  *op_034 18.39   |
+    +--------+--------+         |  oop_031  5.11   |
+             |                  +--------+---------+
+             | workflow: review          | workflow:
+             |                           | implementation
+             v                           v
+    +-----------------+         +------------------+
+    | Operations/GTM  |         | Product / Design |
+    | *op_050 23.99   |         | *op_038 29.49    |
+    | *op_049 29.69   |         | oop_037  4.94    |
+    +-----------------+         +------------------+
+                                  ! CAPABILITY ISLAND
+                                  median Lev=4.93
+                                  (org median=12.18)
+
+    * = High leverage (>15.0)    o = Low leverage (<6.0)
+    --- = workflow dependency    ... = same archetype cluster
+    >.. = cross-team bridge
+
+TOPOLOGY FINDINGS:
+  1. CONCENTRATION RISK: 42% of high-Leverage capability in 6 operators
+  2. CAPABILITY ISLAND: Product/Design isolated, median Lev 4.93 vs org 12.18
+  3. WORKFLOW BOTTLENECK: implementation stage oversubscribed, review underserved
+  4. CROSS-TEAM BRIDGE: op_045 connects 3 teams — departure risk
+  5. DEPENDENCY CHAIN: op_033 -> op_038 -> op_044 (recursive builders across teams)
+
+EVIDENCE GRADE: Strong observational telemetry (interaction-level + workflow stage events)

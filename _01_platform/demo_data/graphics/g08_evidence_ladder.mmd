@@ -1,0 +1,26 @@
+graph BT
+    R1["RUNG 1: Insufficient Evidence<br/>Data: none or <5 observations<br/>Valid: nothing — collect more data<br/>NOT valid: any ranking or comparison<br/>Example: op_009 first 3 days (2 sessions)"]
+    R2["RUNG 2: Inferred Signal<br/>Data: model-based inference<br/>Valid: hypothesis generation<br/>NOT valid: definitive claims<br/>Example: archetype for <10 session ops"]
+    R3["RUNG 3: Customer-Supplied Outcome<br/>Data: external metrics from customer<br/>Valid: outcome correlation<br/>NOT valid: causal attribution<br/>Example: cycle_time_change_pct"]
+    R4["RUNG 4: Activity Metadata<br/>Data: usage logs, session counts<br/>Valid: adoption/volume assessment<br/>NOT valid: operator quality<br/>Example: 'op_005 = 98th pctile usage'"]
+    R5["RUNG 5: Partial Telemetry<br/>Data: some interactions, gaps<br/>Valid: directional trends<br/>NOT valid: precise comparison<br/>Example: incomplete audit logs"]
+    R6["RUNG 6: Strong Observational Telemetry<br/>Data: complete I/O/R/W per session<br/>Valid: baseline, archetype, percentiles<br/>NOT valid: causal claims<br/>Example: 50 ops, 12,842 observations"]
+    R7["RUNG 7: Complete Interaction + Outcome<br/>Data: interaction + external outcome<br/>Valid: op-to-outcome correlation<br/>NOT valid: causal without control<br/>Example: 12 ops with ext outcomes"]
+    R8["RUNG 8: Controlled Experiment<br/>Data: baseline + intervention + control + post<br/>Valid: causal attribution, effectiveness<br/>NOT valid: long-term without extension<br/>Example: CTX-001 with control op"]
+
+    R1 -->|stronger evidence| R2
+    R2 -->|stronger evidence| R3
+    R3 -->|stronger evidence| R4
+    R4 -->|stronger evidence| R5
+    R5 -->|stronger evidence| R6
+    R6 -->|stronger evidence| R7
+    R7 -->|stronger evidence| R8
+
+    style R1 fill:#ffebee,stroke:#b71c1c,stroke-width:1px
+    style R2 fill:#fff3e0,stroke:#e65100,stroke-width:1px
+    style R3 fill:#fffde7,stroke:#f57f17,stroke-width:1px
+    style R4 fill:#f1f8e9,stroke:#827717,stroke-width:2px
+    style R5 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style R6 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style R7 fill:#e1bee7,stroke:#7b1fa2,stroke-width:3px
+    style R8 fill:#c8e6c9,stroke:#1b5e20,stroke-width:3px

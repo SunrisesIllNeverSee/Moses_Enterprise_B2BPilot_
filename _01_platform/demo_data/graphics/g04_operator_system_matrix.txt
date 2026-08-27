@@ -1,0 +1,27 @@
+OPERATOR × SYSTEM MATRIX — Composite Performance/Fit Score (0-100)
+═════════════════════════════════════════════════════════════════════════════════
+
+                         Claude      Codex      ChatGPT
+                       ┌──────────┬──────────┬──────────┐
+  signal-0002410503    │   82     │   78     │   45     │  context_compounder
+  signal-0008917623    │   28     │   22     │   18     │  high_volume_burner
+  signal-0003459812    │   65     │   90     │   55     │  recursive_builder
+  signal-0005671234    │   88     │   85     │   72     │  efficient_minimalist
+  signal-0001234567    │   80     │   84     │   48     │  context_compounder
+  signal-0007890123    │   25     │   20     │   15     │  high_volume_burner
+  signal-0002345678    │   42     │   38     │   35     │  kinetic_generator
+  signal-0004567890    │   60     │   95     │   58     │  recursive_builder
+  signal-0006789012    │   78     │   76     │   50     │  context_compounder
+  signal-0008901234    │   82     │   80     │   52     │  context_compounder
+                       └──────────┴──────────┴──────────┘
+
+  [##] Strong fit (75-100)  [##] Good fit (60-74)  [##] Moderate (40-59)
+  [##] Weak fit (25-39)     [##] Poor fit (0-24)
+
+  KEY INSIGHT: recursive_builders (signal-0003459812, signal-0004567890) score
+  25-35 points higher on Codex than on Claude. Context compounders score well
+  on both Claude and Codex but poorly on ChatGPT. High-volume burners score
+  poorly on ALL systems — the problem is the operator pattern, not the system.
+
+  EVIDENCE GRADE: Strong observational telemetry (interaction-level Micro Evals
+  per operator per system, n>=14 interactions per cell)

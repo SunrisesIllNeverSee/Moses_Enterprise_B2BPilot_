@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "name": "MO\u00a7ES\u2122 MCP Server",
+  "description": "Enterprise AI operator evaluation MCP server. Provides access to operator evaluations, performative benchmarks, methodology, and pilot data via the Model Context Protocol.",
+  "url": "https://mcp.mos2es.org/mcp",
+  "transport": "streamable-http",
+  "version": "0.4.0",
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": false
+  },
+  "tool_count": {
+    "total": 27,
+    "read": 22,
+    "write": 5
+  },
+  "authentication": {
+    "type": "none",
+    "description": "Public MCP server, no authentication required."
+  },
+  "links": {
+    "homepage": "https://mos2es.org",
+    "docs": "https://mos2es.org/docs",
+    "openapi": "https://mos2es.org/openapi.json",
+    "llms_txt": "https://mos2es.org/llms.txt"
+  }
+}

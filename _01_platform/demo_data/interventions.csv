@@ -1,0 +1,13 @@
+intervention_id,operator_id,catalog_id,reason_pattern,target_metric,start_date,followup_days,synthetic_outcome,synthetic
+int_001,op_047,COA-001,P-BURN-01,yield,2026-08-01,14,PARTIAL,True
+int_002,op_004,COA-001,P-BURN-01,yield,2026-08-01,14,NO_EFFECT,True
+int_003,op_030,COA-001,P-BURN-01,yield,2026-08-01,14,SUCCESS,True
+int_004,op_045,COA-001,P-BURN-01,yield,2026-08-01,14,SUCCESS,True
+int_005,op_031,CTX-001,P-CTX-01,leverage,2026-08-01,14,NEGATIVE,True
+int_006,op_038,FRM-001,P-BURN-01,yield,2026-08-01,14,NEGATIVE,True
+int_007,op_010,CTX-001,P-CTX-01,leverage,2026-08-01,14,SUCCESS,True
+int_008,op_026,CTX-001,P-CTX-01,leverage,2026-08-01,14,SUCCESS,True
+int_009,op_025,MOD-001,P-MODEL-01,yield,2026-08-01,14,NO_EFFECT,True
+int_010,op_020,CTX-001,P-CTX-01,leverage,2026-08-01,14,NEGATIVE,True
+int_011,op_029,FRM-001,P-BURN-01,yield,2026-08-01,14,SUCCESS,True
+int_012,op_005,CTX-001,P-CTX-01,leverage,2026-08-01,14,PARTIAL,True

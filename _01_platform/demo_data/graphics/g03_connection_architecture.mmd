@@ -1,0 +1,50 @@
+graph LR
+    subgraph LEFT["Enterprise Systems"]
+        direction TB
+        AI["AI Platforms<br/>Claude · ChatGPT · Codex<br/>Cursor · Copilot · Gemini"]
+        AG["Agent Platforms<br/>Internal agents · LangGraph<br/>Workflow agents · Autonomous"]
+        ES["Enterprise Software<br/>Slack · Jira · GitHub<br/>Salesforce · ServiceNow · Notion"]
+        ID["Identity & Data<br/>SSO/SAML/OIDC · Entra ID<br/>Okta · Audit logs · CSV/JSON"]
+    end
+
+    subgraph MID["MO§ES™ Pipeline"]
+        direction TB
+        CIL["1. Canonical Ingestion<br/>━━━━━━━━━━━━━━<br/>Normalize all sources →<br/>MO§ES event model<br/>(Operator, System, Session,<br/>Interaction, Transformation,<br/>Outcome, Lineage)"]
+        MEE["2. Micro Eval Engine<br/>━━━━━━━━━━━━━━<br/>Upsilon = (R×O)/I²<br/>Leverage = R/I<br/>Yield = (R×O)/I²<br/>Token SNR = O/(I+O)<br/>Construction = W/R"]
+        BME["3. Benchmark Engine<br/>━━━━━━━━━━━━━━<br/>Self-prior · Peer · Cohort<br/>Team · Reference field<br/>Intervention comparison"]
+        DIE["4. Diagnostic Engine<br/>━━━━━━━━━━━━━━<br/>Pattern detectors:<br/>P-BURN-01 · P-CTX-01<br/>P-MODEL-01 · P-HIDDEN-01<br/>→ hypotheses + confidence"]
+        ORI["5. Organizational Intelligence<br/>━━━━━━━━━━━━━━<br/>Capability topology<br/>Concentration · Risk<br/>Adoption-vs-operation gap"]
+    end
+
+    subgraph RIGHT["Customer Decisions"]
+        direction TB
+        MP["Model placement<br/>Route operators to<br/>best-fit system"]
+        TT["Training targeting<br/>Direct interventions to<br/>operators who need them"]
+        WR["Workflow redesign<br/>Restructure stages<br/>based on bottleneck dx"]
+        IE["Investment effectiveness<br/>Evaluate AI investment<br/>→ operator returns"]
+        RA["Risk assessment<br/>Concentration risk<br/>Dependency bottlenecks"]
+        IS["Intervention selection<br/>Choose from catalog<br/>based on diagnostics"]
+    end
+
+    AI --> CIL
+    AG --> CIL
+    ES --> CIL
+    ID --> CIL
+
+    CIL --> MEE
+    MEE --> BME
+    BME --> DIE
+    DIE --> ORI
+
+    ORI --> MP
+    ORI --> TT
+    ORI --> WR
+    ORI --> IE
+    ORI --> RA
+    ORI --> IS
+
+    style CIL fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style MEE fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style BME fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style DIE fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style ORI fill:#fffde7,stroke:#f57f17,stroke-width:3px

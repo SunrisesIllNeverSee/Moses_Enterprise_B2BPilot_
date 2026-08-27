@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ — Enterprise: Cohorts, Privacy, Governance</title>
+<meta name="description" content="Cohorts, deployment, privacy architecture, pilot permissions, enterprise identity, and what must be locked before production.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="evaluate.html">Evaluate</a>
+<a href="compare.html">Compare</a>
+<a href="diagnose.html">Diagnose</a>
+<a href="develop.html">Develop</a>
+<a href="verify.html">Verify</a>
+<a href="workflow.html">Workflow</a>
+<a href="enterprise.html">Enterprise</a>
+<a href="data.html">Data</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div>
+<div class="eyebrow">ENTERPRISE</div>
+<h2>Cohorts, deployment, privacy, governance.</h2>
+<p class="lead">The enterprise layer is where measurement meets an organization. Cohorts define the scope. Privacy architecture defines what we do not touch. Governance defines what the results may and may not be used for.</p>
+<a class="btn" href="contact.html">Design a 30-day pilot →</a>
+<a class="btn-outline" href="data.html">Data surface registry</a>
+</div>
+<div class="flow">
+<div>01 · COHORT</div>
+<div>02 · PRIVACY</div>
+<div>03 · PERMISSIONS</div>
+<div>04 · IDENTITY</div>
+<div>05 · LOCK ITEMS</div>
+<div>06 · NON-GOALS</div>
+</div>
+</div>
+
+<section>
+<div class="eyebrow">Cohort deployment</div>
+<h2>25–100 operators. 30-day windows. Company-specific analysis.</h2>
+<p class="lead">A cohort is the unit of enterprise deployment. It is large enough to produce distributions and divergence patterns, small enough to govern and explain.</p>
+<div class="grid3">
+<div class="card blue">
+<div class="num">SIZE</div>
+<p class="big">25–100 operators</p>
+<p>Small enough for governance and individual review. Large enough for cohort distributions, divergence analysis, and archetype patterns.</p>
+</div>
+<div class="card green">
+<div class="num">WINDOW</div>
+<p class="big">30-day windows</p>
+<p>Baseline and post-intervention windows are matched in length. 30 days balances statistical stability against organizational patience.</p>
+</div>
+<div class="card amber">
+<div class="num">SCOPE</div>
+<p class="big">Company-specific analysis</p>
+<p>Every cohort is analyzed against the external reference field and against itself. No two cohorts share a distribution — only a metric definitions.</p>
+</div>
+<div class="card">
+<div class="num">COMPARISON</div>
+<p class="big">Field-relative</p>
+<p>Each operator and the cohort are compared to the external reference field. Company-specific shape is reported alongside field-relative position.</p>
+</div>
+<div class="card">
+<div class="num">SYSTEMS</div>
+<p class="big">In-scope declared</p><p>Which AI systems and external systems are in scope is declared before ingest. No silent expansion of scope mid-pilot.</p>
+</div>
+<div class="card">
+<div class="num">REPEAT</div>
+<p class="big">Sequential cohorts</p><p>Enterprises run sequential cohorts to track movement over time and compare intervention effects across windows.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Privacy architecture</div>
+<h2>What we require, and what we do not.</h2>
+<p class="lead">The privacy posture is a table, not a promise. It states exactly which data classes are required, optional, or excluded — and it is enforced structurally, not by policy alone.</p>
+<table class="table">
+<thead>
+<tr><th>Data class</th><th>Requirement</th></tr>
+</thead>
+<tbody>
+<tr><td>Prompt content</td><td><span class="label experiment">NOT REQUIRED</span></td></tr>
+<tr><td>Response content</td><td><span class="label experiment">NOT REQUIRED</span></td></tr>
+<tr><td>Code content</td><td><span class="label experiment">NOT REQUIRED</span></td></tr>
+<tr><td>Email content</td><td><span class="label experiment">NOT REQUIRED</span></td></tr>
+<tr><td>Slack content</td><td><span class="label experiment">NOT REQUIRED</span></td></tr>
+<tr><td>Token telemetry</td><td><span class="label measured">CORE</span></td></tr>
+<tr><td>Signed numeric snapshots</td><td><span class="label measured">CORE</span></td></tr>
+<tr><td>Approved metadata</td><td><span class="label derived">OPTIONAL</span></td></tr>
+<tr><td>Business outcomes</td><td><span class="label hypothesis">OPTIONAL JOIN</span></td></tr>
+</tbody>
+</table>
+<p class="note" style="margin-top:18px">Content is never required. Token telemetry and signed numeric snapshots are the core. Everything beyond that is an explicit, governed, optional join — declared in advance and revocable.</p>
+</section>
+
+<section>
+<div class="eyebrow">Pilot default permissions</div>
+<h2>Who sees what, by default.</h2>
+<p class="lead">Permissions are set before ingest, not negotiated after results appear. The defaults are conservative; widening requires explicit governance.</p>
+<div class="grid2">
+<div class="card blue">
+<span class="label measured">EMPLOYEE</span>
+<p style="margin-top:14px" class="big">Full operator profile</p>
+<p>Each employee can see their own full operator profile. The profile is private to the employee and the pilot team. No one else receives individual-level detail by default.</p>
+</div>
+<div class="card green">
+<span class="label proven">MANAGEMENT</span>
+<p style="margin-top:14px" class="big">Cohort-level views</p>
+<p>Management receives cohort-level views by default: distributions, divergence patterns, archetype concentrations, aggregate intervention results. Not individual profiles.</p>
+</div>
+<div class="card amber">
+<span class="label hypothesis">IDENTITY</span>
+<p style="margin-top:14px" class="big">Explicitly governed</p>
+<p>Individual identity exposure to management or wider audiences is explicitly governed. It requires consent and a documented purpose. It is never a default.</p>
+</div>
+<div class="card accent">
+<span class="label experiment">PROHIBITED</span>
+<p style="margin-top:14px" class="big">No adverse action in pilot</p>
+<p>The pilot terms explicitly exclude employment termination and adverse-action use. This is a term of the pilot, not a preference. A pilot that cannot accept this term does not start.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Enterprise identity</div>
+<h2>Enterprise identity is separate from public identity.</h2>
+<p class="lead">Enterprise permissions and identity mapping should be separated from public SigRank identity. The two systems serve different populations, different governance, and different trust models.</p>
+<div class="grid2">
+<div class="card">
+<p class="big">Public SigRank identity</p>
+<p>The open operator evaluation field. Self-asserted, pseudonymous, portable. Governed by the public ecosystem's terms. Not an enterprise directory.</p>
+</div>
+<div class="card">
+<p class="big">Enterprise identity mapping</p>
+<p>The enterprise's internal mapping between operator records and employees. Governed by enterprise policy, consent, and the pilot terms. Never exposed to the public ecosystem.</p>
+</div>
+</div>
+<p class="note" style="margin-top:18px">Conflating the two would leak enterprise personnel data into a public system, or import public self-assertions into enterprise governance. The separation is structural.</p>
+</section>
+
+<section>
+<div class="eyebrow">Production readiness</div>
+<h2>What must be locked before production.</h2>
+<p class="lead">Some items must be finalized before any production deployment. Others can remain placeholders — they do not block the pilot and stabilize through repeated runs.</p>
+<div class="grid2">
+<div class="card green">
+<span class="label proven">MUST LOCK</span>
+<ul style="margin-top:14px">
+<li>Canonical metric definitions</li>
+<li>Official formulas</li>
+<li>Reference-field version</li>
+<li>Archetype taxonomy</li>
+<li>Pilot privacy policy</li>
+<li>Individual vs cohort visibility rules</li>
+<li>Intervention claim language</li>
+</ul>
+</div>
+<div class="card">
+<span class="label validation">CAN REMAIN PLACEHOLDER</span>
+<ul style="margin-top:14px">
+<li>Enterprise brand name</li>
+<li>Paired brand name</li>
+<li>Full connector catalog</li>
+<li>Executive dashboard design</li>
+<li>Vertical-specific workflow packs</li>
+</ul>
+</div>
+</div>
+<p class="note" style="margin-top:18px">The lock list protects measurement integrity. The placeholder list protects against premature design commitments that repeated pilots would otherwise overturn.</p>
+</section>
+
+<section>
+<div class="eyebrow">Non-goals</div>
+<h2>The product wins by being narrower.</h2>
+<p class="lead">Explicit non-goals define the boundary of the product. They are not limitations to be overcome — they are commitments that keep the product honest.</p>
+<div class="grid3">
+<div class="card">
+<p class="big">Not building</p>
+<ul>
+<li>Full HRIS replacement</li>
+<li>Employee surveillance suite</li>
+<li>LMS</li>
+</ul>
+</div>
+<div class="card">
+<p class="big">Not building</p>
+<ul>
+<li>Generic productivity score</li>
+<li>Universal business-outcome predictor</li>
+<li>Content-reading workplace intelligence agent</li>
+</ul>
+</div>
+<div class="card">
+<p class="big">Not building</p>
+<ul>
+<li>Large dashboard before pilot requirements stabilize</li>
+<li>Automated adverse employment decision system</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Next</div>
+<h2>Enterprise governance starts with a pilot.</h2>
+<p class="lead">The enterprise layer is not a product feature — it is the terms under which measurement is allowed to happen. Designing a pilot is the first step in defining those terms for your organization.</p>
+<a class="btn" href="contact.html">Design a 30-day pilot →</a>
+</section>
+
+</main>
+
+<div class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <b>MO§ES™</b>
+        <p class="note">Enterprise AI Operator Evaluations + Performative Benchmarks. Bespoke evals built around your workflows, tasks, models, and roles.</p>
+      </div>
+      <div>
+        <a href="product.html">Product</a>
+        <a href="pilot.html">Pilot</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <a href="evaluate.html">Evaluate</a>
+        <a href="diagnose.html">Diagnose</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="enterprise.html">Enterprise</a>
+      </div>
+      <div>
+        <a href="research.html">Research</a>
+        <a href="develop.html">Develop</a>
+        <a href="verify.html">Verify</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div>
+        <span class="note">Synthetic demo data. All results are ASSOCIATION, not CAUSATION.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

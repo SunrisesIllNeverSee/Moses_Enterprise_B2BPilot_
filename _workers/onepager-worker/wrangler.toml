@@ -1,0 +1,7 @@
+name = "moses-onepager"
+compatibility_date = "2025-07-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[assets]
+directory = "../../_04_onepager"

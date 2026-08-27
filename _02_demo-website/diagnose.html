@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ — Diagnose</title>
+<meta name="description" content="Strengths and weaknesses, not scores. The diagnostic hierarchy, five layers of evidence, operating patterns, cohort analysis, and example diagnostic flows.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="evaluate.html">Evaluate</a>
+<a href="compare.html">Compare</a>
+<a href="diagnose.html">Diagnose</a>
+<a href="develop.html">Develop</a>
+<a href="verify.html">Verify</a>
+<a href="workflow.html">Workflow</a>
+<a href="enterprise.html">Enterprise</a>
+<a href="data.html">Data</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<!-- HERO -->
+<div class="hero">
+<div>
+<div class="eyebrow">Diagnose</div>
+<h2>Strengths and weaknesses, not scores.</h2>
+<p class="lead">A score tells you who is high and who is low. A diagnosis tells you why — and what to do about it. We separate measurement from pattern, pattern from hypothesis, hypothesis from intervention, and intervention from validated result. Five layers. Never collapsed.</p>
+<a class="btn" href="workflow.html">See Workflow Fit</a>
+<a class="btn-outline" href="evaluate.html">Back to Evaluate</a>
+</div>
+<div class="flow">
+<div>MEASUREMENT</div>
+<div>OBSERVED PATTERN</div>
+<div>DIAGNOSTIC HYPOTHESIS</div>
+<div>RECOMMENDED INTERVENTION</div>
+<div>VALIDATED RESULT</div>
+</div>
+</div>
+
+<!-- DIAGNOSTIC HIERARCHY -->
+<section>
+<div class="eyebrow">The diagnostic hierarchy</div>
+<h2>Four levels. Examine in order.</h2>
+<p class="lead">Diagnosis is not a single act. It is a hierarchy. Before blaming the organization, check the operator. Before blaming the workflow, check the tool. Work upward only after the current level is examined and ruled out — or noted as a contributor.</p>
+<div class="grid4">
+<div class="card blue">
+<div class="num">Level 01</div>
+<p class="big">Operator</p>
+<p class="note">Is this operator's behavior — leverage, yield, context reuse, stability — the source of the observation? Start here.</p>
+<span class="label measured">measured</span>
+</div>
+<div class="card">
+<div class="num">Level 02</div>
+<p class="big">Tool / Model</p>
+<p class="note">Is the tool or model the operator is using the source? Different providers and models produce different operating envelopes.</p>
+<span class="label measured">measured</span>
+</div>
+<div class="card">
+<div class="num">Level 03</div>
+<p class="big">Workflow</p>
+<p class="note">Is the stage of work the source? Some stages reward high leverage; others reward high persistence. Fit matters.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<div class="num">Level 04</div>
+<p class="big">Organization</p>
+<p class="note">Is the system — incentives, access, training, tooling policy — the source? The highest level. Reach it last.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+</div>
+<blockquote>Do not advance to a higher level until the current level has been examined and ruled out (or noted as a contributor).</blockquote>
+</section>
+
+<!-- FIVE LAYERS OF EVIDENCE -->
+<section>
+<div class="eyebrow">Five layers of evidence</div>
+<h2>Never collapse these into one claim.</h2>
+<p class="lead">A measurement is not a pattern. A pattern is not a hypothesis. A hypothesis is not an intervention. An intervention is not a validated result. Each layer has its own evidence standard. Conflating them is the most common error in AI workforce analysis.</p>
+<table class="table">
+<thead>
+<tr><th>Layer</th><th>What it is</th><th>Evidence standard</th><th>Status</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><b>MEASUREMENT</b></td>
+<td>A computed metric from telemetry — leverage, yield, context reuse, stability.</td>
+<td>Reproducible from primitives. Traceable to token counts.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>OBSERVED PATTERN</b></td>
+<td>A recurring structure in the measurements — e.g., high input / low output across sessions.</td>
+<td>Consistent across time windows and session types.</td>
+<td><span class="label derived">observed</span></td>
+</tr>
+<tr>
+<td><b>DIAGNOSTIC HYPOTHESIS</b></td>
+<td>A proposed explanation for the pattern — e.g., "operator re-prompts from scratch instead of reusing context."</td>
+<td>Consistent with the pattern. Falsifiable. Has alternatives.</td>
+<td><span class="label hypothesis">hypothesis</span></td>
+</tr>
+<tr>
+<td><b>RECOMMENDED INTERVENTION</b></td>
+<td>A proposed action targeting the hypothesis — e.g., "train context construction technique."</td>
+<td>Declares a target metric and a follow-up window.</td>
+<td><span class="label experiment">pilot</span></td>
+</tr>
+<tr>
+<td><b>VALIDATED RESULT</b></td>
+<td>The measured change after the intervention — target and non-target deltas.</td>
+<td>Re-measured against baseline. Outcome joins labeled ASSOCIATION.</td>
+<td><span class="label validation">validation required</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>Never collapse these into one claim. "The operator is bad at context reuse" is a measurement, not a diagnosis. "Train them" is an intervention, not a validated result.</blockquote>
+</section>
+
+<!-- OPERATING PATTERNS -->
+<section>
+<div class="eyebrow">Operating patterns</div>
+<h2>The pattern library.</h2>
+<p class="lead">Patterns are recurring structures in operator measurements. Each pattern is a HYPOTHESIS — a named, observable configuration of metrics that suggests a diagnostic direction. Patterns are not diagnoses. They are starting points for diagnosis.</p>
+<div class="grid3">
+<div class="card">
+<p class="big">Low leverage</p>
+<p class="note">High input, low output. The operator feeds the model a lot and gets little back. Suggests over-specification or poor prompt efficiency.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Poor cache / context reuse</p>
+<p class="note">Low cache reads, high cache writes that are never read again. Context is built but not reused. Suggests context construction without persistence.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Heavy input / low output</p>
+<p class="note">Input dominates the token budget. The operator authors far more than the model returns. Suggests the model is being used as a reader, not a generator.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">High output / low persistence</p>
+<p class="note">The model generates a lot, but little is retained or carried forward. High output, low yield. Suggests output is discarded or not integrated.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Context-rich / execution-weak</p>
+<p class="note">Strong context construction but low yield or low leverage. The operator sets up well but does not convert context into output.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">High usage / low Yield</p>
+<p class="note">Many sessions, many tokens, but yield is low. Volume without quality. The most common divergence pattern.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Low usage / high Yield</p>
+<p class="note">Few sessions, but each one is productive. The operator is efficient but underutilized. A hidden strength.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">High volatility</p>
+<p class="note">Metrics swing widely session to session. Stability is low. Suggests inconsistent technique or high sensitivity to task type.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Model sensitivity</p>
+<p class="note">Performance shifts sharply across providers or models. The operator's results depend heavily on tool selection.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card">
+<p class="big">Stage-specific performance</p>
+<p class="note">Strong at some workflow stages, weak at others. Not a generalist. Fit is stage-dependent.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card green">
+<p class="big">Improving trajectory</p>
+<p class="note">30-day movement is positive. Metrics trending up. The operator is getting better — at what, exactly, is the next question.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+<div class="card accent">
+<p class="big">Declining trajectory</p>
+<p class="note">30-day movement is negative. Metrics trending down. May indicate tool change, task shift, or disengagement.</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+</div>
+</section>
+
+<!-- COHORT ANALYSIS -->
+<section>
+<div class="eyebrow">Cohort analysis</div>
+<h2>One operator is a data point. A cohort is a distribution.</h2>
+<p class="lead">Individual profiles are necessary but not sufficient. Cohort views reveal distributions, divergences, and segments that individual profiles cannot. These are the standard cohort views.</p>
+<div class="grid2">
+<div class="card">
+<div class="num">View 01</div>
+<p class="big">Field position</p>
+<p class="note">Each operator's percentile rank across the cohort on each core metric. Who is high, who is low, and by how much.</p>
+</div>
+<div class="card">
+<div class="num">View 02</div>
+<p class="big">Distribution</p>
+<p class="note">The shape of each metric across the cohort. Heavy-tailed, normal, bimodal. The distribution determines how to read the percentiles.</p>
+</div>
+<div class="card">
+<div class="num">View 03</div>
+<p class="big">30-day movement</p>
+<p class="note">Trajectory across the cohort. Who is improving, who is declining, who is stable. Movement is a first-class metric.</p>
+</div>
+<div class="card">
+<div class="num">View 04</div>
+<p class="big">Usage vs operation divergence</p>
+<p class="note">Operators ranked by usage versus operators ranked by operation quality. The gap between the two rankings is the most actionable view.</p>
+</div>
+<div class="card">
+<div class="num">View 05</div>
+<p class="big">Pattern clusters</p>
+<p class="note">Operators grouped by shared operating patterns. Clusters reveal segments — e.g., "recursive builders" vs "one-shot generators."</p>
+</div>
+<div class="card">
+<div class="num">View 06</div>
+<p class="big">Provider / model breakdown</p>
+<p class="note">Cohort metrics decomposed by AI provider and model. Reveals whether differences are operator-driven or tool-driven.</p>
+</div>
+<div class="card">
+<div class="num">View 07</div>
+<p class="big">Stability ranking</p>
+<p class="note">Operators ranked by consistency across sessions. Low stability is a diagnostic signal even when average performance is high.</p>
+</div>
+<div class="card">
+<div class="num">View 08</div>
+<p class="big">Volatility map</p>
+<p class="note">Session-to-session variance across the cohort. High-variance operators need different interventions than low-variance operators.</p>
+</div>
+</div>
+</section>
+
+<!-- EXAMPLE DIAGNOSTIC FLOW -->
+<section>
+<div class="eyebrow">Example diagnostic flow</div>
+<h2>From measurement to validation. One operator.</h2>
+<p class="lead">A complete diagnostic flow for OPERATOR 041 — from the initial measurement through the validated result. Each step is a separate claim with its own evidence standard.</p>
+<div class="loop">
+<div class="loop-step">
+<div class="num">01</div>
+<div>
+<p class="big">MEASUREMENT</p>
+<p>OPERATOR 041: Leverage 8.1x (22nd percentile), Yield 3.2 (18th percentile), Context Reuse LOW, Stability 64, 30-Day Movement −6%.</p>
+<span class="label measured">measured</span>
+</div>
+</div>
+<div class="loop-step">
+<div class="num">02</div>
+<div>
+<p class="big">OBSERVED PATTERN</p>
+<p>High input / low output across 28 of 30 sessions. Cache writes present but cache reads near zero. Context is built but never reused. Pattern is consistent across providers and time windows.</p>
+<span class="label derived">observed</span>
+</div>
+</div>
+<div class="loop-step">
+<div class="num">03</div>
+<div>
+<p class="big">DIAGNOSTIC HYPOTHESIS</p>
+<p>The operator constructs fresh context each session instead of reusing prior context. Low cache reads + high cache writes + low leverage = context construction without persistence. Alternative: the operator's tasks are genuinely novel each session (ruled out — task types repeat).</p>
+<span class="label hypothesis">hypothesis</span>
+</div>
+</div>
+<div class="loop-step">
+<div class="num">04</div>
+<div>
+<p class="big">RECOMMENDED INTERVENTION</p>
+<p>Train context reuse technique: session chaining, context carry-forward, cache-aware prompting. Target metric: cache reads per session. Follow-up window: 30 days. Non-target metrics: leverage, yield, stability.</p>
+<span class="label experiment">pilot</span>
+</div>
+</div>
+<div class="loop-step">
+<div class="num">05</div>
+<div>
+<p class="big">VALIDATION</p>
+<p>Re-measure at 30 days. Cache reads per session: +210%. Leverage: 8.1x → 19.4x. Yield: 3.2 → 6.1. Stability: 64 → 78. Non-target metric (session count): unchanged. Outcome join (PR cycle time): −12% — labeled ASSOCIATION, not CAUSATION.</p>
+<span class="label validation">validation required</span>
+</div>
+</div>
+</div>
+<p class="note">This is a synthetic example. Real validations require a defined comparison condition. The outcome join (PR cycle time) is ASSOCIATION — it co-occurred with the intervention but was not causally isolated.</p>
+</section>
+
+<!-- NOTE -->
+<section>
+<div class="eyebrow">Important</div>
+<blockquote>All diagnoses are HYPOTHESIS — not causal findings. A hypothesis becomes a validated result only after re-measurement against a defined comparison. Outcome joins are ASSOCIATION, never CAUSATION, unless a validated design permits causal claims.</blockquote>
+</section>
+
+<!-- DARK CTA -->
+<section class="dark">
+<div class="eyebrow">Next</div>
+<h2>Diagnoses become interventions. Interventions get re-measured.</h2>
+<p class="lead">Once you know the pattern and the hypothesis, the next question is: which stage of work does this operator fit best — and which intervention moves the needle?</p>
+<a class="btn" href="workflow.html">See Workflow Fit</a>
+<a class="btn-outline" href="verify.html" style="border-color:#999;color:#f7f4ec">Verification</a>
+</section>
+
+</main>
+
+<div class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <b>MO§ES™</b>
+        <p class="note">Enterprise AI Operator Evaluations + Performative Benchmarks. Bespoke evals built around your workflows, tasks, models, and roles.</p>
+      </div>
+      <div>
+        <a href="product.html">Product</a>
+        <a href="pilot.html">Pilot</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <a href="evaluate.html">Evaluate</a>
+        <a href="diagnose.html">Diagnose</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="enterprise.html">Enterprise</a>
+      </div>
+      <div>
+        <a href="research.html">Research</a>
+        <a href="develop.html">Develop</a>
+        <a href="verify.html">Verify</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div>
+        <span class="note">Synthetic demo data. All results are ASSOCIATION, not CAUSATION.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+rich>=13
+# MCP SDK is required only when activating src/mcp_server_scaffold.py
+# mcp>=1

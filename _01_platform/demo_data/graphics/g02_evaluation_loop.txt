@@ -1,0 +1,29 @@
+                            ┌─────────────────────┐
+                            │      EVALUATE       │
+                            │  Days 1-14          │
+                            │  IN: raw telemetry  │
+                            │  OUT: baselines     │
+                            └─────────┬───────────┘
+                              ▲       │
+                    ┌─────────┘       ▼
+              ┌─────┴──────┐   ┌──────────────┐
+              │ RE-EVALUATE│   │   BENCHMARK   │
+              │ Days 22-35 │   │  Days 7-16    │
+              │ IN: post   │   │  IN: baselines│
+              │  telemetry │   │  OUT: pctiles │
+              │ OUT: deltas│   │  + divergence │
+              └─────┬──────┘   └──────┬───────┘
+                    │                 │
+              ┌─────┴──────┐   ┌──────┴───────┐
+              │ INTERVENE  │   │   DIAGNOSE   │
+              │ Day 21     │   │  Days 14-20  │
+              │ IN: diag-  │   │  IN: bench   │
+              │  noses     │   │  results     │
+              │ OUT: apps  │◀──│  OUT: diag-  │
+              │ + controls │   │  noses + rec │
+              └────────────┘   └──────────────┘
+
+                    ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐
+                    │  dashed: new baseline    │
+                    │  RE-EVALUATE → EVALUATE  │
+                    └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘

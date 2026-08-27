@@ -1,0 +1,18 @@
+graph TD
+    EV["EVALUATE<br/>━━━━━━━━━━━━━━<br/>INPUTS: raw telemetry,<br/>Micro Evals, sessions<br/>OUTPUTS: operator baselines,<br/>system baselines, metric vectors<br/>━━━<br/>Days 1-14"]
+    BM["BENCHMARK<br/>━━━━━━━━━━━━━━<br/>INPUTS: baselines,<br/>reference field, cohort<br/>OUTPUTS: percentiles,<br/>divergence scores, peer comp<br/>━━━<br/>Days 7-16"]
+    DG["DIAGNOSE<br/>━━━━━━━━━━━━━━<br/>INPUTS: benchmark results,<br/>pattern detectors<br/>OUTPUTS: diagnoses + confidence,<br/>recommended interventions<br/>━━━<br/>Days 14-20"]
+    IV["INTERVENE<br/>━━━━━━━━━━━━━━<br/>INPUTS: diagnoses,<br/>intervention catalog,<br/>customer decisions<br/>OUTPUTS: applied interventions,<br/>control assignments<br/>━━━<br/>Day 21"]
+    RE["RE-EVALUATE<br/>━━━━━━━━━━━━━━<br/>INPUTS: post-intervention<br/>telemetry, baseline state<br/>OUTPUTS: delta metrics,<br/>classification, evidence grade<br/>━━━<br/>Days 22-35"]
+
+    EV -->|operator baselines| BM
+    BM -->|benchmark results| DG
+    DG -->|diagnoses + recommendations| IV
+    IV -->|intervention records| RE
+    RE -.->|new baseline established| EV
+
+    style EV fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style BM fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style DG fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style IV fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style RE fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px

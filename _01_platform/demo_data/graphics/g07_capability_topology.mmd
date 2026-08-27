@@ -1,0 +1,63 @@
+graph TB
+    subgraph PE["Product Engineering (18 ops, median Lev=12.19)"]
+        pe002["op_002<br/>Lev: 23.91<br/>context_compounder"]
+        pe004["op_004<br/>Lev: 23.92<br/>context_compounder"]
+        pe011["op_011<br/>Lev: 29.31<br/>recursive_builder"]
+        pe016["op_016<br/>Lev: 18.16<br/>efficient_minimalist"]
+        pe017["op_017<br/>Lev: 24.10<br/>context_compounder"]
+        pe005["op_005<br/>Lev: 3.55<br/>high_volume_burner"]
+    end
+
+    subgraph PLAT["Platform / Infrastructure (10 ops, median Lev=12.07)"]
+        pl025["op_025<br/>Lev: 23.37<br/>context_compounder"]
+        pl027["op_027<br/>Lev: 24.75<br/>context_compounder"]
+        pl020["op_020<br/>Lev: 3.49<br/>high_volume_burner"]
+        pl026["op_026<br/>Lev: 3.51<br/>high_volume_burner"]
+    end
+
+    subgraph DATA["Data / Analytics (8 ops, median Lev=12.06)"]
+        da033["op_033<br/>Lev: 30.48<br/>recursive_builder"]
+        da034["op_034<br/>Lev: 18.39<br/>efficient_minimalist"]
+        da031["op_031<br/>Lev: 5.11<br/>kinetic_generator"]
+    end
+
+    subgraph PD["Product / Design (6 ops, median Lev=4.93)"]
+        pd038["op_038<br/>Lev: 29.49<br/>recursive_builder"]
+        pd037["op_037<br/>Lev: 4.94<br/>kinetic_generator"]
+    end
+
+    subgraph CE["Customer Engineering (4 ops, median Lev=23.51)"]
+        ce045["op_045<br/>Lev: 23.51<br/>context_compounder"]
+        ce044["op_044<br/>Lev: 29.52<br/>recursive_builder"]
+    end
+
+    subgraph OPS["Operations / GTM (4 ops, median Lev=12.16)"]
+        op050["op_050<br/>Lev: 23.99<br/>context_compounder"]
+        op049["op_049<br/>Lev: 29.69<br/>recursive_builder"]
+    end
+
+    pe011 ==>|workflow: implementation| pe016
+    da033 ==>|workflow: implementation| pd038
+    pd038 ==>|workflow: review| ce044
+
+    pe002 -.->|same archetype| pe004
+    pe004 -.->|same archetype| pe017
+    pl025 -.->|same archetype| pl027
+    pe011 -.->|recursive_builder cluster| da033
+    da033 -.->|recursive_builder cluster| pd038
+    pd038 -.->|recursive_builder cluster| ce044
+    ce044 -.->|recursive_builder cluster| op049
+
+    ce045 ....>|cross-team bridge| pe017
+    ce045 ....>|cross-team bridge| op050
+    pe017 ....>|cross-team collab| pl025
+
+    style pe002 fill:#bbdefb,stroke:#1565c0,stroke-width:3px
+    style pe011 fill:#bbdefb,stroke:#1565c0,stroke-width:3px
+    style pe017 fill:#bbdefb,stroke:#1565c0,stroke-width:3px
+    style da033 fill:#e1bee7,stroke:#7b1fa2,stroke-width:3px
+    style pd038 fill:#ffe0b2,stroke:#e65100,stroke-width:3px
+    style ce045 fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    style op050 fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    style pe005 fill:#ef9a9a,stroke:#c62828,stroke-width:1px
+    style pl020 fill:#ef9a9a,stroke:#c62828,stroke-width:1px

@@ -1,0 +1,51 @@
+operator_id,pseudonym,team,role_family,level,pattern_demo,primary_platform,synthetic
+op_001,Operator 001,Product Engineering,Software Engineering,Associate,balanced_operator,claude,True
+op_002,Operator 002,Product Engineering,Software Engineering,Mid,context_compounder,codex,True
+op_003,Operator 003,Product Engineering,Software Engineering,Senior,efficient_minimalist,claude,True
+op_004,Operator 004,Product Engineering,Software Engineering,Senior,context_compounder,claude,True
+op_005,Operator 005,Product Engineering,Software Engineering,Associate,high_volume_burner,claude,True
+op_006,Operator 006,Product Engineering,Software Engineering,Associate,balanced_operator,codex,True
+op_007,Operator 007,Product Engineering,Software Engineering,Mid,efficient_minimalist,codex,True
+op_008,Operator 008,Product Engineering,Software Engineering,Mid,balanced_operator,claude,True
+op_009,Operator 009,Product Engineering,Software Engineering,Associate,improving_operator,chatgpt,True
+op_010,Operator 010,Product Engineering,Software Engineering,Staff,volatile_switcher,chatgpt,True
+op_011,Operator 011,Product Engineering,Software Engineering,Associate,recursive_builder,codex,True
+op_012,Operator 012,Product Engineering,Software Engineering,Senior,volatile_switcher,claude,True
+op_013,Operator 013,Product Engineering,Software Engineering,Mid,high_volume_burner,chatgpt,True
+op_014,Operator 014,Product Engineering,Software Engineering,Associate,balanced_operator,codex,True
+op_015,Operator 015,Product Engineering,Software Engineering,Staff,balanced_operator,claude,True
+op_016,Operator 016,Product Engineering,Software Engineering,Associate,efficient_minimalist,codex,True
+op_017,Operator 017,Product Engineering,Software Engineering,Staff,context_compounder,codex,True
+op_018,Operator 018,Product Engineering,Software Engineering,Mid,high_volume_burner,codex,True
+op_019,Operator 019,Platform / Infrastructure,Infrastructure Engineering,Mid,efficient_minimalist,chatgpt,True
+op_020,Operator 020,Platform / Infrastructure,Infrastructure Engineering,Associate,high_volume_burner,claude,True
+op_021,Operator 021,Platform / Infrastructure,Infrastructure Engineering,Senior,high_volume_burner,codex,True
+op_022,Operator 022,Platform / Infrastructure,Infrastructure Engineering,Mid,declining_operator,claude,True
+op_023,Operator 023,Platform / Infrastructure,Infrastructure Engineering,Mid,improving_operator,claude,True
+op_024,Operator 024,Platform / Infrastructure,Infrastructure Engineering,Associate,balanced_operator,chatgpt,True
+op_025,Operator 025,Platform / Infrastructure,Infrastructure Engineering,Mid,context_compounder,claude,True
+op_026,Operator 026,Platform / Infrastructure,Infrastructure Engineering,Staff,high_volume_burner,codex,True
+op_027,Operator 027,Platform / Infrastructure,Infrastructure Engineering,Mid,context_compounder,chatgpt,True
+op_028,Operator 028,Platform / Infrastructure,Infrastructure Engineering,Senior,improving_operator,claude,True
+op_029,Operator 029,Data / Analytics,Data / Analytics,Associate,balanced_operator,chatgpt,True
+op_030,Operator 030,Data / Analytics,Data / Analytics,Mid,balanced_operator,chatgpt,True
+op_031,Operator 031,Data / Analytics,Data / Analytics,Associate,kinetic_generator,claude,True
+op_032,Operator 032,Data / Analytics,Data / Analytics,Senior,kinetic_generator,codex,True
+op_033,Operator 033,Data / Analytics,Data / Analytics,Associate,recursive_builder,chatgpt,True
+op_034,Operator 034,Data / Analytics,Data / Analytics,Staff,efficient_minimalist,codex,True
+op_035,Operator 035,Data / Analytics,Data / Analytics,Associate,volatile_switcher,claude,True
+op_036,Operator 036,Data / Analytics,Data / Analytics,Staff,kinetic_generator,codex,True
+op_037,Operator 037,Product / Design,Product / Design,Mid,kinetic_generator,codex,True
+op_038,Operator 038,Product / Design,Product / Design,Mid,recursive_builder,chatgpt,True
+op_039,Operator 039,Product / Design,Product / Design,Associate,kinetic_generator,claude,True
+op_040,Operator 040,Product / Design,Product / Design,Staff,recursive_builder,codex,True
+op_041,Operator 041,Product / Design,Product / Design,Associate,volatile_switcher,codex,True
+op_042,Operator 042,Product / Design,Product / Design,Associate,kinetic_generator,codex,True
+op_043,Operator 043,Customer Engineering / Support,Customer Engineering,Associate,recursive_builder,chatgpt,True
+op_044,Operator 044,Customer Engineering / Support,Customer Engineering,Staff,recursive_builder,codex,True
+op_045,Operator 045,Customer Engineering / Support,Customer Engineering,Associate,context_compounder,claude,True
+op_046,Operator 046,Customer Engineering / Support,Customer Engineering,Associate,volatile_switcher,claude,True
+op_047,Operator 047,Operations / GTM,Operations / GTM,Associate,declining_operator,chatgpt,True
+op_048,Operator 048,Operations / GTM,Operations / GTM,Mid,improving_operator,chatgpt,True
+op_049,Operator 049,Operations / GTM,Operations / GTM,Senior,recursive_builder,chatgpt,True
+op_050,Operator 050,Operations / GTM,Operations / GTM,Staff,context_compounder,codex,True

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ — Develop: Targeted Interventions</title>
+<meta name="description" content="Targeted interventions, not generic training. Five intervention classes, the intervention object, the intervention loop, and decision-use labels.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="evaluate.html">Evaluate</a>
+<a href="compare.html">Compare</a>
+<a href="diagnose.html">Diagnose</a>
+<a href="develop.html">Develop</a>
+<a href="verify.html">Verify</a>
+<a href="workflow.html">Workflow</a>
+<a href="enterprise.html">Enterprise</a>
+<a href="data.html">Data</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div>
+<div class="eyebrow">DEVELOP</div>
+<h2>Targeted interventions, not generic training.</h2>
+<p class="lead">Every diagnosis points at a structural weakness. Every intervention declares a target metric, a measurement window, and an expected internal-metric delta. We test the repair, then re-measure.</p>
+<a class="btn" href="verify.html">See the re-measurement loop →</a>
+<a class="btn-outline" href="diagnose.html">Start from diagnosis</a>
+</div>
+<div class="flow">
+<div>01 · DIAGNOSIS</div>
+<div>02 · SELECT CLASS</div>
+<div>03 · DECLARE TARGET</div>
+<div>04 · INTERVENE</div>
+<div>05 · RE-MEASURE</div>
+<div>06 · CLASSIFY RESULT</div>
+</div>
+</div>
+
+<section>
+<div class="eyebrow">Intervention system</div>
+<h2>Five classes of intervention.</h2>
+<p class="lead">Interventions are not a single bucket. They fall into five distinct classes, each with its own evidence base, ownership, and expected effect surface.</p>
+<div class="grid3">
+<div class="card blue">
+<div class="num">CLASS 01</div>
+<p class="big">Guides</p>
+<p>Written operator guidance targeting specific structural weaknesses.</p>
+<ul>
+<li>Context construction</li>
+<li>Task decomposition</li>
+<li>Project persistence</li>
+<li>Iterative workflow</li>
+<li>Verification</li>
+<li>Model selection</li>
+<li>Agent orchestration</li>
+</ul>
+</div>
+<div class="card green">
+<div class="num">CLASS 02</div>
+<p class="big">Tools</p>
+<p>Systems and integrations that change what the operator can do.</p>
+<ul>
+<li>MCP servers</li>
+<li>Memory systems</li>
+<li>Project templates</li>
+<li>IDE tools</li>
+<li>Routing systems</li>
+<li>Context managers</li>
+<li>Specialized agents</li>
+</ul>
+</div>
+<div class="card amber">
+<div class="num">CLASS 03</div>
+<p class="big">Workflow changes</p>
+<p>Structural changes to how AI work fits into the surrounding process.</p>
+<ul>
+<li>Stage separation</li>
+<li>Context handoff</li>
+<li>Human checkpoints</li>
+<li>Persistent project state</li>
+<li>Review structures</li>
+</ul>
+</div>
+<div class="card purple">
+<div class="num">CLASS 04</div>
+<p class="big">Training</p>
+<p>Structured learning programs, internal or external.</p>
+<ul>
+<li>Internal guides</li>
+<li>Workshops</li>
+<li>Role-specific programs</li>
+<li>External courses</li>
+<li>Manager coaching</li>
+</ul>
+</div>
+<div class="card accent">
+<div class="num">CLASS 05</div>
+<p class="big">Human support</p>
+<p>People-side support that complements the technical interventions.</p>
+<ul>
+<li>Operator review</li>
+<li>One-on-one coaching</li>
+<li>Team redesign</li>
+<li>Specialist consultation</li>
+</ul>
+</div>
+<div class="card">
+<div class="num">SELECTION</div>
+<p class="big">Match to diagnosis</p>
+<p>Class is chosen by matching the diagnostic hypothesis to the intervention surface. A context-construction weakness suggests a Guide. A persistence weakness may suggest a Tool. A verification gap may suggest a Workflow change. The diagnosis drives the class — not the other way around.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Intervention object</div>
+<h2>Every intervention is a declared, measurable object.</h2>
+<p>No intervention ships without a recorded object. The object carries the diagnosis it responds to, the metric it targets, the window it runs in, and the owner accountable for it.</p>
+<div class="profile-card">
+<div class="header">
+<div>
+<div class="id">intervention_014</div>
+<div class="note">Operator 031 · Context construction guide</div>
+</div>
+<div>
+<span class="label measured">ACTIVE</span>
+<span class="label hypothesis">DEVELOPMENTAL</span>
+</div>
+</div>
+<div class="field"><div class="key">intervention_id</div><div>intervention_014</div></div>
+<div class="field"><div class="key">target_type</div><div>operator</div></div>
+<div class="field"><div class="key">target_id</div><div>op_031</div></div>
+<div class="field"><div class="key">diagnosis_id</div><div>diag_007 — low context construction score</div></div>
+<div class="field"><div class="key">intervention_class</div><div>guides</div></div>
+<div class="field"><div class="key">intervention_name</div><div>Context construction playbook v1</div></div>
+<div class="field"><div class="key">start_date</div><div>2026-08-20</div></div>
+<div class="field"><div class="key">measurement_window</div><div>14 days post-start</div></div>
+<div class="field"><div class="key">expected_internal_metric</div><div>context_form: structured → composite (+1 grade)</div></div>
+<div class="field"><div class="key">optional_external_metric</div><div>PR review time (engineering cohort only)</div></div>
+<div class="field"><div class="key">owner</div><div>pilot team + operator</div></div>
+<div class="field"><div class="key">status</div><div>active — awaiting post-window re-measurement</div></div>
+<div class="field"><div class="key">notes</div><div>Operator reviewed the guide in a 30-min session. Voluntary. No employment consequence.</div></div>
+</div>
+<p class="note" style="margin-top:18px">The object is the contract between diagnosis and verification. Without it, there is no re-measurement — only anecdote.</p>
+</section>
+
+<section>
+<div class="eyebrow">The intervention loop</div>
+<h2>Baseline → intervene → re-measure → classify.</h2>
+<p>The loop is the unit of evidence. Each pass produces a result classification, not a verdict on the operator.</p>
+<div class="loop">
+<div class="loop-step"><div class="num">1</div><div><p class="big">BASELINE</p><p>Operator metrics recorded during the evaluation phase. This is the reference point for every delta.</p></div></div>
+<div class="loop-step"><div class="num">2</div><div><p class="big">INTERVENTION</p><p>Declared intervention object applied. Class, target metric, window, and owner recorded.</p></div></div>
+<div class="loop-step"><div class="num">3</div><div><p class="big">POST WINDOW</p><p>After the declared measurement window, telemetry is collected for the same operator over an equivalent span.</p></div></div>
+<div class="loop-step"><div class="num">4</div><div><p class="big">INTERNAL METRIC DELTA</p><p>Target and non-target internal metrics compared baseline vs post. Both are reported — not only the target.</p></div></div>
+<div class="loop-step"><div class="num">5</div><div><p class="big">OPTIONAL EXTERNAL OUTCOME DELTA</p><p>If an external outcome was declared, it is joined and compared. Always ASSOCIATION, never CAUSATION.</p></div></div>
+<div class="loop-step"><div class="num">6</div><div><p class="big">RESULT CLASSIFICATION</p><p>Improved / unchanged / degraded / inconclusive. The classification is about the intervention, not the person.</p></div></div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Guardrails</div>
+<h2>What interventions are NOT.</h2>
+<p class="lead">The intervention system is developmental. These guardrails are not soft preferences — they are structural constraints on how the product may be used.</p>
+<div class="grid3">
+<div class="card">
+<span class="label hypothesis">NOT PUNITIVE</span>
+<p style="margin-top:14px">Interventions exist to improve operator structure. They are never used to rank, penalize, or compare employees for adverse purposes.</p>
+</div>
+<div class="card">
+<span class="label hypothesis">NOT SURVEILLANCE</span>
+<p style="margin-top:14px">Intervention tracking records the intervention object and the metric delta. It does not monitor employee behavior, content, or conduct.</p>
+</div>
+<div class="card">
+<span class="label hypothesis">NOT AUTOMATED ADVERSE ACTION</span>
+<p style="margin-top:14px">No intervention, metric, or classification triggers automated employment decisions. Adverse action is explicitly excluded from the pilot terms.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Decision-use labels</div>
+<h2>Every intervention declares its permitted use.</h2>
+<p class="lead">Decision-use labels govern who may act on an intervention result and for what purpose. They are set at creation and enforced by the pilot terms.</p>
+<div class="grid2">
+<div class="card blue">
+<span class="label measured">DEVELOPMENTAL</span>
+<p style="margin-top:14px" class="big">For developmental use</p>
+<p>The default label. Results may be used to guide the operator's growth, refine the intervention, and inform coaching. Visible to the operator and the pilot team.</p>
+</div>
+<div class="card green">
+<span class="label proven">WORKFLOW_EXPERIMENTATION</span>
+<p style="margin-top:14px" class="big">For workflow experiments</p>
+<p>Results may inform workflow design changes — stage separation, handoff structure, review checkpoints. Treated as experiments, not performance verdicts.</p>
+</div>
+<div class="card purple">
+<span class="label derived">RESEARCH</span>
+<p style="margin-top:14px" class="big">For research</p>
+<p>Results may be aggregated and used for methodology research, archetype refinement, and field comparison. Individual identity is governed separately.</p>
+</div>
+<div class="card accent">
+<span class="label experiment">PERSONNEL</span>
+<p style="margin-top:14px" class="big">Elevated governance — not in pilot</p>
+<p>Any personnel-related use requires elevated governance, explicit consent, and review structures. This label is not available during the pilot. It exists to define the boundary, not to cross it.</p>
+</div>
+</div>
+<p class="note" style="margin-top:20px">The PERSONNEL label is defined so the product can name what it will not do in the pilot, rather than leaving the boundary implicit.</p>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Next</div>
+<h2>Once the intervention runs, we re-measure.</h2>
+<p class="lead">The verify phase takes the intervention object and produces the result classification — internal metric delta first, external outcome separately.</p>
+<a class="btn" href="verify.html">Go to Verify →</a>
+</section>
+
+</main>
+
+<div class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <b>MO§ES™</b>
+        <p class="note">Enterprise AI Operator Evaluations + Performative Benchmarks. Bespoke evals built around your workflows, tasks, models, and roles.</p>
+      </div>
+      <div>
+        <a href="product.html">Product</a>
+        <a href="pilot.html">Pilot</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <a href="evaluate.html">Evaluate</a>
+        <a href="diagnose.html">Diagnose</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="enterprise.html">Enterprise</a>
+      </div>
+      <div>
+        <a href="research.html">Research</a>
+        <a href="develop.html">Develop</a>
+        <a href="verify.html">Verify</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div>
+        <span class="note">Synthetic demo data. All results are ASSOCIATION, not CAUSATION.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

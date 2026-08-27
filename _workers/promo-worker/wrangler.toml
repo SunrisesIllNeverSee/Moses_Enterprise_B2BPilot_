@@ -1,0 +1,15 @@
+name = "moses-promo"
+main = "src/index.js"
+compatibility_date = "2025-07-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+routes = [
+  { pattern = "mos2es.org/*", zone_name = "mos2es.org" },
+  { pattern = "www.mos2es.org/*", zone_name = "mos2es.org" },
+]
+
+[assets]
+directory = "../../_03_promo-site"
+binding = "ASSETS"
+run_worker_first = true

@@ -1,0 +1,13 @@
+operator_id,intervention_id,window_start,window_end,cycle_time_change_pct,quality_change_pct,source,synthetic
+op_047,int_001,2026-08-01,2026-08-14,4.7,1.7,synthetic_customer_provided,True
+op_004,int_002,2026-08-01,2026-08-14,9.7,3.4,synthetic_customer_provided,True
+op_030,int_003,2026-08-01,2026-08-14,6.2,1.3,synthetic_customer_provided,True
+op_045,int_004,2026-08-01,2026-08-14,-15.4,4.8,synthetic_customer_provided,True
+op_031,int_005,2026-08-01,2026-08-14,5.8,4.2,synthetic_customer_provided,True
+op_038,int_006,2026-08-01,2026-08-14,4.0,-1.4,synthetic_customer_provided,True
+op_010,int_007,2026-08-01,2026-08-14,0.8,4.6,synthetic_customer_provided,True
+op_026,int_008,2026-08-01,2026-08-14,7.1,4.0,synthetic_customer_provided,True
+op_025,int_009,2026-08-01,2026-08-14,-1.3,1.5,synthetic_customer_provided,True
+op_020,int_010,2026-08-01,2026-08-14,-2.1,1.0,synthetic_customer_provided,True
+op_029,int_011,2026-08-01,2026-08-14,-3.3,-1.3,synthetic_customer_provided,True
+op_005,int_012,2026-08-01,2026-08-14,-13.3,2.1,synthetic_customer_provided,True

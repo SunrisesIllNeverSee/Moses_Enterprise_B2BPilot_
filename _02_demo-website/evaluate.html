@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ — Evaluate</title>
+<meta name="description" content="Measure the operating system, not the conversation. Canonical primitives, core metrics, operator profiles, and the measurement science behind SigRank.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="evaluate.html">Evaluate</a>
+<a href="compare.html">Compare</a>
+<a href="diagnose.html">Diagnose</a>
+<a href="develop.html">Develop</a>
+<a href="verify.html">Verify</a>
+<a href="workflow.html">Workflow</a>
+<a href="enterprise.html">Enterprise</a>
+<a href="data.html">Data</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<!-- HERO -->
+<div class="hero">
+<div>
+<div class="eyebrow">Evaluate</div>
+<h2>Measure the operating system, not the conversation.</h2>
+<p class="lead">We do not read prompts. We do not read responses. We measure the structure of AI operation — input, output, cache, context, leverage, yield, stability, and trajectory. The operating system is observable without reading the conversation.</p>
+<a class="btn" href="pilot.html">Design a 30-Day Evaluation</a>
+<a class="btn-outline" href="diagnose.html">See How We Diagnose</a>
+</div>
+<div class="flow">
+<div>INPUT</div>
+<div>OUTPUT</div>
+<div>CACHE READ</div>
+<div>CACHE WRITE</div>
+<div>LEVERAGE</div>
+<div>YIELD</div>
+<div>OPERATOR PROFILE</div>
+</div>
+</div>
+
+<!-- CANONICAL PRIMITIVES -->
+<section>
+<div class="eyebrow">Canonical primitives</div>
+<h2>Four primitives. Everything else is derived.</h2>
+<p class="lead">Every AI interaction reduces to four measurable primitives. All higher-order metrics — leverage, yield, token SNR, context reuse — are constructed from these. Nothing else is required to measure operation.</p>
+<div class="grid4">
+<div class="card blue">
+<div class="num">01</div>
+<p class="big">INPUT</p>
+<p class="note">Tokens submitted to the model in a given turn. Includes prompt, context, attachments, and reused prior output.</p>
+<span class="label measured">measured</span>
+</div>
+<div class="card blue">
+<div class="num">02</div>
+<p class="big">OUTPUT</p>
+<p class="note">Tokens returned by the model in a given turn. The generated response, before any downstream use.</p>
+<span class="label measured">measured</span>
+</div>
+<div class="card blue">
+<div class="num">03</div>
+<p class="big">CACHE READ</p>
+<p class="note">Tokens retrieved from context cache — prior context reused without re-submission. Indicates context persistence.</p>
+<span class="label measured">measured</span>
+</div>
+<div class="card blue">
+<div class="num">04</div>
+<p class="big">CACHE WRITE</p>
+<p class="note">Tokens written to context cache for future reuse. Indicates deliberate context construction.</p>
+<span class="label measured">measured</span>
+</div>
+</div>
+<p class="note">These four primitives are content-free. No prompt text. No response content. No code. The structure of operation is fully observable from token counts and cache behavior alone.</p>
+</section>
+
+<!-- CORE METRICS -->
+<section>
+<div class="eyebrow">Core metrics</div>
+<h2>Five metrics. Each derived from the primitives.</h2>
+<p class="lead">From four primitives we construct five core metrics. Each has a construct definition, a mathematical definition, and a valid domain. Each is labeled MEASURED because it is computed directly from telemetry — not inferred.</p>
+<table class="table">
+<thead>
+<tr><th>Metric</th><th>Definition</th><th>Status</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><b>leverage</b></td>
+<td>Output tokens relative to net new input tokens. How much value the operator extracts per unit of input they author. High leverage = the operator makes the model do more with less new prompting.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>yield</b></td>
+<td>Usable output tokens relative to total output tokens. How much of what the model generates is actually retained, committed, or carried forward. High yield = low waste.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>token_snr</b></td>
+<td>Signal-to-noise ratio across the token stream. Distinguishes productive tokens from redundant or discarded ones. High SNR = the operator's token budget is spent on signal.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>log_leverage</b></td>
+<td>Log-scaled leverage to normalize heavy-tailed distributions. Compresses extreme values so a few high-leverage sessions do not dominate the operator's profile.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>construction</b></td>
+<td>Ratio of cache writes to total input. Measures how deliberately the operator builds reusable context versus re-prompting from scratch each turn.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+</tbody>
+</table>
+<p class="note">Every metric is traceable to the primitives. Every score is reproducible from the telemetry. No metric is inferred from behavior, personality, or self-report.</p>
+</section>
+
+<!-- OPERATOR PROFILE MODULE -->
+<section>
+<div class="eyebrow">Operator profile module</div>
+<h2>Every operator becomes a profile. Every label is traceable.</h2>
+<p class="lead">The operator profile is the core deliverable of evaluation. It aggregates the five core metrics plus derived fields — context reuse, stability, trajectory, volatility, and operating pattern — into a single traceable record.</p>
+<div class="profile-card">
+<div class="header">
+<div class="id">OPERATOR 031</div>
+<span class="label measured">measured</span>
+</div>
+<div class="field"><div class="key">Field Position</div><div>84th percentile</div></div>
+<div class="field"><div class="key">Leverage</div><div>43.2x</div></div>
+<div class="field"><div class="key">Yield</div><div>8.7</div></div>
+<div class="field"><div class="key">Context Reuse</div><div>HIGH</div></div>
+<div class="field"><div class="key">Stability</div><div>82</div></div>
+<div class="field"><div class="key">30-Day Movement</div><div>+14%</div></div>
+<div class="field"><div class="key">Volatility</div><div>LOW</div></div>
+<div class="field"><div class="key">Operating Pattern</div><div>RECURSIVE / BUILD-HEAVY</div></div>
+</div>
+<p class="note">Every diagnostic label must be traceable to underlying measures. "RECURSIVE / BUILD-HEAVY" is not a personality assessment — it is a pattern derived from high construction, high context reuse, and stable yield across sessions. Show the measures, then the label.</p>
+</section>
+
+<!-- WHAT WE DO NOT MEASURE -->
+<section>
+<div class="eyebrow">Data discipline</div>
+<h2>What we do NOT measure.</h2>
+<p class="lead">Measurement discipline means knowing what to exclude. We collect the minimum evidence required to answer the measurement question. The following are explicitly NOT required for core evaluation.</p>
+<div class="grid2">
+<div class="card">
+<p class="big">Not required</p>
+<ul>
+<li><b>Prompt content</b> — the text of what operators type</li>
+<li><b>Response content</b> — the text the model returns</li>
+<li><b>Code content</b> — the source code in inputs or outputs</li>
+<li><b>Email content</b> — the body text of messages</li>
+<li><b>Slack content</b> — the text of channel messages</li>
+</ul>
+<span class="label validation">not required</span>
+</div>
+<div class="card blue">
+<p class="big">Core</p>
+<ul>
+<li><b>Token telemetry</b> — input, output, cache read, cache write counts</li>
+<li><b>Cache behavior</b> — read/write ratios, reuse patterns</li>
+<li><b>Session structure</b> — turn count, session length, provider, model</li>
+<li><b>Temporal patterns</b> — cadence, gaps, burstiness</li>
+</ul>
+<span class="label measured">core</span>
+</div>
+</div>
+<blockquote>We do not collect everything because it exists. We collect the minimum evidence required to answer the measurement question. Token telemetry is core. Content is not.</blockquote>
+</section>
+
+<!-- MEASUREMENT SCIENCE -->
+<section>
+<div class="eyebrow">Measurement science</div>
+<h2>Twelve requirements before a metric ships.</h2>
+<p class="lead">A number is not a metric. A metric is not a measure. A measure is not a construct. Before any metric enters the operator profile, it must satisfy twelve requirements. This is what separates measurement from dashboarding.</p>
+<div class="grid2">
+<div class="card">
+<div class="num">01</div>
+<p class="big">Construct definition</p>
+<p class="note">What does the metric claim to represent? Named, defined, and bounded in plain language.</p>
+</div>
+<div class="card">
+<div class="num">02</div>
+<p class="big">Mathematical definition</p>
+<p class="note">The exact formula. Reproducible from the primitives by anyone with the telemetry.</p>
+</div>
+<div class="card">
+<div class="num">03</div>
+<p class="big">Valid domain</p>
+<p class="note">The range of inputs over which the metric is defined and meaningful. Where it breaks.</p>
+</div>
+<div class="card">
+<div class="num">04</div>
+<p class="big">Unit</p>
+<p class="note">The unit of measurement. Tokens, ratios, percentiles, log-scaled values.</p>
+</div>
+<div class="card">
+<div class="num">05</div>
+<p class="big">Directionality</p>
+<p class="note">Which direction is better? Explicitly stated. No metric is "good" without a defined polarity.</p>
+</div>
+<div class="card">
+<div class="num">06</div>
+<p class="big">Distribution</p>
+<p class="note">The expected distribution across operators. Heavy-tailed, normal, bimodal — known and accounted for.</p>
+</div>
+<div class="card">
+<div class="num">07</div>
+<p class="big">Normalization</p>
+<p class="note">How the metric is normalized across providers, models, and session types. Comparable across contexts.</p>
+</div>
+<div class="card">
+<div class="num">08</div>
+<p class="big">Reliability</p>
+<p class="note">Does the metric produce the same score for the same telemetry? Test-retest consistency.</p>
+</div>
+<div class="card">
+<div class="num">09</div>
+<p class="big">Validity</p>
+<p class="note">Does the metric measure what it claims to measure? Construct validity, not face validity.</p>
+</div>
+<div class="card">
+<div class="num">10</div>
+<p class="big">Sensitivity</p>
+<p class="note">Does the metric detect meaningful change? Not so coarse that real improvement is invisible.</p>
+</div>
+<div class="card">
+<div class="num">11</div>
+<p class="big">Decomposability</p>
+<p class="note">Can the metric be broken down by provider, model, session type, and time window? Diagnosable, not opaque.</p>
+</div>
+<div class="card">
+<div class="num">12</div>
+<p class="big">Traceability</p>
+<p class="note">Every score traces back to the primitives and the telemetry that produced it. No black boxes.</p>
+</div>
+</div>
+
+<h3>Canonical labels</h3>
+<p>Every claim in the system carries a canonical status label. The label tells you how much trust the claim has earned — and what would be required to promote it.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">Status</span>PROVEN <span class="label proven">proven</span></div>
+<div class="tag"><span class="cat">Status</span>MEASURED <span class="label measured">measured</span></div>
+<div class="tag"><span class="cat">Status</span>OBSERVED <span class="label derived">observed</span></div>
+<div class="tag"><span class="cat">Status</span>DERIVED <span class="label derived">derived</span></div>
+<div class="tag"><span class="cat">Status</span>HYPOTHESIS <span class="label hypothesis">hypothesis</span></div>
+<div class="tag"><span class="cat">Status</span>PILOT <span class="label experiment">pilot</span></div>
+<div class="tag"><span class="cat">Status</span>VALIDATION REQUIRED <span class="label validation">validation required</span></div>
+</div>
+<p class="note">No claim is promoted without evidence. A HYPOTHESIS becomes VALIDATION REQUIRED before it becomes PROVEN. The label is the contract.</p>
+</section>
+
+<!-- DARK CTA -->
+<section class="dark">
+<div class="eyebrow">Next</div>
+<h2>Profiles become diagnoses. Diagnoses become interventions.</h2>
+<p class="lead">Evaluation produces the operator profile. Diagnosis turns the profile into actionable strengths, weaknesses, and hypotheses.</p>
+<a class="btn" href="diagnose.html">See How We Diagnose</a>
+<a class="btn-outline" href="workflow.html" style="border-color:#999;color:#f7f4ec">Workflow Fit</a>
+</section>
+
+</main>
+
+<div class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <b>MO§ES™</b>
+        <p class="note">Enterprise AI Operator Evaluations + Performative Benchmarks. Bespoke evals built around your workflows, tasks, models, and roles.</p>
+      </div>
+      <div>
+        <a href="product.html">Product</a>
+        <a href="pilot.html">Pilot</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <a href="evaluate.html">Evaluate</a>
+        <a href="diagnose.html">Diagnose</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="enterprise.html">Enterprise</a>
+      </div>
+      <div>
+        <a href="research.html">Research</a>
+        <a href="develop.html">Develop</a>
+        <a href="verify.html">Verify</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div>
+        <span class="note">Synthetic demo data. All results are ASSOCIATION, not CAUSATION.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

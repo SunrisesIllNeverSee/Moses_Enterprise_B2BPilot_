@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MO§ES™ Operator × System Matrix</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fafafa;
+    padding: 24px;
+    color: #263238;
+  }
+  .matrix-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  .matrix-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .matrix-header h1 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .evidence-badge {
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid #1565c0;
+  }
+  .matrix-subtitle {
+    padding: 8px 24px 16px;
+    font-size: 13px;
+    color: #546e7a;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.matrix th {
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    background: #f5f5f5;
+    border-bottom: 2px solid #cfd8dc;
+  }
+  table.matrix th.operator-col {
+    text-align: left;
+    font-size: 14px;
+  }
+  table.matrix td {
+    padding: 0;
+    text-align: center;
+    border-bottom: 1px solid #eceff1;
+  }
+  table.matrix td.operator-cell {
+    text-align: left;
+    padding: 12px 16px;
+  }
+  .pseudonym {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+  }
+  .team {
+    font-size: 11px;
+    color: #78909c;
+    display: block;
+  }
+  .archetype {
+    font-size: 10px;
+    font-style: italic;
+    color: #90a4ae;
+    display: block;
+  }
+  .score-cell {
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .score-cell:hover {
+    transform: scale(1.08);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  /* Color coding */
+  .strong  { background: #2e7d32; color: #fff; }  /* 75-100 */
+  .good    { background: #66bb6a; color: #fff; }  /* 60-74  */
+  .moderate{ background: #ffb300; color: #fff; }  /* 40-59  */
+  .weak    { background: #ef6c00; color: #fff; }  /* 25-39  */
+  .poor    { background: #c62828; color: #fff; }  /* 0-24   */
+  .legend {
+    display: flex;
+    gap: 20px;
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .legend-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+  }
+  .tooltip {
+    position: absolute;
+    background: #263238;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+    line-height: 1.6;
+    max-width: 280px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .key-insight {
+    padding: 16px 24px;
+    background: #fffde7;
+    border-top: 1px solid #e0e0e0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5d4037;
+  }
+  .key-insight strong { color: #e65100; }
+  @media (max-width: 600px) {
+    .matrix-container { overflow-x: auto; }
+    table.matrix { min-width: 600px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="matrix-container">
+  <div class="matrix-header">
+    <h1>MO§ES™ Operator × System Matrix</h1>
+    <span class="evidence-badge">Rung 6 — Strong Observational Telemetry</span>
+  </div>
+  <div class="matrix-subtitle">
+    Composite Performance/Fit Score (0-100) — 10 representative operators from acme_50 cohort across 3 primary AI systems.
+    Score = 0.4 × Leverage percentile + 0.4 × Yield percentile + 0.2 × stability score.
+  </div>
+
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th class="operator-col">Operator</th>
+        <th>Claude</th>
+        <th>Codex</th>
+        <th>ChatGPT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0002410503</span>
+          <span class="team">Product Eng</span>
+          <span class="archetype">context_compounder</span>
+        </td>
+        <td><div class="score-cell strong" data-info="signal-0002410503 · Claude · Score: 82 · Lev pctile: 85 · Yield pctile: 78 · Stability: 80 · n=42 interactions">82</div></td>
+        <td><div class="score-cell strong" data-info="signal-0002410503 · Codex · Score: 78 · Lev pctile: 80 · Yield pctile: 74 · Stability: 78 · n=31 interactions">78</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0002410503 · ChatGPT · Score: 45 · Lev pctile: 48 · Yield pctile: 40 · Stability: 45 · n=18 interactions">45</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0008917623</span>
+          <span class="team">Product Eng</span>
+          <span class="archetype">high_volume_burner</span>
+        </td>
+        <td><div class="score-cell weak" data-info="signal-0008917623 · Claude · Score: 28 · Lev pctile: 30 · Yield pctile: 22 · Stability: 30 · n=56 interactions">28</div></td>
+        <td><div class="score-cell poor" data-info="signal-0008917623 · Codex · Score: 22 · Lev pctile: 24 · Yield pctile: 18 · Stability: 22 · n=38 interactions">22</div></td>
+        <td><div class="score-cell poor" data-info="signal-0008917623 · ChatGPT · Score: 18 · Lev pctile: 20 · Yield pctile: 14 · Stability: 20 · n=29 interactions">18</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0003459812</span>
+          <span class="team">Product Eng</span>
+          <span class="archetype">recursive_builder</span>
+        </td>
+        <td><div class="score-cell good" data-info="signal-0003459812 · Claude · Score: 65 · Lev pctile: 68 · Yield pctile: 60 · Stability: 65 · n=34 interactions">65</div></td>
+        <td><div class="score-cell strong" data-info="signal-0003459812 · Codex · Score: 90 · Lev pctile: 92 · Yield pctile: 88 · Stability: 88 · n=41 interactions">90</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0003459812 · ChatGPT · Score: 55 · Lev pctile: 58 · Yield pctile: 50 · Stability: 55 · n=22 interactions">55</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0005671234</span>
+          <span class="team">Product Eng</span>
+          <span class="archetype">efficient_minimalist</span>
+        </td>
+        <td><div class="score-cell strong" data-info="signal-0005671234 · Claude · Score: 88 · Lev pctile: 90 · Yield pctile: 85 · Stability: 88 · n=28 interactions">88</div></td>
+        <td><div class="score-cell strong" data-info="signal-0005671234 · Codex · Score: 85 · Lev pctile: 88 · Yield pctile: 82 · Stability: 82 · n=24 interactions">85</div></td>
+        <td><div class="score-cell good" data-info="signal-0005671234 · ChatGPT · Score: 72 · Lev pctile: 75 · Yield pctile: 68 · Stability: 72 · n=16 interactions">72</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0001234567</span>
+          <span class="team">Product Eng</span>
+          <span class="archetype">context_compounder</span>
+        </td>
+        <td><div class="score-cell strong" data-info="signal-0001234567 · Claude · Score: 80 · Lev pctile: 82 · Yield pctile: 76 · Stability: 80 · n=36 interactions">80</div></td>
+        <td><div class="score-cell strong" data-info="signal-0001234567 · Codex · Score: 84 · Lev pctile: 86 · Yield pctile: 80 · Stability: 84 · n=30 interactions">84</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0001234567 · ChatGPT · Score: 48 · Lev pctile: 50 · Yield pctile: 44 · Stability: 48 · n=19 interactions">48</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0007890123</span>
+          <span class="team">Platform/Infra</span>
+          <span class="archetype">high_volume_burner</span>
+        </td>
+        <td><div class="score-cell weak" data-info="signal-0007890123 · Claude · Score: 25 · Lev pctile: 28 · Yield pctile: 20 · Stability: 25 · n=48 interactions">25</div></td>
+        <td><div class="score-cell poor" data-info="signal-0007890123 · Codex · Score: 20 · Lev pctile: 22 · Yield pctile: 16 · Stability: 20 · n=33 interactions">20</div></td>
+        <td><div class="score-cell poor" data-info="signal-0007890123 · ChatGPT · Score: 15 · Lev pctile: 18 · Yield pctile: 10 · Stability: 15 · n=25 interactions">15</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0002345678</span>
+          <span class="team">Data/Analytics</span>
+          <span class="archetype">kinetic_generator</span>
+        </td>
+        <td><div class="score-cell moderate" data-info="signal-0002345678 · Claude · Score: 42 · Lev pctile: 45 · Yield pctile: 38 · Stability: 42 · n=31 interactions">42</div></td>
+        <td><div class="score-cell weak" data-info="signal-0002345678 · Codex · Score: 38 · Lev pctile: 40 · Yield pctile: 34 · Stability: 38 · n=27 interactions">38</div></td>
+        <td><div class="score-cell weak" data-info="signal-0002345678 · ChatGPT · Score: 35 · Lev pctile: 38 · Yield pctile: 30 · Stability: 35 · n=20 interactions">35</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0004567890</span>
+          <span class="team">Data/Analytics</span>
+          <span class="archetype">recursive_builder</span>
+        </td>
+        <td><div class="score-cell good" data-info="signal-0004567890 · Claude · Score: 60 · Lev pctile: 62 · Yield pctile: 56 · Stability: 60 · n=29 interactions">60</div></td>
+        <td><div class="score-cell strong" data-info="signal-0004567890 · Codex · Score: 95 · Lev pctile: 96 · Yield pctile: 94 · Stability: 92 · n=35 interactions">95</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0004567890 · ChatGPT · Score: 58 · Lev pctile: 60 · Yield pctile: 54 · Stability: 58 · n=21 interactions">58</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0006789012</span>
+          <span class="team">Customer Eng</span>
+          <span class="archetype">context_compounder</span>
+        </td>
+        <td><div class="score-cell strong" data-info="signal-0006789012 · Claude · Score: 78 · Lev pctile: 80 · Yield pctile: 74 · Stability: 78 · n=26 interactions">78</div></td>
+        <td><div class="score-cell strong" data-info="signal-0006789012 · Codex · Score: 76 · Lev pctile: 78 · Yield pctile: 72 · Stability: 76 · n=22 interactions">76</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0006789012 · ChatGPT · Score: 50 · Lev pctile: 52 · Yield pctile: 46 · Stability: 50 · n=15 interactions">50</div></td>
+      </tr>
+      <tr>
+        <td class="operator-cell">
+          <span class="pseudonym">signal-0008901234</span>
+          <span class="team">Operations</span>
+          <span class="archetype">context_compounder</span>
+        </td>
+        <td><div class="score-cell strong" data-info="signal-0008901234 · Claude · Score: 82 · Lev pctile: 84 · Yield pctile: 78 · Stability: 82 · n=24 interactions">82</div></td>
+        <td><div class="score-cell strong" data-info="signal-0008901234 · Codex · Score: 80 · Lev pctile: 82 · Yield pctile: 76 · Stability: 80 · n=20 interactions">80</div></td>
+        <td><div class="score-cell moderate" data-info="signal-0008901234 · ChatGPT · Score: 52 · Lev pctile: 54 · Yield pctile: 48 · Stability: 52 · n=14 interactions">52</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-swatch strong"></div> Strong fit (75-100)</div>
+    <div class="legend-item"><div class="legend-swatch good"></div> Good fit (60-74)</div>
+    <div class="legend-item"><div class="legend-swatch moderate"></div> Moderate fit (40-59)</div>
+    <div class="legend-item"><div class="legend-swatch weak"></div> Weak fit (25-39)</div>
+    <div class="legend-item"><div class="legend-swatch poor"></div> Poor fit (0-24)</div>
+  </div>
+
+  <div class="key-insight">
+    <strong>KEY INSIGHT:</strong> Recursive builders (signal-0003459812, signal-0004567890) score 25-35 points higher on Codex than on Claude. Context compounders score well on both Claude and Codex but poorly on ChatGPT. High-volume burners score poorly on ALL systems — the problem is the operator pattern, not the system.
+    <br><br>
+    <strong>EVIDENCE GRADE:</strong> Strong observational telemetry (interaction-level Micro Evals per operator per system, n≥14 interactions per cell)
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+  (function() {
+    var tooltip = document.getElementById('tooltip');
+    var cells = document.querySelectorAll('.score-cell');
+    cells.forEach(function(cell) {
+      cell.addEventListener('mouseenter', function(e) {
+        tooltip.textContent = cell.getAttribute('data-info');
+        tooltip.style.display = 'block';
+      });
+      cell.addEventListener('mousemove', function(e) {
+        tooltip.style.left = (e.pageX + 14) + 'px';
+        tooltip.style.top = (e.pageY + 14) + 'px';
+      });
+      cell.addEventListener('mouseleave', function() {
+        tooltip.style.display = 'none';
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+MO§ES™ — Enterprise AI Operator Evaluations
+
+Copyright (c) 2026 Deric J. McHenry / SunrisesIllNeverSee
+
+All rights reserved.
+
+No part of this software, documentation, specifications, or website
+content may be copied, modified, distributed, or used to create
+derivative works without the express written permission of the
+copyright holder.
+
+This includes but is not limited to:
+- The platform source code (_01_platform/)
+- The specification documents (_00_specs/)
+- The demo and marketing websites (_02_demo-website/, _03_promo-site/,
+  _04_onepager/)
+- The Cloudflare Worker configurations (_workers/)
+- The metric registry, benchmark engine, and composite score algorithms
+
+For licensing inquiries, contact: burnmydays@proton.me
+
+Patent Pending: Serial No. 63/877,177

@@ -1,0 +1,29 @@
+TRANSFORMATION LINEAGE — Single task: "Implement orders API endpoint"
+═════════════════════════════════════════════════════════════════════════════════
+
+┌───────────┐   ┌───────────┐   ┌───────────────┐   ┌───────────┐   ┌───────────────┐   ┌───────────┐   ┌───────────┐
+│  STATE A  │──▶│  BI ACTION│──▶│  AAI TRANSFORM│──▶│BI REDIRECT│──▶│  AAI EXTENSION│──▶│ COMMITTED │──▶│  OUTCOME  │
+│           │   │           │   │               │   │           │   │               │   │  STATE    │   │           │
+│ Initial   │   │ Operator  │   │ Codex        │   │ Operator  │   │ Codex        │   │           │   │ PR-891    │
+│ repo      │   │ provides: │   │ generates:   │   │ redirects:│   │ extends:     │   │ Git commit│   │ merged    │
+│ No endpt  │   │ ticket    │   │ scaffold     │   │ use exist-│   │ rate limiter │   │ +107 lines│   │           │
+│ Ticket    │   │ + refs    │   │ + validation │   │ ing Redis │   │ + docstrings │   │ Tests pass│   │ Cycle:    │
+│ API-1423  │   │ + conv.   │   │ + errors     │   │ Client    │   │ + test stub  │   │           │   │ 2h 16m    │
+│           │   │           │   │ +47 lines    │   │ + docstr. │   │ +35 +22 lines│   │           │   │           │
+│ I: 0      │   │ I: 4200   │   │ I: 4200      │   │ I: 6100   │   │ I: 6100      │   │ I: 6100   │   │ 0 defects │
+│ O: 0      │   │ O: 0      │   │ O: 2800      │   │ O: 2800   │   │ O: 4500      │   │ O: 4500   │   │ in 7 days │
+│ R: 0      │   │ R: 0      │   │ R: 0         │   │ R: 4200   │   │ R: 10300     │   │ R: 14800  │   │           │
+│ W: 0      │   │ W: 4200   │   │ W: 4200      │   │ W: 10300  │   │ W: 14800     │   │ W: 14800  │   │ Evidence: │
+│           │   │           │   │               │   │           │   │               │   │           │   │ outcome   │
+│ 14:22:09  │   │ 14:23:15  │   │ 14:25:42     │   │ 14:28:03  │   │ 14:32:17     │   │ 14:38:44  │   │ telemetry │
+└───────────┘   └───────────┘   └───────────────┘   └───────────┘   └───────────────┘   └───────────┘   └───────────┘
+
+MICRO EVAL (full transformation):
+  Leverage    = R/I       = 14800/6100     = 2.43
+  Yield       = (R×O)/I²  = 66.6M/37.2M    = 1.79
+  Token SNR   = O/(I+O)   = 4500/10600     = 0.425
+  Construction= W/R       = 14800/14800    = 1.00
+  Upsilon     = (R×O)/I²  = 1.79
+  10xDEV      = log10(R/I)= log10(2.43)   = 0.385
+
+EVIDENCE GRADE: Complete interaction telemetry (full token-level trace + git diff + external outcome)

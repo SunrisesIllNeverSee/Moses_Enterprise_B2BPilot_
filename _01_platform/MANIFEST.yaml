@@ -1,0 +1,285 @@
+---
+# Enterprise Build Package — Master Manifest
+# Machine-readable map of every file, module, and artifact in the package.
+# Last updated: 2026-08-17 23:00 UTC
+
+package:
+  name: enterprise_build
+  version: 0.3
+  date: 2026-08-17
+  status: "P0 + P1 + P2 complete (including ARMIN upgrades + P2 remaining). P3 deferred."
+  brand_placeholder: armin
+  measurement_engine: SigRank
+  paired_ecosystem: "SigRank + SigEconomy"
+
+tests:
+  total: 147
+  passing: 147
+  files:
+    - tests/test_engine.py
+    - tests/test_metrics.py
+    - tests/test_p0_cdef.py
+    - tests/test_p1_p2.py
+
+okf:
+  total_docs: 36
+  compliant: 36
+  checker: ../scripts/check-okf.mjs
+
+spec_docs:
+  count: 24
+  all_have_frontmatter: true
+  docs:
+    - {num: "00", file: "00_README.md", title: "Enterprise Build Package README", status: complete}
+    - {num: "01", file: "01_ENTERPRISE_WEBSITE_BUILD_SPEC.md", title: "Enterprise Website Build Spec", status: complete}
+    - {num: "02", file: "02_ENTERPRISE_DEMO_DATA_SPEC.md", title: "Enterprise Demo Data Spec", status: complete}
+    - {num: "03", file: "03_CANONICAL_METRIC_REGISTRY.md", title: "Canonical Metric Registry", status: complete}
+    - {num: "04", file: "04_DATA_SURFACE_REGISTRY.md", title: "Data Surface Registry", status: complete}
+    - {num: "05", file: "05_PILOT_PHASES_IMPLEMENTATION_PLAN.md", title: "Pilot Phases Implementation Plan", status: complete}
+    - {num: "06", file: "06_TUI_PRODUCT_SPEC.md", title: "TUI Product Spec", status: complete}
+    - {num: "07", file: "07_CLI_COMMAND_SPEC.md", title: "CLI Command Spec", status: complete}
+    - {num: "08", file: "08_MCP_TOOL_SPEC.md", title: "MCP Tool Spec", status: complete}
+    - {num: "09", file: "09_DIAGNOSTIC_INTERVENTION_REGISTRY.md", title: "Diagnostic + Intervention Registry", status: complete}
+    - {num: "10", file: "10_WORKFLOW_STAGE_TAXONOMY.md", title: "Workflow Stage Taxonomy", status: complete}
+    - {num: "11", file: "11_MEASUREMENT_SCIENCE_VALIDATION_PLAN.md", title: "Measurement Science Validation Plan", status: complete}
+    - {num: "12", file: "12_PRIVACY_GOVERNANCE_SPEC.md", title: "Privacy Governance Spec", status: complete}
+    - {num: "13", file: "13_DELIVERABLES_REPORTING_SPEC.md", title: "Deliverables + Reporting Spec", status: complete}
+    - {num: "14", file: "14_PRODUCT_OBJECT_MODEL.md", title: "Product Object Model", status: complete}
+    - {num: "15", file: "15_BRAND_ARCHITECTURE_NAMING_BRIEF.md", title: "Brand Architecture + Naming Brief", status: complete}
+    - {num: "16", file: "16_EXECUTION_BACKLOG_P0_P1_P2.md", title: "Execution Backlog P0/P1/P2", status: complete}
+    - {num: "17", file: "17_PROOF_AND_CLAIMS_REGISTRY.md", title: "Proof + Claims Registry", status: complete}
+    - {num: "18", file: "18_ENTERPRISE_EVAL_CATALOG.md", title: "Enterprise Eval Catalog", status: complete}
+    - {num: "19", file: "19_INTEGRATION_PRIORITY_MATRIX.md", title: "Integration Priority Matrix", status: complete}
+    - {num: "20", file: "20_PILOT_OPERATING_PLAYBOOK.md", title: "Pilot Operating Playbook", status: complete}
+    - {num: "21", file: "21_DEVIN_IMPLEMENTATION_HANDOFF.md", title: "Devin Implementation Handoff", status: complete}
+    - {num: "22", file: "22_SAMPLE_PILOT_READOUT.md", title: "Sample Pilot Readout", status: complete}
+    - {num: "23", file: "23_SAMPLE_OPERATOR_PROFILE.md", title: "Sample Operator Profile", status: complete}
+  review_index: REVIEW_INDEX.md
+
+source_modules:
+  domain:
+    phase: P0-A
+    path: src/domain/
+    entities: 14
+    files:
+      - src/domain/observation.py
+      - src/domain/operator.py
+      - src/domain/cohort.py
+      - src/domain/measurement.py
+      - src/domain/reference_population.py
+      - src/domain/quality_result.py
+      - src/domain/tenant.py
+      - src/domain/pattern.py
+      - src/domain/diagnosis.py
+      - src/domain/intervention.py
+      - src/domain/outcome_join.py
+      - src/domain/workflow.py
+      - src/domain/report.py
+
+  metrics:
+    phase: P0-B
+    path: src/metrics/
+    registry_version: "0.2"
+    canonical_metrics: [leverage, yield, token_snr, log_leverage, construction]
+    unresolved_metrics: [velocity, compression, stability]
+    files:
+      - src/metrics/formulas.py
+      - src/metrics/engine.py
+      - src/metrics/registry.py
+
+  ingest:
+    phase: P0-C
+    path: src/ingest/
+    providers: [fixture, claude, codex]
+    files:
+      - src/ingest/base.py
+      - src/ingest/fixture.py
+      - src/ingest/claude.py
+      - src/ingest/codex.py
+      - src/ingest/validate.py
+
+  repository:
+    phase: P0-C
+    path: src/repository/
+    files:
+      - src/repository/demo_repository.py
+
+  analysis:
+    phase: "P0-D + P1-D + P2-E"
+    path: src/analysis/
+    files:
+      - src/analysis/divergence.py
+      - src/analysis/percentiles.py
+      - src/analysis/distributions.py
+      - src/analysis/eligibility.py
+      - src/analysis/data_quality.py
+      - src/analysis/verifier.py
+      - src/analysis/replication.py
+
+  diagnostics:
+    phase: "P1-A + P1-B"
+    path: src/diagnostics/
+    patterns: [P-CTX-01, P-CTX-02, P-BURN-01, P-HIDDEN-01]
+    files:
+      - src/diagnostics/pattern_engine.py
+      - src/diagnostics/diagnosis_engine.py
+
+  interventions:
+    phase: P1-C
+    path: src/interventions/
+    catalog_entries: 12
+    catalog_ids: [CTX-001, CTX-002, CTX-003, FRM-001, FRM-002, MOD-001, AGT-001, REV-001, STD-001, COA-001, LRN-001, STG-001]
+    files:
+      - src/interventions/registry.py
+      - src/interventions/manager.py
+
+  workflow:
+    phase: P2-A
+    path: src/workflow/
+    stages: [discovery, requirements, architecture, implementation, testing, review, release]
+    min_sample_rule: 5
+    files:
+      - src/workflow/fit_engine.py
+
+  outcomes:
+    phase: "P2-B + P2-C"
+    path: src/outcomes/
+    claim_type: ASSOCIATION
+    causal_claims_permitted: false
+    files:
+      - src/outcomes/governance.py
+      - src/outcomes/join_engine.py
+      - src/outcomes/cross_analysis.py
+
+  service:
+    phase: "P0 + P1 + P2"
+    path: src/service.py
+    description: "PilotService — shared service layer for CLI/TUI/MCP"
+
+  cli:
+    phase: P0-E
+    path: src/cli/
+    spec: "07_CLI_COMMAND_SPEC.md"
+    files:
+      - src/cli/main.py
+
+  tui:
+    phase: P0-E
+    path: src/tui/
+    spec: "06_TUI_PRODUCT_SPEC.md"
+    screens: 10
+    files:
+      - src/tui/app.py
+
+  mcp:
+    phase: "P0-E + P1+"
+    path: src/mcp_server/
+    spec: "08_MCP_TOOL_SPEC.md"
+    read_tools: 10
+    write_tools: 3
+    total_tools_registered: 13
+    resources: 6
+    sdk_version: "1.26.0"
+    write_tool_names: [assign_intervention, close_intervention, create_experiment]
+    files:
+      - src/mcp_server/server.py
+
+  reporting:
+    phase: "P0-F + P2-D"
+    path: src/reporting/
+    formats: [json, csv, markdown]
+    files:
+      - src/reporting/exporters.py
+      - src/reporting/executive_brief.py
+
+schemas:
+  - schemas/metric_registry.json
+  - schemas/observation.schema.json
+
+observation_schema_fields:
+  source_confidence: "optional enum: high/medium/low/unknown"
+  raw_source_reference: "optional string — pointer to original provider record (no raw content)"
+
+demo_data:
+  path: demo_data/
+  operators: 50
+  observations: 1668
+  window: "2026-07-01 to 2026-07-30"
+  synthetic: true
+  providers: [chatgpt, claude, codex, copilot, cursor]
+  files:
+    - demo_data/README.md
+    - demo_data/cohort.json
+    - demo_data/cohort_summary.json
+    - demo_data/daily_aggregates.csv
+    - demo_data/daily_telemetry.csv
+    - demo_data/demo_manifest.json
+    - demo_data/diagnoses.json
+    - demo_data/diagnostics.json
+    - demo_data/external_outcomes.csv
+    - demo_data/interventions.csv
+    - demo_data/interventions.json
+    - demo_data/metric_registry.json
+    - demo_data/observations.jsonl
+    - demo_data/operator_metrics.csv
+    - demo_data/operators.csv
+    - demo_data/operators.json
+    - demo_data/post_intervention_results.csv
+    - demo_data/reference_field.json
+    - demo_data/results.json
+    - demo_data/stage_events.jsonl
+    - demo_data/workflow_fit_observations.csv
+    - demo_data/workflows.json
+
+website:
+  path: website/
+  pages: 4
+  framework: none
+  files:
+    - website/index.html
+    - website/product.html
+    - website/pilot.html
+    - website/methodology.html
+    - website/style.css
+
+scripts:
+  - scripts/generate_demo_data.py
+
+build:
+  pyproject: pyproject.toml
+  requirements: requirements.txt
+  venv: .venv/
+  entry_point: enterprise
+
+backlog:
+  file: 16_EXECUTION_BACKLOG_P0_P1_P2.md
+  total_items: 50
+  completed: 43
+  remaining: 7
+  p0_complete: true
+  p1_complete: true
+  p2_complete: true
+  p2_remaining: []
+  armin_upgrades_applied: true
+  armin_upgrades:
+    - "source_confidence + raw_source_reference in observation schema"
+    - "diagnostic hierarchy ordering rule in 09"
+    - "development doctrine avoid-list in 12"
+    - "next-evaluations flywheel in 13"
+    - "commercial pilot reframing in 18"
+    - "What Native Analytics Miss comparison surface on website"
+    - "source_confidence in MCP get_data_quality"
+  p2_new_deliverables:
+    - "intervention × outcome cross-analysis (cross_analysis.py)"
+    - "executive solution brief generator (executive_brief.py)"
+    - "replicated validation (replication.py)"
+    - "write MCP tools with authorization (assign_intervention, close_intervention, create_experiment)"
+  p3_deferred: true
+  p3_remaining:
+    - "neutral product screenshots from TUI/demo (deferred)"
+    - "persistent web dashboard"
+    - "SSO/RBAC polish"
+    - "enterprise warehouse export"
+    - "stable scheduled reporting"
+    - "expanded connectors"
+    - "production intervention workflows"

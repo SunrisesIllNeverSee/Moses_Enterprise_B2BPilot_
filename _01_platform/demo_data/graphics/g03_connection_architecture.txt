@@ -1,0 +1,44 @@
+ENTERPRISE SYSTEMS          MO§ES™ PIPELINE                    CUSTOMER DECISIONS
+──────────────────          ───────────────                    ───────────────────
+
+┌─────────────────┐    ┌─────────────────────────┐    ┌──────────────────┐
+│ AI Platforms    │    │ 1. Canonical Ingestion  │    │ Model placement  │
+│ Claude          │───▶│    Normalize all sources│    │ Route to best    │
+│ ChatGPT         │    │    → MO§ES event model  │    │ fit system       │
+│ Codex           │    └───────────┬─────────────┘    └──────────────────┘
+│ Cursor          │                │                  ┌──────────────────┐
+│ Copilot         │                ▼                  │ Training target  │
+│ Gemini          │    ┌─────────────────────────┐    │ Direct interven. │
+└─────────────────┘    │ 2. Micro Eval Engine    │    │ to needful ops   │
+                       │    Upsilon = (R×O)/I²   │    └──────────────────┘
+┌─────────────────┐    │    Leverage = R/I       │    ┌──────────────────┐
+│ Agent Platforms │    │    Yield = (R×O)/I²     │    │ Workflow redesign│
+│ Internal agents │───▶│    Token SNR = O/(I+O)  │    │ Restructure      │
+│ LangGraph       │    │    Construction = W/R   │    │ stages           │
+│ Workflow agents │    └───────────┬─────────────┘    └──────────────────┘
+└─────────────────┘                │                  ┌──────────────────┐
+                                   ▼                  │ Investment eff.  │
+┌─────────────────┐    ┌─────────────────────────┐    │ AI investment    │
+│ Enterprise S/W  │    │ 3. Benchmark Engine     │    │ → op returns     │
+│ Slack · Jira    │───▶│    Self-prior · Peer    │    └──────────────────┘
+│ GitHub · GitLab │    │    Cohort · Team        │    ┌──────────────────┐
+│ Salesforce      │    │    Reference field      │    │ Risk assessment  │
+│ ServiceNow      │    │    Intervention comp.   │    │ Concentration    │
+│ Notion          │    └───────────┬─────────────┘    │ Dependency       │
+└─────────────────┘                │                  └──────────────────┘
+                                   ▼                  ┌──────────────────┐
+┌─────────────────┐    ┌─────────────────────────┐    │ Intervention     │
+│ Identity & Data │    │ 4. Diagnostic Engine    │    │ selection        │
+│ SSO/SAML/OIDC   │───▶│    P-BURN-01 · P-CTX-01 │    │ Choose from      │
+│ Entra ID · Okta │    │    P-MODEL-01 · P-HID-01│    │ catalog          │
+│ Audit logs      │    │    → hypotheses + conf. │    └──────────────────┘
+│ CSV/JSON/Whouse │    └───────────┬─────────────┘
+└─────────────────┘                │
+                                   ▼
+                       ┌─────────────────────────┐
+                       │ 5. Organizational       │───▶ (all decisions above)
+                       │    Intelligence         │
+                       │    Capability topology  │
+                       │    Concentration · Risk │
+                       │    Adoption-vs-op gap   │
+                       └─────────────────────────┘

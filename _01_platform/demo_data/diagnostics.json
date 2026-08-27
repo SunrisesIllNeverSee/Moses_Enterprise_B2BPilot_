@@ -1,0 +1,448 @@
+[
+  {
+    "operator_id": "op_002",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 18.4 vs yield pct 71.4",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_003",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 0.0 vs yield pct 77.6",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_005",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 10.2",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_005",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 98.0 vs yield pct 6.1",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_007",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 6.1 vs yield pct 79.6",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_010",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 83.7 vs yield pct 30.6",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_011",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 32.7 vs yield pct 91.8",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_012",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 75.5 vs yield pct 16.3",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_013",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 0.0",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_013",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 91.8 vs yield pct 0.0",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_016",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 4.1 vs yield pct 83.7",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_018",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 2.0",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_018",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 100.0 vs yield pct 4.1",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_019",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 8.2 vs yield pct 85.7",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_020",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 6.1",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_020",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 95.9 vs yield pct 8.2",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_021",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 4.1",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_021",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 93.9 vs yield pct 2.0",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_026",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 8.2",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_026",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 89.8 vs yield pct 10.2",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_027",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 14.3 vs yield pct 75.5",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_031",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 22.4",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_032",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 20.4",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_033",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 30.6 vs yield pct 100.0",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_034",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 2.0 vs yield pct 81.6",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_035",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 71.4 vs yield pct 22.4",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_036",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 18.4",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_037",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 16.3",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_039",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 12.2",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_039",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 87.8 vs yield pct 26.5",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_041",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 77.6 vs yield pct 20.4",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_042",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 14.3",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_042",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 73.5 vs yield pct 24.5",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_043",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 26.5 vs yield pct 87.8",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_046",
+    "pattern_id": "P-CTX-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.62,
+    "evidence": "leverage percentile 24.5",
+    "recommended": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_046",
+    "pattern_id": "P-BURN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.67,
+    "evidence": "usage pct 81.6 vs yield pct 18.4",
+    "recommended": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "operator_id": "op_050",
+    "pattern_id": "P-HIDDEN-01",
+    "status": "HYPOTHESIS",
+    "confidence_demo": 0.6,
+    "evidence": "usage pct 16.3 vs yield pct 73.5",
+    "recommended": [
+      "STG-001"
+    ],
+    "synthetic": true
+  }
+]

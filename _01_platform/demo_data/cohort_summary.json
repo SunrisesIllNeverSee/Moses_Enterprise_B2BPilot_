@@ -1,0 +1,15 @@
+{
+  "cohort_id": "acme_50",
+  "synthetic": true,
+  "operators": 50,
+  "window": "2026-07-01/2026-07-30",
+  "divergence_counts": {
+    "HIGH_USAGE_LOW_OPERATION": 13,
+    "LOW_LOW": 2,
+    "LOW_USAGE_HIGH_OPERATION": 11,
+    "MIXED": 24
+  },
+  "median_leverage": 12.177,
+  "median_yield": 6.007,
+  "metric_registry_version": "0.2"
+}

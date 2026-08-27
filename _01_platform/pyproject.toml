@@ -1,0 +1,16 @@
+[project]
+name = "enterprise-operator-intelligence-demo"
+version = "0.4.0"
+requires-python = ">=3.10"
+dependencies = ["rich>=13"]
+
+[tool.setuptools]
+packages = ["domain", "metrics", "repository", "analysis", "ingest", "reporting", "cli", "tui", "mcp_server", "diagnostics", "interventions", "workflow", "outcomes"]
+package-dir = {"" = "src"}
+py-modules = ["service"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project.scripts]
+enterprise = "cli.main:main"

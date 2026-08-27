@@ -1,0 +1,23 @@
+graph LR
+    SA["STATE A<br/>━━━━━━━━━━━━━━<br/>Initial repo state<br/>Open ticket API-1423<br/>No endpoint exists<br/>━━━<br/>I:0 O:0 R:0 W:0<br/>14:22:09"]
+    BI1["BI ACTION<br/>━━━━━━━━━━━━━━<br/>Operator provides:<br/>ticket description,<br/>auth middleware refs,<br/>REST conventions<br/>━━━<br/>I:4200 O:0 R:0 W:4200<br/>14:23:15"]
+    AAI1["AAI TRANSFORMATION<br/>━━━━━━━━━━━━━━<br/>Codex generates:<br/>endpoint scaffold,<br/>route handler,<br/>validation, errors<br/>━━━<br/>I:4200 O:2800 R:0 W:4200<br/>14:25:42<br/>+47 lines new file"]
+    BI2["BI REDIRECTION<br/>━━━━━━━━━━━━━━<br/>Operator redirects:<br/>'Use existing RedisClient<br/>not new one. Add<br/>OpenAPI docstrings.'<br/>━━━<br/>I:6100 O:2800 R:4200 W:10300<br/>14:28:03"]
+    AAI2["AAI EXTENSION<br/>━━━━━━━━━━━━━━<br/>Codex extends:<br/>rate limiter via<br/>RedisClient, docstrings,<br/>test stub<br/>━━━<br/>I:6100 O:4500 R:10300 W:14800<br/>14:32:17<br/>+35 lines, +22 test lines"]
+    CS["COMMITTED STATE<br/>━━━━━━━━━━━━━━<br/>Git commit:<br/>'feat: add orders endpoint<br/>with rate limiting'<br/>+107 lines, 2 files<br/>Tests pass<br/>━━━<br/>14:38:44"]
+    OC["OUTCOME<br/>━━━━━━━━━━━━━━<br/>PR-891 merged<br/>Cycle time: 2h 16m<br/>Quality: 0 defects<br/>in first 7 days<br/>━━━<br/>16:38:00<br/>Evidence: outcome telemetry"]
+
+    SA -->|operator acts| BI1
+    BI1 -->|AI transforms| AAI1
+    AAI1 -->|operator redirects| BI2
+    BI2 -->|AI extends| AAI2
+    AAI2 -->|operator commits| CS
+    CS -->|external result| OC
+
+    style SA fill:#f5f5f5,stroke:#616161,stroke-width:2px
+    style BI1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style AAI1 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style BI2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style AAI2 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style CS fill:#fffde7,stroke:#f57f17,stroke-width:2px
+    style OC fill:#fce4ec,stroke:#c62828,stroke-width:2px

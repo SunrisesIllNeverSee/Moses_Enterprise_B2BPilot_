@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@page{size:letter;margin:0.5in}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:#111;font:10px/1.5 Georgia,serif}
+.wrap{max-width:100%}
+
+/* Masthead */
+.masthead{border-bottom:3px solid #111;padding:0 0 10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end}
+.masthead .brand{font-size:22px;font-weight:700;letter-spacing:-.5px;font-family:Helvetica,Arial,sans-serif}
+.masthead .tag{font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;font-family:Helvetica,Arial,sans-serif}
+
+/* Hero */
+.hero{margin-bottom:14px}
+.hero h1{font-size:22px;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px;font-family:Helvetica,Arial,sans-serif}
+.hero .sub{font-size:11px;color:#333;max-width:580px;font-style:italic}
+.hero .pitch{font-size:10px;color:#444;max-width:580px;margin-top:6px}
+
+/* Stat bar */
+.stats{display:flex;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin-bottom:14px}
+.stats>div{flex:1;padding:8px 10px;border-right:1px solid #ccc;text-align:center}
+.stats>div:last-child{border-right:none}
+.stats .big{font-size:11px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.stats .small{font-size:8px;color:#666;margin-top:2px;font-family:Helvetica,Arial,sans-serif}
+
+/* Section headers */
+.sec-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#111;border-bottom:1px solid #111;padding-bottom:3px;margin:14px 0 8px;font-family:Helvetica,Arial,sans-serif}
+
+/* Two-column */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col-r{border-left:1px solid #ddd;padding-left:20px}
+
+/* Questions */
+.q-item{margin-bottom:8px}
+.q-num{font-size:10px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.q-text{font-size:9.5px;color:#444;margin-top:1px}
+
+/* Buyer receives */
+.recv-item{margin-bottom:6px}
+.recv-item .name{font-size:10px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.recv-item .desc{font-size:9px;color:#555}
+
+/* Why different */
+.diff-list{font-size:9px;color:#444;line-height:1.6}
+.diff-list .native{margin-bottom:5px}
+.diff-list ul{margin:4px 0 0;padding-left:14px}
+.diff-list li{margin-bottom:2px}
+
+/* Configurator callout */
+.config{border:1px solid #111;padding:10px 14px;margin:14px 0}
+.config .cfg-head{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:Helvetica,Arial,sans-serif}
+.config .cfg-body{font-size:9px;color:#444;margin-top:3px}
+
+/* Bottom */
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:1px solid #ccc;padding-top:10px;margin-top:10px}
+.bottom .col-r{border-left:1px solid #ddd;padding-left:20px}
+.bottom .label{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#111;margin-bottom:3px;font-family:Helvetica,Arial,sans-serif}
+.bottom p{font-size:9px;color:#444}
+
+/* Pilot question bar */
+.pq-bar{background:#111;color:#fff;padding:12px 16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
+.pq-bar .pq-label{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#999;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .pq-text{font-size:12px;font-weight:600;margin-top:3px;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .tagline{text-align:right}
+.pq-bar .tag1{font-size:13px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .tag2{font-size:10px;color:#999;margin-top:1px;font-style:italic}
+
+/* Footer */
+.footer{padding:8px 0;border-top:1px solid #ccc;font-size:8px;color:#666;text-align:center;font-family:Helvetica,Arial,sans-serif;margin-top:10px}
+
+/* Page break */
+.page-break{page-break-before:always;break-before:page}
+
+/* ── Page 2: Pilot Catalog ── */
+.catalog-intro{margin-bottom:6px}
+.catalog-intro h2{font-size:14px;font-family:Helvetica,Arial,sans-serif;margin-bottom:3px}
+.catalog-intro .sub{font-size:9px;color:#444;max-width:560px}
+.catalog-intro .flow{font-size:9px;font-weight:600;color:#111;margin-top:4px;font-family:Helvetica,Arial,sans-serif}
+
+.pilot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;border-bottom:1px solid #ddd;padding-bottom:4px;margin-bottom:4px}
+.pilot-card .pnum{font-size:8px;font-weight:700;color:#666;font-family:Helvetica,Arial,sans-serif}
+.pilot-card .pname{font-size:10px;font-weight:700;margin:1px 0 2px;font-family:Helvetica,Arial,sans-serif}
+.pilot-card .pq{font-size:9px;font-weight:600;color:#111;margin-bottom:2px;font-style:italic}
+.pilot-card .pdesc{font-size:8.5px;color:#444;margin-bottom:2px}
+.pilot-card .pbuyer{font-size:8.5px;color:#444}
+.pilot-card .pbuyer strong{color:#111}
+.pilot-card .pwhen{font-size:8.5px;color:#444;margin-top:1px}
+.pilot-card .pevals{font-size:7.5px;color:#666;font-weight:600;margin-top:2px;font-family:Helvetica,Arial,sans-serif;border-top:1px solid #eee;padding-top:1px}
+
+/* ── Page 3: Deployment ── */
+.deploy-intro h2{font-size:14px;font-family:Helvetica,Arial,sans-serif;margin-bottom:3px}
+.deploy-intro p{font-size:9px;color:#444}
+
+table{width:100%;border-collapse:collapse;margin:6px 0;font-size:8.5px}
+th{background:#111;color:#fff;padding:4px 7px;text-align:left;font-size:7.5px;letter-spacing:.5px;font-family:Helvetica,Arial,sans-serif}
+td{padding:4px 7px;border-bottom:1px solid #ddd;vertical-align:top}
+tr:nth-child(even){background:#f7f7f7}
+
+.level-item{margin-bottom:5px;padding-left:10px;border-left:3px solid #111}
+.level-item .lvl-name{font-size:9px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.level-item .lvl-desc{font-size:8.5px;color:#444;margin-top:1px}
+
+.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pack-item{border:1px solid #ddd;padding:6px 8px}
+.pack-item .pk-name{font-size:9px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.pack-item .pk-desc{font-size:8.5px;color:#444;margin-top:1px}
+
+.boundary{border-top:1px solid #ccc;padding-top:6px;margin-top:8px}
+.boundary .label{font-size:7.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#111;margin-bottom:2px;font-family:Helvetica,Arial,sans-serif}
+.boundary p{font-size:8.5px;color:#444;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ PAGE 1: ONE-PAGER ═══ -->
+
+<div class="masthead">
+<div class="brand">MO§ES™</div>
+<div class="tag">Enterprise AI Operator Intelligence</div>
+</div>
+
+<div class="hero">
+<h1>Map how your workforce actually operates AI.</h1>
+<p class="sub">A 30-day enterprise operating baseline for mixed-role AI users. Cross-vendor, cohort-level, and designed to measure operating structure without turning AI analytics into an employee productivity score.</p>
+<p class="pitch">You already know who has AI, how much it is used, and what it costs. MO§ES™ shows how the operating capability of the workforce is distributed, changing, and getting stuck — then provides a path to test repairs and re-measure.</p>
+</div>
+
+<div class="stats">
+<div><div class="big">30 DAYS</div><div class="small">Longitudinal baseline</div></div>
+<div><div class="big">25–100 USERS</div><div class="small">Mixed-role workforce</div></div>
+<div><div class="big">ONE COHORT</div><div class="small">Existing AI users</div></div>
+<div><div class="big">COHORT-LEVEL</div><div class="small">No prompt content required</div></div>
+</div>
+
+<div class="sec-title">The Pilot Answers Five Questions</div>
+<div class="cols">
+<div>
+<div class="q-item"><div class="q-num">1. WHERE ARE WE?</div><div class="q-text">Position the cohort against the external operator field and show the overall workforce shape.</div></div>
+<div class="q-item"><div class="q-num">3. WHERE IS CAPABILITY CONCENTRATED?</div><div class="q-text">Show breadth, effective user count, concentration, and whether advanced practices are organizational or isolated.</div></div>
+<div class="q-item"><div class="q-num">5. WHERE SHOULD WE LOOK NEXT?</div><div class="q-text">Identify shared workflow friction and turn observations into specific follow-on evaluations rather than unsupported outcome claims.</div></div>
+</div>
+<div class="col-r">
+<div class="q-item"><div class="q-num">2. HOW DO WE OPERATE?</div><div class="q-text">Map sustained vs burst behavior, context reuse, model/tool/agent patterns, and operating structure.</div></div>
+<div class="q-item"><div class="q-num">4. HOW ARE WE CHANGING?</div><div class="q-text">Track 30-day movement, stability, acceleration, stall, emergence, reversion, and adaptation.</div></div>
+</div>
+</div>
+
+<div class="sec-title">What the Buyer Receives &nbsp;|&nbsp; Why This Is Different</div>
+<div class="cols">
+<div>
+<div class="recv-item"><div class="name">AI Workforce Operating Map</div><div class="desc">External field position and cohort distribution.</div></div>
+<div class="recv-item"><div class="name">Capability Distribution</div><div class="desc">Breadth, concentration, effective users, and role/team spread.</div></div>
+<div class="recv-item"><div class="name">Workforce Evolution</div><div class="desc">Movement, stability, acceleration/stall, and emerging patterns.</div></div>
+<div class="recv-item"><div class="name">Workflow Friction</div><div class="desc">Where shared structural bottlenecks appear across otherwise different operators.</div></div>
+<div class="recv-item"><div class="name">Next Evaluations</div><div class="desc">Evidence-backed questions to test next.</div></div>
+</div>
+<div class="col-r">
+<div class="diff-list">
+<div class="native">Native AI analytics show users, usage, spend, messages, models, features, and sometimes artifacts.</div>
+<div><strong>MO§ES™ adds the independent operating layer:</strong></div>
+<ul>
+<li>Cross-vendor operator measurement</li>
+<li>External reference field</li>
+<li>Operating-form differences</li>
+<li>Longitudinal adaptation</li>
+<li>Capability concentration</li>
+<li>Workflow-stage diagnosis</li>
+<li>Intervention / re-measurement path</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="config">
+<div class="cfg-head">Bespoke Configurator — New for 2026</div>
+<div class="cfg-body">Choose from 12 commercial pilots by outcome, or build your own from 15 evaluation families. The configurator validates compatibility, enforces governance rules, and produces a saveable configuration with embedded decision-use labels. Available via CLI, TUI, and MCP.</div>
+</div>
+
+<div class="bottom">
+<div>
+<div class="label">Measurement Boundary</div>
+<p>MO§ES™ measures AI operating behavior and cohort structure. It does not claim that a higher score means a better employee, higher job performance, greater productivity, or better business outcomes without separate validation.</p>
+</div>
+<div class="col-r">
+<div class="label">Privacy</div>
+<p>The baseline can operate from telemetry without making prompt-content surveillance the default. Executive reporting can remain cohort-level. All configurations carry governance metadata: synthetic flag, decision-use labels, ASSOCIATION semantics for outcome joins, HYPOTHESIS semantics for diagnoses.</p>
+</div>
+</div>
+
+<div class="pq-bar">
+<div>
+<div class="pq-label">Pilot Question</div>
+<div class="pq-text">What does AI operating capability actually look like inside our organization?</div>
+</div>
+<div class="tagline">
+<div class="tag1">MAP THE BASELINE</div>
+<div class="tag2">Diagnose the system. Raise the floor.</div>
+</div>
+</div>
+
+<div class="footer">
+MO§ES™ | 30-Day AI Workforce Operating Baseline | Deric J. McHenry | Ello Cello LLC | © 2026 Ello Cello LLC. All Rights Reserved. | MO§ES™
+</div>
+
+<!-- ═══ PAGE 2: PILOT CATALOG ═══ -->
+
+<div class="page-break"></div>
+
+<div class="masthead">
+<div class="brand">MO§ES™</div>
+<div class="tag">Enterprise Pilot Catalog</div>
+</div>
+
+<div class="catalog-intro">
+<h2>Enterprise Pilot Catalog</h2>
+<p class="sub">A focused set of deployable pilots built on the same operator-measurement substrate. Each pilot answers a different business question without requiring productivity or business-outcome claims. One measurement system. Multiple commercial entry points.</p>
+<div class="flow">Baseline → Diagnostic → Evaluation → Monitor → MO§E§</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 1</div><div class="pname">AI Workforce Operating Baseline</div>
+<div class="pq">What does our AI workforce actually look like?</div>
+<div class="pdesc">25–100 users, 30 days. External field position, operating map, capability distribution, evolution, concentration, workflow friction, executive baseline.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Best first wedge when AI is already deployed but capability is invisible.</div>
+<div class="pevals">EVAL-001, EVAL-002, EVAL-003, EVAL-004, EVAL-006 · Level 1</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 2</div><div class="pname">AI Capability Distribution</div>
+<div class="pq">Do we have organizational capability or a few power users?</div>
+<div class="pdesc">Measures breadth, effective operator count, top-k concentration, role/team distribution, capability islands and advanced-practice concentration.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / Transformation / BU leader</div>
+<div class="pwhen"><strong>When to pitch:</strong> When leadership suspects the AI program depends on a small number of people.</div>
+<div class="pevals">EVAL-006, EVAL-010 · Level 1</div>
+</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 3</div><div class="pname">AI Adoption & Adaptation</div>
+<div class="pq">Are people adapting, or simply using the tools?</div>
+<div class="pdesc">Tracks adoption latency, operating-form movement, stabilization, acceleration/stall, reversion and emerging patterns.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Transformation / AI Enablement / L&D</div>
+<div class="pwhen"><strong>When to pitch:</strong> Best after a recent AI rollout or mandate.</div>
+<div class="pevals">EVAL-004, EVAL-015 · Level 1</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 4</div><div class="pname">AI Training Evaluation</div>
+<div class="pq">Did our training actually change how people operate AI?</div>
+<div class="pdesc">Pre/post cohort measurement with sustained-change analysis, development distribution and intervention response.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> L&D / AI Enablement / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Shows operating change, not unvalidated productivity lift.</div>
+<div class="pevals">EVAL-007, EVAL-011 · Level 2</div>
+</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 5</div><div class="pname">Model / Tool Evaluation</div>
+<div class="pq">What changes when we introduce Model A, Model B or Tool X?</div>
+<div class="pdesc">Operator × model/tool comparison, migration effects, adoption, retention, operating-form differences and cohort-specific fit patterns.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / CIO / IT / Procurement</div>
+<div class="pwhen"><strong>When to pitch:</strong> For model selection, tool consolidation and rollout decisions.</div>
+<div class="pevals">EVAL-005, EVAL-012 · Level 2</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 6</div><div class="pname">Agent Adoption</div>
+<div class="pq">Is agent capability becoming organizational or staying concentrated?</div>
+<div class="pdesc">Agent activity, sustained use, tool-chain behavior, concentration, adaptation and agent-heavy operating forms.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / Automation / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Strong fit for companies moving from chat to agentic workflows.</div>
+<div class="pevals">EVAL-010, EVAL-013 · Level 2</div>
+</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 7</div><div class="pname">Workflow Diagnostic</div>
+<div class="pq">Is the constraint the operator, the tool or the workflow?</div>
+<div class="pdesc">Maps operator behavior against lightweight stages such as research, creation, review, approval and delivery.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Operations / Transformation / BU leader</div>
+<div class="pwhen"><strong>When to pitch:</strong> If strong operators stall at the same stage, investigate the workflow first.</div>
+<div class="pevals">EVAL-008, EVAL-002 · Level 1</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 8</div><div class="pname">Team AI Operating Comparison</div>
+<div class="pq">Why do teams using the same AI stack operate differently?</div>
+<div class="pdesc">Compares team distributions, capability concentration, model/tool patterns, evolution and workflow differences.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Transformation / Operations / BU leadership</div>
+<div class="pwhen"><strong>When to pitch:</strong> For cross-team standardization and enablement planning.</div>
+<div class="pevals">EVAL-006, EVAL-009, EVAL-013 · Level 1</div>
+</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 9</div><div class="pname">Experiments</div>
+<div class="pq">What changed when we introduced X?</div>
+<div class="pdesc">Pre/post, matched cohort, crossover or staggered rollout using MO§ES™-native measures only.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / Innovation / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Fits models, tools, training, agents, workflows and enablement interventions.</div>
+<div class="pevals">EVAL-007, EVAL-012 · Level 2</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 10</div><div class="pname">Monitor</div>
+<div class="pq">How is our AI operating population changing month over month?</div>
+<div class="pdesc">Longitudinal operating map, emerging clusters, concentration changes, model/tool migration, adaptation and recurring workflow friction.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / CIO / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Natural recurring extension after a successful baseline pilot.</div>
+<div class="pevals">EVAL-004, EVAL-006, EVAL-010 · Level 1</div>
+</div>
+</div>
+
+<div class="pilot-pair">
+<div class="pilot-card">
+<div class="pnum">PILOT 11</div><div class="pname">Meta-Pilot (Validation, not deployment)</div>
+<div class="pq">Does this metric predict something we already care about?</div>
+<div class="pdesc">Lightweight correlation study using outcome joins. Pre-sale wedge for skeptical buyers. ASSOCIATION — never CAUSATION.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Head of AI / CIO / Transformation</div>
+<div class="pwhen"><strong>When to pitch:</strong> Run before committing to a full pilot. Deliverables: correlation report, threshold recommendations, ROI estimate.</div>
+<div class="pevals">EVAL-002, EVAL-004 · Level 1 · ASSOCIATION</div>
+</div>
+<div class="pilot-card">
+<div class="pnum">PILOT 12</div><div class="pname">Vendor / Consultancy Verification</div>
+<div class="pq">Are our outsourced AI vendors actually delivering quality?</div>
+<div class="pdesc">Independent telemetry on vendor delivery characteristics — not sales decks. Deliverables: vendor comparison report, threshold-gate recommendations, delivery quality assessment.</div>
+<div class="pbuyer"><strong>Best buyer:</strong> Procurement / CIO / Head of AI</div>
+<div class="pwhen"><strong>When to pitch:</strong> When evaluating multiple AI vendors, consultancies, or managed service providers.</div>
+<div class="pevals">EVAL-005, EVAL-006, EVAL-012 · Level 2</div>
+</div>
+</div>
+
+<div class="footer">
+MO§ES™ | Enterprise Pilot Catalog | Deric J. McHenry | Ello Cello LLC | © 2026 Ello Cello LLC. All Rights Reserved. | MO§ES™
+</div>
+
+<!-- ═══ PAGE 3: DEPLOYMENT & COMMERCIAL PACKAGING ═══ -->
+
+<div class="page-break"></div>
+
+<div class="masthead">
+<div class="brand">MO§ES™</div>
+<div class="tag">Deployment & Commercial Packaging</div>
+</div>
+
+<div class="deploy-intro">
+<h2>How to Match the Pilot to the Customer</h2>
+<p>Start from the business trigger, then choose the lightest pilot that can answer it.</p>
+</div>
+
+<table>
+<tr><th>Trigger</th><th>Best Pilot</th><th>Primary Buyer</th></tr>
+<tr><td>We just rolled out ChatGPT / Copilot / Claude.</td><td>Baseline or Adoption & Adaptation</td><td>Head of AI / Transformation</td></tr>
+<tr><td>Five people seem to be doing everything.</td><td>Capability Distribution</td><td>Head of AI / BU leader</td></tr>
+<tr><td>We spent heavily on AI training.</td><td>Training Evaluation</td><td>L&D / AI Enablement</td></tr>
+<tr><td>We're choosing between models/tools.</td><td>Model / Tool Evaluation</td><td>CIO / AI / Procurement</td></tr>
+<tr><td>We're moving into agents.</td><td>Agent Adoption</td><td>AI / Automation</td></tr>
+<tr><td>Teams keep getting stuck.</td><td>Workflow Diagnostic</td><td>Operations / BU leader</td></tr>
+<tr><td>The same stack behaves differently across teams.</td><td>Team Comparison</td><td>Transformation / Ops</td></tr>
+<tr><td>We want to test a change.</td><td>Experiments</td><td>AI / Innovation</td></tr>
+<tr><td>We want continuing visibility.</td><td>Monitor</td><td>AI / CIO / Transformation</td></tr>
+<tr><td>We need to validate before committing.</td><td>Meta-Pilot</td><td>AI / CIO / Transformation</td></tr>
+<tr><td>Are our vendors delivering quality?</td><td>Vendor Verification</td><td>Procurement / CIO</td></tr>
+</table>
+
+<div class="sec-title">Deployment Levels</div>
+<div class="level-item">
+<div class="lvl-name">LEVEL 1 — CANONICAL TELEMETRY</div>
+<div class="lvl-desc">Best for Baseline, Capability Distribution, basic Adaptation, Team Comparison and Monitor. Uses the current measurement core and does not require prompt content.</div>
+</div>
+<div class="level-item">
+<div class="lvl-name">LEVEL 2 — API ENRICHED</div>
+<div class="lvl-desc">Best for Training Evaluation, Model/Tool Evaluation, Agent Adoption, richer Workflow Diagnostics and Experiments. Adds timestamps, sessions, model/tool/agent data, acceptance, retries, errors and richer provider fields where available.</div>
+</div>
+<div class="level-item">
+<div class="lvl-name">LEVEL 3 — INTEGRATED / GOVERNED</div>
+<div class="lvl-desc">Best for continuous internal measurement, customer-defined thresholds, authoritative lineage, governed state and later MO§E§ deployment.</div>
+</div>
+
+<div class="sec-title">Commercial Packaging</div>
+<div class="pack-grid">
+<div class="pack-item"><div class="pk-name">MO§ES™ Baseline</div><div class="pk-desc">Map your AI workforce.</div></div>
+<div class="pack-item"><div class="pk-name">MO§ES™ Diagnostic</div><div class="pk-desc">Find where capability is concentrated, stalled or structurally constrained.</div></div>
+<div class="pack-item"><div class="pk-name">MO§ES™ Evaluation</div><div class="pk-desc">Measure what changes when you introduce a model, tool, agent, workflow or training program.</div></div>
+<div class="pack-item"><div class="pk-name">MO§ES™ Monitor</div><div class="pk-desc">Track how your AI operating population evolves.</div></div>
+<div class="pack-item"><div class="pk-name">MO§ES™ Meta-Pilot</div><div class="pk-desc">Validate that the metric predicts something you care about. ASSOCIATION — never CAUSATION.</div></div>
+<div class="pack-item"><div class="pk-name">MO§E§</div><div class="pk-desc">Govern and own the measurement infrastructure once the pilot becomes production.</div></div>
+</div>
+
+<div class="boundary">
+<div class="label">Measurement Boundary</div>
+<p>MO§ES™ measures AI operating behavior and cohort structure. It does not claim that a higher score means a better employee, higher job performance, greater productivity, or better business outcomes without separate validation.</p>
+<div class="label">Privacy</div>
+<p>The baseline can operate from telemetry without making prompt-content surveillance the default. Executive reporting can remain cohort-level.</p>
+</div>
+
+<div class="footer">
+MO§ES™ | Enterprise Pilot Catalog | Deric J. McHenry | Ello Cello LLC | deric.mchenry@gmail.com | © 2026 Ello Cello LLC. All Rights Reserved. | MO§ES™
+</div>
+
+</div>
+</body>
+</html>

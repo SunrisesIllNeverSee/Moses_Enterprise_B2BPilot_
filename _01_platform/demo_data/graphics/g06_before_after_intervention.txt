@@ -1,0 +1,49 @@
+BEFORE/AFTER INTERVENTION — Leverage Distribution Shift
+═════════════════════════════════════════════════════════════════════════════════
+
+Leverage (R/I)
+   ▲
+ 6 │  #### 5                    .... 2
+   │  ####                       ....
+ 5 │  ####                       ....
+   │  ####          .. 2         ....          .. 2
+ 4 │  ####          ....         ....          ....
+   │  ####   . 1    ....  ### 2  ....  ### 3   ....
+ 3 │  ####   ...    ....  ####   ....  ####    ....
+   │  ####   ...    ....  ####   ....  ####    ....  # 1    # 1
+ 2 │  ####   ...    ....  ####   ....  ####    ....  ##     ##
+   │  ####   ...    ....  ####   ....  ####    ....  ##     ##
+ 1 │  ####   ...    ....  ####   ....  ####    ....  ##     ##
+   │  ####   ...    ....  ####   ....  ####    ....  ##     ##
+ 0 └──────────────────────────────────────────────────────────────▶
+    3-6      6-9     9-12   12-15   15-25         25-32
+
+    #### = Baseline (pre-intervention, 2026-07-01 to 2026-07-30)
+    .... = Post-intervention (2026-08-01 to 2026-08-14)
+
+    + INTERVENTION MARKER +
+    + Day 21: CTX-001, FRM-001, COA-001, MOD-001 applied +
+    + 12 operators, 4 intervention types +
+
+STATISTICAL COMPARISON:
++------------------+-----------+-------------------+----------+
+| Statistic        | Baseline  | Post-intervention | Delta    |
++------------------+-----------+-------------------+----------+
+| Median Leverage  | 11.93     | 12.68             | +6.3%    |
+| Mean Leverage    | 13.52     | 14.81             | +9.5%    |
+| Std Dev          | 8.74      | 9.12              | +4.3%    |
+| Min              | 3.49      | 2.86              | -18.0%   |
+| Max              | 29.49     | 31.81             | +7.8%    |
+| Improved         | —         | 7/12 (58.3%)      |          |
+| Unchanged        | —         | 2/12 (16.7%)      |          |
+| Degraded         | —         | 3/12 (25.0%)      |          |
++------------------+-----------+-------------------+----------+
+
+KEY FINDING: The distribution shifts right (improvement) but variance
+increases slightly. Not all operators benefit — 3 degraded. This is not
+a uniform win. The intervention (persistent context setup) helps operators
+with low baseline Leverage most, but can hurt operators who already had
+strong context management (op_031 degraded -18%).
+
+EVIDENCE GRADE: Controlled experiment (baseline + post-intervention with
+control operator + internal metric separation from external outcomes)

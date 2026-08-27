@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@page{size:letter;margin:0.5in}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:#111;font:10px/1.5 Georgia,serif}
+.wrap{max-width:100%}
+
+/* Masthead */
+.masthead{border-bottom:3px solid #111;padding:0 0 10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end}
+.masthead .brand{font-size:22px;font-weight:700;letter-spacing:-.5px;font-family:Helvetica,Arial,sans-serif}
+.masthead .tag{font-size:9px;color:#666;letter-spacing:2px;text-transform:uppercase;font-family:Helvetica,Arial,sans-serif}
+
+/* Hero */
+.hero{margin-bottom:14px}
+.hero h1{font-size:22px;line-height:1.2;letter-spacing:-.5px;margin-bottom:8px;font-family:Helvetica,Arial,sans-serif}
+.hero .sub{font-size:11px;color:#333;max-width:580px;font-style:italic}
+.hero .pitch{font-size:10px;color:#444;max-width:580px;margin-top:6px}
+
+/* Stat bar */
+.stats{display:flex;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin-bottom:14px}
+.stats>div{flex:1;padding:8px 10px;border-right:1px solid #ccc;text-align:center}
+.stats>div:last-child{border-right:none}
+.stats .big{font-size:11px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.stats .small{font-size:8px;color:#666;margin-top:2px;font-family:Helvetica,Arial,sans-serif}
+
+/* Section headers */
+.sec-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#111;border-bottom:1px solid #111;padding-bottom:3px;margin:14px 0 8px;font-family:Helvetica,Arial,sans-serif}
+
+/* Two-column */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col-r{border-left:1px solid #ddd;padding-left:20px}
+
+/* Questions */
+.q-item{margin-bottom:8px}
+.q-num{font-size:10px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.q-text{font-size:9.5px;color:#444;margin-top:1px}
+
+/* Buyer receives */
+.recv-item{margin-bottom:6px}
+.recv-item .name{font-size:10px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.recv-item .desc{font-size:9px;color:#555}
+
+/* Why different */
+.diff-list{font-size:9px;color:#444;line-height:1.6}
+.diff-list .native{margin-bottom:5px}
+.diff-list ul{margin:4px 0 0;padding-left:14px}
+.diff-list li{margin-bottom:2px}
+
+/* Configurator callout */
+.config{border:1px solid #111;padding:10px 14px;margin:14px 0}
+.config .cfg-head{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;font-family:Helvetica,Arial,sans-serif}
+.config .cfg-body{font-size:9px;color:#444;margin-top:3px}
+
+/* Bottom */
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:1px solid #ccc;padding-top:10px;margin-top:10px}
+.bottom .col-r{border-left:1px solid #ddd;padding-left:20px}
+.bottom .label{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#111;margin-bottom:3px;font-family:Helvetica,Arial,sans-serif}
+.bottom p{font-size:9px;color:#444}
+
+/* Pilot question bar */
+.pq-bar{background:#111;color:#fff;padding:12px 16px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
+.pq-bar .pq-label{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#999;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .pq-text{font-size:12px;font-weight:600;margin-top:3px;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .tagline{text-align:right}
+.pq-bar .tag1{font-size:13px;font-weight:700;font-family:Helvetica,Arial,sans-serif}
+.pq-bar .tag2{font-size:10px;color:#999;margin-top:1px;font-style:italic}
+
+/* Footer */
+.footer{padding:8px 0;border-top:1px solid #ccc;font-size:8px;color:#666;text-align:center;font-family:Helvetica,Arial,sans-serif;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="masthead">
+<div class="brand">MO§ES™</div>
+<div class="tag">Enterprise AI Operator Intelligence</div>
+</div>
+
+<div class="hero">
+<h1>Map how your workforce actually operates AI.</h1>
+<p class="sub">A 30-day enterprise operating baseline for mixed-role AI users. Cross-vendor, cohort-level, and designed to measure operating structure without turning AI analytics into an employee productivity score.</p>
+<p class="pitch">You already know who has AI, how much it is used, and what it costs. MO§ES™ shows how the operating capability of the workforce is distributed, changing, and getting stuck — then provides a path to test repairs and re-measure.</p>
+</div>
+
+<div class="stats">
+<div><div class="big">30 DAYS</div><div class="small">Longitudinal baseline</div></div>
+<div><div class="big">25–100 USERS</div><div class="small">Mixed-role workforce</div></div>
+<div><div class="big">ONE COHORT</div><div class="small">Existing AI users</div></div>
+<div><div class="big">COHORT-LEVEL</div><div class="small">No prompt content required</div></div>
+</div>
+
+<div class="sec-title">The Pilot Answers Five Questions</div>
+<div class="cols">
+<div>
+<div class="q-item"><div class="q-num">1. WHERE ARE WE?</div><div class="q-text">Position the cohort against the external operator field and show the overall workforce shape.</div></div>
+<div class="q-item"><div class="q-num">3. WHERE IS CAPABILITY CONCENTRATED?</div><div class="q-text">Show breadth, effective user count, concentration, and whether advanced practices are organizational or isolated.</div></div>
+<div class="q-item"><div class="q-num">5. WHERE SHOULD WE LOOK NEXT?</div><div class="q-text">Identify shared workflow friction and turn observations into specific follow-on evaluations rather than unsupported outcome claims.</div></div>
+</div>
+<div class="col-r">
+<div class="q-item"><div class="q-num">2. HOW DO WE OPERATE?</div><div class="q-text">Map sustained vs burst behavior, context reuse, model/tool/agent patterns, and operating structure.</div></div>
+<div class="q-item"><div class="q-num">4. HOW ARE WE CHANGING?</div><div class="q-text">Track 30-day movement, stability, acceleration, stall, emergence, reversion, and adaptation.</div></div>
+</div>
+</div>
+
+<div class="sec-title">What the Buyer Receives &nbsp;|&nbsp; Why This Is Different</div>
+<div class="cols">
+<div>
+<div class="recv-item"><div class="name">AI Workforce Operating Map</div><div class="desc">External field position and cohort distribution.</div></div>
+<div class="recv-item"><div class="name">Capability Distribution</div><div class="desc">Breadth, concentration, effective users, and role/team spread.</div></div>
+<div class="recv-item"><div class="name">Workforce Evolution</div><div class="desc">Movement, stability, acceleration/stall, and emerging patterns.</div></div>
+<div class="recv-item"><div class="name">Workflow Friction</div><div class="desc">Where shared structural bottlenecks appear across otherwise different operators.</div></div>
+<div class="recv-item"><div class="name">Next Evaluations</div><div class="desc">Evidence-backed questions to test next.</div></div>
+</div>
+<div class="col-r">
+<div class="diff-list">
+<div class="native">Native AI analytics show users, usage, spend, messages, models, features, and sometimes artifacts.</div>
+<div><strong>MO§ES™ adds the independent operating layer:</strong></div>
+<ul>
+<li>Cross-vendor operator measurement</li>
+<li>External reference field</li>
+<li>Operating-form differences</li>
+<li>Longitudinal adaptation</li>
+<li>Capability concentration</li>
+<li>Workflow-stage diagnosis</li>
+<li>Intervention / re-measurement path</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="config">
+<div class="cfg-head">Bespoke Configurator — New for 2026</div>
+<div class="cfg-body">Choose from 12 commercial pilots by outcome, or build your own from 15 evaluation families. The configurator validates compatibility, enforces governance rules, and produces a saveable configuration with embedded decision-use labels. Available via CLI, TUI, and MCP.</div>
+</div>
+
+<div class="bottom">
+<div>
+<div class="label">Measurement Boundary</div>
+<p>MO§ES™ measures AI operating behavior and cohort structure. It does not claim that a higher score means a better employee, higher job performance, greater productivity, or better business outcomes without separate validation.</p>
+</div>
+<div class="col-r">
+<div class="label">Privacy</div>
+<p>The baseline can operate from telemetry without making prompt-content surveillance the default. Executive reporting can remain cohort-level. All configurations carry governance metadata: synthetic flag, decision-use labels, ASSOCIATION semantics for outcome joins, HYPOTHESIS semantics for diagnoses.</p>
+</div>
+</div>
+
+<div class="pq-bar">
+<div>
+<div class="pq-label">Pilot Question</div>
+<div class="pq-text">What does AI operating capability actually look like inside our organization?</div>
+</div>
+<div class="tagline">
+<div class="tag1">MAP THE BASELINE</div>
+<div class="tag2">Diagnose the system. Raise the floor.</div>
+</div>
+</div>
+
+<div class="footer">
+MO§ES™ | 30-Day AI Workforce Operating Baseline | Deric J. McHenry | Ello Cello LLC | © 2026 Ello Cello LLC. All Rights Reserved. | MO§ES™
+</div>
+
+</div>
+</body>
+</html>

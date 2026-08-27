@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ — Data: Surface Registry & Classification</title>
+<meta name="description" content="Every external system, registered and classified. The canonical data surface registry, strategic dispositions, observable systems, and privacy classes.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="index.html">Home</a>
+<a href="product.html">Product</a>
+<a href="pilot.html">Pilot</a>
+<a href="methodology.html">Methodology</a>
+<a href="evaluate.html">Evaluate</a>
+<a href="compare.html">Compare</a>
+<a href="diagnose.html">Diagnose</a>
+<a href="develop.html">Develop</a>
+<a href="verify.html">Verify</a>
+<a href="workflow.html">Workflow</a>
+<a href="enterprise.html">Enterprise</a>
+<a href="data.html">Data</a>
+<a href="research.html">Research</a>
+<a href="contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div>
+<div class="eyebrow">DATA</div>
+<h2>Every external system, registered and classified.</h2>
+<p class="lead">Before any data is ingested, every external system is registered in the canonical data surface registry. Each surface is classified by what it offers, what it costs to integrate, and whether it belongs in the measurement at all.</p>
+<a class="btn" href="enterprise.html">Enterprise privacy model →</a>
+<a class="btn-outline" href="methodology.html">Measurement methodology</a>
+</div>
+<div class="flow">
+<div>01 · REGISTER</div>
+<div>02 · CLASSIFY</div>
+<div>03 · DISPOSITION</div>
+<div>04 · CONNECT</div>
+<div>05 · MEASURE</div>
+<div>06 · REVIEW</div>
+</div>
+</div>
+
+<section>
+<div class="eyebrow">Data surface registry</div>
+<h2>The canonical record of every external system.</h2>
+<p class="lead">The registry is the single source of truth for what systems exist, what signals they offer, what content they require, and what strategic disposition governs them. No system is ingested without a registry entry.</p>
+<div class="profile-card">
+<div class="header">
+<div>
+<div class="id">surface: github-01</div>
+<div class="note">Engineering · GitHub · production connector</div>
+</div>
+<div>
+<span class="label measured">OWN</span>
+<span class="label proven">PRODUCTION</span>
+</div>
+</div>
+<div class="field"><div class="key">system_id</div><div>github-01</div></div>
+<div class="field"><div class="key">category</div><div>engineering</div></div>
+<div class="field"><div class="key">vendor</div><div>GitHub</div></div>
+<div class="field"><div class="key">product</div><div>GitHub Cloud</div></div>
+<div class="field"><div class="key">available_signals[]</div><div>commit count, PR count, review count, cycle time, merge time, reopen rate</div></div>
+<div class="field"><div class="key">content_required</div><div>no — numeric and metadata only</div></div>
+<div class="field"><div class="key">privacy_class</div><div>core-telemetry-adjacent</div></div>
+<div class="field"><div class="key">integration_type</div><div>api</div></div>
+<div class="field"><div class="key">strategic_disposition</div><div>OWN</div></div>
+<div class="field"><div class="key">connector_status</div><div>production</div></div>
+<div class="field"><div class="key">measurement_questions[]</div><div>Does operator workflow fit the engineering cycle? Do internal metrics associate with PR throughput and review time?</div></div>
+</div>
+<p class="note" style="margin-top:18px">Every system in scope carries a registry entry like this one. The entry is created before ingest, reviewed before each pilot, and versioned alongside the reference field.</p>
+</section>
+
+<section>
+<div class="eyebrow">Strategic dispositions</div>
+<h2>Five dispositions. One decision per system.</h2>
+<p class="lead">Every registered surface receives exactly one strategic disposition. The disposition states what the product will do with that system — and what it will not.</p>
+<div class="grid3">
+<div class="card blue">
+<span class="label measured">OWN</span>
+<p style="margin-top:14px" class="big">Build and operate</p>
+<p>We build and operate the connector ourselves. The system is core to measurement and worth the integration investment. Owned connectors are maintained to production quality.</p>
+</div>
+<div class="card green">
+<span class="label proven">INGEST</span>
+<p style="margin-top:14px" class="big">Read-only ingest</p>
+<p>We ingest signals from the system through its existing API or export. We do not build a deep connector. The system provides useful context but is not core to the measurement primitive.</p>
+</div>
+<div class="card amber">
+<span class="label hypothesis">JOIN</span>
+<p style="margin-top:14px" class="big">External join only</p>
+<p>We do not ingest from the system. We join its outcomes to our internal metrics for a declared validation question. The join is optional, governed, and always ASSOCIATION.</p>
+</div>
+<div class="card purple">
+<span class="label derived">PARTNER</span>
+<p style="margin-top:14px" class="big">Partner integration</p>
+<p>The system is integrated through a formal partner relationship. Data flows under the partner's governance and contract. Used when direct integration is not possible or appropriate.</p>
+</div>
+<div class="card accent">
+<span class="label experiment">EXCLUDE</span>
+<p style="margin-top:14px" class="big">Out of scope</p>
+<p>The system is explicitly excluded. It may be out of privacy scope, out of measurement scope, or not worth the integration cost. Exclusion is a deliberate decision, recorded in the registry.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Observable systems</div>
+<h2>The systems we can see — and how we classify them.</h2>
+<p class="lead">These are the categories of systems that produce observable signals relevant to AI operator intelligence. Inclusion in this list is not inclusion in a pilot. Each system is registered and dispositioned separately.</p>
+<div class="grid3">
+<div class="card">
+<p class="big">AI</p>
+<p>Operator-facing AI systems. The primary measurement surface.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">AI</span>Claude</div>
+<div class="tag"><span class="cat">AI</span>ChatGPT</div>
+<div class="tag"><span class="cat">AI</span>Codex</div>
+<div class="tag"><span class="cat">AI</span>Cursor</div>
+<div class="tag"><span class="cat">AI</span>Copilot</div>
+<div class="tag"><span class="cat">AI</span>Gemini</div>
+<div class="tag"><span class="cat">AI</span>Windsurf</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Communication</p>
+<p>Messaging and collaboration platforms. Content is not required — metadata and timing only.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">COMM</span>Slack</div>
+<div class="tag"><span class="cat">COMM</span>Teams</div>
+<div class="tag"><span class="cat">COMM</span>Google Chat</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Engineering</p>
+<p>Code hosting, issue tracking, and DevOps. Numeric signals for workflow fit and outcome joins.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">ENG</span>GitHub</div>
+<div class="tag"><span class="cat">ENG</span>GitLab</div>
+<div class="tag"><span class="cat">ENG</span>Bitbucket</div>
+<div class="tag"><span class="cat">ENG</span>Jira</div>
+<div class="tag"><span class="cat">ENG</span>Linear</div>
+<div class="tag"><span class="cat">ENG</span>Azure DevOps</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Documents</p>
+<p>Document and knowledge systems. Content not required; existence and structure signals only.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">DOC</span>Drive</div>
+<div class="tag"><span class="cat">DOC</span>Notion</div>
+<div class="tag"><span class="cat">DOC</span>Confluence</div>
+<div class="tag"><span class="cat">DOC</span>SharePoint</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Projects</p>
+<p>Project and task management. Workflow-stage signals and completion timing.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">PROJ</span>Asana</div>
+<div class="tag"><span class="cat">PROJ</span>Monday</div>
+<div class="tag"><span class="cat">PROJ</span>Trello</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Sales</p>
+<p>CRM and sales engagement. Outcome joins for sales-adjacent cohorts.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">SALES</span>Salesforce</div>
+<div class="tag"><span class="cat">SALES</span>HubSpot</div>
+<div class="tag"><span class="cat">SALES</span>Gong</div>
+<div class="tag"><span class="cat">SALES</span>Outreach</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Support</p>
+<p>Customer support and ticketing. Outcome joins for support-adjacent cohorts.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">SUP</span>Zendesk</div>
+<div class="tag"><span class="cat">SUP</span>Intercom</div>
+<div class="tag"><span class="cat">SUP</span>Service Cloud</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Learning</p>
+<p>Learning and skills platforms. Optional context for training interventions.</p>
+<div class="tag-grid">
+<div class="tag"><span class="cat">LEARN</span>Workera</div>
+<div class="tag"><span class="cat">LEARN</span>Coursera</div>
+<div class="tag"><span class="cat">LEARN</span>Udemy</div>
+<div class="tag"><span class="cat">LEARN</span>Degreed</div>
+</div>
+</div>
+<div class="card">
+<p class="big">Custom</p>
+<p>Enterprise-specific systems not listed here are registered with a custom entry and dispositioned like any other surface.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Key principle</div>
+<h2>Minimum evidence, not maximum collection.</h2>
+<blockquote>We do not collect everything because it exists. We collect the minimum evidence required to answer the measurement question.</blockquote>
+<p class="lead">The registry exists to enforce this principle. Every system is registered before ingest, dispositioned against a measurement question, and reviewed for whether the question still justifies the data. Systems that no longer serve a question are removed — not retained just in case.</p>
+</section>
+
+<section>
+<div class="eyebrow">Privacy classes</div>
+<h2>Every system is classified by privacy level.</h2>
+<p class="lead">Privacy class is assigned at registration and reviewed before each pilot. It governs who may see the system's signals and under what conditions.</p>
+<table class="table">
+<thead>
+<tr><th>Privacy class</th><th>Meaning</th><th>Examples</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="label measured">CORE</span></td><td>Token telemetry and signed numeric snapshots. Required for measurement. Content-free.</td><td>AI token counts, cache reads/writes, yield, leverage</td></tr>
+<tr><td><span class="label derived">CORE-ADJACENT</span></td><td>Numeric and metadata signals adjacent to core telemetry. No content. Optional but commonly joined.</td><td>GitHub PR counts, Jira issue counts, deployment frequency</td></tr>
+<tr><td><span class="label hypothesis">METADATA</span></td><td>Approved metadata only. No content, no body text, no attachments. Explicitly approved per pilot.</td><td>Slack channel membership, Drive file existence, Notion page counts</td></tr>
+<tr><td><span class="label experiment">CONTENT-EXCLUDED</span></td><td>System may contain content, but content is explicitly not required and not ingested. The system is registered to document the exclusion.</td><td>Email bodies, Slack messages, document text, code content</td></tr>
+<tr><td><span class="label validation">OUTCOME-JOIN</span></td><td>External business outcomes joined for a declared validation question. Optional, governed, ASSOCIATION only.</td><td>Sales revenue, support CSAT, engineering cycle time</td></tr>
+</tbody>
+</table>
+<p class="note" style="margin-top:18px">A system's privacy class can change between pilots — but only through an explicit registry update, never silently. The registry is the audit trail.</p>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Next</div>
+<h2>The registry is the first artifact of a pilot.</h2>
+<p class="lead">Before any data flows, the registry is drafted, reviewed, and signed off. It is the contract between measurement scope and privacy governance.</p>
+<a class="btn" href="enterprise.html">Enterprise governance →</a>
+<a class="btn-outline" href="contact.html">Design a pilot →</a>
+</section>
+
+</main>
+
+<div class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <b>MO§ES™</b>
+        <p class="note">Enterprise AI Operator Evaluations + Performative Benchmarks. Bespoke evals built around your workflows, tasks, models, and roles.</p>
+      </div>
+      <div>
+        <a href="product.html">Product</a>
+        <a href="pilot.html">Pilot</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <a href="evaluate.html">Evaluate</a>
+        <a href="diagnose.html">Diagnose</a>
+        <a href="workflow.html">Workflow</a>
+        <a href="enterprise.html">Enterprise</a>
+      </div>
+      <div>
+        <a href="research.html">Research</a>
+        <a href="develop.html">Develop</a>
+        <a href="verify.html">Verify</a>
+        <a href="compare.html">Compare</a>
+      </div>
+      <div>
+        <span class="note">Synthetic demo data. All results are ASSOCIATION, not CAUSATION.</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

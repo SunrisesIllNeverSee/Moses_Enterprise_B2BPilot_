@@ -1,0 +1,559 @@
+[
+  {
+    "diagnosis_id": "diag_000",
+    "operator_id": "op_002",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 18.4 vs yield pct 71.4",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 18.4 vs yield pct 71.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_001",
+    "operator_id": "op_003",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 0.0 vs yield pct 77.6",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 0.0 vs yield pct 77.6",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_002",
+    "operator_id": "op_005",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 10.2",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 10.2",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_003",
+    "operator_id": "op_005",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 98.0 vs yield pct 6.1",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 98.0 vs yield pct 6.1",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_004",
+    "operator_id": "op_007",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 6.1 vs yield pct 79.6",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 6.1 vs yield pct 79.6",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_005",
+    "operator_id": "op_010",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 83.7 vs yield pct 30.6",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 83.7 vs yield pct 30.6",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_006",
+    "operator_id": "op_011",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 32.7 vs yield pct 91.8",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 32.7 vs yield pct 91.8",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_007",
+    "operator_id": "op_012",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 75.5 vs yield pct 16.3",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 75.5 vs yield pct 16.3",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_008",
+    "operator_id": "op_013",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 0.0",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 0.0",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_009",
+    "operator_id": "op_013",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 91.8 vs yield pct 0.0",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 91.8 vs yield pct 0.0",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_010",
+    "operator_id": "op_016",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 4.1 vs yield pct 83.7",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 4.1 vs yield pct 83.7",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_011",
+    "operator_id": "op_018",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 2.0",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 2.0",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_012",
+    "operator_id": "op_018",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 100.0 vs yield pct 4.1",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 100.0 vs yield pct 4.1",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_013",
+    "operator_id": "op_019",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 8.2 vs yield pct 85.7",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 8.2 vs yield pct 85.7",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_014",
+    "operator_id": "op_020",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 6.1",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 6.1",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_015",
+    "operator_id": "op_020",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 95.9 vs yield pct 8.2",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 95.9 vs yield pct 8.2",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_016",
+    "operator_id": "op_021",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 4.1",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 4.1",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_017",
+    "operator_id": "op_021",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 93.9 vs yield pct 2.0",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 93.9 vs yield pct 2.0",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_018",
+    "operator_id": "op_026",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 8.2",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 8.2",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_019",
+    "operator_id": "op_026",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 89.8 vs yield pct 10.2",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 89.8 vs yield pct 10.2",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_020",
+    "operator_id": "op_027",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 14.3 vs yield pct 75.5",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 14.3 vs yield pct 75.5",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_021",
+    "operator_id": "op_031",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 22.4",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 22.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_022",
+    "operator_id": "op_032",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 20.4",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 20.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_023",
+    "operator_id": "op_033",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 30.6 vs yield pct 100.0",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 30.6 vs yield pct 100.0",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_024",
+    "operator_id": "op_034",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 2.0 vs yield pct 81.6",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 2.0 vs yield pct 81.6",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_025",
+    "operator_id": "op_035",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 71.4 vs yield pct 22.4",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 71.4 vs yield pct 22.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_026",
+    "operator_id": "op_036",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 18.4",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 18.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_027",
+    "operator_id": "op_037",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 16.3",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 16.3",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_028",
+    "operator_id": "op_039",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 12.2",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 12.2",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_029",
+    "operator_id": "op_039",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 87.8 vs yield pct 26.5",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 87.8 vs yield pct 26.5",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_030",
+    "operator_id": "op_041",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 77.6 vs yield pct 20.4",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 77.6 vs yield pct 20.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_031",
+    "operator_id": "op_042",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 14.3",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 14.3",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_032",
+    "operator_id": "op_042",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 73.5 vs yield pct 24.5",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 73.5 vs yield pct 24.5",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_033",
+    "operator_id": "op_043",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 26.5 vs yield pct 87.8",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 26.5 vs yield pct 87.8",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_034",
+    "operator_id": "op_046",
+    "pattern_id": "P-CTX-01",
+    "hypothesis": "leverage percentile 24.5",
+    "confidence": 0.62,
+    "status": "hypothesis",
+    "evidence": "leverage percentile 24.5",
+    "alternatives": [],
+    "recommended_interventions": [
+      "CTX-001",
+      "CTX-002",
+      "CTX-003"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_035",
+    "operator_id": "op_046",
+    "pattern_id": "P-BURN-01",
+    "hypothesis": "usage pct 81.6 vs yield pct 18.4",
+    "confidence": 0.67,
+    "status": "hypothesis",
+    "evidence": "usage pct 81.6 vs yield pct 18.4",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STD-001",
+      "FRM-001"
+    ],
+    "synthetic": true
+  },
+  {
+    "diagnosis_id": "diag_036",
+    "operator_id": "op_050",
+    "pattern_id": "P-HIDDEN-01",
+    "hypothesis": "usage pct 16.3 vs yield pct 73.5",
+    "confidence": 0.6,
+    "status": "hypothesis",
+    "evidence": "usage pct 16.3 vs yield pct 73.5",
+    "alternatives": [],
+    "recommended_interventions": [
+      "STG-001"
+    ],
+    "synthetic": true
+  }
+]

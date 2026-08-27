@@ -1,0 +1,11 @@
+name = "moses"
+compatibility_date = "2025-07-01"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+routes = [
+  { pattern = "enterprise.mos2es.org/*", zone_name = "mos2es.org" },
+]
+
+[assets]
+directory = "../../_02_demo-website"

@@ -1,0 +1,50 @@
+{
+  "demo_id": "acme_50_v1",
+  "synthetic": true,
+  "operators": 50,
+  "baseline_days": 30,
+  "post_days": 14,
+  "reference_field_version": "public_field_2026-08-17",
+  "metric_registry_version": "0.2",
+  "seed": 50030,
+  "files": [
+    "cohort.json",
+    "operators.json",
+    "observations.jsonl",
+    "daily_aggregates.csv",
+    "daily_telemetry.csv",
+    "operator_metrics.csv",
+    "operators.csv",
+    "cohort_summary.json",
+    "workflows.json",
+    "stage_events.jsonl",
+    "workflow_fit_observations.csv",
+    "diagnoses.json",
+    "diagnostics.json",
+    "interventions.json",
+    "interventions.csv",
+    "results.json",
+    "post_intervention_results.csv",
+    "external_outcomes.csv",
+    "reference_field.json",
+    "metric_registry.json",
+    "artifacts.jsonl",
+    "lineages.jsonl",
+    "outcomes.json",
+    "teams.json",
+    "demo_manifest.json"
+  ],
+  "extensions": {
+    "q14_gap_closure": {
+      "artifacts": 200,
+      "lineages": 50,
+      "outcomes": 50,
+      "new_workflows": ["design_sprint_v1", "data_analysis_v1", "incident_response_v1"],
+      "new_stage_events": 262,
+      "teams": 6,
+      "generator": "generate_extensions.py",
+      "generator_seed": 50030,
+      "closed_date": "2026-08-21"
+    }
+  }
+}
