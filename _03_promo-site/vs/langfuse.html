@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ vs Langfuse — Operator Evaluation vs Application Observability</title>
+<meta name="description" content="MO§ES™ vs Langfuse: Langfuse traces what the AI application does. MO§ES™ measures what the human operator does. Application observability vs operator evaluation.">
+<link rel="canonical" href="https://mos2es.org/vs/langfuse">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/vs/langfuse">
+<meta property="og:title" content="MO§ES™ vs Langfuse — Operator Evaluation vs Application Observability">
+<meta property="og:description" content="Langfuse traces what the AI application does. MO§ES™ measures what the human operator does. Application observability vs operator evaluation.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MO§ES™ vs Langfuse — Operator Evaluation vs Application Observability">
+<meta name="twitter:description" content="Application observability vs operator evaluation.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+[
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"vs Langfuse","item":"https://mos2es.org/vs/langfuse"}]},
+  {"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://mos2es.org/#software","name":"MO§ES™","url":"https://mos2es.org","description":"Enterprise AI operator evaluation platform. Measures how people operate AI systems, benchmarks performance, builds bespoke evals, and tests interventions.","applicationCategory":"BusinessApplication","operatingSystem":"Cross-platform","publisher":{"@id":"https://mos2es.org/#org"},"offers":{"@type":"Offer","description":"30-day enterprise pilot. 6 commercial packages: Baseline, Diagnostic, Evaluation, Monitor, Meta-Pilot, MO§E§.","url":"https://mos2es.org/pilot"}}
+]
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Competitor Comparison</div>
+<h1>MO§ES™ vs Langfuse</h1>
+<p class="lead">Langfuse traces what the AI application does — prompt chains, LLM calls, token costs, latency. MO§ES™ measures what the human operator does — how effectively they use AI systems to accomplish real work. The distinction is application observability vs operator evaluation.</p>
+<a class="btn" href="../pilot.html">Explore the 30-Day Pilot</a>
+<a class="btn-outline" href="../methodology.html">See the Methodology</a>
+</div>
+
+<!-- ═══ THE CORE DISTINCTION ═══ -->
+<section>
+<div class="eyebrow">The Core Distinction</div>
+<h2>Different objects, different methods.</h2>
+<p class="sec-intro">Langfuse observes the application. MO§ES™ observes the operator. Langfuse instruments the LLM application's execution path — every prompt, every call, every response — and presents it as traces for debugging, cost analysis, and performance monitoring. The object is the application. The method is tracing.</p>
+<p>MO§ES™ instruments the operator's interaction with AI systems — the token-level signals that flow when a human works with AI on a real task — and derives performance metrics from those signals. The object is the operator. The method is telemetry-based measurement. The output is a performance profile, not a trace.</p>
+<p>Both systems consume token-level data. The difference is what they do with it. Langfuse uses tokens to reconstruct what the application did. MO§ES™ uses tokens to characterize how the operator behaved. The same INPUT/OUTPUT stream that Langfuse renders as a trace view, MO§ES™ renders as a Leverage score, a Yield metric, a Token SNR measurement. Same data, different object, different output.</p>
+</section>
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section>
+<div class="eyebrow">Side by Side</div>
+<h2>Comparison at a glance.</h2>
+<table class="table">
+<tr><th>Dimension</th><th>MO§ES™</th><th>Langfuse</th></tr>
+<tr><td><strong>What it measures</strong></td><td>Human operator performance via content-free token telemetry across real tasks</td><td>LLM application traces, prompt execution, token costs, and latency</td></tr>
+<tr><td><strong>Mechanism</strong></td><td>Canonical telemetry (INPUT, OUTPUT, CACHE READ, CACHE WRITE) → derived metrics → benchmarks</td><td>Prompt tracing + logging + cost analytics + execution path visualization</td></tr>
+<tr><td><strong>Scope</strong></td><td>Human operators across all AI systems, all roles, all workflows</td><td>LLM applications and their prompt chains / execution paths</td></tr>
+<tr><td><strong>Governance</strong></td><td>DEVELOPMENTAL gates, ASSOCIATION never CAUSATION, HYPOTHESIS never fact, provenance on every measurement</td><td>Open-source observability; self-hosted or cloud-hosted</td></tr>
+<tr><td><strong>Pricing</strong></td><td>30-day enterprise pilot; 6 commercial packages</td><td>Open-source self-hosted free; cloud hosted with usage-based pricing</td></tr>
+<tr><td><strong>Best for</strong></td><td>Enterprises that need to measure and improve how operators actually perform with AI in real workflows</td><td>LLM app developers who need observability, tracing, and cost analytics for their applications</td></tr>
+</table>
+</section>
+
+<!-- ═══ TRACING THE APP VS PROFILING THE OPERATOR ═══ -->
+<section>
+<div class="eyebrow">Tracing vs Profiling</div>
+<h2>A trace is not a performance profile.</h2>
+<p class="sec-intro">Langfuse produces traces — step-by-step reconstructions of what an LLM application did during a single execution. A trace shows the prompt that was sent, the model that was called, the response that came back, the cost that was incurred, the latency that was observed. This is the observability paradigm: make the application's internal behavior visible so developers can debug and optimize it.</p>
+<p>MO§ES™ produces performance profiles — multidimensional characterizations of how an operator behaves across many tasks over time. A profile shows Leverage, Yield, Token SNR, Log Leverage, and Construction, each computed from the aggregate of the operator's token-level signals. This is the evaluation paradigm: make the operator's performance measurable so the enterprise can benchmark, diagnose, and intervene.</p>
+<p>A trace answers "what happened in this one call?" A profile answers "how does this operator perform across all their work?" The temporal grain is different — a trace is a single event, a profile is a distribution over many events. The consumer is different — a trace is for the developer debugging the app, a profile is for the enterprise evaluating its operators. Both are valid. They serve different people answering different questions.</p>
+</section>
+
+<!-- ═══ COST ANALYTICS VS PERFORMANCE METRICS ═══ -->
+<section>
+<div class="eyebrow">Cost Analytics vs Performance Metrics</div>
+<h2>What the tokens tell you depends on who you are.</h2>
+<p class="sec-intro">Langfuse's cost analytics are a core feature. By tracking token counts and model pricing, Langfuse tells the application team how much each LLM call costs, how costs accumulate across sessions, and where the spend is concentrated. This is essential operational data for teams running AI applications in production — cost overruns are a real failure mode.</p>
+<p>MO§ES™ treats tokens differently. Tokens are not primarily a cost unit — they are a performance signal. INPUT tokens tell you how much context the operator provided. OUTPUT tokens tell you how much the AI generated. CACHE READ and CACHE WRITE tell you how efficiently the operator leveraged caching. From these signals, MO§ES™ derives Leverage (output per input), Yield (fraction of output that survives), and Token SNR (signal-to-noise ratio). Cost is a downstream calculation; performance is the primary output.</p>
+<p>The practical consequence: a team using Langfuse sees that their application spent $500 on tokens last week. A team using MO§ES™ sees that their operators' average Leverage is 2.3, their Yield is 0.41, and their Token SNR clusters below the role benchmark. The first is a budget number. The second is a performance characterization. Both are useful. They answer different questions — "what did AI cost us?" vs "how well are we using AI?"</p>
+</section>
+
+<!-- ═══ OBSERVABILITY VS EVALUATION ═══ -->
+<section>
+<div class="eyebrow">Observability vs Evaluation</div>
+<h2>Seeing the system vs measuring the person.</h2>
+<p class="sec-intro">Observability and evaluation are different engineering traditions. Observability — the tradition Langfuse belongs to — is about making a system's internal state visible from its external outputs. You instrument the application, collect traces and logs, and use them to understand and debug system behavior. The system is the subject. The human is the operator of the system, not the object of study.</p>
+<p>Evaluation — the tradition MO§ES™ belongs to — is about measuring a subject's performance against criteria. You define what good performance looks like, measure the subject's actual performance, and compare. The subject is the human operator. The AI system is the instrument through which the subject is observed, not the object of study.</p>
+<p>This is why Langfuse and MO§ES™ can consume similar data and produce fundamentally different outputs. Langfuse's traces are for developers who need to see inside their application. MO§ES™'s profiles are for enterprises that need to measure their people. An organization deploying AI at scale needs both — observability for the application team, evaluation for the operations team. They are not substitutes.</p>
+</section>
+
+<!-- ═══ WHEN TO USE WHICH ═══ -->
+<section>
+<div class="eyebrow">Decision Framework</div>
+<h2>When to choose which.</h2>
+<div class="grid2">
+<div class="card">
+<div class="big">Choose Langfuse if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You are building LLM applications and need execution tracing</li>
+<li>You want prompt-level observability and debugging</li>
+<li>You need cost analytics and spend tracking for AI calls</li>
+<li>You want an open-source, self-hostable observability stack</li>
+<li>Your question is "what is my AI application doing and what does it cost?"</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">Choose MO§ES™ if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You need to measure how operators actually perform with AI in real work</li>
+<li>You want performance profiles, not application traces</li>
+<li>You need to benchmark, diagnose, intervene, and re-evaluate operators</li>
+<li>You want governance-guardrailed measurement (DEVELOPMENTAL, ASSOCIATION, HYPOTHESIS)</li>
+<li>Your question is "how well are our people operating AI?"</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- ═══ RELATED ═══ -->
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="tags">
+<a class="btn-outline" href="../product.html">Product</a>
+<a class="btn-outline" href="../pilot.html">Pilot</a>
+<a class="btn-outline" href="../methodology.html">Methodology</a>
+<a class="btn-outline" href="../docs.html">Docs</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

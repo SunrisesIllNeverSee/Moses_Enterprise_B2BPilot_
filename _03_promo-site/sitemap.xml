@@ -160,6 +160,12 @@
   </url>
   <!-- Comparison pages -->
   <url>
+    <loc>https://mos2es.org/vs/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
     <loc>https://mos2es.org/vs/workera</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -219,7 +225,49 @@
     <priority>0.6</priority>
     <lastmod>2026-08-25</lastmod>
   </url>
+  <url>
+    <loc>https://mos2es.org/vs/lmsys-arena</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/vs/braintrust</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/vs/langfuse</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/vs/wakatime</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/vs/costhawk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/vs/ccusage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
   <!-- Alternatives listicles -->
+  <url>
+    <loc>https://mos2es.org/alternatives/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
   <url>
     <loc>https://mos2es.org/alternatives/ai-operator-evaluation-tools</loc>
     <changefreq>monthly</changefreq>
@@ -249,6 +297,24 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2026-08-25</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/alternatives/ai-benchmarking-tools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/alternatives/mcp-ai-developer-tools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/alternatives/ai-coding-roi-tools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
   </url>
   <!-- Machine-readable files -->
   <url>

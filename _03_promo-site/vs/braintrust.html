@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ vs Braintrust — Operator-Side Eval vs Product-Side Eval</title>
+<meta name="description" content="MO§ES™ vs Braintrust: Braintrust evaluates AI products and applications via custom test suites. MO§ES™ evaluates the humans operating AI systems via token telemetry.">
+<link rel="canonical" href="https://mos2es.org/vs/braintrust">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/vs/braintrust">
+<meta property="og:title" content="MO§ES™ vs Braintrust — Operator-Side Eval vs Product-Side Eval">
+<meta property="og:description" content="Braintrust evaluates AI products and applications via custom test suites. MO§ES™ evaluates the humans operating AI systems via token telemetry.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MO§ES™ vs Braintrust — Operator-Side Eval vs Product-Side Eval">
+<meta name="twitter:description" content="Product-side eval vs operator-side eval.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+[
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"vs Braintrust","item":"https://mos2es.org/vs/braintrust"}]},
+  {"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://mos2es.org/#software","name":"MO§ES™","url":"https://mos2es.org","description":"Enterprise AI operator evaluation platform. Measures how people operate AI systems, benchmarks performance, builds bespoke evals, and tests interventions.","applicationCategory":"BusinessApplication","operatingSystem":"Cross-platform","publisher":{"@id":"https://mos2es.org/#org"},"offers":{"@type":"Offer","description":"30-day enterprise pilot. 6 commercial packages: Baseline, Diagnostic, Evaluation, Monitor, Meta-Pilot, MO§E§.","url":"https://mos2es.org/pilot"}}
+]
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Competitor Comparison</div>
+<h1>MO§ES™ vs Braintrust</h1>
+<p class="lead">Braintrust evaluates AI products and applications via custom test suites, LLM-as-judge scoring, and regression testing. MO§ES™ evaluates the humans operating AI systems via content-free token telemetry. The distinction is product-side eval vs operator-side eval — the AI's output quality vs the human's operating performance.</p>
+<a class="btn" href="../pilot.html">Explore the 30-Day Pilot</a>
+<a class="btn-outline" href="../methodology.html">See the Methodology</a>
+</div>
+
+<!-- ═══ THE CORE DISTINCTION ═══ -->
+<section>
+<div class="eyebrow">The Core Distinction</div>
+<h2>Different objects, different methods.</h2>
+<p class="sec-intro">Braintrust evaluates the AI product. MO§ES™ evaluates the human operator. Braintrust's question is "does this AI application produce good outputs?" MO§ES™'s question is "does this operator use AI systems effectively?" Both are evaluation questions. They evaluate different things.</p>
+<p>Braintrust provides a platform for building bespoke evaluation suites — test cases, scoring functions, LLM-as-judge rubrics — that measure whether an AI application's outputs meet quality criteria. The object is the application. The method is test-suite evaluation. The output is a pass/fail or score that tells the product team whether their AI is working.</p>
+<p>MO§ES™ provides a platform for measuring operator performance — token telemetry, derived metrics, benchmark classes — that characterize how effectively a human operator works with AI systems. The object is the operator. The method is telemetry-based measurement. The output is a performance profile that tells the enterprise whether its people are operating AI well.</p>
+</section>
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section>
+<div class="eyebrow">Side by Side</div>
+<h2>Comparison at a glance.</h2>
+<table class="table">
+<tr><th>Dimension</th><th>MO§ES™</th><th>Braintrust</th></tr>
+<tr><td><strong>What it measures</strong></td><td>Human operator performance via content-free token telemetry across real tasks</td><td>AI product and output quality via custom test suites and scoring</td></tr>
+<tr><td><strong>Mechanism</strong></td><td>Canonical telemetry (INPUT, OUTPUT, CACHE READ, CACHE WRITE) → derived metrics → benchmarks</td><td>Custom test suites + LLM-as-judge + regression testing against golden datasets</td></tr>
+<tr><td><strong>Scope</strong></td><td>Human operators across all AI systems, all roles, all workflows</td><td>AI applications and products across their feature surface</td></tr>
+<tr><td><strong>Governance</strong></td><td>DEVELOPMENTAL gates, ASSOCIATION never CAUSATION, HYPOTHESIS never fact, provenance on every measurement</td><td>Product QA workflows; CI/CD-integrated eval pipelines</td></tr>
+<tr><td><strong>Pricing</strong></td><td>30-day enterprise pilot; 6 commercial packages</td><td>SaaS platform with usage-based enterprise pricing</td></tr>
+<tr><td><strong>Best for</strong></td><td>Enterprises that need to measure and improve how operators actually perform with AI in real workflows</td><td>AI product teams that need eval suites, regression testing, and quality monitoring for their applications</td></tr>
+</table>
+</section>
+
+<!-- ═══ PRODUCT QUALITY VS OPERATOR PERFORMANCE ═══ -->
+<section>
+<div class="eyebrow">Product Quality vs Operator Performance</div>
+<h2>The AI's output is not the human's performance.</h2>
+<p class="sec-intro">Braintrust's evaluation loop is familiar to anyone who has shipped software. You define test cases, run your AI application against them, score the outputs, and track regressions across releases. This is product QA applied to AI — a necessary and valuable practice. If your AI application starts producing worse outputs after a prompt change or model swap, Braintrust catches it.</p>
+<p>But product quality and operator performance are not the same thing. An AI application can produce excellent outputs while the human operator using it performs poorly — wasting tokens, iterating unproductively, failing to leverage caching, producing low-yield drafts. Conversely, an operator can perform well — high Leverage, high Yield, efficient token usage — while the underlying application has quality gaps. The two dimensions are independent.</p>
+<p>MO§ES™ measures the dimension Braintrust does not see. When an operator sits down with an AI system and works through a real task, the telemetry surface captures how they operate: how much input they provide, how much output they accept, how efficiently they use cache, how much of the generated content survives into their final artifact. This is operator performance. It is invisible to product-side eval suites because it is not about the product — it is about the person.</p>
+</section>
+
+<!-- ═══ TEST SUITES VS TELEMETRY ═══ -->
+<section>
+<div class="eyebrow">Test Suites vs Telemetry</div>
+<h2>Constructed tests vs observed behavior.</h2>
+<p class="sec-intro">Braintrust's method is test construction. A product team defines the cases their AI application should handle, writes scoring functions or configures LLM-as-judge rubrics, and runs the application against the suite. The evaluation is only as good as the test cases — if a real-world usage pattern is not in the suite, it is not evaluated.</p>
+<p>MO§ES™'s method is telemetry observation. No test cases are constructed. No scoring functions are written. The operator does their real work, and the system measures the operating behavior that emerges from the token-level signals. The evaluation covers every task the operator actually performs — because it is not testing against a suite, it is observing the full stream of real activity.</p>
+<p>The tradeoff is specificity. Braintrust can evaluate whether a specific output meets a specific quality criterion — "does this summary contain the three required facts?" MO§ES™ cannot answer that question. It does not inspect content. It measures structural operating behavior — Leverage, Yield, Token SNR — that is independent of what the operator is producing. The two methods are complementary: Braintrust tells you if your AI is producing the right outputs. MO§ES™ tells you if your operators are using AI effectively.</p>
+</section>
+
+<!-- ═══ REGRESSION TESTING VS INTERVENTION TESTING ═══ -->
+<section>
+<div class="eyebrow">Regression vs Intervention</div>
+<h2>Different loops, different goals.</h2>
+<p class="sec-intro">Braintrust's primary loop is regression testing. You ship a change to your AI application — a new prompt, a new model, a new retrieval pipeline — and you run the eval suite to confirm that output quality did not degrade. The loop is: change, test, confirm. The goal is to prevent quality regressions from reaching production.</p>
+<p>MO§ES™'s primary loop is intervention testing. You deploy a change to your operators — a training program, a workflow redesign, a tool introduction — and you measure whether operator performance metrics move in the expected direction. The loop is: intervene, measure, label. The goal is to determine whether the intervention is associated with performance improvement, with the epistemic discipline that ASSOCIATION is never CAUSATION and every outcome is labeled DEVELOPMENTAL.</p>
+<p>These loops serve different organizational functions. Braintrust serves the product team shipping AI applications. MO§ES™ serves the operations team improving how humans work with AI. An enterprise deploying AI at scale needs both — product-side regression testing to ensure the AI works, and operator-side intervention testing to ensure the humans work well with it.</p>
+</section>
+
+<!-- ═══ WHEN TO USE WHICH ═══ -->
+<section>
+<div class="eyebrow">Decision Framework</div>
+<h2>When to choose which.</h2>
+<div class="grid2">
+<div class="card">
+<div class="big">Choose Braintrust if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You are building AI applications and need to evaluate output quality</li>
+<li>You want regression testing integrated into your CI/CD pipeline</li>
+<li>You need custom eval suites with LLM-as-judge scoring</li>
+<li>Your question is "does this AI product work correctly?"</li>
+<li>You want a SaaS platform for AI product quality assurance</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">Choose MO§ES™ if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You need to measure how operators actually perform with AI in real work</li>
+<li>You want continuous performance profiles, not product quality scores</li>
+<li>You need to benchmark, diagnose, intervene, and re-evaluate operators</li>
+<li>You want governance-guardrailed measurement (DEVELOPMENTAL, ASSOCIATION, HYPOTHESIS)</li>
+<li>Your question is "are our people using AI effectively?"</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- ═══ RELATED ═══ -->
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="tags">
+<a class="btn-outline" href="../product.html">Product</a>
+<a class="btn-outline" href="../pilot.html">Pilot</a>
+<a class="btn-outline" href="../methodology.html">Methodology</a>
+<a class="btn-outline" href="../docs.html">Docs</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

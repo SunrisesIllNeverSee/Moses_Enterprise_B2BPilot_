@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MO§ES™ vs ccusage — Operator Evaluation vs Usage Reporting</title>
+<meta name="description" content="MO§ES™ vs ccusage: ccusage reports how many tokens you used in Claude Code. MO§ES™ measures how well you used them. Usage reporting vs operator evaluation.">
+<link rel="canonical" href="https://mos2es.org/vs/ccusage">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/vs/ccusage">
+<meta property="og:title" content="MO§ES™ vs ccusage — Operator Evaluation vs Usage Reporting">
+<meta property="og:description" content="ccusage reports how many tokens you used in Claude Code. MO§ES™ measures how well you used them. Usage reporting vs operator evaluation.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MO§ES™ vs ccusage — Operator Evaluation vs Usage Reporting">
+<meta name="twitter:description" content="Usage reporting vs operator evaluation.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+[
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"vs ccusage","item":"https://mos2es.org/vs/ccusage"}]},
+  {"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://mos2es.org/#software","name":"MO§ES™","url":"https://mos2es.org","description":"Enterprise AI operator evaluation platform. Measures how people operate AI systems, benchmarks performance, builds bespoke evals, and tests interventions.","applicationCategory":"BusinessApplication","operatingSystem":"Cross-platform","publisher":{"@id":"https://mos2es.org/#org"},"offers":{"@type":"Offer","description":"30-day enterprise pilot. 6 commercial packages: Baseline, Diagnostic, Evaluation, Monitor, Meta-Pilot, MO§E§.","url":"https://mos2es.org/pilot"}}
+]
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html">Contact</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Competitor Comparison</div>
+<h1>MO§ES™ vs ccusage</h1>
+<p class="lead">ccusage is a CLI tool that reports token usage for Claude Code sessions — how many tokens you consumed, what it cost, which models you used. MO§ES™ measures how well you used those tokens — operator performance, leverage, yield, and benchmarking across all AI systems. The distinction is usage reporting vs operator evaluation.</p>
+<a class="btn" href="../pilot.html">Explore the 30-Day Pilot</a>
+<a class="btn-outline" href="../methodology.html">See the Methodology</a>
+</div>
+
+<!-- ═══ THE CORE DISTINCTION ═══ -->
+<section>
+<div class="eyebrow">The Core Distinction</div>
+<h2>Different objects, different methods.</h2>
+<p class="sec-intro">ccusage reports usage. MO§ES™ evaluates performance. ccusage's question is "how many tokens did you use in Claude Code, and what did it cost?" MO§ES™'s question is "how effectively did you operate AI systems to accomplish your work?" Both consume token data. They produce fundamentally different outputs.</p>
+<p>ccusage parses Claude Code's local session logs, extracts token counts and cost estimates, and presents them as reports — daily totals, session breakdowns, model-level summaries. The object is the usage. The method is log parsing. The output is a usage report.</p>
+<p>MO§ES™ captures the canonical telemetry surface — INPUT, OUTPUT, CACHE READ, CACHE WRITE — across all AI systems the operator uses, derives five performance metrics from those signals, and benchmarks the operator against a population. The object is the operator's performance. The method is telemetry-based measurement. The output is a performance profile.</p>
+</section>
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section>
+<div class="eyebrow">Side by Side</div>
+<h2>Comparison at a glance.</h2>
+<table class="table">
+<tr><th>Dimension</th><th>MO§ES™</th><th>ccusage</th></tr>
+<tr><td><strong>What it measures</strong></td><td>AI operator performance across all AI systems via content-free token telemetry</td><td>Claude Code token usage and cost estimates per session and per day</td></tr>
+<tr><td><strong>Mechanism</strong></td><td>Canonical telemetry (INPUT, OUTPUT, CACHE READ, CACHE WRITE) → 5 derived metrics → benchmarks</td><td>CLI tool that parses Claude Code session logs for token counts</td></tr>
+<tr><td><strong>Scope</strong></td><td>All AI systems, all providers, all roles, all workflows</td><td>Claude Code only; single tool, single provider</td></tr>
+<tr><td><strong>Governance</strong></td><td>DEVELOPMENTAL gates, ASSOCIATION never CAUSATION, HYPOTHESIS never fact, provenance on every measurement</td><td>Usage reporting; open-source CLI utility</td></tr>
+<tr><td><strong>Pricing</strong></td><td>30-day enterprise pilot; 6 commercial packages</td><td>Free and open-source</td></tr>
+<tr><td><strong>Best for</strong></td><td>Enterprises that need to measure and improve how operators actually perform with AI across all tools</td><td>Claude Code users who want to see their token usage and cost estimates</td></tr>
+</table>
+</section>
+
+<!-- ═══ USAGE VS PERFORMANCE ═══ -->
+<section>
+<div class="eyebrow">Usage vs Performance</div>
+<h2>How many tokens is not how well you used them.</h2>
+<p class="sec-intro">ccusage tells you how many tokens you consumed. This is useful information — it helps you understand your Claude Code usage patterns, estimate costs, and track consumption over time. But token count is a volume metric. It tells you how much you used. It does not tell you how well you used it.</p>
+<p>MO§ES™ tells you how effectively you used tokens. Leverage measures how much output you generated per unit of input. Yield measures how much of that output survived into your final work. Token SNR measures the signal-to-noise ratio in your token stream. These are performance metrics — they evaluate quality, not quantity. An operator who used 50,000 tokens with high Leverage and high Yield outperformed an operator who used 200,000 tokens with low Leverage and low Yield. ccusage sees the first operator as "light usage" and the second as "heavy usage." MO§ES™ sees the first as effective and the second as wasteful.</p>
+<p>The difference matters because volume-based metrics can be actively misleading. A team that increases its token usage might be getting more productive — or it might be getting less efficient. ccusage cannot distinguish between the two. It reports the increase as a number. MO§ES™ reports whether the increase corresponds to improved or degraded performance. The same data, interpreted through different frameworks, produces opposite conclusions.</p>
+</section>
+
+<!-- ═══ CLAUDE CODE ONLY VS ALL AI SYSTEMS ═══ -->
+<section>
+<div class="eyebrow">Claude Code Only vs All AI Systems</div>
+<h2>One tool vs the entire operating surface.</h2>
+<p class="sec-intro">ccusage is scoped to Claude Code. It parses Claude Code's session logs and reports on Claude Code's token usage. This is a deliberate design choice — ccusage is a focused utility that does one thing well. But it means ccusage sees only a slice of the operator's AI activity.</p>
+<p>MO§ES™ is scoped to all AI systems the operator uses. In the demo dataset, measurement spanned 5 AI providers, 13 benchmark classes, and 27 MCP tools. An operator who uses Claude Code for coding, ChatGPT for drafting, and Gemini for research appears in ccusage as only their Claude Code activity. In MO§ES™, they appear as a complete operator with a performance profile that spans every AI system they touch. The operating surface is the full picture, not one tool within it.</p>
+<p>This scope difference has practical consequences for enterprise evaluation. If an enterprise wants to know how well its operators use AI, it needs to see across all the AI tools those operators use — not just one. A team that performs well in Claude Code but poorly in other AI systems has a performance gap that ccusage cannot detect. MO§ES™ detects it because it measures the operator, not the tool.</p>
+</section>
+
+<!-- ═══ REPORTS VS BENCHMARKS ═══ -->
+<section>
+<div class="eyebrow">Reports vs Benchmarks</div>
+<h2>A usage report is not a performance evaluation.</h2>
+<p class="sec-intro">ccusage produces reports — summaries of what happened. "You used 1.2M tokens today, costing $4.80, across 8 sessions." Reports are descriptive. They tell you what occurred. They do not tell you whether what occurred was good, bad, above average, or below average. There is no benchmark, no comparison, no evaluation.</p>
+<p>MO§ES™ produces evaluations — performance profiles positioned within a benchmark population. "Your Leverage is 2.8, above the role benchmark of 2.1. Your Yield is 0.38, below the role benchmark of 0.45." Evaluations are comparative and judgmental. They tell you not just what happened but how it ranks, where the gaps are, and what the target is. In the demo dataset, 50 operators were benchmarked across 13 classes, producing a performance field that positioned each operator relative to their peers.</p>
+<p>The difference between a report and an evaluation is the difference between data and insight. A usage report gives you a number. An evaluation gives you a number plus a context plus a direction. ccusage gives you the number. MO§ES™ gives you the number, the context, and the direction — with the governance discipline to label every conclusion as DEVELOPMENTAL, every association as never causation, and every claim as hypothesis until proven otherwise.</p>
+</section>
+
+<!-- ═══ WHEN TO USE WHICH ═══ -->
+<section>
+<div class="eyebrow">Decision Framework</div>
+<h2>When to choose which.</h2>
+<div class="grid2">
+<div class="card">
+<div class="big">Choose ccusage if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You use Claude Code and want to see your token usage</li>
+<li>You want a free, lightweight CLI tool for usage stats</li>
+<li>You need cost estimates for Claude Code sessions</li>
+<li>Your question is "how many tokens did I use in Claude Code?"</li>
+<li>You want personal usage reporting, not enterprise evaluation</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">Choose MO§ES™ if</div>
+<ul class="tight" style="margin-top:8px">
+<li>You need to measure how operators perform with AI across all tools</li>
+<li>You want performance metrics (Leverage, Yield, Token SNR), not usage totals</li>
+<li>You need to benchmark operators against a population and role benchmarks</li>
+<li>You want governance-guardrailed measurement (DEVELOPMENTAL, ASSOCIATION, HYPOTHESIS)</li>
+<li>Your question is "how well are our people operating AI across all systems?"</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- ═══ RELATED ═══ -->
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="tags">
+<a class="btn-outline" href="../product.html">Product</a>
+<a class="btn-outline" href="../pilot.html">Pilot</a>
+<a class="btn-outline" href="../methodology.html">Methodology</a>
+<a class="btn-outline" href="../docs.html">Docs</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>
