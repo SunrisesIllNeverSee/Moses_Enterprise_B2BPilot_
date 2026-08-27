@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/modelcontextprotocol/main/schema/server.json",
+  "name": "MOSES Enterprise AI Operator Evaluation",
+  "description": "Enterprise AI operator evaluation MCP server. 27 tools (22 read + 5 write) for measuring, benchmarking, diagnosing, and intervening on how human operators use AI tools across 5 canonical metrics (yield, leverage, token SNR, construction, divergence). Includes operator x system decomposition, outcome lineage correlation, org topology, and operator similarity search.",
+  "version": "0.4.0",
+  "remotes": [
+    {
+      "transport": "streamable-http",
+      "url": "https://mcp.mos2es.org/mcp"
+    }
+  ],
+  "homepage": "https://mos2es.org",
+  "docs": "https://mos2es.org/docs",
+  "repository": "https://github.com/SunrisesIllneverSee/Moses_Enterprise_B2BPilot_",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "tools_count": 27,
+  "categories": ["analytics", "enterprise", "ai-evaluation", "benchmarking"],
+  "tags": ["enterprise", "ai-evaluation", "operator-evaluation", "analytics", "benchmarking", "workforce", "systems-intelligence"]
+}
