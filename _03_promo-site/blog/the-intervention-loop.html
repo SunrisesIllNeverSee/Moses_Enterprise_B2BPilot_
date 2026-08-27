@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Intervention Loop: How to Test Whether Your AI Training Actually Worked — MO§ES™</title>
+<meta name="description" content="A five-step method for testing whether AI operator training and tooling changes actually improve performance. Baseline, diagnose, prescribe, re-measure, and read target and non-target metric deltas.">
+<link rel="canonical" href="https://mos2es.org/blog/the-intervention-loop">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mos2es.org/blog/the-intervention-loop">
+<meta property="og:title" content="The Intervention Loop: How to Test Whether Your AI Training Actually Worked">
+<meta property="og:description" content="A five-step method for testing whether AI operator training and tooling changes actually improve performance — baseline, diagnose, prescribe, re-measure, and read the deltas.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Intervention Loop: How to Test Whether Your AI Training Actually Worked">
+<meta name="twitter:description" content="A five-step method for testing whether AI operator training actually improved performance.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">
+[
+  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://mos2es.org/blog/"},{"@type":"ListItem","position":3,"name":"The Intervention Loop","item":"https://mos2es.org/blog/the-intervention-loop"}]},
+  {"@context":"https://schema.org","@type":"Article","headline":"The Intervention Loop: How to Test Whether Your AI Training Actually Worked","description":"A five-step method for testing whether AI operator training and tooling changes actually improve performance — baseline, diagnose, prescribe, re-measure, and read target and non-target metric deltas.","url":"https://mos2es.org/blog/the-intervention-loop","author":{"@type":"Organization","name":"MO§ES™","@id":"https://mos2es.org/#org"},"publisher":{"@id":"https://mos2es.org/#org"},"datePublished":"2026-08-27","dateModified":"2026-08-27","articleSection":"Blog","about":["intervention testing","AI operator evaluation","canonical telemetry","baseline measurement","metric deltas"]}
+]
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b><a href="../index.html" style="text-decoration:none;color:inherit">MO§ES™</a></b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Article · Intervention Testing</div>
+<h1>The intervention loop: how to test whether your AI training actually worked.</h1>
+<p class="lead">Most enterprise AI training is deployed on faith. A workshop is run, a tool is rolled out, a prompt template is circulated — and then everyone moves on to the next initiative without ever checking whether the change produced a measurable difference in how operators actually work. The intervention loop is a five-step method that closes that gap. It turns training and tooling changes into falsifiable experiments with before-and-after measurement, declared target metrics, and honest reporting of side effects.</p>
+<div class="tags">
+<span class="label dark-bg">MEASURED</span>
+<span class="label dark-bg">DERIVED</span>
+<span class="label">DEVELOPMENTAL</span>
+<span class="label">ASSOCIATION</span>
+</div>
+</div>
+
+<section>
+<div class="eyebrow">Overview</div>
+<h2>Why most AI training is never tested.</h2>
+<p class="sec-intro">Enterprises spend heavily on AI enablement — context engineering workshops, tooling rollouts, model migrations, workflow redesigns — and then measure almost none of it. The reason is not negligence. It is that most organizations lack a measurement framework that can detect the difference. Self-reported productivity gains are unreliable. Usage metrics tell you whether people touched the tool, not whether they operated it well. Business outcomes are too noisy and too delayed to attribute to a single training event. The result is a cycle of investment without evidence: each new initiative is justified by the last one's unverified success.</p>
+<div class="pipeline">
+<span>BASELINE</span>
+<span class="arrow">↓</span>
+<span>DIAGNOSE</span>
+<span class="arrow">↓</span>
+<span>PRESCRIBE</span>
+<span class="arrow">↓</span>
+<span>RE-MEASURE</span>
+<span class="arrow">↓</span>
+<span>READ DELTAS</span>
+</div>
+<p style="margin-top:16px">The intervention loop replaces faith with measurement. It uses the five canonical derived metrics — Leverage, Yield, Token SNR, Log Leverage, and Construction — computed from content-free token telemetry, to establish a baseline before any change and re-measure after. The canonical metric is Yield: the productive output share of total token flow. Every step carries an evidence label and a decision-use label, and every outcome claim is reported as ASSOCIATION unless a controlled experiment with a control group was run.</p>
+</section>
+
+<section>
+<div class="eyebrow">Step 1</div>
+<h2>Baseline — establish your control.</h2>
+<p class="sec-intro">Before you can test whether an intervention worked, you need to know what the operator looked like before it. The baseline is your control. Without it, every post-intervention number is a number in a vacuum — you cannot tell whether a Yield of 0.18 is an improvement or a regression because you have nothing to compare it against.</p>
+<p style="margin-top:12px">The baseline period should run for two to four weeks before any training, tooling change, or workflow adjustment is introduced. Two weeks gives you enough observations to smooth out day-to-day variance. Four weeks gives you enough to see whether the operator's behavior is stable or drifting on its own — a critical distinction, because if performance was already trending upward before your intervention, a post-intervention increase may have nothing to do with you.</p>
+<div class="grid2">
+<div class="card">
+<div class="big">What the baseline captures</div>
+<ul class="tight" style="margin-top:8px">
+<li>All five canonical metrics at the operator level</li>
+<li>Model mix — which providers and models were in use</li>
+<li>Workflow context — which tasks and processes were in scope</li>
+<li>Variance band — how much the metrics fluctuate day to day</li>
+<li>Trend direction — whether performance is stable, rising, or falling</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">What the baseline is not</div>
+<ul class="tight" style="margin-top:8px">
+<li>A performance verdict — it is a measurement, not a judgment</li>
+<li>A personnel evaluation — composite scores are DEVELOPMENTAL</li>
+<li>A leaderboard — no punitive labels, no ranking against peers</li>
+<li>A prompt audit — telemetry is content-free, no prompt text collected</li>
+<li>A prediction of future performance — it is a snapshot of the present</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:16px">The baseline must be collected under the same operating conditions that will hold during and after the intervention. If the operator switches models mid-baseline, the baseline is contaminated. If the workflow changes, the baseline is contaminated. If the operator goes on vacation for a week, that week should be excluded rather than averaged in. The integrity of the baseline is the integrity of the entire loop — every downstream comparison depends on it.</p>
+<p class="note" style="margin-top:12px">Privacy boundary: cohort-level reporting is the default. Individual identity requires separate authorization. No adverse employment actions are permitted in pilot. Baseline data routes workflows, not people.</p>
+</section>
+
+<section>
+<div class="eyebrow">Step 2</div>
+<h2>Diagnose — find what is actually weak.</h2>
+<p class="sec-intro">Once you have a baseline, the next step is to read it. The five canonical metrics each capture a different facet of the operator's token economy, and each weakness points toward a different kind of intervention. Diagnosis drives the prescription — not vibes, not intuition, not whatever training topic was already on the calendar.</p>
+<table class="table">
+<tr><th>Metric</th><th>What it measures</th><th>What low values suggest</th></tr>
+<tr><td><strong>Yield</strong></td><td>Productive output share of total token flow</td><td>Operator is burning input tokens without converting them to output — may need prompt compression or task-scoping coaching</td></tr>
+<tr><td><strong>Leverage</strong></td><td>Context reuse and construction efficiency relative to new input</td><td>Operator is not reusing built context — may need context structuring training or cache-aware workflow design</td></tr>
+<tr><td><strong>Token SNR</strong></td><td>Output relative to input and reused context</td><td>Signal quality is low — operator may be over-prompting or working against noisy context</td></tr>
+<tr><td><strong>Log Leverage</strong></td><td>Compressed leverage scale for ranking</td><td>Useful for positioning the operator within the cohort, not for diagnosis on its own</td></tr>
+<tr><td><strong>Construction</strong></td><td>Ratio of new context built to context reused</td><td>Operator may be rebuilding context that already exists — may need tooling access or context persistence changes</td></tr>
+</table>
+<p style="margin-top:16px">The diagnosis is not a single number. It is a pattern. An operator with low Yield and low Leverage is failing on two different axes simultaneously — they are both burning input tokens and failing to reuse context, which suggests a fundamental workflow problem rather than a narrow skill gap. An operator with low Leverage but healthy Yield may be producing good output inefficiently, which points toward a context management intervention rather than an output quality intervention. Reading the pattern, not just the numbers, is what makes the diagnosis actionable.</p>
+<p style="margin-top:12px">Every diagnosis carries a HYPOTHESIS label. It is never presented as established fact. The system records the evidence, the alternatives considered, and the validation status. If two diagnoses are equally consistent with the data, both are reported. The goal is to narrow the space of possible interventions, not to declare a verdict on the operator.</p>
+</section>
+
+<section>
+<div class="eyebrow">Step 3</div>
+<h2>Prescribe — design a targeted intervention.</h2>
+<p class="sec-intro">The prescription follows the diagnosis. This is where most enterprise AI programs go wrong: they prescribe "more AI training" as a blanket remedy regardless of what the metrics actually show. The intervention loop demands specificity. The intervention must target the metric the diagnosis identified as weak, and it must be the kind of change that could plausibly move that metric.</p>
+<div class="grid3">
+<div class="card"><div class="big">Low Yield</div><p>Targeted intervention: prompt compression coaching, task-scoping workshops, or model switching for task types where the operator is over-sending input. The goal is to reduce wasted input tokens relative to productive output.</p></div>
+<div class="card"><div class="big">Low Leverage</div><p>Targeted intervention: context structuring workshop, cache-aware workflow redesign, or tooling changes that persist context across sessions. The goal is to increase reuse of already-built context.</p></div>
+<div class="card"><div class="big">Low Construction efficiency</div><p>Targeted intervention: MCP tool access expansion, context library rollout, or workflow changes that surface existing context. The goal is to reduce redundant context construction.</p></div>
+</div>
+<p style="margin-top:16px">The prescription must declare two things before it begins: the target metric — the one the intervention is designed to improve — and the follow-up window, the period over which the re-measurement will run. Declaring these upfront prevents post-hoc rationalization. If the intervention was designed to improve Leverage and Leverage did not move, that is a null result — not a story about how Yield improved instead and therefore the training was a success. The target metric is the contract.</p>
+<p style="margin-top:12px">The intervention should also be scoped tightly enough that its effect can be isolated. Rolling out a new model, a new tool, and a new workshop in the same week makes it impossible to tell which change produced which delta. When possible, change one thing at a time. When that is not possible — because organizational constraints force bundled rollouts — report the bundle as a bundle and acknowledge that attribution is uncertain.</p>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Step 4</div>
+<h2>Re-measure — run the same measurement again.</h2>
+<p class="sec-intro" style="color:#ccc">After the intervention is deployed and the follow-up window closes, measure again. The re-measurement must use the same metrics, the same operating conditions, and the same observation period length as the baseline. If the baseline ran for three weeks, the re-measurement runs for three weeks. If the baseline covered two workflows, the re-measurement covers the same two workflows. Comparability is non-negotiable.</p>
+<div class="grid2">
+<div class="card">
+<div class="big">Match the baseline</div>
+<ul class="tight" style="margin-top:8px">
+<li>Same five canonical metrics</li>
+<li>Same observation window length</li>
+<li>Same workflows in scope</li>
+<li>Same model mix — or document the change</li>
+<li>Same operator cohort</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">What to watch for</div>
+<ul class="tight" style="margin-top:8px">
+<li>Target metric movement — did the declared target change?</li>
+<li>Non-target metric movement — did anything else shift?</li>
+<li>Variance changes — did the operator become more or less consistent?</li>
+<li>Trend changes — did a pre-existing trend accelerate or reverse?</li>
+<li>Time-to-effect — did the change appear immediately or lag?</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:16px;color:#ccc">One common failure mode is re-measuring too early. If the intervention is a workshop, operators may need days or weeks to internalize the new patterns and for those patterns to show up in telemetry. Re-measuring on day two and declaring failure is as unscientific as declaring success on day two. The follow-up window should be declared before the intervention begins and held to — not shortened because the early numbers look bad, not lengthened because the early numbers look good.</p>
+<p class="note" style="margin-top:12px">ASSOCIATION — never CAUSATION. A change in metrics after an intervention is an association, not proof that the intervention caused the change. Confounders — seasonal workload shifts, team composition changes, concurrent initiatives — can all produce metric movement. Report as ASSOCIATION unless a controlled experiment with a control group was run.</p>
+</section>
+
+<section>
+<div class="eyebrow">Step 5</div>
+<h2>Read target and non-target metric deltas.</h2>
+<p class="sec-intro">The final step is to compare the re-measurement against the baseline and read the deltas. This is where the discipline of declaring a target metric pays off. You have two questions to answer, and they are equally important: did the target metric move, and did anything else move that you did not intend to move?</p>
+<div class="grid3">
+<div class="card"><div class="big">Clean win</div><p>The target metric improved and no non-target metric regressed. This is the strongest possible result short of a controlled experiment. Report as ASSOCIATION — the intervention is associated with improvement in the target metric with no detected trade-offs.</p></div>
+<div class="card"><div class="big">Trade-off</div><p>The target metric improved but a non-target metric regressed. The intervention may have moved the operator to a different operating point rather than a strictly better one. Report both deltas. The trade-off may be acceptable — or it may reveal that the intervention solved one problem by creating another.</p></div>
+<div class="card"><div class="big">Null result</div><p>The target metric did not move. This is not a failure of measurement — it is a result. The intervention did not produce a detectable change in the metric it was designed to improve. Retain, adjust, or discard based on the evidence. Document the decision with provenance.</p></div>
+</div>
+<p style="margin-top:16px">Consider a concrete example. An operator's baseline Yield is 0.14 and baseline Leverage is 3.2. Diagnosis identifies low Yield. A prompt compression workshop is prescribed, targeting Yield, with a three-week follow-up window. After re-measurement, Yield is 0.19 — a clear improvement. But Leverage has dropped to 2.6. The operator is producing more output per total token, but they are reusing less context to do it. This is a trade-off, not a clean win. The intervention worked on its declared target but shifted behavior in a way that may have costs downstream. Reporting only the Yield improvement would be dishonest. Reporting both deltas is the minimum standard.</p>
+<p style="margin-top:12px">Now consider the same baseline with a different outcome. Yield improves to 0.19 and Leverage holds at 3.1 — within the baseline variance band. Token SNR and Construction are also stable. This is a clean win: the target metric improved and nothing else regressed. It is still ASSOCIATION, not CAUSATION — you did not run a control group, so you cannot rule out confounders. But it is the strongest claim the framework supports without controlled experimentation, and it is worth reporting as such.</p>
+<p class="note" style="margin-top:12px">Composite score is developmental, not personnel-related. The AI Operator Development Index — a 0–100 composite combining Leverage, Yield, Token SNR, and Construction — may move even when individual metrics tell a more nuanced story. Read the individual metrics first. The composite is a summary for tracking, not a substitute for diagnosis.</p>
+</section>
+
+<section>
+<div class="eyebrow">Governance</div>
+<h2>What the loop will and will not tell you.</h2>
+<p class="sec-intro">The intervention loop is a measurement framework, not a causal inference engine. It will tell you whether a metric moved after an intervention. It will tell you whether non-target metrics moved too. It will not tell you, on its own, that the intervention caused the change — because without a control group, you cannot separate the intervention's effect from everything else that happened during the follow-up window.</p>
+<div class="grid2">
+<div class="card">
+<div class="big">What the loop provides</div>
+<ul class="tight" style="margin-top:8px">
+<li>Falsifiable before-and-after measurement</li>
+<li>Declared target metrics, preventing post-hoc rationalization</li>
+<li>Non-target metric monitoring, surfacing trade-offs</li>
+<li>Content-free telemetry — no prompt text collected</li>
+<li>DEVELOPMENTAL labels — results route workflows, not people</li>
+</ul>
+</div>
+<div class="card">
+<div class="big">What the loop does not provide</div>
+<ul class="tight" style="margin-top:8px">
+<li>Causal attribution without a control group</li>
+<li>Personnel performance verdicts</li>
+<li>Leaderboards or punitive rankings</li>
+<li>Predictions of future performance</li>
+<li>Proof that one training method is universally superior</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:16px">For enterprises that need causal claims — and some do, particularly when justifying large-scale rollouts — the loop can be extended with a control group: measure a cohort that receives the intervention and a matched cohort that does not, then compare the deltas. This upgrades the claim from ASSOCIATION to controlled-experiment evidence. But the baseline version of the loop, without a control group, is already a vast improvement over the default state of measuring nothing. The enemy of good measurement is not imperfect measurement. It is no measurement at all.</p>
+</section>
+
+<section>
+<div class="eyebrow">Start Testing</div>
+<h2>Run the loop in your organization.</h2>
+<p class="sec-intro">The intervention loop is built into every MO§ES™ pilot. We help you establish baselines, diagnose patterns from the five canonical metrics, design targeted interventions with declared target metrics, and re-measure with honest delta reporting. No prompt text is collected. No leaderboards are produced. Every result carries its evidence label and its decision-use label.</p>
+<div style="margin-top:16px">
+<a class="btn" href="../pilot.html">Start a Pilot</a>
+<a class="btn-outline" href="../methodology.html">Read the Methodology</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</body>
+</html>
