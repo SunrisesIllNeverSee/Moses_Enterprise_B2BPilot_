@@ -280,13 +280,15 @@ with open('lineages.js', 'w') as f:
 
 MO§ES™ works alongside your existing BI, eval suites, observability tools, and productivity analytics. It measures the systems intelligence layer they can't see. Not a replacement — the missing piece.
 
-### Three pillars
+### Five pillars
 
-| Pillar | What |
-|--------|------|
-| **The Operator Metric Standard** | 5 canonical metrics. 15 eval families. 13 benchmark classes. 4 measurement levels. An open, documented spec for measuring how humans operate AI. The reference implementation is MO§ES™. |
-| **Systems Intelligence** | MO§ES™ sees the human-AI operating system the way BI sees the business. Operator performance, workflow fit, tool selection, capability distribution, intervention outcomes — all measured from structure, not content. |
-| **Complement, Don't Replace** | Works alongside your existing BI, eval suites, observability tools, and productivity analytics. Privacy-first by design: content-free token telemetry, no surveillance, governance-ready out of the box. |
+| # | Pillar | What |
+|---|--------|------|
+| 1 | **Systems Intelligence** | MO§ES™ sees the human-AI operating system the way BI sees the business. Operator performance, workflow fit, tool selection, capability distribution, intervention outcomes — all measured from structure, not content. |
+| 2 | **Standard Operational Performative Metrics** | 5 canonical metrics. 15 eval families. 13 benchmark classes. 4 measurement levels. An open, documented spec for measuring how humans operate AI. The reference implementation is MO§ES™. |
+| 3 | **Bespoke Enterprise Evals** | Your company should not inherit someone else's definition of AI proficiency. Evals built around your workflows, roles, models, and performance questions. |
+| 4 | **Complement, Don't Replace** | Works alongside your existing BI, eval suites, observability tools, and productivity analytics. The missing piece, not a replacement. |
+| 5 | **Privacy-First / Governance** | Content-free token telemetry. No prompt text. No surveillance. DEVELOPMENTAL / HYPOTHESIS / ASSOCIATION evidence labels on every output. Governance-ready out of the box. |
 
 ## License
 
