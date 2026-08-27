@@ -31,6 +31,8 @@ from domain import (
     GateRule, GateResult, DEFAULT_GATE_RULES,
     evaluate_gate, evaluate_all_gates, evaluate_cohort_gates, summarize_gates,
     Artifact, Lineage, System, Outcome,
+    TaskContext, adjust_metric_for_context, context_adjustment,
+    OperatorIdentity, IdentityConflictError,
 )
 from metrics.engine import ScoringEngine
 from metrics.composite_score import (
@@ -49,6 +51,11 @@ from analysis import (
     compute_operator_similarity, SimilarityResult,
     compute_operator_system_decomposition, OperatorSystemDecomposition,
     compute_outcome_correlation, OutcomeCorrelationResult,
+    compute_context_architecture, ContextArchitecture,
+    compute_longitudinal_movement, LongitudinalMovement,
+    compute_team_composition, TeamComposition,
+    compute_dependency_risk, DependencyRisk,
+    compute_learning_curve, LearningCurveAnalysis,
 )
 from ingest import FixtureAdapter, ClaudeAdapter, CodexAdapter, IngestResult
 from ingest import ClaudeApiAdapter, CodexApiAdapter, GroqApiAdapter
@@ -88,6 +95,11 @@ class PilotService:
         # the full pattern engine + diagnosis engine on every property
         # access.
         self._diagnoses_cache: Optional[Dict[str, List[Diagnosis]]] = None
+        # Cross-system operator identity registry (Gap 5). Maps
+        # system-specific IDs to canonical operator IDs so telemetry
+        # from multiple platforms can be attributed correctly. Populated
+        # incrementally via add_operator_identity.
+        self._identity_registry: OperatorIdentity = OperatorIdentity()
 
     # ── Cohort / pilot overview ──────────────────────────────────────────
 
@@ -586,6 +598,148 @@ class PilotService:
             measurements=ms,
             metric_ids=self.engine.registry.canonical_metric_ids(),
             n_neighbors=n_neighbors,
+        )
+        return result.to_dict()
+
+    # ── EVAL-003: Context Architecture ───────────────────────────────────
+
+    def context_architecture(self, operator_id: str = "") -> dict:
+        """Analyze how operators structure context (EVAL-003).
+
+        Computes per-operator reuse ratio (R/(R+I)), construction ratio
+        (W/(W+I)), and context efficiency ((R+W)/(I+R+W)). Classifies
+        each operator's context pattern: "context builder", "context
+        reuser", "fresh input heavy", or "balanced".
+
+        Includes provider caveats when cache tokens (R, W) are not
+        reported by the provider.
+
+        If operator_id is provided, the result is filtered to that
+        operator only. All metrics are content-free (token counts only).
+        """
+        result = compute_context_architecture(
+            operators=self.operators,
+            observations=self.observations,
+        )
+        d = result.to_dict()
+        if operator_id:
+            d["operator_profiles"] = [
+                p for p in d["operator_profiles"] if p["operator_id"] == operator_id
+            ]
+        return d
+
+    # ── EVAL-004: Longitudinal Movement ──────────────────────────────────
+
+    def longitudinal_movement(self, operator_id: str = "", window_count: int = 3) -> dict:
+        """Track metric changes over time windows (EVAL-004).
+
+        Divides the cohort window into N consecutive sub-windows, scores
+        each operator in each window, and computes metric deltas, trend
+        direction (improving/declining/stable), band movement, and
+        stability scores.
+
+        If operator_id is provided, only that operator is analyzed.
+        Trend labels are developmental observations, not personnel
+        judgments. Outcome claims are ASSOCIATION, never CAUSATION.
+        """
+        c = self.cohort
+        result = compute_longitudinal_movement(
+            operators=self.operators,
+            observations=self.observations,
+            engine=self.engine,
+            metric_ids=self.engine.registry.canonical_metric_ids(),
+            window_start=c.window_start,
+            window_end=c.window_end,
+            window_count=window_count,
+            operator_id=operator_id,
+        )
+        return result.to_dict()
+
+    # ── EVAL-009: Team Composition ───────────────────────────────────────
+
+    def team_composition(self, team_id: str = "") -> dict:
+        """Analyze team-level archetype coverage (EVAL-009).
+
+        Computes per-team archetype distribution, coverage gaps
+        (archetypes present in the org but absent from a team),
+        complementarity score (Shannon evenness of archetype mix), and
+        recommended additions to fill gaps.
+
+        If team_id is provided, only that team is analyzed. Team ID
+        matching is case-insensitive and normalizes spaces/slashes to
+        underscores. These are developmental hypotheses, not personnel
+        decisions.
+        """
+        ms = self.cohort_measurements_flat()
+        result = compute_team_composition(
+            operators=self.operators,
+            measurements=ms,
+            metric_ids=self.engine.registry.canonical_metric_ids(),
+            team_id=team_id,
+        )
+        return result.to_dict()
+
+    # ── EVAL-010: Capability Dependency Risk ─────────────────────────────
+
+    def dependency_risk(self) -> dict:
+        """Identify capability concentration risks (EVAL-010).
+
+        Computes per-metric Gini coefficients across teams (how
+        concentrated is each canonical metric at the team level),
+        single-point-of-failure detection (if one operator accounts
+        for >40% of a team's total for a metric), and an aggregate
+        risk summary.
+
+        These are structural risk hypotheses, not personnel judgments.
+        The goal is to surface coverage gaps for capability development.
+        """
+        ms = self.cohort_measurements_flat()
+        result = compute_dependency_risk(
+            operators=self.operators,
+            measurements=ms,
+            metric_ids=self.engine.registry.canonical_metric_ids(),
+        )
+        return result.to_dict()
+
+    # ── EVAL-015: AI Learning Curve ──────────────────────────────────────
+
+    def learning_curve(self, operator_id: str = "") -> dict:
+        """Model operator improvement trajectories (EVAL-015).
+
+        Divides the cohort window into consecutive sub-windows, scores
+        each operator in each window, and models the trajectory of their
+        canonical metrics over time. Computes improvement rate (metric
+        slope), curve shape (linear/diminishing/accelerating/flat),
+        uncertainty bounds (95% CI on slope), and plateau detection.
+
+        Intervention history (if available) provides temporal context —
+        co-occurrence is noted as ASSOCIATION, never CAUSATION.
+
+        If operator_id is provided, only that operator is analyzed.
+        Curve shape labels are developmental observations, not personnel
+        judgments.
+        """
+        c = self.cohort
+        # Build intervention context from assigned + repo interventions.
+        interventions = [
+            {
+                "operator_id": iv.operator_id,
+                "start_date": iv.start_date.isoformat() if iv.start_date else "",
+                "target_metric": iv.target_metric or "",
+                "reason_pattern": iv.reason_pattern or "",
+            }
+            for iv in self.interventions
+        ]
+        result = compute_learning_curve(
+            operators=self.operators,
+            observations=self.observations,
+            engine=self.engine,
+            metric_ids=self.engine.registry.canonical_metric_ids(),
+            window_start=c.window_start,
+            window_end=c.window_end,
+            window_count=4,
+            operator_id=operator_id,
+            interventions=interventions,
         )
         return result.to_dict()
 
@@ -1470,3 +1624,169 @@ class PilotService:
                 synthetic=True,
                 caveat=f"Unknown finding type: {finding_type}. Supported: pattern, divergence.",
             )
+
+    # ── Gap 4: Task context for difficulty-aware benchmarking ───────────
+
+    def context_adjustment(
+        self,
+        operator_id: str,
+        context: TaskContext,
+        baseline_difficulty: float = 0.5,
+    ) -> dict:
+        """Adjust an operator's metric scores for task difficulty context.
+
+        Per Jaimie's review (Gap 4): "Two operators in same workflow
+        stage solving different complexity tasks shouldn't be benchmarked
+        as peers without context adjustment."
+
+        An operator doing a high-complexity task with a Yield of 0.20 is
+        not the same as an operator doing a low-complexity task with a
+        Yield of 0.20. This method normalizes metrics to a common
+        difficulty scale so fair developmental benchmarking is possible.
+
+        The adjustment is multiplicative relative to a baseline
+        difficulty (default 0.5, the neutral midpoint). It is bounded to
+        [0.5x, 2.0x] so it is a normalization, never a reward or
+        penalty.
+
+        Governance: developmental normalization for fair benchmarking,
+        NOT a personnel adjustment. No punitive labels. Outcome claims
+        are ASSOCIATION, never CAUSATION.
+
+        Args:
+            operator_id: The operator whose metrics to adjust.
+            context: The TaskContext for the task being benchmarked.
+            baseline_difficulty: Reference difficulty to normalize against.
+
+        Returns:
+            A dict with the operator_id, task_context, and a list of
+            per-metric adjusted values (each carrying the raw value,
+            adjusted value, and context tag).
+        """
+        ms = self.score_operator(operator_id)
+        adjusted = context_adjustment(ms, context, baseline_difficulty)
+        return {
+            "operator_id": operator_id,
+            "task_context": context.to_dict(),
+            "baseline_difficulty": baseline_difficulty,
+            "adjusted_metrics": adjusted,
+            "label": "DEVELOPMENTAL — difficulty-normalized for fair benchmarking",
+            "synthetic": True,
+        }
+
+    def score_operator_with_context(
+        self,
+        operator_id: str,
+        context: TaskContext,
+        baseline_difficulty: float = 0.5,
+    ) -> List[dict]:
+        """Score an operator and tag each measurement with its task context.
+
+        Per Gap 4: "Add context to the measurement pipeline so metrics
+        can be tagged with their task context."
+
+        Returns a list of enriched measurement dicts, each carrying the
+        canonical metric fields plus `context_adjusted_value` and
+        `task_context`. The original immutable Measurement objects are
+        untouched; this produces enriched copies for downstream
+        consumers that need difficulty-aware comparison.
+        """
+        ms = self.score_operator(operator_id)
+        return context_adjustment(ms, context, baseline_difficulty)
+
+    # ── Gap 5: Cross-system operator identity ───────────────────────────
+
+    def add_operator_identity(
+        self,
+        canonical_operator_id: str,
+        system: str,
+        system_id: str,
+    ) -> dict:
+        """Add a cross-system identity mapping for a canonical operator.
+
+        Per Jaimie's review (Gap 5): "Need a robust way to map operators
+        across platforms."
+
+        Maps a system-specific identity (e.g. "alice@company.com" in
+        ChatGPT) to the canonical operator ID (e.g. "alice") so that
+        telemetry from multiple platforms can be attributed correctly.
+
+        If the same (system, system_id) pair is already mapped to a
+        *different* canonical operator, an IdentityConflictError is
+        raised rather than silently overwriting — this prevents
+        mis-attribution of telemetry.
+
+        Args:
+            canonical_operator_id: The canonical pseudonymous operator ID.
+            system: The platform/system name (e.g. "chatgpt", "claude").
+            system_id: The system-specific identity handle.
+
+        Returns:
+            A dict confirming the mapping was added.
+        """
+        self._identity_registry.add_mapping(canonical_operator_id, system, system_id)
+        return {
+            "canonical_operator_id": canonical_operator_id,
+            "system": system,
+            "system_id": system_id,
+            "status": "added",
+        }
+
+    def resolve_operator_identity(
+        self,
+        system: str,
+        system_id: str,
+    ) -> dict:
+        """Resolve a system-specific identity to the canonical operator.
+
+        Per Gap 5: "Supports identity resolution: given a system +
+        system-specific ID, resolve to the canonical operator."
+
+        Args:
+            system: The platform/system name.
+            system_id: The system-specific identity handle.
+
+        Returns:
+            A dict with the resolved canonical_operator_id (or None if
+            no mapping exists) and the resolution status.
+        """
+        canonical = self._identity_registry.resolve(system, system_id)
+        return {
+            "system": system,
+            "system_id": system_id,
+            "canonical_operator_id": canonical,
+            "resolved": canonical is not None,
+        }
+
+    @property
+    def operator_identity_registry(self) -> OperatorIdentity:
+        """The cross-system identity registry (Gap 5)."""
+        return self._identity_registry
+
+    # ── Gap 8: Decision-oriented reporting ──────────────────────────────
+
+    def decision_report(self, operator_id: str = "") -> dict:
+        """Produce a decision-oriented report translating metrics to actions.
+
+        Per Jaimie's review (Gap 8): "Translate measurement vocabulary
+        to decision vocabulary in the product surface."
+
+        Instead of "Yield is 0.15 (10th percentile)" → "This operator's
+        output efficiency is in the bottom 10% of the cohort. Recommended
+        action: context structuring coaching."
+
+        Decision recommendations are developmental (coaching, workshops,
+        reviews) — never personnel actions. Outcome claims are
+        ASSOCIATION, never CAUSATION. No punitive labels.
+
+        Args:
+            operator_id: If provided, produce a per-operator decision
+                report. If empty, produce a cohort-level summary of
+                decision recommendations.
+
+        Returns:
+            A dict with decision-oriented findings and recommended
+            developmental actions.
+        """
+        from reporting import build_decision_report
+        return build_decision_report(self, operator_id=operator_id)

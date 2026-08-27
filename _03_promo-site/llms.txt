@@ -44,6 +44,17 @@ the work that actually matters. The core commercial proposition:
 - [AI Operator Evaluation vs Usage Analytics](https://mos2es.org/guides/ai-operator-evaluation-vs-usage-analytics): what's the difference?
 - [AI Operator Evaluation vs Skills Assessment](https://mos2es.org/guides/ai-operator-evaluation-vs-skills-assessment): what's the difference?
 
+## Commercial offer
+- [The Killer Experiment](https://mos2es.org/killer-experiment): one controlled experiment, 30 days, $15K — baseline, diagnose, intervene, re-measure, evidence report
+- [Commercial Offer](https://mos2es.org/commercial-offer): three propositions — Killer Experiment ($15K), Enterprise Pilot ($45K), Annual Operating Index ($150K/yr)
+
+## Blog
+- [The Operator Layer](https://mos2es.org/blog/the-operator-layer): why measuring AI usage isn't measuring AI performance
+- [Performative Benchmarks vs Self-Report](https://mos2es.org/blog/performative-benchmarks-vs-self-report): what actually predicts outcomes
+- [The Intervention Loop](https://mos2es.org/blog/the-intervention-loop): how to test whether your AI training actually worked
+- [Token Telemetry Without Content](https://mos2es.org/blog/token-telemetry-without-content): measuring operator performance without reading prompts
+- [Where Capability Hides](https://mos2es.org/blog/where-capability-hides): mapping AI performance across teams, workflows, and operators
+
 ## Comparison pages
 - [Comparisons Index](https://mos2es.org/vs/): all 16 competitor comparison pages
 - [MO§ES™ vs Workera](https://mos2es.org/vs/workera): measurement vs assessment, continuous telemetry vs demonstrated capability

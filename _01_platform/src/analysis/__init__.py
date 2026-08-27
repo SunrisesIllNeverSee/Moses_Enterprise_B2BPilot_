@@ -1,6 +1,9 @@
 """Analysis — cohort distributions, divergence, percentiles, eligibility, quality,
 org topology (EVAL-013), operator similarity (EVAL-014),
-operator×system decomposition, outcome correlation.
+operator×system decomposition, outcome correlation,
+context architecture (EVAL-003), longitudinal movement (EVAL-004),
+team composition (EVAL-009), dependency risk (EVAL-010),
+learning curve (EVAL-015).
 
 P0-D analysis functions that operate on Measurements produced by the
 ScoringEngine. These are pure functions — no I/O, no side effects.
@@ -33,6 +36,24 @@ from .outcome_correlation import (
     compute_outcome_correlation, OutcomeCorrelationResult,
     MetricOutcomeCorrelation,
 )
+from .context_architecture import (
+    compute_context_architecture, ContextArchitecture, OperatorContextProfile,
+)
+from .longitudinal import (
+    compute_longitudinal_movement, LongitudinalMovement, OperatorLongitudinal,
+    MetricTrajectory,
+)
+from .team_composition import (
+    compute_team_composition, TeamComposition, TeamCompositionProfile,
+)
+from .dependency_risk import (
+    compute_dependency_risk, DependencyRisk, MetricConcentrationRisk,
+    SinglePointOfFailureRisk,
+)
+from .learning_curve import (
+    compute_learning_curve, LearningCurveAnalysis, OperatorLearningCurve,
+    MetricLearningCurve,
+)
 
 __all__ = [
     "compute_divergence", "DivergenceResult",
@@ -55,4 +76,17 @@ __all__ = [
     # Outcome correlation through lineage
     "compute_outcome_correlation", "OutcomeCorrelationResult",
     "MetricOutcomeCorrelation",
+    # EVAL-003: Context Architecture
+    "compute_context_architecture", "ContextArchitecture", "OperatorContextProfile",
+    # EVAL-004: Longitudinal Movement
+    "compute_longitudinal_movement", "LongitudinalMovement", "OperatorLongitudinal",
+    "MetricTrajectory",
+    # EVAL-009: Team Composition
+    "compute_team_composition", "TeamComposition", "TeamCompositionProfile",
+    # EVAL-010: Capability Dependency Risk
+    "compute_dependency_risk", "DependencyRisk", "MetricConcentrationRisk",
+    "SinglePointOfFailureRisk",
+    # EVAL-015: AI Learning Curve
+    "compute_learning_curve", "LearningCurveAnalysis", "OperatorLearningCurve",
+    "MetricLearningCurve",
 ]

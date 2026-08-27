@@ -19,6 +19,12 @@ from .exporters import (
 from .executive_brief import export_executive_brief
 from .config_report import export_configuration_report
 from .dashboard import generate_executive_dashboard
+from .decision_report import (
+    build_decision_report,
+    build_operator_decision_report,
+    build_cohort_decision_report,
+    export_decision_report_markdown,
+)
 
 __all__ = [
     "export_cohort_json", "export_cohort_csv", "export_cohort_markdown",
@@ -33,4 +39,8 @@ __all__ = [
     "export_configuration_report",
     "generate_executive_dashboard",
     "export_artifacts", "export_lineages", "export_canonical_inventory",
+    "build_decision_report",
+    "build_operator_decision_report",
+    "build_cohort_decision_report",
+    "export_decision_report_markdown",
 ]

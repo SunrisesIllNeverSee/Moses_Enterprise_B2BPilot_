@@ -316,17 +316,61 @@
     <priority>0.8</priority>
     <lastmod>2026-08-27</lastmod>
   </url>
+  <!-- Commercial pages -->
+  <url>
+    <loc>https://mos2es.org/killer-experiment</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/commercial-offer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <!-- Blog articles -->
+  <url>
+    <loc>https://mos2es.org/blog/the-operator-layer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/blog/performative-benchmarks-vs-self-report</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/blog/the-intervention-loop</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/blog/token-telemetry-without-content</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/blog/where-capability-hides</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-08-27</lastmod>
+  </url>
   <!-- Machine-readable files -->
   <url>
     <loc>https://mos2es.org/llms.txt</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-27</lastmod>
   </url>
   <url>
     <loc>https://mos2es.org/openapi.json</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <lastmod>2026-08-25</lastmod>
+    <lastmod>2026-08-27</lastmod>
   </url>
 </urlset>

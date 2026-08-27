@@ -76,6 +76,8 @@ from .artifact import Artifact, ArtifactType
 from .lineage import Lineage, LineageLink, LinkType
 from .outcome import Outcome, OutcomeType, OutcomeStatus
 from .evidence_grade import EvidenceGrade, EvidenceGradeAssessment
+from .context import TaskContext, adjust_metric_for_context, context_adjustment
+from .operator_identity import OperatorIdentity, IdentityConflictError
 
 __all__ = [
     "Observation",
@@ -141,4 +143,9 @@ __all__ = [
     "OutcomeStatus",
     "EvidenceGrade",
     "EvidenceGradeAssessment",
+    "TaskContext",
+    "adjust_metric_for_context",
+    "context_adjustment",
+    "OperatorIdentity",
+    "IdentityConflictError",
 ]
