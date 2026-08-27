@@ -22,23 +22,131 @@
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">
 [
-  {"@context":"https://schema.org","@type":"Organization","@id":"https://mos2es.org/#org","name":"MO§ES™","url":"https://mos2es.org","sameAs":["https://orcid.org/0009-0002-9904-5390","https://github.com/SunrisesIllNeverSee","https://doi.org/10.5281/zenodo.20029607","https://signalaf.com","https://signomy.xyz"]},
-  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"Methodology","item":"https://mos2es.org/methodology"}]},
-  {"@context":"https://schema.org","@type":"DefinedTermSet","name":"MO§ES™ Eval & Benchmark Glossary","url":"https://mos2es.org/methodology","hasDefinedTerm":[
-    {"@type":"DefinedTerm","name":"Operator Evaluation","description":"Measures how a person or team actually operates AI systems across relevant tasks, workflows, models, and operating conditions","url":"https://mos2es.org/methodology#operator-eval"},
-    {"@type":"DefinedTerm","name":"Performative Benchmark","description":"Compares how operators actually perform under observed or defined operating conditions rather than relying on self-reported proficiency or generic knowledge tests","url":"https://mos2es.org/methodology#benchmark"},
-    {"@type":"DefinedTerm","name":"Leverage","description":"(R + W) / I — how much context the operator reuses and builds relative to new input","url":"https://mos2es.org/methodology#leverage"},
-    {"@type":"DefinedTerm","name":"Yield","description":"O / (I + O + R + W) — productive output share of total token flow","url":"https://mos2es.org/methodology#yield"},
-    {"@type":"DefinedTerm","name":"Token SNR","description":"O / (I + O + R) — output relative to input and reused context","url":"https://mos2es.org/methodology#snr"},
-    {"@type":"DefinedTerm","name":"Construction","description":"W / R — ratio of new context built to context reused","url":"https://mos2es.org/methodology#construction"},
-    {"@type":"DefinedTerm","name":"ASSOCIATION","description":"Outcome joins between interventions and business metrics are labeled ASSOCIATION, never CAUSATION","url":"https://mos2es.org/methodology#association"},
-    {"@type":"DefinedTerm","name":"HYPOTHESIS","description":"Diagnoses carry evidence, alternatives, and HYPOTHESIS status — never presented as fact","url":"https://mos2es.org/methodology#hypothesis"},
-    {"@type":"DefinedTerm","name":"DEVELOPMENTAL","description":"Production gate results route workflows, not people — never used for adverse employment actions","url":"https://mos2es.org/methodology#developmental"},
-    {"@type":"DefinedTerm","name":"Canonical Telemetry","description":"Content-free operator signals: INPUT, OUTPUT, CACHE READ, CACHE WRITE — no prompt text required","url":"https://mos2es.org/methodology#telemetry"}
-  ]}
+  {
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
+    "@type": "Organization",
+    "@id": "https://mos2es.org/#org",
+    "name": "Ello Cello LLC",
+    "url": "https://mos2es.org",
+    "sameAs": [
+      "https://orcid.org/0009-0002-9904-5390",
+      "https://github.com/SunrisesIllNeverSee",
+      "https://doi.org/10.5281/zenodo.20029607",
+      "https://signalaf.com",
+      "https://signomy.xyz"
+    ],
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": {
+      "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://mos2es.org/#website",
+    "name": "MO§ES™",
+    "url": "https://mos2es.org",
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://mos2es.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Methodology",
+        "item": "https://mos2es.org/methodology"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "MO§ES™ Eval & Benchmark Glossary",
+    "url": "https://mos2es.org/methodology",
+    "hasDefinedTerm": [
+      {
+        "@type": "DefinedTerm",
+        "name": "Operator Evaluation",
+        "description": "Measures how a person or team actually operates AI systems across relevant tasks, workflows, models, and operating conditions",
+        "url": "https://mos2es.org/methodology#operator-eval"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Performative Benchmark",
+        "description": "Compares how operators actually perform under observed or defined operating conditions rather than relying on self-reported proficiency or generic knowledge tests",
+        "url": "https://mos2es.org/methodology#benchmark"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Leverage",
+        "description": "(R + W) / I — how much context the operator reuses and builds relative to new input",
+        "url": "https://mos2es.org/methodology#leverage"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Yield",
+        "description": "O / (I + O + R + W) — productive output share of total token flow",
+        "url": "https://mos2es.org/methodology#yield"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Token SNR",
+        "description": "O / (I + O + R) — output relative to input and reused context",
+        "url": "https://mos2es.org/methodology#snr"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Construction",
+        "description": "W / R — ratio of new context built to context reused",
+        "url": "https://mos2es.org/methodology#construction"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "ASSOCIATION",
+        "description": "Outcome joins between interventions and business metrics are labeled ASSOCIATION, never CAUSATION",
+        "url": "https://mos2es.org/methodology#association"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "HYPOTHESIS",
+        "description": "Diagnoses carry evidence, alternatives, and HYPOTHESIS status — never presented as fact",
+        "url": "https://mos2es.org/methodology#hypothesis"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "DEVELOPMENTAL",
+        "description": "Production gate results route workflows, not people — never used for adverse employment actions",
+        "url": "https://mos2es.org/methodology#developmental"
+      },
+      {
+        "@type": "DefinedTerm",
+        "name": "Canonical Telemetry",
+        "description": "Content-free operator signals: INPUT, OUTPUT, CACHE READ, CACHE WRITE — no prompt text required",
+        "url": "https://mos2es.org/methodology#telemetry"
+      }
+    ]
+  }
 ]
-</script>
+  </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>

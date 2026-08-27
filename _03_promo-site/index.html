@@ -23,13 +23,24 @@
 <script type="application/ld+json">
 [
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "Organization",
     "@id": "https://mos2es.org/#org",
-    "name": "MO§ES™",
+    "name": "Ello Cello LLC",
     "url": "https://mos2es.org",
     "description": "Enterprise AI operator evaluations and performative benchmarks. Evaluate how people operate AI, benchmark performance, build bespoke evals, intervene, and re-evaluate.",
-    "founder": {"@type":"Person","name":"Deric J. McHenry","@id":"https://orcid.org/0009-0002-9904-5390"},
+    "founder": {
+      "@type": "Person",
+      "name": "Deric J. McHenry",
+      "@id": "https://orcid.org/0009-0002-9904-5390"
+    },
     "contactPoint": {
       "@type": "ContactPoint",
       "email": "burnmydays@proton.me",
@@ -40,7 +51,20 @@
       "@type": "PostalAddress",
       "addressCountry": "US"
     },
-    "sameAs": ["https://orcid.org/0009-0002-9904-5390","https://github.com/SunrisesIllNeverSee","https://doi.org/10.5281/zenodo.20029607","https://doi.org/10.5281/zenodo.19105225","https://signalaf.com","https://signomy.xyz"]
+    "sameAs": [
+      "https://orcid.org/0009-0002-9904-5390",
+      "https://github.com/SunrisesIllNeverSee",
+      "https://doi.org/10.5281/zenodo.20029607",
+      "https://doi.org/10.5281/zenodo.19105225",
+      "https://signalaf.com",
+      "https://signomy.xyz"
+    ],
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": {
+      "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+    }
   },
   {
     "@context": "https://schema.org",
@@ -48,26 +72,40 @@
     "@id": "https://mos2es.org/#website",
     "name": "MO§ES™",
     "url": "https://mos2es.org",
-    "publisher": {"@id":"https://mos2es.org/#org"}
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    }
   },
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "SoftwareApplication",
-    "@id": "https://mos2es.org/#software",
+    "@id": "https://mos2es.com/ontology/0.1/entity/moses",
     "name": "MO§ES™",
     "url": "https://mos2es.org",
     "description": "Enterprise AI operator evaluation platform. Measures how people operate AI systems, benchmarks performance, builds bespoke evals, and tests interventions.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Cross-platform",
-    "publisher": {"@id":"https://mos2es.org/#org"},
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    },
     "offers": {
       "@type": "Offer",
       "description": "30-day enterprise pilot. 6 commercial packages: Baseline, Diagnostic, Evaluation, Monitor, Meta-Pilot, MO§E§.",
       "url": "https://mos2es.org/pilot"
-    }
+    },
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-MOSES-001)"
   }
 ]
-</script>
+  </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>
