@@ -12,7 +12,7 @@
   "homepage": "https://mos2es.org",
   "docs": "https://mos2es.org/docs",
   "repository": "https://github.com/SunrisesIllneverSee/Moses_Enterprise_B2BPilot_",
-  "license": "PolyForm-Noncommercial-1.0.0",
+  "license": "Apache-2.0",
   "tools_count": 27,
   "categories": ["analytics", "enterprise", "ai-evaluation", "benchmarking"],
   "tags": ["enterprise", "ai-evaluation", "operator-evaluation", "analytics", "benchmarking", "workforce", "systems-intelligence"]
