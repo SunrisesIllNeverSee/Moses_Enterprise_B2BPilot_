@@ -143,7 +143,9 @@ PERFORMATIVE BENCHMARKS
 - Patent: Serial No. 63/877,177 (Provisional, pending) — MO§ES™ enforcement architecture
 
 ## Ecosystem
-- SignalAF / SigRank: public and enterprise evaluation of AI operators — https://signalaf.com
+- Upsilon: enterprise measurement engine — https://mos2es.org
+- SigRank: public leaderboard and benchmark for AI operators — https://signalaf.com
+- SignalAF: public distribution brand — https://signalaf.com
 - Signomy: dual-governance agentic marketplace and economy — https://signomy.xyz
 - AQUA: applications, questions, answers — turns previous application work into reusable application capital — https://mos2es.xyz
 - GitHub org: https://github.com/SunrisesIllNeverSee

@@ -147,7 +147,13 @@ def generate_artifacts():
 # ---------------------------------------------------------------------------
 
 def compute_micro_eval(obs):
-    """Compute Leverage, Yield, Token SNR, Construction, Upsilon from observation."""
+    """Compute Leverage, Yield (Υ), Token SNR, Construction from observation.
+
+    Note: The variable `upsilon` and JSON key "upsilon" below compute the
+    canonical Yield (Υ) metric = (cache_read × output) / input². The name
+    `upsilon` is retained as a technical identifier for compatibility; the
+    canonical metric name is Yield (Υ), not Upsilon. Upsilon is the product.
+    """
     I = obs.get("input_tokens", 0) or 0
     O = obs.get("output_tokens", 0) or 0
     CR = obs.get("cache_read_tokens", 0) or 0

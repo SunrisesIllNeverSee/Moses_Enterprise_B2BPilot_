@@ -10,11 +10,11 @@ ENTERPRISE SYSTEMS          MO§ES™ PIPELINE                    CUSTOMER DECIS
 │ Copilot         │                ▼                  │ Training target  │
 │ Gemini          │    ┌─────────────────────────┐    │ Direct interven. │
 └─────────────────┘    │ 2. Micro Eval Engine    │    │ to needful ops   │
-                       │    Upsilon = (R×O)/I²   │    └──────────────────┘
+                       │    Yield (Υ) = (R×O)/I² │    └──────────────────┘
 ┌─────────────────┐    │    Leverage = R/I       │    ┌──────────────────┐
-│ Agent Platforms │    │    Yield = (R×O)/I²     │    │ Workflow redesign│
-│ Internal agents │───▶│    Token SNR = O/(I+O)  │    │ Restructure      │
-│ LangGraph       │    │    Construction = W/R   │    │ stages           │
+│ Agent Platforms │    │    Token SNR = O/(I+O)  │    │ Workflow redesign│
+│ Internal agents │───▶│    Construction = W/R   │    │ Restructure      │
+│ LangGraph       │    │                        │    │ stages           │
 │ Workflow agents │    └───────────┬─────────────┘    └──────────────────┘
 └─────────────────┘                │                  ┌──────────────────┐
                                    ▼                  │ Investment eff.  │

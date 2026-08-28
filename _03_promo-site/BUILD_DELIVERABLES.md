@@ -99,7 +99,7 @@ No charts implying unsupported functionality.
 11. **Interventions** — "Evaluation should change what happens next." + 12 intervention types + before/after comparison chart
 12. **Privacy** — "Evaluate operation without turning every conversation into surveillance." + content-free signals + governance controls
 13. **Architecture** — Commitment Theory + Conservation Law + how MO§ES™ uses it
-14. **Ecosystem** — SignalAF / SigRank, Signomy, AQUA
+14. **Ecosystem** — Upsilon, SigRank, SignalAF, Signomy, AQUA
 
 ### Product page (product.html) — 14 modules
 

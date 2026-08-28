@@ -22,7 +22,7 @@
 This report presents the results of a 30-day MO§ES™ pilot evaluation of 50
 AI-assisted operators across 6 teams at Acme AI-Enabled Software Company. The
 evaluation measured operator-level AI interaction quality using the MO§ES
-canonical metric set (Upsilon, Leverage, Yield, Token SNR, Construction),
+canonical metric set (Yield (Υ), Leverage, Token SNR, Construction),
 benchmarked operators against a reference field, diagnosed operating patterns,
 applied 12 interventions, and re-evaluated after a 14-day post-intervention
 window.
@@ -520,9 +520,9 @@ existing context management), while COA-001 can be applied more broadly.
 
 Where: I = input_tokens, O = output_tokens, R = cache_read_tokens, W = cache_write_tokens
 
-**Upsilon formula:** (cache_read x output) / input^2 — same as Yield in the
-current metric registry. The MOSES seed values (1_251_211, 11_296_121,
-128_196_310, 2_555_179_769) produce Upsilon = 18436.98 as a reference constant.
+**Yield (Υ) formula:** (cache_read × output) / input². The MOSES seed values
+(1_251_211, 11_296_121, 128_196_310, 2_555_179_769) produce Yield (Υ) = 18436.98
+as a reference constant.
 
 **10xDEV formula:** log10(Leverage) = log10(R/I). This transforms the Leverage
 ratio into a log scale where each integer increase represents a 10x improvement.

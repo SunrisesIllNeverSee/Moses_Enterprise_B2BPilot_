@@ -23,7 +23,6 @@ MICRO EVAL (full transformation):
   Yield       = (R×O)/I²  = 66.6M/37.2M    = 1.79
   Token SNR   = O/(I+O)   = 4500/10600     = 0.425
   Construction= W/R       = 14800/14800    = 1.00
-  Upsilon     = (R×O)/I²  = 1.79
   10xDEV      = log10(R/I)= log10(2.43)   = 0.385
 
 EVIDENCE GRADE: Complete interaction telemetry (full token-level trace + git diff + external outcome)
