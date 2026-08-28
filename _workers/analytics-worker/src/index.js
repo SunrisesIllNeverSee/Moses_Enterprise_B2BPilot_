@@ -144,6 +144,11 @@ export default {
       return handleRealtime(request, env, host);
     }
 
+    // ─── /api/analytics/web-vitals — Core Web Vitals ────────────────────
+    if (path === '/api/analytics/web-vitals' && method === 'GET') {
+      return handleWebVitals(request, env, host);
+    }
+
     // ─── /dashboard — live analytics dashboard ──────────────────────────
     if (path === '/dashboard' && method === 'GET') {
       return handleDashboard(host);
@@ -208,6 +213,12 @@ async function handleBeacon(request, env, host) {
     aiQuery: body.aiQuery || null,
     aiPosition: body.aiPosition || null,
     aiCited: body.aiCited || null,
+    // Core Web Vitals
+    lcp: body.lcp ?? null,
+    inp: body.inp ?? null,
+    cls: body.cls ?? null,
+    ttfb: body.ttfb ?? null,
+    fid: body.fid ?? null,
   };
 
   // Write to Analytics Engine (time-series, SQL-queryable)
@@ -300,7 +311,7 @@ async function handleStats(request, env, host, url) {
   }
 
   // By type
-  for (const type of ['pageview', 'agent_query', 'ai_overview', 'mcp_call']) {
+  for (const type of ['pageview', 'agent_query', 'ai_overview', 'mcp_call', 'web_vitals']) {
     const count = await env.ANALYTICS_KV.get(`${host}:type:${type}`) || '0';
     if (parseInt(count, 10) > 0) stats.byType[type] = parseInt(count, 10);
   }
@@ -408,6 +419,70 @@ async function handleRealtime(request, env, host) {
       todayTotal: parseInt(values[2] || '0', 10),
       todayHuman: parseInt(values[3] || '0', 10),
       todayBots: parseInt(values[2] || '0', 10) - parseInt(values[3] || '0', 10),
+    },
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Core Web Vitals
+// ═══════════════════════════════════════════════════════════════════════
+async function handleWebVitals(request, env, host) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, webVitals: { samples: 0, metrics: {} } });
+
+  // Read the recent events log to extract web_vitals events
+  const eventLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:event-log`) || '[]');
+  const vitalsEvents = eventLog.filter(e => e.type === 'web_vitals' && e.lcp != null);
+
+  if (vitalsEvents.length === 0) {
+    return jsonResponse({
+      host,
+      webVitals: {
+        samples: 0,
+        metrics: {},
+        message: 'No Core Web Vitals data yet. Data is collected from real visitors via the analytics beacon.',
+      },
+    });
+  }
+
+  // Compute percentiles (p50, p75, p95)
+  function percentile(arr, p) {
+    if (arr.length === 0) return null;
+    const sorted = [...arr].sort((a, b) => a - b);
+    const idx = Math.ceil(sorted.length * p) - 1;
+    return sorted[Math.max(0, idx)];
+  }
+
+  const lcp = vitalsEvents.map(e => e.lcp).filter(v => v != null);
+  const inp = vitalsEvents.map(e => e.inp).filter(v => v != null);
+  const cls = vitalsEvents.map(e => e.cls).filter(v => v != null);
+  const ttfb = vitalsEvents.map(e => e.ttfb).filter(v => v != null);
+
+  const metrics = {};
+  for (const [name, values, thresholds] of [
+    ['lcp', lcp, [2500, 4000]],
+    ['inp', inp, [200, 500]],
+    ['cls', cls, [0.1, 0.25]],
+    ['ttfb', ttfb, [800, 1800]],
+  ]) {
+    if (values.length > 0) {
+      metrics[name] = {
+        samples: values.length,
+        p50: percentile(values, 0.5),
+        p75: percentile(values, 0.75),
+        p95: percentile(values, 0.95),
+        good: thresholds[0],
+        poor: thresholds[1],
+        rating: percentile(values, 0.75) <= thresholds[0] ? 'good' : percentile(values, 0.75) <= thresholds[1] ? 'needs-improvement' : 'poor',
+      };
+    }
+  }
+
+  return jsonResponse({
+    host,
+    webVitals: {
+      samples: vitalsEvents.length,
+      metrics,
+      lastUpdated: vitalsEvents[0]?.timestamp || null,
     },
   });
 }

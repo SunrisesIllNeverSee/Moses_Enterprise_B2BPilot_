@@ -40,7 +40,7 @@ export default {
     }
 
     // ─── JSON error responses for /api/* paths ───────────────────────────
-    if (path.startsWith('/api/')) {
+    if (path.startsWith('/api/') && !path.startsWith('/api/analytics/') && !path.startsWith('/api/openapi')) {
       const errorResponse = (status, code, message, resolution) => {
         return new Response(JSON.stringify({ error: code, message, resolution }), {
           status,
@@ -57,8 +57,13 @@ export default {
         return env.ASSETS.fetch(new Request(new URL('/openapi.json', url.origin), request));
       }
 
-      // API endpoints not yet implemented as live handlers — return informative JSON
-      return errorResponse(501, 'NOT_IMPLEMENTED', 'This API endpoint is defined in the OpenAPI spec but not yet deployed as a live handler. The platform is accessible via MCP server and CLI.', 'See https://mos2es.org/docs for MCP server and CLI usage, or https://mos2es.org/openapi.json for the full API spec.');
+      // API endpoints not yet implemented as live handlers — return 404 (not 501)
+      return errorResponse(404, 'NOT_FOUND', 'This API endpoint is not deployed. The platform is accessible via MCP server and CLI.', 'See https://mos2es.org/docs for MCP server and CLI usage, or https://mos2es.org/openapi.json for the full API spec.');
+    }
+
+    // ─── favicon.ico redirect to favicon.svg ─────────────────────────────
+    if (path === '/favicon.ico') {
+      return Response.redirect(new URL('/favicon.svg', url.origin).toString(), 301);
     }
 
     // ─── Markdown content negotiation ────────────────────────────────────
@@ -125,6 +130,22 @@ async function addHeaders(response, request) {
   const contentType = response.headers.get('Content-Type') || '';
   const isHtmlPage = contentType.includes('text/html');
 
+  // Determine cache strategy based on content type
+  let cacheControl;
+  if (isHtmlPage) {
+    // HTML pages: short cache, must revalidate (content changes when we deploy)
+    cacheControl = 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400';
+  } else if (contentType.includes('text/css') || contentType.includes('javascript') || contentType.includes('image/svg')) {
+    // Static assets: long cache (immutable, versioned by deploy)
+    cacheControl = 'public, max-age=31536000, immutable';
+  } else if (contentType.includes('image/') || contentType.includes('font/') || contentType.includes('application/json')) {
+    // Images, fonts, JSON: medium cache
+    cacheControl = 'public, max-age=86400, s-maxage=604800';
+  } else {
+    // Default: short cache
+    cacheControl = 'public, max-age=3600';
+  }
+
   // Link headers for agent discoverability (homepage and HTML pages)
   if (isHtmlPage || (!path.includes('.') || path.endsWith('.html') || path === '/')) {
     const links = [
@@ -136,10 +157,9 @@ async function addHeaders(response, request) {
       '<https://mos2es.org/crawl-control.json>; rel="service"; type="application/json"; title="Crawl Control"',
     ];
 
-    // Inject analytics beacon into HTML pages via HTML Rewriter
+    // Inject analytics beacon into HTML pages
     if (isHtmlPage) {
       const linkHeader = links.join(', ');
-      // Read the full body, inject the script, return modified response
       const html = await response.text();
       const modified = html.replace('</body>', '<script src="/analytics-beacon.js"></script></body>');
       return new Response(modified, {
@@ -148,6 +168,7 @@ async function addHeaders(response, request) {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
           'Vary': 'Accept, Accept-Encoding',
+          'Cache-Control': cacheControl,
           'X-Content-Type-Options': 'nosniff',
           'X-Frame-Options': 'SAMEORIGIN',
           'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -159,6 +180,7 @@ async function addHeaders(response, request) {
 
     const newResponse = new Response(response.body, response);
     newResponse.headers.set('Vary', 'Accept, Accept-Encoding');
+    newResponse.headers.set('Cache-Control', cacheControl);
     newResponse.headers.set('X-Content-Type-Options', 'nosniff');
     newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
     newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -169,6 +191,7 @@ async function addHeaders(response, request) {
 
   const newResponse = new Response(response.body, response);
   newResponse.headers.set('Vary', 'Accept, Accept-Encoding');
+  newResponse.headers.set('Cache-Control', cacheControl);
   newResponse.headers.set('X-Content-Type-Options', 'nosniff');
   newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
   newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');

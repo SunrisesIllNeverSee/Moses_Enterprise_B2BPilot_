@@ -52,6 +52,79 @@
     }
   }
 
+  // ─── Core Web Vitals collection ──────────────────────────────────────
+  // Collects LCP, INP, CLS, TTFB using native Performance Observer APIs
+  // Sends to our analytics worker as 'web_vitals' events
+  var vitals = { lcp: null, inp: null, cls: 0, ttfb: null, fid: null };
+  var vitalsSent = false;
+
+  function sendVitals() {
+    if (vitalsSent) return;
+    vitalsSent = true;
+    var navTiming = performance.getEntriesByType('navigation')[0];
+    if (navTiming) {
+      vitals.ttfb = Math.round(navTiming.responseStart - navTiming.requestStart);
+      vitals.dns = Math.round(navTiming.domainLookupEnd - navTiming.domainLookupStart);
+      vitals.tcp = Math.round(navTiming.connectEnd - navTiming.connectStart);
+      vitals.download = Math.round(navTiming.responseEnd - navTiming.responseStart);
+    }
+    beacon('web_vitals', vitals);
+  }
+
+  // LCP — Largest Contentful Paint
+  try {
+    new PerformanceObserver(function(l) {
+      var entries = l.getEntries();
+      if (entries.length > 0) {
+        vitals.lcp = Math.round(entries[entries.length - 1].startTime);
+      }
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
+  } catch(e) {}
+
+  // CLS — Cumulative Layout Shift
+  try {
+    new PerformanceObserver(function(l) {
+      l.getEntries().forEach(function(e) {
+        if (!e.hadRecentInput) vitals.cls += e.value;
+      });
+    }).observe({ type: 'layout-shift', buffered: true });
+  } catch(e) {}
+
+  // INP — Interaction to Next Paint (via event timing)
+  try {
+    var maxDuration = 0;
+    new PerformanceObserver(function(l) {
+      l.getEntries().forEach(function(e) {
+        if (e.duration > maxDuration) maxDuration = e.duration;
+      });
+      vitals.inp = Math.round(maxDuration);
+    }).observe({ type: 'event', buffered: true });
+  } catch(e) {}
+
+  // FID — First Input Delay (legacy, for older browsers)
+  try {
+    new PerformanceObserver(function(l) {
+      var entries = l.getEntries();
+      if (entries.length > 0) {
+        vitals.fid = Math.round(entries[0].processingStart - entries[0].startTime);
+      }
+    }).observe({ type: 'first-input', buffered: true });
+  } catch(e) {}
+
+  // Send vitals on page hide (best effort, uses sendBeacon fallback)
+  window.addEventListener('pagehide', function() {
+    // Use sendBeacon for reliability on page unload
+    try {
+      var payload = JSON.stringify(Object.assign({ type: 'web_vitals', path: path }, vitals));
+      navigator.sendBeacon('/api/analytics/beacon', new Blob([payload], { type: 'application/json' }));
+    } catch(e) {
+      sendVitals();
+    }
+  });
+
+  // Also send after 10 seconds (in case user stays on page)
+  setTimeout(sendVitals, 10000);
+
   // Expose for manual tracking
   window.mosesAnalytics = {
     beacon: beacon,
@@ -63,5 +136,6 @@
     trackMcpCall: function(tool) {
       beacon('mcp_call', { tool: tool });
     },
+    getVitals: function() { return vitals; },
   };
 })();
