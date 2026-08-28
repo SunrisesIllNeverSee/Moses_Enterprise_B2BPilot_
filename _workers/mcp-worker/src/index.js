@@ -1169,7 +1169,7 @@ const TOOLS = [
   },
   {
     name: "create_pilot_configuration",
-    description: "Generate a saveable pilot configuration JSON from parameters. Returns a validated configuration object with cohort size, duration, selected metrics, eval families, and benchmark classes. Use list_pilot_options first to see available options. The returned configuration can be passed to validate_pilot_configuration for pre-deployment checks. Configuration includes governance metadata (DEVELOPMENTAL label, no punitive use, association-not-causation evidence standard).",
+    description: "Generate a saveable pilot configuration JSON from parameters. This is a READ-ONLY tool that assembles a configuration object from the supplied arguments — it does not write to any persistent store. The returned configuration contains cohort_size, duration_days, and the selected metrics list. Use list_pilot_options first to discover available metric IDs, eval families, and benchmark classes, then pass the desired metrics here. The returned configuration can be passed to validate_pilot_configuration for pre-deployment checks, or to create_experiment to pair it with a hypothesis.\n\nWhen to use: when you are scoping a new pilot engagement and need a structured configuration object that captures cohort size, observation window, and metric selection. When NOT to use: when you need to validate an existing configuration (use validate_pilot_configuration), or when you need to create a controlled experiment with a hypothesis (use create_experiment). The output is a JSON object, not a persisted record — save it on the client side if you need to reuse it.\n\nGovernance: all MO§ES configurations carry the DEVELOPMENTAL label (for development use, not personnel performance rating) and the ASSOCIATION-not-CAUSATION evidence standard. Related tools: list_pilot_options (discover available options), validate_pilot_configuration (pre-deployment validation), create_experiment (pair config with a hypothesis).",
     inputSchema: {
       type: "object",
       properties: {
@@ -1183,18 +1183,15 @@ const TOOLS = [
       properties: {
         configuration: {
           type: "object",
+          description: "The generated pilot configuration object containing cohort size, duration, and selected metrics.",
           properties: {
-            cohort_size: { type: "integer", description: "Number of operators in the cohort" },
-            duration_days: { type: "integer", description: "Pilot duration in days" },
-            metrics: { type: "array", items: { type: "string" }, description: "Selected metric IDs" },
-            eval_families: { type: "array", items: { type: "string" }, description: "Selected evaluation family IDs" },
-            benchmark_classes: { type: "array", items: { type: "string" }, description: "Selected benchmark class IDs" },
-            governance: { type: "object", description: "Governance metadata including evidence labels and usage constraints" }
+            cohort_size: { type: "integer", description: "Number of operators in the cohort (defaults to 50 if not supplied)" },
+            duration_days: { type: "integer", description: "Pilot duration in days (defaults to 30 if not supplied)" },
+            metrics: { type: "array", items: { type: "string" }, description: "Selected metric IDs (defaults to all 5 canonical metrics if not supplied)" }
           }
         },
-        valid: { type: "boolean", description: "Whether the configuration passed validation" },
-        warnings: { type: "array", items: { type: "string" }, description: "Non-blocking validation warnings" },
-        synthetic: { type: "boolean", description: "Whether data is synthetic" }
+        valid: { type: "boolean", description: "Whether the configuration is structurally valid (always true for this read-only generator)" },
+        synthetic: { type: "boolean", description: "Whether the underlying data is synthetic (always true in the demo pilot)" }
       },
       required: ["configuration", "valid", "synthetic"]
     },
@@ -1226,7 +1223,7 @@ const TOOLS = [
   },
   {
     name: "close_intervention",
-    description: "Close an intervention with outcome notes and mark it complete. The intervention must exist and be active. Outcome notes should describe observed changes, unintended effects, and whether the target metric moved. After closing, the intervention is no longer eligible for verify_change comparisons. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
+    description: "Close an intervention with outcome notes and mark it complete. The intervention must exist and be active. Outcome notes should describe observed changes, unintended effects, and whether the target metric moved. After closing, the intervention is no longer eligible for verify_change comparisons. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.\n\nWhen to use: after an intervention period ends and you have outcome observations to record. When NOT to use: while an intervention is still active and being measured — use get_intervention_status to check the current state first.\n\nBehavioral transparency: on success, the intervention status transitions to 'closed' and a closed_at timestamp is recorded. On authorization failure (the demo behavior), the response includes error='AUTHORIZATION_REQUIRED', a human-readable message, and the tool name — no intervention state changes. Related tools: get_intervention_status (list active/closed interventions), verify_change (pre/post comparison for a closed intervention), assign_intervention (create a new intervention).",
     inputSchema: {
       type: "object",
       required: ["intervention_id"],
@@ -1238,12 +1235,13 @@ const TOOLS = [
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
-        message: { type: "string", description: "Human-readable status message" },
-        tool: { type: "string", description: "Tool name that was called" },
-        intervention_id: { type: "string", description: "ID of the closed intervention (on success)" },
-        status: { type: "string", description: "New status of the intervention (e.g., 'closed')" },
-        closed_at: { type: "string", description: "ISO timestamp of closure (on success)" }
+        error: { type: "string", description: "Error type if the call fails (e.g., 'AUTHORIZATION_REQUIRED' when no pilot access is granted; absent on success)" },
+        message: { type: "string", description: "Human-readable status message describing the outcome or failure reason" },
+        tool: { type: "string", description: "Name of the tool that was invoked (always 'close_intervention')" },
+        intervention_id: { type: "string", description: "ID of the closed intervention (present on success)" },
+        status: { type: "string", description: "New status of the intervention after closing (e.g., 'closed'; present on success)" },
+        closed_at: { type: "string", description: "ISO 8601 timestamp recording when the intervention was closed (present on success)" },
+        outcome_notes: { type: "string", description: "The outcome notes that were recorded with the closure (present on success)" }
       },
       required: ["error", "message", "tool"]
     },
@@ -1251,7 +1249,7 @@ const TOOLS = [
   },
   {
     name: "create_experiment",
-    description: "Create an experiment configuration for controlled comparison studies. Experiments pair a pilot configuration with a hypothesis and measurement plan. Use create_pilot_configuration first to build the config, then pass it here. Experiments enforce the ASSOCIATION-not-CAUSATION evidence standard — controlled experiments may upgrade evidence to CAUSATION only with proper design. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
+    description: "Create an experiment configuration for controlled comparison studies. Experiments pair a pilot configuration with a hypothesis and measurement plan. Use create_pilot_configuration first to build the config, then pass it here. Experiments enforce the ASSOCIATION-not-CAUSATION evidence standard — controlled experiments may upgrade evidence to CAUSATION only with proper design (e.g., randomized assignment, pre-registered hypothesis, control group). REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.\n\nWhen to use: when you need a controlled comparison (A/B test, before/after with control group, multi-arm trial across AI systems or intervention types). When NOT to use: for simple pre/post observations without a control group, use verify_change instead — it does not require authorization and returns an ASSOCIATION-labeled comparison.\n\nBehavioral transparency: on success, an experiment record is created with a unique experiment_id, initial status 'draft', and a created_at timestamp. On authorization failure (the demo behavior), the response includes error='AUTHORIZATION_REQUIRED', a human-readable message directing you to pilots@mos2es.org, and the tool name — no experiment record is created. Related tools: create_pilot_configuration (build the config to pass in), validate_pilot_configuration (pre-check the config), verify_change (lightweight pre/post without a full experiment).",
     inputSchema: {
       type: "object",
       required: ["name"],
@@ -1263,12 +1261,13 @@ const TOOLS = [
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
-        message: { type: "string", description: "Human-readable status message" },
-        tool: { type: "string", description: "Tool name that was called" },
-        experiment_id: { type: "string", description: "ID of the created experiment (on success)" },
-        status: { type: "string", description: "Initial status of the experiment (e.g., 'draft', 'configured')" },
-        created_at: { type: "string", description: "ISO timestamp of creation (on success)" }
+        error: { type: "string", description: "Error type if the call fails (e.g., 'AUTHORIZATION_REQUIRED' when no pilot access is granted; absent on success)" },
+        message: { type: "string", description: "Human-readable status message describing the outcome or failure reason" },
+        tool: { type: "string", description: "Name of the tool that was invoked (always 'create_experiment')" },
+        experiment_id: { type: "string", description: "Unique ID assigned to the created experiment (present on success)" },
+        status: { type: "string", description: "Initial lifecycle status of the experiment (e.g., 'draft'; present on success)" },
+        created_at: { type: "string", description: "ISO 8601 timestamp recording when the experiment was created (present on success)" },
+        name: { type: "string", description: "The experiment name that was supplied (present on success)" }
       },
       required: ["error", "message", "tool"]
     },
@@ -1276,7 +1275,7 @@ const TOOLS = [
   },
   {
     name: "record_workflow_observation",
-    description: "Record a workflow fit observation linking an operator to a workflow stage with a fit score. Workflow fit measures how well an operator's AI usage patterns align with a specific workflow stage (e.g., debugging, code review, architecture). Fit scores range 0.0-1.0 where 1.0 indicates perfect alignment. Use get_workflow_fit to read existing observations. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.",
+    description: "Record a workflow fit observation linking an operator to a workflow stage with a fit score. Workflow fit measures how well an operator's AI usage patterns align with a specific workflow stage (e.g., debugging, code review, architecture). Fit scores range 0.0-1.0 where 1.0 indicates perfect alignment. Use get_workflow_fit to read existing observations. REQUIRES AUTHORIZATION — contact pilots@mos2es.org for pilot access. In the synthetic demo, this returns an authorization notice.\n\nWhen to use: when you have observed an operator working in a specific workflow stage and want to record the fit score so it can be analyzed alongside other observations. When NOT to use: for reading existing workflow fit observations, use get_workflow_fit instead — it is read-only and does not require authorization.\n\nBehavioral transparency: on success, a new observation record is created with a unique observation_id and a recorded_at timestamp, echoing back the operator_id and workflow_id. On authorization failure (the demo behavior), the response includes error='AUTHORIZATION_REQUIRED', a human-readable message, and the tool name — no observation is recorded. Related tools: get_workflow_fit (read existing observations), get_operator_profile (operator metric profile used to compute fit).",
     inputSchema: {
       type: "object",
       required: ["operator_id", "workflow_id"],
@@ -1290,13 +1289,14 @@ const TOOLS = [
     outputSchema: {
       type: "object",
       properties: {
-        error: { type: "string", description: "Error type if authorization fails (e.g., 'authorization_required')" },
-        message: { type: "string", description: "Human-readable status message" },
-        tool: { type: "string", description: "Tool name that was called" },
-        observation_id: { type: "string", description: "ID of the recorded observation (on success)" },
-        recorded_at: { type: "string", description: "ISO timestamp of recording (on success)" },
-        operator_id: { type: "string", description: "Operator ID that was observed (on success)" },
-        workflow_id: { type: "string", description: "Workflow ID that was observed (on success)" }
+        error: { type: "string", description: "Error type if the call fails (e.g., 'AUTHORIZATION_REQUIRED' when no pilot access is granted; absent on success)" },
+        message: { type: "string", description: "Human-readable status message describing the outcome or failure reason" },
+        tool: { type: "string", description: "Name of the tool that was invoked (always 'record_workflow_observation')" },
+        observation_id: { type: "string", description: "Unique ID assigned to the recorded observation (present on success)" },
+        recorded_at: { type: "string", description: "ISO 8601 timestamp recording when the observation was saved (present on success)" },
+        operator_id: { type: "string", description: "Operator ID that was observed (present on success, echoes the input)" },
+        workflow_id: { type: "string", description: "Workflow ID that was observed (present on success, echoes the input)" },
+        fit_score: { type: "number", description: "Fit score that was recorded (present on success, echoes the input)" }
       },
       required: ["error", "message", "tool"]
     },
@@ -1471,6 +1471,247 @@ const WRITE_TOOLS = new Set([
   "assign_intervention", "close_intervention", "create_experiment",
   "record_workflow_observation", "attach_outcome_dataset"
 ]);
+
+// ─── Prompt Definitions ─────────────────────────────────────────────
+const PROMPTS = [
+  {
+    name: "operator_evaluation_summary",
+    description: "Generate a summary evaluation of an operator's AI usage patterns, strengths, and gaps. Args: operator_id",
+    arguments: [
+      {
+        name: "operator_id",
+        description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)",
+        required: true
+      }
+    ]
+  },
+  {
+    name: "intervention_recommendation",
+    description: "Generate intervention recommendations for an operator based on their diagnostics and divergence patterns. Args: operator_id",
+    arguments: [
+      {
+        name: "operator_id",
+        description: "Pseudonymous operator ID (e.g., op_001, op_003, op_034)",
+        required: true
+      }
+    ]
+  },
+  {
+    name: "cohort_health_report",
+    description: "Generate a cohort health report covering data quality, metric distributions, and capability concentration. No args.",
+    arguments: []
+  },
+  {
+    name: "workflow_fit_analysis",
+    description: "Generate a workflow fit analysis showing which operators fit which workflow stages. No args.",
+    arguments: []
+  },
+  {
+    name: "pilot_scoping_guide",
+    description: "Generate a pilot scoping guide for a new enterprise engagement. No args.",
+    arguments: []
+  }
+];
+
+// ─── Prompt Handler ──────────────────────────────────────────────────
+function handlePromptGet(promptName, args) {
+  const operatorId = args?.operator_id || "op_001";
+
+  let text;
+  switch (promptName) {
+    case "operator_evaluation_summary":
+      text = `Generate a summary evaluation for operator ${operatorId}. Follow these steps:\n\n1. Call get_operator_profile with operator_id="${operatorId}" to retrieve the operator's 5 canonical metric measurements and percentiles.\n2. Call get_composite_score with operator_id="${operatorId}" to retrieve the developmental composite score and component breakdown.\n3. Call get_diagnostics with operator_id="${operatorId}" to retrieve pattern detections and diagnoses.\n4. Call get_operator_similarity with operator_id="${operatorId}" to find the operator's nearest peer group.\n5. Synthesize the results into a summary covering: (a) overall developmental score and where the operator sits relative to the cohort, (b) metric-level strengths and gaps with percentile context, (c) any detected divergence patterns (e.g., HIGH_USAGE_LOW_OPERATION), (d) peer group context, and (e) developmental recommendations. Remember: all labels are DEVELOPMENTAL, all diagnoses are HYPOTHESIS.`;
+      break;
+
+    case "intervention_recommendation":
+      text = `Generate intervention recommendations for operator ${operatorId}. Follow these steps:\n\n1. Call get_diagnostics with operator_id="${operatorId}" to retrieve detected patterns and diagnoses.\n2. Call find_usage_operation_divergence to see where this operator sits in the cohort-wide divergence ranking.\n3. Call get_composite_score with operator_id="${operatorId}" to identify which metrics are weakest.\n4. Call list_pilot_options to retrieve the available intervention types (COA-001 through COA-005).\n5. Call get_intervention_status to see if any interventions are already active for this operator.\n6. Synthesize recommendations: match the detected pattern to the most appropriate intervention type, explain the rationale (which metric is weak, what the intervention targets), and note the ASSOCIATION evidence standard. Remember: all diagnoses are HYPOTHESIS, recommendations are developmental not punitive.`;
+      break;
+
+    case "cohort_health_report":
+      text = `Generate a cohort health report. Follow these steps:\n\n1. Call get_pilot_status to retrieve the cohort overview, observation count, and data quality summary.\n2. Call get_data_quality to retrieve completeness, coverage, and validity metrics.\n3. Call get_composite_score_summary to retrieve the score distribution (min, max, median, mean, Q1, Q3).\n4. Call get_cohort_distribution with metric="leverage" to see the leverage distribution.\n5. Call get_org_topology to retrieve capability concentration (Gini), platform adoption, and single points of failure.\n6. Synthesize a health report covering: (a) data quality and coverage, (b) score distribution and spread, (c) capability concentration risks, (d) platform adoption balance, (e) any single points of failure. Remember: all data is from a 50-operator synthetic pilot.`;
+      break;
+
+    case "workflow_fit_analysis":
+      text = `Generate a workflow fit analysis. Follow these steps:\n\n1. Call get_workflow_fit to retrieve the workflow stages and existing fit observations.\n2. Call get_org_topology to understand team-level metric distributions that inform fit.\n3. Call get_operator_system_decomposition to see whether operator capability or system choice drives performance.\n4. Synthesize an analysis covering: (a) which workflow stages have the most observations, (b) how operator metric profiles map to stage requirements, (c) whether operator or system effects dominate, and (d) which operators are likely strong fits for which stages. Remember: fit scores are developmental guidance, not personnel assignments.`;
+      break;
+
+    case "pilot_scoping_guide":
+      text = `Generate a pilot scoping guide for a new enterprise engagement. Follow these steps:\n\n1. Call list_pilot_options to retrieve available canonical metrics, eval families, benchmark classes, and intervention types.\n2. Call get_pilot_status to see the current demo pilot as a reference example.\n3. Call create_pilot_configuration with cohort_size=50, duration_days=90, and metrics=["leverage","yield","token_snr","construction"] to generate a sample configuration.\n4. Call validate_pilot_configuration with the generated configuration to demonstrate the validation step.\n5. Synthesize a scoping guide covering: (a) recommended cohort size and rationale, (b) observation window length and trade-offs, (c) which metrics to select and why, (d) governance commitments (DEVELOPMENTAL labels, ASSOCIATION evidence standard, no punitive use), and (e) the validation workflow before deployment.`;
+      break;
+
+    default:
+      return null;
+  }
+
+  return {
+    description: PROMPTS.find(p => p.name === promptName)?.description || promptName,
+    messages: [
+      {
+        role: "assistant",
+        content: { type: "text", text }
+      }
+    ]
+  };
+}
+
+// ─── Resource Definitions ───────────────────────────────────────────
+const RESOURCES = [
+  {
+    uri: "moses://metrics/canonical",
+    name: "Canonical Metric Definitions",
+    description: "The 5 canonical metric definitions (yield, leverage, token SNR, construction, divergence) with formulas, units, and status.",
+    mimeType: "application/json"
+  },
+  {
+    uri: "moses://metrics/registry",
+    name: "Full Metric Registry",
+    description: "Full metric registry with formulas, status, and requirements for all registered metrics.",
+    mimeType: "application/json"
+  },
+  {
+    uri: "moses://pilot/status",
+    name: "Current Pilot Status",
+    description: "Current pilot status as a resource — cohort size, observation count, date range, data quality, and active interventions.",
+    mimeType: "application/json"
+  },
+  {
+    uri: "moses://pilot/options",
+    name: "Available Pilot Options",
+    description: "Available pilot options including canonical metrics, eval families, benchmark classes, and intervention types.",
+    mimeType: "application/json"
+  },
+  {
+    uri: "moses://governance/conventions",
+    name: "Governance Conventions",
+    description: "Key governance conventions: association not causation, developmental not personnel, HYPOTHESIS diagnoses, no punitive use, no operator leaderboards.",
+    mimeType: "application/json"
+  },
+  {
+    uri: "moses://cohort/operators",
+    name: "Cohort Operator List",
+    description: "List of all 50 operators with team, role, level, and platform.",
+    mimeType: "application/json"
+  }
+];
+
+// ─── Resource Handler ────────────────────────────────────────────────
+function handleResourceRead(uri) {
+  let text;
+  switch (uri) {
+    case "moses://metrics/canonical": {
+      const canonical = metricRegistryData.metrics.filter(m => CANONICAL_METRICS.includes(m.metric_id));
+      text = JSON.stringify({
+        canonical_metrics: canonical.map(m => ({
+          metric_id: m.metric_id,
+          name: m.name,
+          formula: m.formula,
+          unit: m.unit,
+          status: m.status,
+          requires: m.requires
+        })),
+        note: "These 5 metrics form the canonical set. token_snr and construction carry CANONICAL_WITH_INTERPRETATION_LIMIT status — interpret with caution as they are context-dependent."
+      }, null, 2);
+      break;
+    }
+
+    case "moses://metrics/registry":
+      text = JSON.stringify(metricRegistryData, null, 2);
+      break;
+
+    case "moses://pilot/status": {
+      const windowObs = observations.filter(o => {
+        const d = o.timestamp.slice(0, 10);
+        return d >= WINDOW_START && d <= WINDOW_END;
+      });
+      text = JSON.stringify({
+        cohort_id: cohortData.cohort_id,
+        window: { start: WINDOW_START, end: WINDOW_END },
+        total_operators: operatorsData.length,
+        observation_count: windowObs.length,
+        metric_registry_version: metricRegistryData.registry_version,
+        reference_field_version: referenceFieldData.version,
+        active_interventions: interventionsData.filter(i => !i.synthetic_outcome || i.synthetic_outcome === "PENDING").length,
+        data_quality: {
+          OK: operatorsData.length,
+          WARNING: windowObs.filter(o => o.input_tokens === 0).length,
+          BLOCKING: 0,
+        },
+        synthetic: true
+      }, null, 2);
+      break;
+    }
+
+    case "moses://pilot/options":
+      text = JSON.stringify({
+        canonical_metrics: metricRegistryData.metrics.map(m => ({ metric_id: m.metric_id, name: m.name, status: m.status, formula: m.formula })),
+        eval_families: 15,
+        benchmark_classes: 13,
+        intervention_types: ["COA-001", "COA-002", "COA-003", "COA-004", "COA-005"],
+        synthetic: true
+      }, null, 2);
+      break;
+
+    case "moses://governance/conventions":
+      text = JSON.stringify({
+        conventions: [
+          {
+            id: "association_not_causation",
+            rule: "All outcome correlations and intervention comparisons are labeled ASSOCIATION, never CAUSATION.",
+            rationale: "Observational data without randomized controlled trials cannot establish causality."
+          },
+          {
+            id: "developmental_not_personnel",
+            rule: "All scores and labels are DEVELOPMENTAL — for development use, not personnel performance rating.",
+            rationale: "AI operator metrics measure tool-use patterns, not employee worth or competence."
+          },
+          {
+            id: "hypothesis_diagnoses",
+            rule: "All pattern diagnoses are HYPOTHESIS, never fact.",
+            rationale: "Divergence patterns suggest areas for development, not definitive problems."
+          },
+          {
+            id: "no_punitive_use",
+            rule: "No automatic adverse actions, no punitive labels, no operator leaderboards.",
+            rationale: "Metrics should drive coaching and development, not discipline."
+          },
+          {
+            id: "pseudonymous_operators",
+            rule: "Operator IDs are pseudonymous (op_001 through op_050). No real names or PII.",
+            rationale: "Privacy protection for pilot participants."
+          },
+          {
+            id: "interpretation_limits",
+            rule: "token_snr and construction carry CANONICAL_WITH_INTERPRETATION_LIMIT status — interpret with caution.",
+            rationale: "These metrics are context-dependent and may not generalize across workflows."
+          }
+        ],
+        evidence_labels: ["ASSOCIATION", "OBSERVATIONAL", "HYPOTHESIS", "DEVELOPMENTAL"],
+        synthetic: true
+      }, null, 2);
+      break;
+
+    case "moses://cohort/operators":
+      text = JSON.stringify({
+        cohort_id: cohortData.cohort_id,
+        total_operators: operatorsData.length,
+        operators: operatorsData.map(o => ({
+          operator_id: o.operator_id,
+          pseudonym: o.pseudonym,
+          team: o.team,
+          role_family: o.role_family,
+          level: o.level,
+          primary_platform: o.primary_platform
+        })),
+        synthetic: true
+      }, null, 2);
+      break;
+
+    default:
+      return null;
+  }
+
+  return { contents: [{ uri, mimeType: "application/json", text }] };
+}
 
 // ─── Tool Handlers ──────────────────────────────────────────────────
 function handleToolCall(name, args) {
@@ -1885,6 +2126,8 @@ export default {
         tools: TOOLS.length,
         read_tools: TOOLS.length - WRITE_TOOLS.size,
         write_tools: WRITE_TOOLS.size,
+        prompts: PROMPTS.length,
+        resources: RESOURCES.length,
         url: "https://mcp.mos2es.org",
         docs: "https://mos2es.org/docs",
         openapi: "https://mos2es.org/openapi.json",
@@ -1966,12 +2209,63 @@ export default {
           break;
 
         case "resources/list":
-          result = { resources: [] };
+          result = { resources: RESOURCES };
           break;
 
-        case "prompts/list":
-          result = { prompts: [] };
+        case "resources/read": {
+          const resourceUri = params?.uri;
+          if (!resourceUri) {
+            return new Response(JSON.stringify({
+              jsonrpc: "2.0",
+              error: { code: -32602, message: "Missing uri parameter" },
+              id
+            }), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+          const resourceResult = handleResourceRead(resourceUri);
+          if (!resourceResult) {
+            return new Response(JSON.stringify({
+              jsonrpc: "2.0",
+              error: { code: -32602, message: `Unknown resource: ${resourceUri}` },
+              id
+            }), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+          result = resourceResult;
           break;
+        }
+
+        case "prompts/list":
+          result = { prompts: PROMPTS };
+          break;
+
+        case "prompts/get": {
+          const promptName = params?.name;
+          const promptArgs = params?.arguments || {};
+          if (!promptName) {
+            return new Response(JSON.stringify({
+              jsonrpc: "2.0",
+              error: { code: -32602, message: "Missing name parameter" },
+              id
+            }), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+          const promptResult = handlePromptGet(promptName, promptArgs);
+          if (!promptResult) {
+            return new Response(JSON.stringify({
+              jsonrpc: "2.0",
+              error: { code: -32602, message: `Unknown prompt: ${promptName}` },
+              id
+            }), {
+              headers: { "Content-Type": "application/json", ...corsHeaders }
+            });
+          }
+          result = promptResult;
+          break;
+        }
 
         default:
           return new Response(JSON.stringify({
@@ -2008,9 +2302,14 @@ export default {
           required: false,
           schemes: []
         },
+        capabilities: {
+          tools: true,
+          resources: true,
+          prompts: true
+        },
         tools: TOOLS,
-        resources: [],
-        prompts: []
+        resources: RESOURCES,
+        prompts: PROMPTS
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
       });

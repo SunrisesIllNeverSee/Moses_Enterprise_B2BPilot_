@@ -1,15 +1,15 @@
-# MO§ES™ Enterprise — AI Operator Evaluation Platform
+# MO§ES™ Enterprise: AI Operator Evaluation Platform
 
-> **Live: [mos2es.org](https://mos2es.org)** — Systems intelligence for the human-AI operating system.
+> **Live: [mos2es.org](https://mos2es.org)**: Systems intelligence for the human-AI operating system.
 > The new standard in performative metrics and benchmarks for AI operators.
 > Baselines system intelligence for everyday operations and AI workflows.
 > _Content-free token telemetry. Never your prompts._
 
 <div align="center">
 
-**Enterprise AI operator evaluation. Measure how people operate AI — not the AI model itself.**
+**Enterprise AI operator evaluation. Measure how people operate AI, not the AI model itself.**
 
-MO§ES™ curates a company's system intelligence — how effectively people drive AI systems across tools, tasks, workflows, and conditions. The same way BI sees the business, MO§ES™ sees how the business operates AI.
+MO§ES™ curates a company's system intelligence: how effectively people drive AI systems across tools, tasks, workflows, and conditions. The same way BI sees the business, MO§ES™ sees how the business operates AI.
 
 [![live](https://img.shields.io/badge/live-mos2es.org-gold.svg?style=flat-square)](https://mos2es.org)
 [![enterprise](https://img.shields.io/badge/demo-enterprise.mos2es.org-blue.svg?style=flat-square)](https://enterprise.mos2es.org)
@@ -50,12 +50,12 @@ MO§ES™ curates a company's system intelligence — how effectively people dri
 
 ## What is MO§ES™?
 
-MO§ES™ is an enterprise AI operator evaluation platform. It measures how **people operate AI systems** — not the AI models themselves, not usage volume, not self-reported proficiency. Using content-free token telemetry (input, output, cache read, cache write — no prompt text, no response text), MO§ES™ baselines system intelligence across:
+MO§ES™ is an enterprise AI operator evaluation platform. It measures how **people operate AI systems**, not the AI models themselves, not usage volume, not self-reported proficiency. Using content-free token telemetry (input, output, cache read, cache write, no prompt text, no response text), MO§ES™ baselines system intelligence across:
 
-- **Operators** — how effectively individuals drive AI
-- **Teams** — cohort distributions and capability topology
-- **Workflows** — where AI fits in the work, not just whether it's used
-- **Organizations** — cross-team benchmarking and capability mapping
+- **Operators**: how effectively individuals drive AI
+- **Teams**: cohort distributions and capability topology
+- **Workflows**: where AI fits in the work, not just whether it's used
+- **Organizations**: cross-team benchmarking and capability mapping
 
 The platform builds **bespoke evals** around your workflows, roles, and AI systems, benchmarks performance against internal and external reference populations, diagnoses capability gaps and divergence patterns, tests targeted interventions, and re-measures what changes.
 
@@ -69,11 +69,11 @@ LMSYS benchmarks models. Braintrust evaluates product outputs. Langfuse traces L
 
 | Repo / Site | What it is | URL |
 |-------------|-----------|-----|
-| **MO§ES™ Enterprise** (this repo) | The platform — Python eval engine, CLI, MCP server, demo, promo, enterprise demo, workers | [mos2es.org](https://mos2es.org) |
-| **SigRank SignalAF** | The public leaderboard — operator rankings by token cascade efficiency | [signalaf.com](https://signalaf.com) |
-| **SigRank MCP** | The instrument — extracts token pillars, computes cascade, submits to leaderboard | `npx sigrank` |
-| **SIGNOMY** | Governed AI agent marketplace — ranked agents form teams, run missions, earn revenue | [signomy.xyz](https://signomy.xyz) |
-| **SigEconomy** | Public LLM operator evals — read-only leaderboard, SEO/AEO surface | [sigeconomy.com](https://sigeconomy.com) |
+| **MO§ES™ Enterprise** (this repo) | The platform: Python eval engine, CLI, MCP server, demo, promo, enterprise demo, workers | [mos2es.org](https://mos2es.org) |
+| **SigRank SignalAF** | The public leaderboard: operator rankings by token cascade efficiency | [signalaf.com](https://signalaf.com) |
+| **SigRank MCP** | The instrument: extracts token pillars, computes cascade, submits to leaderboard | `npx sigrank` |
+| **SIGNOMY** | Governed AI agent marketplace: ranked agents form teams, run missions, earn revenue | [signomy.xyz](https://signomy.xyz) |
+| **SigEconomy** | Public LLM operator evals: read-only leaderboard, SEO/AEO surface | [sigeconomy.com](https://sigeconomy.com) |
 
 ## Live surfaces
 
@@ -81,7 +81,7 @@ LMSYS benchmarks models. Braintrust evaluates product outputs. Langfuse traces L
 |---------|-----|------|
 | Promo site | https://mos2es.org | Marketing, methodology, demo, comparisons, booking |
 | Enterprise demo | https://enterprise.mos2es.org | Interactive product walkthrough (evaluate → diagnose → workflow → compare) |
-| MCP server | https://mcp.mos2es.org/mcp | 27-tool MCP server (22 read + 5 write), streamable HTTP |
+| MCP server | https://mcp.mos2es.org/mcp | 27 tools (22 read + 5 write), 5 prompts, 6 resources, streamable HTTP |
 | MCP server info | https://mcp.mos2es.org/ | Server info JSON (version, tool count, transport) |
 | MCP server card | https://mcp.mos2es.org/.well-known/mcp/server-card.json | Full server card with all tool schemas |
 | OpenAPI spec | https://mos2es.org/openapi.json | REST API specification |
@@ -167,7 +167,7 @@ curl -s -X POST https://mcp.mos2es.org/mcp \
 | 10 | VISUALIZE | Generate 9 architecture diagrams |
 | 11 | DASHBOARD | Export executive HTML dashboard |
 
-The demo runs on fully synthetic data. No real operators, no real prompt text, no real API calls. Deterministic — running twice produces identical results.
+The demo runs on fully synthetic data. No real operators, no real prompt text, no real API calls. Deterministic: running twice produces identical results.
 
 ## The 5 canonical metrics
 
@@ -211,13 +211,17 @@ _workers/              Cloudflare Workers
 
 ## MCP server
 
-The MCP server exposes **27 tools** (22 read + 5 write) over streamable HTTP at `https://mcp.mos2es.org/mcp`. No authentication required for the public server.
+The MCP server exposes **27 tools** (22 read + 5 write), **5 prompts**, and **6 resources** over streamable HTTP at `https://mcp.mos2es.org/mcp`. No authentication required for the public server.
 
 **Read tools** include: cohort stats, operator profiles, metric distributions, benchmark positions, divergence findings, intervention outcomes, outcome lineage, workflow fit, org topology, and more.
 
 **Write tools** include: create intervention, assign intervention, record outcome, create eval configuration, create pilot configuration.
 
-The server computes live from raw observation data — no pre-computed results. Every call runs the actual scoring, benchmarking, and diagnostic engines.
+**Prompts** include: operator evaluation summary, intervention recommendation, cohort health report, workflow fit analysis, pilot scoping guide.
+
+**Resources** include: canonical metric definitions, metric registry, pilot status, pilot options, governance conventions, cohort operator list.
+
+The server computes live from raw observation data, no pre-computed results. Every call runs the actual scoring, benchmarking, and diagnostic engines.
 
 ### Server card
 
@@ -272,21 +276,21 @@ with open('lineages.js', 'w') as f:
 
 - **Brand:** MO§ES™ (use the section sign §)
 - **All outcome claims are ASSOCIATION, never CAUSATION** unless backed by a controlled experiment
-- **Composite score is DEVELOPMENTAL, never PERSONNEL** — no punitive use, no employee leaderboard
+- **Composite score is DEVELOPMENTAL, never PERSONNEL**: no punitive use, no employee leaderboard
 - **Operator similarity is metric similarity, NOT personality matching**
-- **Content-free telemetry** — no prompt text, no output bodies, no code content in observations
-- **No prompt-content surveillance** — operator performance is observable from token structure alone
-- **Governance-ready** — evidence labels (DEVELOPMENTAL, HYPOTHESIS, ASSOCIATION) on every output
+- **Content-free telemetry**: no prompt text, no output bodies, no code content in observations
+- **No prompt-content surveillance**: operator performance is observable from token structure alone
+- **Governance-ready**: evidence labels (DEVELOPMENTAL, HYPOTHESIS, ASSOCIATION) on every output
 
 ## Complement, don't replace
 
-MO§ES™ works alongside your existing BI, eval suites, observability tools, and productivity analytics. It measures the systems intelligence layer they can't see. Not a replacement — the missing piece.
+MO§ES™ works alongside your existing BI, eval suites, observability tools, and productivity analytics. It measures the systems intelligence layer they can't see. Not a replacement: the missing piece.
 
 ### Five pillars
 
 | # | Pillar | What |
 |---|--------|------|
-| 1 | **Systems Intelligence** | MO§ES™ sees the human-AI operating system the way BI sees the business. Operator performance, workflow fit, tool selection, capability distribution, intervention outcomes — all measured from structure, not content. |
+| 1 | **Systems Intelligence** | MO§ES™ sees the human-AI operating system the way BI sees the business. Operator performance, workflow fit, tool selection, capability distribution, intervention outcomes, all measured from structure, not content. |
 | 2 | **Standard Operational Performative Metrics** | 5 canonical metrics. 15 eval families. 13 benchmark classes. 4 measurement levels. An open, documented spec for measuring how humans operate AI. The reference implementation is MO§ES™. |
 | 3 | **Bespoke Enterprise Evals** | Your company should not inherit someone else's definition of AI proficiency. Evals built around your workflows, roles, models, and performance questions. |
 | 4 | **Complement, Don't Replace** | Works alongside your existing BI, eval suites, observability tools, and productivity analytics. The missing piece, not a replacement. |
@@ -294,7 +298,7 @@ MO§ES™ works alongside your existing BI, eval suites, observability tools, an
 
 ## License
 
-Apache License 2.0 — see [LICENSE](./LICENSE). Patent pending: Serial No. 63/877,177. For enterprise pilots and commercial support: pilots@mos2es.org.
+Apache License 2.0: see [LICENSE](./LICENSE). Patent pending: Serial No. 63/877,177. For enterprise pilots and commercial support: pilots@mos2es.org.
 
 ---
 
@@ -302,6 +306,6 @@ Apache License 2.0 — see [LICENSE](./LICENSE). Patent pending: Serial No. 63/8
 
 **[mos2es.org](https://mos2es.org)** · **[Book a demo](https://mos2es.org/contact)** · **[Run the demo](https://mos2es.org/demo)** · **[MCP server](https://mcp.mos2es.org/mcp)**
 
-Built by Deric J. McHenry — Ello Cello LLC
+Built by Deric J. McHenry, Ello Cello LLC
 
 </div>
