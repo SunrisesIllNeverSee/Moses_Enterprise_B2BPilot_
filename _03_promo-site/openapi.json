@@ -1,11 +1,11 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "MO\u00a7ES\u2122 API",
+    "title": "MO§ES™ API",
     "version": "0.1.0",
     "description": "Enterprise AI operator evaluation platform. MCP tools exposed as API endpoints for agent integration. All write operations require authorization.",
     "contact": {
-      "name": "MO\u00a7ES\u2122",
+      "name": "MO§ES™",
       "email": "pilots@mos2es.org",
       "url": "https://mos2es.org"
     },
@@ -436,6 +436,160 @@
           }
         }
       }
+    },
+    "/api/operator-system-decomposition": {
+      "get": {
+        "operationId": "getOperatorSystemDecomposition",
+        "tags": [
+          "read"
+        ],
+        "summary": "Operator×System decomposition",
+        "description": "Two-way ANOVA-style decomposition partitioning metric variance into operator effect, system effect, and operator×system interaction. Shows whether operator capability or system choice drives performance.",
+        "parameters": [
+          {
+            "name": "operator_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional: filter to a single operator's decomposition"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/lineage-chain/{operatorId}": {
+      "get": {
+        "operationId": "getLineageChain",
+        "tags": [
+          "read"
+        ],
+        "summary": "Get lineage chain for operator",
+        "description": "Get the full lineage chain for an operator: STATE_A → BI_ACTION → AAI_TRANSFORMATION → BI_REDIRECTION → AAI_EXTENSION → COMMITTED_STATE → OUTCOME. Built from raw lineage and outcome data.",
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pseudonymous operator ID (e.g., op_046)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/lineage-summary": {
+      "get": {
+        "operationId": "getLineageSummary",
+        "tags": [
+          "read"
+        ],
+        "summary": "Lineage summary across cohort",
+        "description": "Get lineage summary across the cohort — total lineages, workflow breakdown, average micro-eval metrics, outcomes linked. Computed from raw lineage data.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/outcome-correlation": {
+      "get": {
+        "operationId": "getOutcomeCorrelation",
+        "tags": [
+          "read"
+        ],
+        "summary": "Outcome correlation analysis",
+        "description": "Correlate micro-eval metrics with outcome quality scores and cycle times through lineage. Computed via Pearson r from raw lineage + outcome data. Results labeled ASSOCIATION with evidence grade OBSERVATIONAL, never CAUSATION.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/org-topology": {
+      "get": {
+        "operationId": "getOrgTopology",
+        "tags": [
+          "read"
+        ],
+        "summary": "Organization topology map",
+        "description": "Organization-level AI topology map — team-level metric distributions, median canonical metrics per team, capability concentration (Gini coefficient), platform adoption, single-point-of-failure detection, cross-team complementarity. Computed from raw measurements.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/operator-similarity/{operatorId}": {
+      "get": {
+        "operationId": "getOperatorSimilarity",
+        "tags": [
+          "read"
+        ],
+        "summary": "Operator similarity search",
+        "description": "Nearest-neighbor operator search using percentile-rank normalization and Euclidean distance across 5 canonical metrics. Returns comparable operators/cohorts, NOT personality matching.",
+        "parameters": [
+          {
+            "name": "operatorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pseudonymous operator ID (e.g., op_001)"
+          },
+          {
+            "name": "n_neighbors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5
+            },
+            "description": "Number of nearest neighbors to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -609,7 +763,7 @@
           },
           "individual_rankings": {
             "type": "boolean",
-            "description": "Always false \u2014 no rankings exposed"
+            "description": "Always false — no rankings exposed"
           }
         }
       },
