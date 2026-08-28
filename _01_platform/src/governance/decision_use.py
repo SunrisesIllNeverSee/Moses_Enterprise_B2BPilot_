@@ -68,7 +68,7 @@ def decision_use_for_outcome_join() -> DecisionUse:
 def decision_use_for_personnel() -> DecisionUse:
     """Personnel decisions require the highest governance threshold.
 
-    Surfaces the elevated governance warning. Per `12`: "A single SigRank
+    Surfaces the elevated governance warning. Per `12`: "A single Upsilon
     measurement should never automatically trigger hiring, firing,
     compensation, or promotion decisions."
     """
