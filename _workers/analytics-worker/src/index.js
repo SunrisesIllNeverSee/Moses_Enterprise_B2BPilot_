@@ -95,6 +95,15 @@ function corsHeaders() {
   };
 }
 
+// Privacy-preserving IP hash for tracking unique visitors without storing IPs
+async function sha256(str) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = [...new Uint8Array(hashBuffer)];
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 16);
+}
+
 function jsonResponse(data, status = 200, extra = {}) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
@@ -134,6 +143,12 @@ export default {
     if (path === '/api/analytics/bots' && method === 'GET') {
       const queryHost = url.searchParams.get('host') || host;
       return handleBotStats(request, env, queryHost, url);
+    }
+
+    // ─── /api/analytics/agent-trail — detailed agent provenance ─────────
+    if (path === '/api/analytics/agent-trail' && method === 'GET') {
+      const queryHost = url.searchParams.get('host') || host;
+      return handleAgentTrail(request, env, queryHost, url);
     }
 
     // ─── /api/analytics/ai-overview — AI engine visibility ──────────────
@@ -292,16 +307,31 @@ async function handleBeacon(request, env, host) {
       await env.ANALYTICS_KV.put(key, String(current + 1));
     }));
 
-    // Log recent bot visits (keep last 100)
+    // Log recent bot visits (keep last 200) — enhanced tracking
     if (botInfo) {
       const logKey = `${trackingHost}:bot-log`;
       const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
       const log = JSON.parse(logRaw);
       log.unshift({
-        bot: botInfo.bot, engine: botInfo.engine, type: botInfo.type,
-        path: event.path, country: event.country, timestamp: event.timestamp,
+        bot: botInfo.bot,
+        engine: botInfo.engine,
+        type: botInfo.type,
+        path: event.path,
+        country: event.country,
+        region: event.region,
+        city: event.city,
+        colo: event.colo,
+        asn: cf.asn || null,
+        asOrganization: cf.asOrganization || null,
+        referrer: event.referrer,
+        userAgent: userAgent.slice(0, 500),
+        acceptHeader: request.headers.get('Accept')?.slice(0, 200) || null,
+        timestamp: event.timestamp,
+        ipHash: request.headers.get('CF-Connecting-IP') 
+          ? await sha256(request.headers.get('CF-Connecting-IP').slice(0, 16))
+          : null,
       });
-      await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 100)));
+      await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 200)));
     }
 
     // Log AI overview events
@@ -398,6 +428,70 @@ async function handleBotStats(request, env, host, url) {
     allTimeTotals: botTotals,
     knownCrawlers: Object.keys(AI_CRAWLERS).length,
   });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Agent Trail — detailed agent provenance: where they came from, what they
+// requested, what network they're on, what content type they prefer
+// ═══════════════════════════════════════════════════════════════════════
+async function handleAgentTrail(request, env, host, url) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, trail: [], provenance: {} });
+
+  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  const limit = parseInt(url.searchParams.get('limit') || '100', 10);
+  const filterBot = url.searchParams.get('bot');
+  const filterEngine = url.searchParams.get('engine');
+
+  let filtered = botLog;
+  if (filterBot) filtered = filtered.filter(e => e.bot === filterBot);
+  if (filterEngine) filtered = filtered.filter(e => e.engine === filterEngine);
+
+  // Build provenance summaries
+  const byCountry = {};
+  const byAsn = {};
+  const byReferrer = {};
+  const byPath = {};
+  const byAccept = {};
+  const byCity = {};
+  const uniqueIpHashes = new Set();
+
+  for (const entry of filtered) {
+    if (entry.country) byCountry[entry.country] = (byCountry[entry.country] || 0) + 1;
+    if (entry.asn) {
+      const key = `AS${entry.asn}${entry.asOrganization ? ' (' + entry.asOrganization + ')' : ''}`;
+      byAsn[key] = (byAsn[key] || 0) + 1;
+    }
+    if (entry.referrer) byReferrer[entry.referrer] = (byReferrer[entry.referrer] || 0) + 1;
+    if (entry.path) byPath[entry.path] = (byPath[entry.path] || 0) + 1;
+    if (entry.acceptHeader) {
+      const acceptShort = entry.acceptHeader.includes('text/markdown') ? 'text/markdown'
+        : entry.acceptHeader.includes('application/json') ? 'application/json'
+        : entry.acceptHeader.includes('text/html') ? 'text/html'
+        : entry.acceptHeader.slice(0, 50);
+      byAccept[acceptShort] = (byAccept[acceptShort] || 0) + 1;
+    }
+    if (entry.city) byCity[entry.city] = (byCity[entry.city] || 0) + 1;
+    if (entry.ipHash) uniqueIpHashes.add(entry.ipHash);
+  }
+
+  return jsonResponse({
+    host,
+    totalVisits: filtered.length,
+    uniqueVisitors: uniqueIpHashes.size,
+    trail: filtered.slice(0, limit),
+    provenance: {
+      byCountry: sortObject(byCountry),
+      byCity: sortObject(byCity),
+      byAsn: sortObject(byAsn),
+      byReferrer: sortObject(byReferrer),
+      byPath: sortObject(byPath),
+      byAcceptType: sortObject(byAccept),
+    },
+  });
+}
+
+function sortObject(obj) {
+  return Object.entries(obj).sort((a, b) => b[1] - a[1]).reduce((r, [k, v]) => { r[k] = v; return r; }, {});
 }
 
 // ═══════════════════════════════════════════════════════════════════════

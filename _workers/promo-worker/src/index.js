@@ -3,6 +3,7 @@
 
 import { WELL_KNOWN_INLINE } from './well-known-content.js';
 
+// All pages that should be available as markdown via content negotiation
 const MARKDOWN_PAGES = {
   '/': 'index',
   '/product': 'product',
@@ -16,7 +17,76 @@ const MARKDOWN_PAGES = {
   '/demo': 'demo',
   '/pilot-readout': 'pilot-readout',
   '/faq': 'faq',
+  '/commercial-offer': 'commercial-offer',
+  '/killer-experiment': 'killer-experiment',
 };
+
+// Simple HTML-to-Markdown converter for agent content negotiation
+function htmlToMarkdown(html, path) {
+  let md = html;
+  // Remove script and style blocks entirely
+  md = md.replace(/<script[\s\S]*?<\/script>/gi, '');
+  md = md.replace(/<style[\s\S]*?<\/style>/gi, '');
+  md = md.replace(/<nav[\s\S]*?<\/nav>/gi, '');
+  md = md.replace(/<footer[\s\S]*?<\/footer>/gi, '');
+  md = md.replace(/<header[\s\S]*?<\/header>/gi, '');
+  // Meta tags
+  const titleMatch = md.match(/<title[^>]*>(.*?)<\/title>/i);
+  const title = titleMatch ? titleMatch[1].trim() : '';
+  const descMatch = md.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i);
+  const desc = descMatch ? descMatch[1].trim() : '';
+  // Headings
+  md = md.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '\n# $1\n');
+  md = md.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '\n## $1\n');
+  md = md.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '\n### $1\n');
+  md = md.replace(/<h4[^>]*>(.*?)<\/h4>/gi, '\n#### $1\n');
+  md = md.replace(/<h5[^>]*>(.*?)<\/h5>/gi, '\n##### $1\n');
+  md = md.replace(/<h6[^>]*>(.*?)<\/h6>/gi, '\n###### $1\n');
+  // Bold and italic
+  md = md.replace(/<(strong|b)[^>]*>(.*?)<\/\1>/gi, '**$2**');
+  md = md.replace(/<(em|i)[^>]*>(.*?)<\/\1>/gi, '*$2*');
+  // Links
+  md = md.replace(/<a[^>]+href=["']([^"']+)["'][^>]*>(.*?)<\/a>/gi, '[$2]($1)');
+  // Images
+  md = md.replace(/<img[^>]+src=["']([^"']+)["'][^>]+alt=["']([^"']+)["'][^>]*\/?>/gi, '![$2]($1)');
+  md = md.replace(/<img[^>]+src=["']([^"']+)["'][^>]*\/?>/gi, '![]($1)');
+  // Lists
+  md = md.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n');
+  md = md.replace(/<\/?(ul|ol)[^>]*>/gi, '\n');
+  // Tables — simplified: extract rows
+  md = md.replace(/<tr[^>]*>([\s\S]*?)<\/tr>/gi, (m, row) => {
+    const cells = [...row.matchAll(/<t[dh][^>]*>(.*?)<\/t[dh]>/gi)].map(c => c[1].trim());
+    return `| ${cells.join(' | ')} |\n`;
+  });
+  md = md.replace(/<\/?table[^>]*>/gi, '\n');
+  md = md.replace(/<\/?thead[^>]*>/gi, '');
+  md = md.replace(/<\/?tbody[^>]*>/gi, '');
+  // Code blocks
+  md = md.replace(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/gi, '\n```\n$1\n```\n');
+  md = md.replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`');
+  // Blockquotes
+  md = md.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/gi, (m, c) => 
+    c.split('\n').map(l => '> ' + l).join('\n'));
+  // Paragraphs and breaks
+  md = md.replace(/<p[^>]*>(.*?)<\/p>/gi, '\n$1\n');
+  md = md.replace(/<br\s*\/?>/gi, '\n');
+  md = md.replace(/<hr\s*\/?>/gi, '\n---\n');
+  // Divs — just preserve content
+  md = md.replace(/<\/?div[^>]*>/gi, '\n');
+  // Remove remaining tags
+  md = md.replace(/<[^>]+>/g, '');
+  // Decode common HTML entities
+  md = md.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+         .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ')
+         .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–').replace(/&hellip;/g, '…')
+         .replace(/&copy;/g, '©').replace(/&trade;/g, '™').replace(/&reg;/g, '®')
+         .replace(/&sect;/g, '§').replace(/&para;/g, '¶');
+  // Clean up whitespace
+  md = md.replace(/\n{3,}/g, '\n\n').replace(/^\s+/gm, '').trim();
+  // Add header with metadata
+  const header = `# ${title || path}\n${desc ? `\n> ${desc}\n` : ''}\n---\n`;
+  return header + md;
+}
 
 export default {
   async fetch(request, env) {
@@ -121,33 +191,58 @@ export default {
     }
 
     // ─── Markdown content negotiation ────────────────────────────────────
-    if (accept.includes('text/markdown') && MARKDOWN_PAGES[path]) {
-      const pageName = MARKDOWN_PAGES[path];
-      // Try to serve a .md file if it exists, otherwise convert HTML to simple text
-      const mdRequest = new Request(new URL(`/${pageName}.md`, url.origin), request);
-      const mdResponse = await env.ASSETS.fetch(mdRequest);
-      if (mdResponse.ok) {
-        const mdContent = await mdResponse.text();
-        return new Response(mdContent, {
-          headers: {
-            'Content-Type': 'text/markdown; charset=utf-8',
-            'Vary': 'Accept, Accept-Encoding',
-            'Cache-Control': 'public, max-age=3600',
-          },
-        });
+    // When an agent sends Accept: text/markdown, serve the page as markdown
+    if (accept.includes('text/markdown')) {
+      const mdHeaders = {
+        'Content-Type': 'text/markdown; charset=utf-8',
+        'Vary': 'Accept, Accept-Encoding',
+        'Cache-Control': 'public, max-age=3600',
+        'Content-Signal': 'search=yes, ai-input=yes',
+        'Access-Control-Allow-Origin': '*',
+      };
+      // First try .md files for known pages
+      const mdPageName = MARKDOWN_PAGES[path];
+      if (mdPageName) {
+        const mdRequest = new Request(new URL(`/${mdPageName}.md`, url.origin));
+        const mdResponse = await env.ASSETS.fetch(mdRequest);
+        if (mdResponse.ok) {
+          const mdContent = await mdResponse.text();
+          return new Response(mdContent, { headers: mdHeaders });
+        }
+        // No .md file — fetch the HTML and convert to markdown
+        // Try multiple path variants the assets binding might expect
+        for (const htmlPath of [`/${mdPageName}.html`, `/${mdPageName}`, mdPageName === 'index' ? '/' : `/${mdPageName}/index.html`]) {
+          const htmlRequest = new Request(new URL(htmlPath, url.origin));
+          const htmlResponse = await env.ASSETS.fetch(htmlRequest);
+          if (htmlResponse.ok) {
+            const htmlContent = await htmlResponse.text();
+            if (htmlContent.includes('<html') || htmlContent.includes('<!DOCTYPE')) {
+              const markdown = htmlToMarkdown(htmlContent, path);
+              return new Response(markdown, { headers: mdHeaders });
+            }
+          }
+        }
       }
-      // No .md file — return a markdown summary from llms.txt content
-      const llmsRequest = new Request(new URL('/llms.txt', url.origin), request);
+      // For any other path, try HTML-to-markdown conversion
+      if (path !== '/' && !path.includes('.')) {
+        for (const htmlPath of [`${path}.html`, path, `${path}/index.html`]) {
+          const htmlRequest = new Request(new URL(htmlPath, url.origin));
+          const htmlResponse = await env.ASSETS.fetch(htmlRequest);
+          if (htmlResponse.ok) {
+            const htmlContent = await htmlResponse.text();
+            if (htmlContent.includes('<html') || htmlContent.includes('<!DOCTYPE')) {
+              const markdown = htmlToMarkdown(htmlContent, path);
+              return new Response(markdown, { headers: mdHeaders });
+            }
+          }
+        }
+      }
+      // Ultimate fallback: llms.txt
+      const llmsRequest = new Request(new URL('/llms.txt', url.origin));
       const llmsResponse = await env.ASSETS.fetch(llmsRequest);
       if (llmsResponse.ok) {
         const llmsContent = await llmsResponse.text();
-        return new Response(llmsContent, {
-          headers: {
-            'Content-Type': 'text/markdown; charset=utf-8',
-            'Vary': 'Accept, Accept-Encoding',
-            'Cache-Control': 'public, max-age=3600',
-          },
-        });
+        return new Response(llmsContent, { headers: mdHeaders });
       }
     }
 
