@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>How to Measure AI Operator Performance in Enterprise Teams</title>
-<meta name="description" content="A step-by-step guide to measuring AI operator performance in enterprise teams: define performance, choose metrics, collect telemetry, compute canonical">
+<meta name="description" content="How to measure AI operator performance in enterprise teams. A 7-phase guide: define performance, collect content-free telemetry, compute canonical metrics, benchmark, diagnose, intervene, and re-measure.">>
 <link rel="canonical" href="https://mos2es.org/guides/how-to-measure-ai-operator-performance.html">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <meta property="og:type" content="article">
@@ -71,6 +71,52 @@
     "datePublished": "2026-01-01",
     "dateModified": "2026-01-01",
     "image": "https://mos2es.org/og-image.png"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do you measure AI operator performance in enterprise teams?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a 7-phase pipeline: define performance, collect content-free token telemetry, compute five canonical metrics, benchmark against peer cohorts, diagnose patterns, intervene with targeted changes, and re-measure. The full pipeline runs in 30 days."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What telemetry do you need to measure AI operator performance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Four token counts per interaction: INPUT, OUTPUT, CACHE READ, and CACHE WRITE. No prompt text. No response text. No PII. These four primitives are sufficient to compute all five canonical metrics."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you measure AI operator performance without reading prompts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. MO§ES™ uses content-free token telemetry — four token counts per interaction plus structural signals. No prompt text is captured. The privacy model is structural: the content was never collected, so it cannot leak."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to measure AI operator performance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A 30-day measurement window is the practical starting point. The MO§ES™ pilot runs 30 days: baseline for the first 15 days, intervene, then re-measure for the final 15 days."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you benchmark AI operators?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Compare each operator's canonical metrics against a relevant peer cohort using 13 benchmark classes with a selection algorithm. Context-adjusted benchmarking accounts for task difficulty. The result is a developmental percentile rank, not a punitive leaderboard."
+        }
+      }
+    ]
   }
 ]</script>
 <!-- Google tag (gtag.js) -->
@@ -236,6 +282,30 @@
 <div class="phase"><div class="num">5</div><div><div class="big" style="color:#e8e6e0">Benchmark</div><p style="color:#b0aaa0">Place operators in percentile bands against the cohort. 13 benchmark classes.</p></div></div>
 <div class="phase"><div class="num">6</div><div><div class="big" style="color:#e8e6e0">Diagnose</div><p style="color:#b0aaa0">Distribution, clusters, divergence, concentration, movement. Diagnoses are HYPOTHESIS.</p></div></div>
 <div class="phase"><div class="num">7</div><div><div class="big" style="color:#e8e6e0">Track + intervene</div><p style="color:#b0aaa0">Baseline. Intervene. Re-evaluate. Compare. Retain or discard. ASSOCIATION, never CAUSATION.</p></div></div>
+</section>
+
+<section>
+<div class="eyebrow">FAQ</div>
+<h2>Common questions about measuring AI operator performance</h2>
+
+<h3>How do you measure AI operator performance in enterprise teams?</h3>
+<p>Use a 7-phase pipeline: define what "good performance" means for your team, collect content-free token telemetry (input, output, cache read, cache write) from real work sessions, compute the five canonical metrics (Yield, Leverage, Token SNR, Construction, composite score), benchmark operators against peer cohorts, diagnose performance patterns, intervene with targeted changes, and re-measure to test whether the intervention worked. The full pipeline runs in 30 days.</p>
+
+<h3>What telemetry do you need to measure AI operator performance?</h3>
+<p>Four token counts per interaction: INPUT (tokens sent to the model), OUTPUT (tokens returned), CACHE READ (tokens reused from prior context), and CACHE WRITE (tokens written to context for future reuse). No prompt text. No response text. No PII. Level 2 deployments add timestamps, session IDs, model identifiers, and acceptance signals. The four token primitives are sufficient to compute all five canonical metrics.</p>
+
+<h3>How long does it take to measure AI operator performance?</h3>
+<p>A 30-day measurement window is the practical starting point. This captures enough sessions per operator to produce stable metric values. Shorter windows (14 days) work for high-frequency operators. Longer windows (90 days) are better for longitudinal tracking and intervention testing. The MO§ES™ pilot runs 30 days: baseline for the first 15 days, intervene, then re-measure for the final 15 days.</p>
+
+<h3>What's the difference between AI operator performance and AI usage?</h3>
+<p>AI usage measures whether people are using AI — login frequency, token spend, license utilization. AI operator performance measures how well they are using it — yield, leverage, context efficiency. A developer who runs 500 Claude Code sessions per month with low yield is a high-usage, low-performance operator. Usage analytics celebrates them. Operator evaluation flags them for coaching. See our guide on <a href="ai-operator-evaluation-vs-usage-analytics.html">AI operator evaluation vs usage analytics</a>.</p>
+
+<h3>Can you measure AI operator performance without reading prompts?</h3>
+<p>Yes. MO§ES™ uses content-free token telemetry — four token counts per interaction plus structural signals like session length and restart frequency. No prompt text is captured. No response text is stored. The privacy model is structural, not policy-based: the content was never collected, so it cannot leak. This makes enterprise deployment substantially easier for legal, compliance, and works-council review.</p>
+
+<h3>How do you benchmark AI operators?</h3>
+<p>Compare each operator's canonical metrics against a relevant peer cohort. MO§ES™ uses 13 benchmark classes with a selection algorithm that matches operators to the most appropriate reference population. Context-adjusted benchmarking accounts for task difficulty. The result is a percentile rank for each metric — not a leaderboard, but a developmental placement that shows where the operator stands relative to peers and where coaching would have the most impact.</p>
+
 </section>
 
 <section>
