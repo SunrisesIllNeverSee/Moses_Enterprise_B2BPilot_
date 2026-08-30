@@ -40,6 +40,31 @@ const AI_CRAWLERS = {
   'grok': { engine: 'X/Grok', type: 'search' },
 };
 
+// AI referrer domains — when a human visit comes from one of these,
+// it counts as a referral from that AI engine (for crawl-to-referral ratio)
+const AI_REFERRER_DOMAINS = {
+  'chatgpt.com': 'OpenAI/ChatGPT',
+  'chat.openai.com': 'OpenAI/ChatGPT',
+  'openai.com': 'OpenAI/ChatGPT',
+  'perplexity.ai': 'Perplexity',
+  'claude.ai': 'Anthropic/Claude',
+  'anthropic.com': 'Anthropic/Claude',
+  'gemini.google.com': 'Google/Gemini',
+  'google.com': 'Google/Search',
+  'copilot.microsoft.com': 'Microsoft/Copilot',
+  'bing.com': 'Microsoft/Copilot',
+  'you.com': 'You.com',
+  'poe.com': 'Poe',
+  'phind.com': 'Phind',
+  'kagi.com': 'Kagi',
+  'brave.com': 'Brave',
+  'duckduckgo.com': 'DuckDuckGo',
+  'grok.com': 'X/Grok',
+  'x.com': 'X/Grok',
+  'meta.ai': 'Meta/LLaMA',
+  'doubao.com': 'ByteDance/Doubao',
+};
+
 const SITE_CONFIG = {
   'mos2es.org': {
     name: 'MO§ES™ Promo Site',
@@ -83,6 +108,24 @@ function detectBot(userAgent) {
   // Generic bot patterns
   if (ua.includes('bot') || ua.includes('crawler') || ua.includes('spider') || ua.includes('scraper')) {
     return { bot: 'generic', engine: 'Unknown', type: 'unknown' };
+  }
+  return null;
+}
+
+// Detect if a referrer URL is from an AI engine — returns engine name or null
+function detectAiReferrer(referrer) {
+  if (!referrer) return null;
+  try {
+    const host = new URL(referrer).hostname.toLowerCase();
+    for (const [domain, engine] of Object.entries(AI_REFERRER_DOMAINS)) {
+      if (host === domain || host.endsWith('.' + domain)) return engine;
+    }
+  } catch {
+    // Not a valid URL — try raw match
+    const lower = referrer.toLowerCase();
+    for (const [domain, engine] of Object.entries(AI_REFERRER_DOMAINS)) {
+      if (lower.includes(domain)) return engine;
+    }
   }
   return null;
 }
@@ -149,6 +192,12 @@ export default {
     if (path === '/api/analytics/agent-trail' && method === 'GET') {
       const queryHost = url.searchParams.get('host') || host;
       return handleAgentTrail(request, env, queryHost, url);
+    }
+
+    // ─── /api/analytics/crawl-referral-ratio ───────────────────────────
+    if (path === '/api/analytics/crawl-referral-ratio' && method === 'GET') {
+      const queryHost = url.searchParams.get('host') || host;
+      return handleCrawlReferralRatio(request, env, queryHost, url);
     }
 
     // ─── /api/analytics/ai-overview — AI engine visibility ──────────────
@@ -301,6 +350,19 @@ async function handleBeacon(request, env, host) {
     }
     if (event.country) keys.push(`${trackingHost}:country:${event.country}`);
     if (event.aiEngine) keys.push(`${trackingHost}:ai:${event.aiEngine}`);
+
+    // Crawl-to-referral ratio tracking:
+    // - Bot visits count as crawls per engine
+    // - Human visits with AI referrer count as referrals per engine
+    const aiReferrerEngine = !botInfo ? detectAiReferrer(event.referrer) : null;
+    if (botInfo) {
+      keys.push(`${trackingHost}:crawl:engine:${botInfo.engine}`);
+      keys.push(`${trackingHost}:crawl:engine:day:${today}:${botInfo.engine}`);
+    }
+    if (aiReferrerEngine) {
+      keys.push(`${trackingHost}:referral:engine:${aiReferrerEngine}`);
+      keys.push(`${trackingHost}:referral:engine:day:${today}:${aiReferrerEngine}`);
+    }
 
     await Promise.all(keys.map(async (key) => {
       const current = parseInt(await env.ANALYTICS_KV.get(key) || '0', 10);
@@ -492,6 +554,97 @@ async function handleAgentTrail(request, env, host, url) {
 
 function sortObject(obj) {
   return Object.entries(obj).sort((a, b) => b[1] - a[1]).reduce((r, [k, v]) => { r[k] = v; return r; }, {});
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Crawl-to-Referral Ratio — for each AI engine, how many times they crawl
+// vs how much traffic they send back. Key metric for the agentic content
+// economy (per Cloudflare's Agentic Internet Bot Report).
+// ═══════════════════════════════════════════════════════════════════════
+async function handleCrawlReferralRatio(request, env, host, url) {
+  if (!env.ANALYTICS_KV) return jsonResponse({ host, engines: [], summary: {} });
+
+  const days = parseInt(url.searchParams.get('days') || '7', 10);
+  const today = new Date();
+
+  // Collect all known engines from both crawler and referrer domains
+  const allEngines = new Set([
+    ...Object.values(AI_CRAWLERS).map(c => c.engine),
+    ...Object.values(AI_REFERRER_DOMAINS),
+  ]);
+
+  const engines = [];
+
+  for (const engine of allEngines) {
+    // All-time totals
+    const crawlTotal = parseInt(await env.ANALYTICS_KV.get(`${host}:crawl:engine:${engine}`) || '0', 10);
+    const referralTotal = parseInt(await env.ANALYTICS_KV.get(`${host}:referral:engine:${engine}`) || '0', 10);
+
+    // Per-day breakdown for the requested period
+    const byDay = {};
+    let periodCrawls = 0;
+    let periodReferrals = 0;
+    for (let i = 0; i < days; i++) {
+      const d = new Date(today.getTime() - i * 86400000).toISOString().slice(0, 10);
+      const dayCrawls = parseInt(await env.ANALYTICS_KV.get(`${host}:crawl:engine:day:${d}:${engine}`) || '0', 10);
+      const dayReferrals = parseInt(await env.ANALYTICS_KV.get(`${host}:referral:engine:day:${d}:${engine}`) || '0', 10);
+      if (dayCrawls > 0 || dayReferrals > 0) {
+        byDay[d] = { crawls: dayCrawls, referrals: dayReferrals };
+        periodCrawls += dayCrawls;
+        periodReferrals += dayReferrals;
+      }
+    }
+
+    // Only include engines with activity
+    if (crawlTotal > 0 || referralTotal > 0) {
+      const ratio = referralTotal > 0 ? (crawlTotal / referralTotal).toFixed(2) : '∞';
+      const periodRatio = periodReferrals > 0 ? (periodCrawls / periodReferrals).toFixed(2) : '∞';
+      engines.push({
+        engine,
+        allTime: {
+          crawls: crawlTotal,
+          referrals: referralTotal,
+          ratio: parseFloat(ratio),
+          ratioLabel: ratio,
+        },
+        lastDays: {
+          days,
+          crawls: periodCrawls,
+          referrals: periodReferrals,
+          ratio: parseFloat(periodRatio),
+          ratioLabel: periodRatio,
+        },
+        byDay: sortObject(byDay),
+      });
+    }
+  }
+
+  // Sort by all-time crawls descending
+  engines.sort((a, b) => b.allTime.crawls - a.allTime.crawls);
+
+  // Summary
+  const totalCrawls = engines.reduce((s, e) => s + e.allTime.crawls, 0);
+  const totalReferrals = engines.reduce((s, e) => s + e.allTime.referrals, 0);
+  const periodCrawlsTotal = engines.reduce((s, e) => s + e.lastDays.crawls, 0);
+  const periodReferralsTotal = engines.reduce((s, e) => s + e.lastDays.referrals, 0);
+
+  return jsonResponse({
+    host,
+    days,
+    generated: new Date().toISOString(),
+    engines,
+    summary: {
+      totalCrawls,
+      totalReferrals,
+      overallRatio: totalReferrals > 0 ? parseFloat((totalCrawls / totalReferrals).toFixed(2)) : null,
+      overallRatioLabel: totalReferrals > 0 ? (totalCrawls / totalReferrals).toFixed(2) : '∞',
+      periodCrawls: periodCrawlsTotal,
+      periodReferrals: periodReferralsTotal,
+      periodRatio: periodReferralsTotal > 0 ? parseFloat((periodCrawlsTotal / periodReferralsTotal).toFixed(2)) : null,
+      periodRatioLabel: periodReferralsTotal > 0 ? (periodCrawlsTotal / periodReferralsTotal).toFixed(2) : '∞',
+      enginesTracked: engines.length,
+    },
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
