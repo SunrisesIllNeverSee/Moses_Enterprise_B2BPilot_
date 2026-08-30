@@ -2121,6 +2121,7 @@ export default {
     if (url.pathname === "/" || url.pathname === "/health") {
       return new Response(JSON.stringify({
         server: "MO§ES™ MCP Server",
+        powered_by: "Upsilon measurement engine",
         version: "0.4.0",
         transport: "streamable-http",
         tools: TOOLS.length,
@@ -2131,7 +2132,7 @@ export default {
         url: "https://mcp.mos2es.org",
         docs: "https://mos2es.org/docs",
         openapi: "https://mos2es.org/openapi.json",
-        data_source: "50-operator synthetic pilot — outputs computed from raw observations at request time",
+        data_source: "50-operator synthetic pilot, outputs computed from raw observations at request time",
         governance: "DEVELOPMENTAL labels, HYPOTHESIS diagnoses, ASSOCIATION outcomes, no punitive use"
       }, null, 2), {
         headers: { "Content-Type": "application/json", ...corsHeaders }
@@ -2296,7 +2297,8 @@ export default {
       return new Response(JSON.stringify({
         serverInfo: {
           name: "MO\u00a7ES\u2122 MCP Server",
-          version: "0.4.0"
+          version: "0.4.0",
+          powered_by: "Upsilon measurement engine"
         },
         authentication: {
           required: false,

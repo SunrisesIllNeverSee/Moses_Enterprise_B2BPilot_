@@ -65,12 +65,23 @@ The platform builds **bespoke evals** around your workflows, roles, and AI syste
 
 LMSYS benchmarks models. Braintrust evaluates product outputs. Langfuse traces LLM calls. WakaTime tracks time. CostHawk tracks spend. None of them see the system intelligence of everyday operations and AI workflows. MO§ES™ is the missing layer.
 
+### The architecture
+
+`MO§ES™ → Upsilon → SigRank | SignalAF`
+
+- **MO§ES™** = governance framework / methodology (this repo)
+- **Upsilon** = measurement engine / enterprise product (the engine that measures)
+- **SigRank** = public leaderboard / benchmark / proof surface
+- **SignalAF** = public distribution / platform brand
+- **Yield (Υ)** = metric inside Upsilon: `(cache_read × output) / input²`
+
 ## The MO§ES™ ecosystem
 
 | Repo / Site | What it is | URL |
 |-------------|-----------|-----|
-| **MO§ES™ Enterprise** (this repo) | The platform: Python eval engine, CLI, MCP server, demo, promo, enterprise demo, workers | [mos2es.org](https://mos2es.org) |
-| **SigRank SignalAF** | The public leaderboard: operator rankings by token cascade efficiency | [signalaf.com](https://signalaf.com) |
+| **MO§ES™ Enterprise** (this repo) | The platform: Python eval engine, CLI, MCP server, demo, promo, enterprise demo, workers. Powered by Upsilon. | [mos2es.org](https://mos2es.org) |
+| **SigRank** | Public leaderboard / benchmark / proof surface for AI operator evaluation | [signalaf.com](https://signalaf.com) |
+| **SignalAF** | Public brand and distribution surface | [signalaf.com](https://signalaf.com) |
 | **SigRank MCP** | The instrument: extracts token pillars, computes cascade, submits to leaderboard | `npx sigrank` |
 | **SIGNOMY** | Governed AI agent marketplace: ranked agents form teams, run missions, earn revenue | [signomy.xyz](https://signomy.xyz) |
 | **SigEconomy** | Public LLM operator evals: read-only leaderboard, SEO/AEO surface | [sigeconomy.com](https://sigeconomy.com) |
