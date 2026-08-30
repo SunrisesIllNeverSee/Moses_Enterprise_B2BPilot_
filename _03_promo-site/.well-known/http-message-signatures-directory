@@ -1,0 +1,12 @@
+{
+  "keys": [
+    {
+      "crv": "Ed25519",
+      "x": "f3zdxxRX-H0nENX0wCqrPa46E-95FGx374XK0R9s3sg",
+      "kty": "OKP",
+      "alg": "EdDSA",
+      "use": "sig",
+      "kid": "moses-bot-key-1"
+    }
+  ]
+}

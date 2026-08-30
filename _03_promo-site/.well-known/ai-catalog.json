@@ -1,0 +1,64 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "MOSES Enterprise",
+    "identifier": "did:web:mos2es.org"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:mos2es.org:agent:enterprise",
+      "displayName": "MOSES Enterprise Agent (A2A)",
+      "type": "application/a2a-agent-card+json",
+      "mediaType": "application/a2a-agent-card+json",
+      "url": "https://mos2es.org/.well-known/agent-card.json",
+      "description": "Enterprise AI operator evaluation platform agent. Powered by the Upsilon measurement engine. Measures how people operate AI, not the AI model itself.",
+      "representativeQueries": [
+        "evaluate an AI operator's performance metrics",
+        "benchmark operators against reference populations",
+        "scope an enterprise pilot for AI operator evaluation",
+        "diagnose capability gaps in AI workflows"
+      ]
+    },
+    {
+      "identifier": "urn:air:mos2es.org:server:mcp",
+      "displayName": "MOSES MCP Server",
+      "type": "application/mcp-server-card+json",
+      "mediaType": "application/mcp-server-card+json",
+      "url": "https://mos2es.org/.well-known/mcp/server-card.json",
+      "capabilities": ["evaluate_operator", "benchmark_operator", "diagnose_gaps", "design_intervention", "compare_cohorts"],
+      "description": "Enterprise AI operator evaluation MCP server powered by the Upsilon measurement engine. 27 tools for measuring, benchmarking, diagnosing, and intervening on how human operators use AI tools.",
+      "representativeQueries": [
+        "evaluate an AI operator's performance metrics",
+        "benchmark operators against reference populations",
+        "diagnose capability gaps in AI workflows",
+        "design interventions for underperforming operators"
+      ]
+    },
+    {
+      "identifier": "urn:air:mos2es.org:skills:enterprise",
+      "displayName": "MOSES Enterprise Skills",
+      "type": "application/json",
+      "mediaType": "application/json",
+      "url": "https://mos2es.org/.well-known/agent-skills/index.json",
+      "description": "Agent skills index for MOSES enterprise operator evaluation, pilot scoping, and benchmarking.",
+      "representativeQueries": [
+        "scope an enterprise pilot",
+        "access operator evaluation methodology",
+        "find benchmark reference populations"
+      ]
+    },
+    {
+      "identifier": "urn:air:mos2es.org:exchange:contribution",
+      "displayName": "Contribution Exchange Profile",
+      "type": "application/json",
+      "mediaType": "application/json",
+      "url": "https://mos2es.org/.well-known/exchange.json",
+      "description": "mos2es.org participation in the Contribution Exchange via the hosted steward at signalaf.com. Agents can propose or request contributions.",
+      "representativeQueries": [
+        "propose a contribution to MOSES Enterprise",
+        "discover contribution exchange endpoints",
+        "find steward contact for mos2es.org"
+      ]
+    }
+  ]
+}

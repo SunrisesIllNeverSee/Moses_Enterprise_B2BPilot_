@@ -1,0 +1,30 @@
+{
+  "serverInfo": {
+    "name": "MOSES MCP Server",
+    "version": "0.4.0",
+    "powered_by": "Upsilon measurement engine"
+  },
+  "authentication": {
+    "required": false,
+    "schemes": []
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": true
+  },
+  "remotes": [
+    {
+      "transport": "streamable-http",
+      "url": "https://mcp.mos2es.org/mcp"
+    }
+  ],
+  "tools_count": 27,
+  "tools_summary": "22 read + 5 write tools for enterprise AI operator evaluation: yield, leverage, token SNR, construction, divergence. Includes operator x system decomposition, outcome lineage, org topology, operator similarity, intervention design.",
+  "resources_count": 6,
+  "prompts_count": 5,
+  "homepage": "https://mos2es.org",
+  "docs": "https://mos2es.org/docs",
+  "repository": "https://github.com/SunrisesIllneverSee/Moses_Enterprise_B2BPilot_",
+  "license": "Apache-2.0"
+}

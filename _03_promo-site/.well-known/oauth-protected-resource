@@ -1,0 +1,9 @@
+{
+  "resource": "https://mos2es.org",
+  "authorization_servers": ["https://mos2es.org"],
+  "bearer_methods_supported": ["header"],
+  "resource_documentation": "https://mos2es.org/.well-known/auth.md",
+  "scopes_supported": ["read", "pilot:write", "exchange:propose", "exchange:attempt"],
+  "public_access": true,
+  "notes": "mos2es.org is a public site. Public read access requires no authentication. Enterprise pilot write access and Contribution Exchange participation require registration. See auth.md for details."
+}

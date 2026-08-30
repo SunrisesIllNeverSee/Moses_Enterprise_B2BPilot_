@@ -179,6 +179,29 @@ export default {
       return handleCrawlerSelfReport(request, env, host);
     }
 
+    // ─── Pass through other /.well-known/agent* paths to the promo worker ─
+    // The route pattern "mos2es.org/.well-known/agent*" catches these paths,
+    // but they should be served by the promo worker (agent-card.json, etc.)
+    if (path.startsWith('/.well-known/agent')) {
+      // Fetch from the promo worker via the workers.dev URL
+      const promoUrl = 'https://moses-promo.sigrank.workers.dev' + path;
+      const promoResponse = await fetch(promoUrl, {
+        method: request.method,
+        headers: request.headers,
+        body: request.method !== 'GET' ? request.body : undefined,
+      });
+      const content = await promoResponse.text();
+      return new Response(content, {
+        status: promoResponse.status,
+        headers: {
+          'Content-Type': promoResponse.headers.get('Content-Type') || 'application/json',
+          'Vary': 'Accept, Accept-Encoding',
+          'Cache-Control': 'public, max-age=3600',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+    }
+
     // 404
     return jsonResponse({ error: 'NOT_FOUND', path }, 404);
   },

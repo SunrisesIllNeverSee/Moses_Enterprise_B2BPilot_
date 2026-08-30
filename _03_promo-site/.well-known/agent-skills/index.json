@@ -1,0 +1,34 @@
+{
+  "skills": [
+    {
+      "id": "operator-evaluation",
+      "name": "operator-evaluation",
+      "description": "Evaluate AI operator performance across 5 canonical metrics: yield, leverage, token SNR, construction, divergence.",
+      "url": "https://mos2es.org/methodology"
+    },
+    {
+      "id": "pilot-scoping",
+      "name": "pilot-scoping",
+      "description": "Scope an enterprise pilot for AI operator evaluation.",
+      "url": "https://mos2es.org/pilot"
+    },
+    {
+      "id": "benchmark-reference",
+      "name": "benchmark-reference",
+      "description": "Access MOSES benchmark methodology and reference populations.",
+      "url": "https://mos2es.org/research"
+    },
+    {
+      "id": "mcp-server-access",
+      "name": "mcp-server-access",
+      "description": "Access the MOSES MCP server with 27 tools for operator evaluation.",
+      "url": "https://mcp.mos2es.org/mcp"
+    },
+    {
+      "id": "commercial-pilots",
+      "name": "commercial-pilots",
+      "description": "Explore commercial pilot options including the Killer Experiment and Upsilon Pilot.",
+      "url": "https://mos2es.org/contact"
+    }
+  ]
+}

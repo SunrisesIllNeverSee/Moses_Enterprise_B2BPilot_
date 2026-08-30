@@ -1,0 +1,68 @@
+{
+  "name": "MOSES Enterprise Agent",
+  "description": "Enterprise AI operator evaluation platform powered by the Upsilon measurement engine. Measures how people operate AI, not the AI model itself.",
+  "url": "https://mos2es.org",
+  "version": "0.4.0",
+  "organization": {
+    "name": "Ello Cello LLC",
+    "url": "https://mos2es.org/about"
+  },
+  "capabilities": {
+    "protocols": ["a2a", "mcp"],
+    "discovery": [
+      "https://mos2es.org/.well-known/api-catalog",
+      "https://mos2es.org/.well-known/mcp/server-card.json",
+      "https://mos2es.org/.well-known/exchange.json"
+    ]
+  },
+  "authentication": {
+    "required": false,
+    "schemes": []
+  },
+  "skills": [
+    {
+      "id": "operator-evaluation",
+      "name": "operator-evaluation",
+      "description": "Evaluate AI operator performance across 5 canonical metrics: yield, leverage, token SNR, construction, divergence.",
+      "url": "https://mos2es.org/methodology"
+    },
+    {
+      "id": "pilot-scoping",
+      "name": "pilot-scoping",
+      "description": "Scope an enterprise pilot for AI operator evaluation.",
+      "url": "https://mos2es.org/pilot"
+    },
+    {
+      "id": "benchmark-reference",
+      "name": "benchmark-reference",
+      "description": "Access MOSES benchmark methodology and reference populations.",
+      "url": "https://mos2es.org/research"
+    },
+    {
+      "id": "mcp-server-access",
+      "name": "mcp-server-access",
+      "description": "Access the MOSES MCP server with 27 tools for operator evaluation.",
+      "url": "https://mcp.mos2es.org/mcp"
+    },
+    {
+      "id": "commercial-pilot",
+      "name": "commercial-pilots",
+      "description": "Explore commercial pilot options including the Killer Experiment and Upsilon Pilot.",
+      "url": "https://mos2es.org/contact"
+    }
+  ],
+  "supportedInterfaces": [
+    {
+      "type": "mcp",
+      "url": "https://mcp.mos2es.org/mcp",
+      "transport": "streamable-http"
+    },
+    {
+      "type": "a2a",
+      "url": "https://mos2es.org/.well-known/agent-card.json"
+    }
+  ],
+  "contact": "pilots@mos2es.org",
+  "documentation": "https://mos2es.org/llms.txt",
+  "homepage": "https://mos2es.org"
+}

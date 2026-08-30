@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 # AI crawlers explicitly allowed
 User-agent: GPTBot
@@ -20,3 +21,6 @@ User-agent: Bingbot
 Allow: /
 
 Sitemap: https://mos2es.org/sitemap.xml
+
+# ARD: Agentic Resource Discovery
+Agentmap: https://mos2es.org/.well-known/ai-catalog.json

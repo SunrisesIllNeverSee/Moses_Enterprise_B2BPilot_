@@ -1,0 +1,82 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://mos2es.org",
+      "service-desc": [
+        {
+          "href": "https://mos2es.org/openapi.json",
+          "type": "application/json",
+          "title": "OpenAPI spec"
+        },
+        {
+          "href": "https://mcp.mos2es.org/.well-known/mcp/server-card.json",
+          "type": "application/json",
+          "title": "MCP Server Card (live)"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://mos2es.org/llms.txt",
+          "type": "text/plain",
+          "title": "LLM guidance (llms.txt)"
+        },
+        {
+          "href": "https://mos2es.org/.well-known/auth.md",
+          "type": "text/markdown",
+          "title": "Auth.md"
+        },
+        {
+          "href": "https://mos2es.org/docs",
+          "type": "text/html",
+          "title": "Documentation"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://mos2es.org/",
+          "type": "application/json",
+          "title": "Site health"
+        },
+        {
+          "href": "https://mcp.mos2es.org/",
+          "type": "application/json",
+          "title": "MCP server health"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://mos2es.org/robots.txt",
+          "type": "text/plain",
+          "title": "Robots crawl rules"
+        },
+        {
+          "href": "https://mos2es.org/sitemap.xml",
+          "type": "application/xml",
+          "title": "XML sitemap"
+        }
+      ],
+      "service": [
+        {
+          "href": "https://mos2es.org/.well-known/exchange.json",
+          "type": "application/json",
+          "title": "Contribution Exchange profile"
+        },
+        {
+          "href": "https://mos2es.org/.well-known/agent.json",
+          "type": "application/json",
+          "title": "Agent Manifest"
+        },
+        {
+          "href": "https://mos2es.org/.well-known/agent-card.json",
+          "type": "application/json",
+          "title": "A2A Agent Card"
+        },
+        {
+          "href": "https://mos2es.org/.well-known/mcp/server-card.json",
+          "type": "application/json",
+          "title": "MCP Server Card"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 // MO§ES™ promo worker — static assets + AEO enhancements
 // Handles: clean URLs, markdown content negotiation, JSON errors, Vary header
 
+import { WELL_KNOWN_INLINE } from './well-known-content.js';
+
 const MARKDOWN_PAGES = {
   '/': 'index',
   '/product': 'product',
@@ -87,6 +89,35 @@ export default {
     // ─── favicon.ico redirect to favicon.svg ─────────────────────────────
     if (path === '/favicon.ico') {
       return Response.redirect(new URL('/favicon.svg', url.origin).toString(), 301);
+    }
+
+    // ─── Well-known discovery endpoints with correct Content-Types ───────
+    // Serve from inline content first (reliable), fall back to assets
+    if (WELL_KNOWN_INLINE[path]) {
+      const entry = WELL_KNOWN_INLINE[path];
+      return new Response(entry.body, {
+        status: 200,
+        headers: {
+          'Content-Type': entry.type,
+          'Vary': 'Accept, Accept-Encoding',
+          'Cache-Control': 'public, max-age=3600',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+    }
+
+    // ─── auth.md at root ─────────────────────────────────────────────────
+    if (path === '/auth.md' && WELL_KNOWN_INLINE['/auth.md']) {
+      const entry = WELL_KNOWN_INLINE['/auth.md'];
+      return new Response(entry.body, {
+        status: 200,
+        headers: {
+          'Content-Type': entry.type,
+          'Vary': 'Accept, Accept-Encoding',
+          'Cache-Control': 'public, max-age=3600',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
     // ─── Markdown content negotiation ────────────────────────────────────
@@ -177,6 +208,12 @@ async function addHeaders(response, request) {
       '<https://mos2es.org/openapi.json>; rel="service-desc"; type="application/json"; title="OpenAPI"',
       '<https://mcp.mos2es.org/mcp>; rel="service"; type="application/json"; title="MCP Server"',
       '<https://mos2es.org/.well-known/agent.json>; rel="service"; type="application/json"; title="Agent Manifest"',
+      '<https://mos2es.org/.well-known/agent-card.json>; rel="service"; type="application/json"; title="A2A Agent Card"',
+      '<https://mos2es.org/.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"',
+      '<https://mos2es.org/.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"',
+      '<https://mos2es.org/.well-known/mcp/server-card.json>; rel="service"; type="application/json"; title="MCP Server Card"',
+      '<https://mos2es.org/.well-known/auth.md>; rel="service"; type="text/markdown"; title="Auth.md"',
+      '<https://mos2es.org/.well-known/exchange.json>; rel="service"; type="application/json"; title="Contribution Exchange"',
       '<https://mos2es.org/crawl-control.json>; rel="service"; type="application/json"; title="Crawl Control"',
     ];
 
