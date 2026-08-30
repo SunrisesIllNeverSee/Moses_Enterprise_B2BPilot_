@@ -1,0 +1,51 @@
+keyword,category,search_intent,priority,existing_page,content_gap,notes
+AI operator evaluation,core,commercial,1,https://mos2es.org/product.html,,Primary product category
+AI operator performance,core,informational,1,https://mos2es.org/methodology.html,,What you measure
+AI workforce measurement,core,commercial,1,https://mos2es.org/product.html,,Enterprise category name
+AI operator benchmarking,core,commercial,1,https://mos2es.org/concepts/benchmark.html,,Canonical metric framework
+performative benchmarks,core,informational,1,https://mos2es.org/blog/performative-benchmarks-vs-self-report,,Unique differentiator
+AI productivity measurement,core,commercial,1,https://mos2es.org/product.html,,High-demand enterprise search
+enterprise AI evaluation,core,commercial,1,https://mos2es.org/pilot.html,,Enterprise buyer intent
+AI operator metrics,core,informational,2,https://mos2es.org/concepts/,,Metric-level search
+Workera alternatives,competitor,commercial,1,https://mos2es.org/alternatives/workera-alternatives,,Dedicated page exists
+Worklytics alternatives,competitor,commercial,1,https://mos2es.org/alternatives/worklytics-alternatives,,Dedicated page exists
+Langfuse alternatives,competitor,commercial,1,https://mos2es.org/vs/langfuse,,Dedicated vs page exists
+Braintrust alternatives,competitor,commercial,2,https://mos2es.org/vs/braintrust,,Dedicated vs page exists
+WakaTime alternatives,competitor,commercial,2,https://mos2es.org/vs/wakatime,,Dedicated vs page exists
+ccusage alternatives,competitor,commercial,2,https://mos2es.org/vs/ccusage,,Dedicated vs page exists
+LMSYS arena alternatives,competitor,commercial,2,https://mos2es.org/vs/lmsys-arena,,Dedicated vs page exists
+AI benchmarking tools,competitor,commercial,1,https://mos2es.org/alternatives/ai-benchmarking-tools,,Alternatives page exists
+AI coding ROI tools,competitor,commercial,1,https://mos2es.org/alternatives/ai-coding-roi-tools,,Alternatives page exists
+AI skills assessment alternatives,competitor,commercial,1,https://mos2es.org/alternatives/ai-skills-assessment-alternatives,,Alternatives page exists
+AI workforce measurement tools,competitor,commercial,1,https://mos2es.org/alternatives/ai-workforce-measurement-tools,,Alternatives page exists
+MCP AI developer tools,competitor,commercial,2,https://mos2es.org/alternatives/mcp-ai-developer-tools,,Alternatives page exists
+how to measure AI operator performance,guide,informational,1,https://mos2es.org/guides/how-to-measure-ai-operator-performance,,Guide page exists
+how to evaluate AI operators,guide,informational,1,https://mos2es.org/guides/how-to-evaluate-ai-operators,,Guide page exists
+AI operator evaluation vs usage analytics,guide,informational,1,https://mos2es.org/guides/ai-operator-evaluation-vs-usage-analytics,,Comparison page exists
+AI operator evaluation vs skills assessment,guide,informational,1,https://mos2es.org/guides/ai-operator-evaluation-vs-skills-assessment,,Comparison page exists
+token telemetry without content,concept,informational,1,https://mos2es.org/blog/token-telemetry-without-content,,Blog post exists; consider dedicated concept page
+content-free AI measurement,concept,informational,1,,No dedicated page — create one,Privacy differentiator; strong AEO candidate
+AI operator intervention testing,concept,informational,2,https://mos2es.org/concepts/intervention.html,,Concept page exists
+AI operator divergence diagnosis,concept,informational,2,https://mos2es.org/concepts/divergence.html,,Concept page exists
+canonical token telemetry,concept,informational,2,https://mos2es.org/concepts/canonical-telemetry.html,,Concept page exists
+AI operator composite score,concept,informational,2,https://mos2es.org/concepts/composite-score.html,,Concept page exists
+AI operator yield metric,metric,informational,2,https://mos2es.org/concepts/yield.html,,Canonical metric page
+AI operator leverage metric,metric,informational,2,https://mos2es.org/concepts/leverage.html,,Canonical metric page
+token signal-to-noise ratio,metric,informational,2,https://mos2es.org/concepts/token-snr.html,,Canonical metric page
+AI operator construction metric,metric,informational,2,https://mos2es.org/concepts/construction.html,,Canonical metric page
+AI operator development index,metric,informational,2,https://mos2es.org/concepts/composite-score.html,,Composite score page
+AI context reuse measurement,metric,informational,3,,No dedicated page — consider adding,Leverage concept; long-tail
+AI operator governance framework,metric,informational,3,https://mos2es.org/concepts/governance.html,,Concept page exists
+AI coding productivity ROI,market,commercial,1,,No dedicated page — create guide,Hot enterprise topic; $150-250/dev/mo
+enterprise AI ROI measurement,market,commercial,1,https://mos2es.org/product.html,,63% of orgs struggle with this
+AI agent performance KPIs,market,informational,2,,No dedicated page — consider adding,Google Cloud framework overlap
+AI operator training effectiveness,market,informational,2,https://mos2es.org/concepts/intervention.html,,Intervention testing demand
+AI workflow benchmarking,market,informational,3,,No dedicated page — consider adding,Workflow fit content
+organizational AI capability mapping,market,informational,3,,No dedicated page — consider adding,Topology feature
+AI dependency risk assessment,market,informational,3,,No dedicated page — consider adding,Dependency risk feature
+AI operator cohort benchmarking,market,informational,3,https://mos2es.org/concepts/benchmark.html,,Benchmarking feature
+what is AI operator evaluation,aeo,informational,1,,No dedicated page — create FAQ,AEO question format for AI overviews
+how to benchmark AI operators in enterprise,aeo,informational,1,,No dedicated page — create guide,AEO question format for AI overviews
+AI operator performance without reading prompts,aeo,informational,1,https://mos2es.org/blog/token-telemetry-without-content,,Blog post exists; privacy angle for AI citations
+enterprise AI measurement framework,aeo,informational,2,https://mos2es.org/methodology.html,,Framework query for AI citations
+AI operator evaluation pilot,aeo,commercial,1,https://mos2es.org/pilot.html,,Pilot/commercial intent for AI citations
