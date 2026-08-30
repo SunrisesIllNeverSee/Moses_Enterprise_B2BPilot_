@@ -22,6 +22,20 @@ export default {
     const path = url.pathname;
     const accept = request.headers.get('Accept') || '';
 
+    // ─── 301 permanent redirects for trailing slash URLs ─────────────────
+    // Cloudflare Pages returns 307 (temporary) by default — convert to 301
+    // Skip root path, directory index pages (which need the slash)
+    const DIR_INDEXES = ['/blog/', '/concepts/', '/guides/', '/vs/', '/alternatives/'];
+    if (path.endsWith('/') && path !== '/' && !DIR_INDEXES.includes(path)) {
+      const newPath = path.slice(0, -1) + url.search;
+      return Response.redirect(new URL(newPath, url.origin).toString(), 301);
+    }
+    // Redirect no-slash to with-slash for directory index pages
+    const DIR_NO_SLASH = ['/blog', '/concepts', '/guides', '/vs', '/alternatives'];
+    if (DIR_NO_SLASH.includes(path)) {
+      return Response.redirect(new URL(path + '/', url.origin).toString(), 301);
+    }
+
     // ─── Demo runner script: serve as text/plain ─────────────────────────
     if (path === '/demo/run.py') {
       const pyRequest = new Request(new URL('/demo/run.py', url.origin), request);

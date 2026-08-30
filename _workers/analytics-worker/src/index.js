@@ -126,27 +126,32 @@ export default {
 
     // ─── /api/analytics/stats — aggregated stats ────────────────────────
     if (path === '/api/analytics/stats' && method === 'GET') {
-      return handleStats(request, env, host, url);
+      const queryHost = url.searchParams.get('host') || host;
+      return handleStats(request, env, queryHost, url);
     }
 
     // ─── /api/analytics/bots — bot/AI crawler visits ────────────────────
     if (path === '/api/analytics/bots' && method === 'GET') {
-      return handleBotStats(request, env, host, url);
+      const queryHost = url.searchParams.get('host') || host;
+      return handleBotStats(request, env, queryHost, url);
     }
 
     // ─── /api/analytics/ai-overview — AI engine visibility ──────────────
     if (path === '/api/analytics/ai-overview' && method === 'GET') {
-      return handleAiOverview(request, env, host);
+      const queryHost = url.searchParams.get('host') || host;
+      return handleAiOverview(request, env, queryHost);
     }
 
     // ─── /api/analytics/realtime — real-time counters ───────────────────
     if (path === '/api/analytics/realtime' && method === 'GET') {
-      return handleRealtime(request, env, host);
+      const queryHost = url.searchParams.get('host') || host;
+      return handleRealtime(request, env, queryHost);
     }
 
     // ─── /api/analytics/web-vitals — Core Web Vitals ────────────────────
     if (path === '/api/analytics/web-vitals' && method === 'GET') {
-      return handleWebVitals(request, env, host);
+      const queryHost = url.searchParams.get('host') || host;
+      return handleWebVitals(request, env, queryHost);
     }
 
     // ─── /dashboard — live analytics dashboard ──────────────────────────
@@ -190,6 +195,10 @@ async function handleBeacon(request, env, host) {
     return jsonResponse({ error: 'INVALID_JSON' }, 400);
   }
 
+  // Use the site field from payload for KV keys (enables cross-origin beaconing)
+  // Falls back to request host for same-origin beacons
+  const trackingHost = body.site || host;
+
   const userAgent = request.headers.get('User-Agent') || '';
   const cf = request.cf || {};
   const botInfo = detectBot(userAgent);
@@ -197,7 +206,8 @@ async function handleBeacon(request, env, host) {
   const event = {
     type: body.type || 'pageview',
     path: body.path || '/',
-    host,
+    host: trackingHost,
+    originHost: host,
     timestamp: Date.now(),
     userAgent,
     bot: botInfo?.bot || null,
@@ -238,21 +248,21 @@ async function handleBeacon(request, env, host) {
   if (env.ANALYTICS_KV) {
     const today = new Date().toISOString().slice(0, 10);
     const keys = [
-      `${host}:total`,
-      `${host}:day:${today}`,
-      `${host}:type:${event.type}`,
-      `${host}:day:${today}:type:${event.type}`,
+      `${trackingHost}:total`,
+      `${trackingHost}:day:${today}`,
+      `${trackingHost}:type:${event.type}`,
+      `${trackingHost}:day:${today}:type:${event.type}`,
     ];
     if (botInfo) {
-      keys.push(`${host}:bots:${botInfo.bot}`);
-      keys.push(`${host}:bots:day:${today}:${botInfo.bot}`);
-      keys.push(`${host}:bots:engine:${botInfo.engine}`);
+      keys.push(`${trackingHost}:bots:${botInfo.bot}`);
+      keys.push(`${trackingHost}:bots:day:${today}:${botInfo.bot}`);
+      keys.push(`${trackingHost}:bots:engine:${botInfo.engine}`);
     } else {
-      keys.push(`${host}:human`);
-      keys.push(`${host}:human:day:${today}`);
+      keys.push(`${trackingHost}:human`);
+      keys.push(`${trackingHost}:human:day:${today}`);
     }
-    if (event.country) keys.push(`${host}:country:${event.country}`);
-    if (event.aiEngine) keys.push(`${host}:ai:${event.aiEngine}`);
+    if (event.country) keys.push(`${trackingHost}:country:${event.country}`);
+    if (event.aiEngine) keys.push(`${trackingHost}:ai:${event.aiEngine}`);
 
     await Promise.all(keys.map(async (key) => {
       const current = parseInt(await env.ANALYTICS_KV.get(key) || '0', 10);
@@ -261,7 +271,7 @@ async function handleBeacon(request, env, host) {
 
     // Log recent bot visits (keep last 100)
     if (botInfo) {
-      const logKey = `${host}:bot-log`;
+      const logKey = `${trackingHost}:bot-log`;
       const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
       const log = JSON.parse(logRaw);
       log.unshift({
@@ -273,7 +283,7 @@ async function handleBeacon(request, env, host) {
 
     // Log AI overview events
     if (event.aiEngine) {
-      const aiKey = `${host}:ai-overview-log`;
+      const aiKey = `${trackingHost}:ai-overview-log`;
       const aiRaw = await env.ANALYTICS_KV.get(aiKey) || '[]';
       const aiLog = JSON.parse(aiRaw);
       aiLog.unshift({
@@ -283,6 +293,13 @@ async function handleBeacon(request, env, host) {
       });
       await env.ANALYTICS_KV.put(aiKey, JSON.stringify(aiLog.slice(0, 100)));
     }
+
+    // Log recent events (keep last 200)
+    const eventLogKey = `${trackingHost}:event-log`;
+    const eventLogRaw = await env.ANALYTICS_KV.get(eventLogKey) || '[]';
+    const eventLog = JSON.parse(eventLogRaw);
+    eventLog.unshift(event);
+    await env.ANALYTICS_KV.put(eventLogKey, JSON.stringify(eventLog.slice(0, 200)));
   }
 
   return jsonResponse({ success: true, recorded: true });
