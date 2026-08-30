@@ -61,3 +61,18 @@ how to benchmark AI operators in enterprise,aeo,informational,1,,0,0,Create page
 AI operator performance without reading prompts,aeo,informational,1,https://mos2es.org/blog/token-telemetry-without-content,0,0,,Blog post exists; privacy angle for AI citations
 enterprise AI measurement framework,aeo,informational,2,https://mos2es.org/methodology.html,0,0,,Framework query for AI citations
 AI operator evaluation pilot,aeo,commercial,1,https://mos2es.org/pilot.html,0,0,,Pilot/commercial intent for AI citations
+ai evaluation,core,informational,1,https://mos2es.org/concepts/ai-evaluation,590,34,New page,"From content brief; primary keyword"
+best ai evaluation tools for production,core,commercial,1,https://mos2es.org/concepts/best-ai-evaluation-tools-for-production,590,21,New page,"From content brief; high volume low KD"
+ai agent evaluation,core,informational,1,https://mos2es.org/concepts/ai-agent-evaluation,320,43,New page,"From content brief"
+ai evaluator,core,commercial,1,https://mos2es.org/concepts/ai-evaluator,260,25,New page,"From content brief"
+ai model evaluation,core,informational,2,https://mos2es.org/concepts/ai-model-evaluation,210,46,New page,"From content brief; competitive"
+ai evaluations,core,informational,2,https://mos2es.org/concepts/ai-evaluations,170,39,New page,"From content brief; plural variant"
+ai evaluation frameworks,core,informational,1,https://mos2es.org/concepts/ai-evaluation-frameworks,110,29,New page,"From content brief"
+ai evaluation tools,core,commercial,1,https://mos2es.org/concepts/ai-evaluation-tools,90,30,New page,"From content brief"
+evaluating ai,core,informational,2,https://mos2es.org/concepts/evaluating-ai,50,30,New page,"From content brief; low volume but easy"
+position: ai evaluation should learn from how we test humans,core,informational,1,https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans,260,10,New page,"From content brief; 10% KD — easy win"
+ai model safety evaluation benchmark continuous testing,core,informational,2,https://mos2es.org/concepts/ai-model-safety-evaluation-benchmark-continuous-testing,260,21,New page,"From content brief"
+confirmation hacking definition ai evaluation,core,informational,2,https://mos2es.org/concepts/confirmation-hacking-ai-evaluation,390,27,New page,"From content brief"
+ai evaluation platform,core,commercial,3,https://mos2es.org/concepts/ai-evaluation-platform,140,72,New page,"From content brief; high KD but worth claiming"
+ai evaluation news,core,informational,3,,210,64,Not built,"From content brief; too competitive"
+ai compliance standards,core,informational,3,,40,50,Not built,"From content brief; tangential"

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Confirmation Hacking in AI Evaluation — Definition and Detection — MO§ES™</title>
+<meta name="description" content="Confirmation hacking is the tendency to design AI evaluations that confirm what you already believe. MO§ES™ avoids this by using content-free token telemetry — structural signals that cannot be gamed by prompt design.">
+<link rel="canonical" href="https://mos2es.org/concepts/confirmation-hacking-ai-evaluation">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/concepts/confirmation-hacking-ai-evaluation">
+<meta property="og:title" content="Confirmation Hacking in AI Evaluation">
+<meta property="og:description" content="Confirmation hacking is designing evaluations that confirm what you already believe. MO§ES™ avoids it with content-free telemetry.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Confirmation Hacking in AI Evaluation">
+<meta name="twitter:description" content="Confirmation hacking in AI evaluation: definition, risk, and how MO§ES™ avoids it.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://mos2es.org/#org",
+    "name": "Ello Cello LLC",
+    "alternateName": "MO§ES™",
+    "url": "https://mos2es.org",
+    "logo": "https://mos2es.org/favicon.svg",
+    "description": "Enterprise AI operator evaluations and performative benchmarks. Content-free token telemetry measuring how humans operate AI systems.",
+    "founder": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0009-0002-9904-5390",
+      "name": "Deric J McHenry",
+      "alternateName": "Deric McHenry",
+      "url": "https://orcid.org/0009-0002-9904-5390",
+      "sameAs": [
+        "https://orcid.org/0009-0002-9904-5390",
+        "https://x.com/burnmydays",
+        "https://www.linkedin.com/in/dericjmchenry",
+        "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
+        "https://github.com/SunrisesIllneverSee"
+      ]
+    },
+    "sameAs": [
+      "https://orcid.org/0009-0002-9904-5390",
+      "https://github.com/SunrisesIllneverSee",
+      "https://github.com/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_",
+      "https://doi.org/10.5281/zenodo.20029607",
+      "https://doi.org/10.5281/zenodo.19105224",
+      "https://doi.org/10.5281/zenodo.19109396",
+      "https://doi.org/10.5281/zenodo.19109397",
+      "https://doi.org/10.5281/zenodo.19102589",
+      "https://doi.org/10.5281/zenodo.18841110",
+      "https://doi.org/10.2139/ssrn.6734283",
+      "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
+      "https://mos2es.com",
+      "https://signalaf.com",
+      "https://signomy.xyz",
+      "https://sigeconomy.com",
+      "https://enterprise.mos2es.org",
+      "https://mcp.mos2es.org",
+      "https://mcp.mos2es.org/.well-known/mcp/server-card.json",
+      "https://mos2es.org/.well-known/agent.json",
+      "https://mos2es.org/llms.txt",
+      "https://mos2es.org/openapi.json"
+    ],
+    "owns": [
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ Enterprise",
+        "url": "https://enterprise.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ MCP Server",
+        "url": "https://mcp.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SignalAF",
+        "url": "https://signalaf.com"
+      },
+      {
+        "@type": "WebSite",
+        "name": "Signomy",
+        "url": "https://signomy.xyz"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SigEconomy",
+        "url": "https://sigeconomy.com"
+      }
+    ],
+    "knowsAbout": [
+      "AI operator evaluation",
+      "AI operator performance measurement",
+      "Content-free token telemetry",
+      "Performative benchmarks",
+      "Enterprise AI measurement",
+      "AI workforce analytics",
+      "AI operator benchmarking",
+      "AI operator interventions",
+      {
+        "@type": "Thing",
+        "name": "Artificial intelligence",
+        "sameAs": "https://www.wikidata.org/wiki/Q11660"
+      },
+      {
+        "@type": "Thing",
+        "name": "Large language model",
+        "sameAs": "https://www.wikidata.org/wiki/Q115305900"
+      },
+      {
+        "@type": "Thing",
+        "name": "Benchmark (computing)",
+        "sameAs": "https://www.wikidata.org/wiki/Q816747"
+      },
+      {
+        "@type": "Thing",
+        "name": "Telemetry",
+        "sameAs": "https://www.wikidata.org/wiki/Q209867"
+      },
+      {
+        "@type": "Thing",
+        "name": "Observability",
+        "sameAs": "https://www.wikidata.org/wiki/Q1369844"
+      },
+      {
+        "@type": "Thing",
+        "name": "Signal-to-noise ratio",
+        "sameAs": "https://www.wikidata.org/wiki/Q738628"
+      },
+      {
+        "@type": "Thing",
+        "name": "Return on investment",
+        "sameAs": "https://www.wikidata.org/wiki/Q939134"
+      },
+      {
+        "@type": "Thing",
+        "name": "Software testing",
+        "sameAs": "https://www.wikidata.org/wiki/Q188522"
+      },
+      {
+        "@type": "Thing",
+        "name": "Machine learning",
+        "sameAs": "https://www.wikidata.org/wiki/Q2539"
+      },
+      {
+        "@type": "Thing",
+        "name": "Workforce",
+        "sameAs": "https://www.wikidata.org/wiki/Q13440398"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://mos2es.org/#website",
+    "name": "MO§ES™",
+    "url": "https://mos2es.org",
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://mos2es.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Concepts",
+        "item": "https://mos2es.org/concepts/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Confirmation Hacking",
+        "item": "https://mos2es.org/concepts/confirmation-hacking-ai-evaluation"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    "name": "Confirmation Hacking in AI Evaluation",
+    "description": "The tendency to design AI evaluations that confirm pre-existing beliefs. MO§ES™ mitigates it through content-free token telemetry.",
+    "url": "https://mos2es.org/concepts/confirmation-hacking-ai-evaluation",
+    "inDefinedTermSet": {
+      "@type": "DefinedTermSet",
+      "name": "MO§ES™ Canonical Metrics",
+      "url": "https://mos2es.org/methodology"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is confirmation hacking in AI evaluation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Confirmation hacking is the tendency to design or interpret AI evaluations in ways that confirm pre-existing beliefs rather than rigorously test them. It includes cherry-picking test cases, tuning evaluators until they confirm your hypothesis, and interpreting ambiguous results as confirmation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does MO§ES™ avoid confirmation hacking?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MO§ES™ uses content-free token telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. These structural signals cannot be gamed by prompt design. The operator cannot control what counts as each token type, so the metrics reflect actual behavior, not crafted outputs."
+        }
+      }
+    ]
+  }
+]</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Concept · Methodology Risk</div>
+<h1>Confirmation hacking: when AI evaluation confirms what you already believe.</h1>
+<p class="lead">Confirmation hacking is the tendency to design AI evaluations that confirm pre-existing beliefs rather than test them. It is a structural risk in any evaluation system. MO§ES™ mitigates it through content-free token telemetry — structural signals that operators cannot game by crafting prompts.</p>
+</div>
+
+<section>
+<div class="eyebrow">Definition</div>
+<h2>What is confirmation hacking in AI evaluation?</h2>
+<p class="sec-intro">Confirmation hacking is the tendency to design or interpret AI evaluations in ways that confirm pre-existing beliefs rather than rigorously test them. It is a form of confirmation bias applied to the evaluation process itself.</p>
+<p>In AI evaluation, confirmation hacking takes several forms:</p>
+<ul class="tight">
+<li><strong>Cherry-picked test cases</strong> — selecting benchmarks that favor your model or approach while ignoring ones that do not.</li>
+<li><strong>Custom evaluators that always agree</strong> — using an LLM-as-judge that is biased toward your outputs, or tuning the evaluator until it confirms your hypothesis.</li>
+<li><strong>Interpreting ambiguous results as confirmation</strong> — treating marginal improvements as proof while dismissing marginal regressions as noise.</li>
+<li><strong>Stopping evaluation when results look good</strong> — ending testing at the first positive result rather than running to statistical significance.</li>
+</ul>
+</section>
+
+<section>
+<div class="eyebrow">The Risk</div>
+<h2>Why confirmation hacking is dangerous.</h2>
+<p class="sec-intro">Confirmation hacking produces evaluations that look rigorous but are not. The result is false confidence — believing your AI system or your operators are performing well when the evaluation was designed to produce that conclusion.</p>
+<p>In enterprise settings, this leads to bad decisions: continuing to invest in approaches that are not working, deploying systems that are not safe, or concluding that training programs are effective when the evaluation was designed to confirm effectiveness.</p>
+</section>
+
+<section>
+<div class="eyebrow">How MO§ES™ Avoids It</div>
+<h2>Content-free telemetry cannot be gamed by prompt design.</h2>
+<p class="sec-intro">MO§ES™ mitigates confirmation hacking through its measurement method. Because MO§ES™ uses content-free token telemetry — INPUT, OUTPUT, CACHE READ, CACHE WRITE counts — operators cannot craft prompts that produce favorable evaluations.</p>
+<p>The structural signals MO§ES™ measures (Yield, Leverage, Token SNR, Construction) are emergent properties of how an operator interacts with AI across many sessions. They cannot be gamed by writing better prompts any more than a driver can game a fuel efficiency metric by driving more carefully for one trip.</p>
+<div class="grid2">
+<div class="card">
+<div class="big">Traditional evaluation</div>
+<p>Output quality is judged by criteria that can be tuned until results look good. The evaluator and the evaluated have incentives to converge on favorable results.</p>
+</div>
+<div class="card">
+<div class="big">MO§ES™ evaluation</div>
+<p>Token telemetry is generated by the API, not by the operator. The operator cannot control what counts as INPUT, OUTPUT, CACHE READ, or CACHE WRITE. The metrics are structural, not interpretive.</p>
+</div>
+</div>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Governance</div>
+<h2>Labels that prevent confirmation hacking.</h2>
+<p class="sec-intro" style="color:#ccc">MO§ES™ governance labels are designed to prevent confirmation hacking at the interpretation layer.</p>
+<ul>
+<li><strong>DERIVED</strong> — metrics are computed from telemetry, not interpreted from content. No subjective judgment enters the measurement.</li>
+<li><strong>DEVELOPMENTAL</strong> — results route workflows, not personnel actions. No incentive to produce favorable results.</li>
+<li><strong>ASSOCIATION</strong> — outcome relationships are labeled as association, not causation, unless validated through controlled experiments. Prevents over-interpreting correlational findings.</li>
+<li><strong>HYPOTHESIS</strong> — diagnostic patterns are labeled as hypotheses, not conclusions. Forces follow-up testing before action.</li>
+</ul>
+</section>
+
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="grid3">
+<div class="card"><div class="big"><a href="ai-evaluation.html" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The core concept.</p></div>
+<div class="card"><div class="big"><a href="governance.html" style="color:var(--ink);text-decoration:none">Governance</a></div><p>The governance framework that prevents misuse.</p></div>
+<div class="card"><div class="big"><a href="benchmark.html" style="color:var(--ink);text-decoration:none">Benchmarking</a></div><p>How benchmarks are selected to avoid bias.</p></div>
+</div>
+<div style="margin-top:16px">
+<a class="btn-outline" href="../methodology.html">Read the Methodology</a>
+<a class="btn" href="../contact.html">Request a Pilot</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../killer-experiment.html">Killer Experiment</a><a href="../commercial-offer.html">Pricing</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

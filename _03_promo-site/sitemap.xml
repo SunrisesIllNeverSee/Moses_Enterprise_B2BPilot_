@@ -421,4 +421,22 @@
     <priority>0.8</priority>
     <lastmod>2026-09-15</lastmod>
   </url>
+  <url>
+    <loc>https://mos2es.org/concepts/ai-model-safety-evaluation-benchmark-continuous-testing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-09-15</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/concepts/ai-evaluation-platform</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-09-15</lastmod>
+  </url>
+  <url>
+    <loc>https://mos2es.org/concepts/confirmation-hacking-ai-evaluation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-09-15</lastmod>
+  </url>
 </urlset>

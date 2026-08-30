@@ -37,6 +37,18 @@ the work that actually matters. The core commercial proposition:
 - [Intervention](https://mos2es.org/concepts/intervention): targeted changes with pre/post re-measurement, ASSOCIATION
 - [Canonical Telemetry](https://mos2es.org/concepts/canonical-telemetry): INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text
 - [Governance](https://mos2es.org/concepts/governance): DEVELOPMENTAL/HYPOTHESIS/ASSOCIATION labels, no punitive use
+- [AI Evaluation](https://mos2es.org/concepts/ai-evaluation): what AI evaluation means and how MO§ES™ redefines it around the operator layer
+- [AI Evaluations](https://mos2es.org/concepts/ai-evaluations): the four layers of AI evaluations — model, output, safety, operator
+- [AI Agent Evaluation](https://mos2es.org/concepts/ai-agent-evaluation): evaluating autonomous AI agents and the humans who direct them
+- [AI Evaluator](https://mos2es.org/concepts/ai-evaluator): what an AI evaluator is and what MO§ES™ does differently
+- [AI Model Evaluation](https://mos2es.org/concepts/ai-model-evaluation): model evaluation vs operator evaluation — necessary but not sufficient
+- [AI Evaluation Frameworks](https://mos2es.org/concepts/ai-evaluation-frameworks): structured approaches from NIST AI RMF to MO§ES™
+- [Evaluating AI](https://mos2es.org/concepts/evaluating-ai): the operator layer is the missing piece in AI evaluation
+- [AI Evaluation Tools](https://mos2es.org/concepts/ai-evaluation-tools): the complete tools landscape across all four layers
+- [Best AI Evaluation Tools for Production](https://mos2es.org/concepts/best-ai-evaluation-tools-for-production): the complete production evaluation stack
+- [AI Evaluation Platform](https://mos2es.org/concepts/ai-evaluation-platform): what makes MO§ES™ different as an evaluation platform
+- [AI Model Safety Evaluation](https://mos2es.org/concepts/ai-model-safety-evaluation-benchmark-continuous-testing): safety benchmarks and continuous testing, extended to the operator layer
+- [Confirmation Hacking in AI Evaluation](https://mos2es.org/concepts/confirmation-hacking-ai-evaluation): when evaluation confirms what you already believe — and how content-free telemetry avoids it
 
 ## Guide pages
 - [How to Evaluate AI Operators](https://mos2es.org/guides/how-to-evaluate-ai-operators): step-by-step guide for enterprise teams
@@ -54,6 +66,7 @@ the work that actually matters. The core commercial proposition:
 - [The Intervention Loop](https://mos2es.org/blog/the-intervention-loop): how to test whether your AI training actually worked
 - [Token Telemetry Without Content](https://mos2es.org/blog/token-telemetry-without-content): measuring operator performance without reading prompts
 - [Where Capability Hides](https://mos2es.org/blog/where-capability-hides): mapping AI performance across teams, workflows, and operators
+- [AI Evaluation Should Learn from How We Test Humans](https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans): model benchmarks are aptitude tests, operator evaluation is the performance review AI has been missing
 
 ## Comparison pages
 - [Comparisons Index](https://mos2es.org/vs/): all 16 competitor comparison pages
