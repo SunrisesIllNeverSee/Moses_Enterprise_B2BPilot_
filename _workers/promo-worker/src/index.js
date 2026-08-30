@@ -75,6 +75,15 @@ export default {
       return errorResponse(404, 'NOT_FOUND', 'This API endpoint is not deployed. The platform is accessible via MCP server and CLI.', 'See https://mos2es.org/docs for MCP server and CLI usage, or https://mos2es.org/openapi.json for the full API spec.');
     }
 
+    // ─── Consolidated pages: alternatives → vs ───────────────────────────
+    const CONSOLIDATED = {
+      '/alternatives/workera-alternatives': '/vs/workera',
+      '/alternatives/worklytics-alternatives': '/vs/worklytics',
+    };
+    if (CONSOLIDATED[path]) {
+      return Response.redirect(new URL(CONSOLIDATED[path], url.origin).toString(), 301);
+    }
+
     // ─── favicon.ico redirect to favicon.svg ─────────────────────────────
     if (path === '/favicon.ico') {
       return Response.redirect(new URL('/favicon.svg', url.origin).toString(), 301);
