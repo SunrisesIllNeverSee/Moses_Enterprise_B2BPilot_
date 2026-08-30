@@ -20,26 +20,210 @@
 <meta name="twitter:description" content="12 questions about AI operator evaluation, benchmarks, and governance.">
 <meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="style.css">
-<script type="application/ld+json">
-[
-  {"@context":"https://schema.org","@type":"WebSite","@id":"https://mos2es.org/#website","name":"MO§ES™","url":"https://mos2es.org","publisher":{"@id":"https://mos2es.org/#org"}},
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mos2es.org/"},{"@type":"ListItem","position":2,"name":"FAQ","item":"https://mos2es.org/faq"}]},
-  {"@context":"https://schema.org","@type":"FAQPage","url":"https://mos2es.org/faq","mainEntity":[
-    {"@type":"Question","name":"What is an AI operator evaluation?","acceptedAnswer":{"@type":"Answer","text":"An AI operator evaluation measures how a person or team actually operates AI systems across relevant tasks, workflows, models, and operating conditions. It is not a knowledge test, a certification exam, or a self-reported proficiency survey — it examines observable operating behavior and performance from telemetry data."}},
-    {"@type":"Question","name":"What is the difference between an operator eval and an AI knowledge test?","acceptedAnswer":{"@type":"Answer","text":"An operator eval measures observed behavior from telemetry, while a knowledge test measures recalled information. An operator eval examines what operators do with AI systems under real conditions, not what they know about AI in theory."}},
-    {"@type":"Question","name":"What is canonical token telemetry?","acceptedAnswer":{"@type":"Answer","text":"Canonical token telemetry is a content-free data surface with four signals: INPUT (tokens in), OUTPUT (tokens out), CACHE READ (reused context), and CACHE WRITE (new context built). No prompt text is required — only token counts and structural signals."}},
-    {"@type":"Question","name":"What are the five canonical derived metrics?","acceptedAnswer":{"@type":"Answer","text":"The five canonical metrics are Leverage ((R+W)/I), Yield (O/(I+O+R+W)), Token SNR (O/(I+O+R)), Log Leverage (log(1+L)), and Construction (W/R). All are computed from canonical telemetry without requiring prompt content."}},
-    {"@type":"Question","name":"What is the AI Operator Development Index?","acceptedAnswer":{"@type":"Answer","text":"The AI Operator Development Index is a 0–100 composite score combining Leverage (30%), Yield (30%), Token SNR (20%), and Construction (20%). It is labeled DEVELOPMENTAL — a structural signal for routing workflows, not a performance verdict or employee ranking."}},
-    {"@type":"Question","name":"What is a performative benchmark?","acceptedAnswer":{"@type":"Answer","text":"A performative benchmark compares how operators actually perform under observed or defined operating conditions, rather than relying on self-reported proficiency or generic knowledge tests. It is constructed from real telemetry, real workflows, and real operating conditions across 13 benchmark classes."}},
-    {"@type":"Question","name":"What is usage-operation divergence?","acceptedAnswer":{"@type":"Answer","text":"Usage-operation divergence identifies operators whose usage volume does not match their evaluation performance rank. The highest-volume AI users are not necessarily the highest-performing operators. Divergence is labeled HYPOTHESIS — it flags patterns for investigation, not conclusions."}},
-    {"@type":"Question","name":"What is an AI operator intervention?","acceptedAnswer":{"@type":"Answer","text":"An intervention is a targeted change to an operator's workflow, tooling, training, or operating conditions, measured with pre/post comparison against a declared target metric. 12 interventions have been tested in the synthetic demo cohort. Outcome joins are labeled ASSOCIATION — never CAUSATION."}},
-    {"@type":"Question","name":"Does MO§ES™ collect prompt text or conversation content?","acceptedAnswer":{"@type":"Answer","text":"No. The system works from content-free or content-minimized telemetry — token counts and structural signals, not prompt text. This is a design principle that minimizes data collection and reduces surveillance surface. Level 2 deployments may add enriched signals, but prompt content is never required for core metrics."}},
-    {"@type":"Question","name":"Can MO§ES™ results be used for employment decisions?","acceptedAnswer":{"@type":"Answer","text":"No. All results carry DEVELOPMENTAL labels, which means they route workflows, not people. No adverse employment actions — hiring, firing, promotion, compensation, or performance review — are permitted from pilot data. This is enforced in code, not just policy."}},
-    {"@type":"Question","name":"What does ASSOCIATION mean versus CAUSATION?","acceptedAnswer":{"@type":"Answer","text":"ASSOCIATION means a correlation was observed between an intervention and a business metric. CAUSATION would mean the intervention caused the business change. The system labels all outcome joins as ASSOCIATION — never CAUSATION — because a correlation is not proof of causation without separate experimental validation."}},
-    {"@type":"Question","name":"Is MO§ES™ validated science or a research framework?","acceptedAnswer":{"@type":"Answer","text":"MO§ES™ is a formal research framework, not established science. It carries papers, experiments, datasets, patents, and falsifiability work. Most derived metrics are not independently validated as performance measures. The system is designed to be wrong — if an intervention does not produce a measurable change, the system says so."}}
-  ]}
-]
-</script>
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://mos2es.org/#org",
+    "name": "Ello Cello LLC",
+    "alternateName": "MO§ES™",
+    "url": "https://mos2es.org",
+    "logo": "https://mos2es.org/favicon.svg",
+    "description": "Enterprise AI operator evaluations and performative benchmarks. Content-free token telemetry measuring how humans operate AI systems.",
+    "founder": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0009-0002-9904-5390",
+      "name": "Deric McHenry",
+      "url": "https://orcid.org/0009-0002-9904-5390"
+    },
+    "sameAs": [
+      "https://orcid.org/0009-0002-9904-5390",
+      "https://github.com/SunrisesIllneverSee",
+      "https://doi.org/10.5281/zenodo.20029607",
+      "https://doi.org/10.5281/zenodo.19105225",
+      "https://mos2es.com",
+      "https://signalaf.com",
+      "https://signomy.xyz",
+      "https://sigeconomy.com",
+      "https://enterprise.mos2es.org",
+      "https://mcp.mos2es.org",
+      "https://mcp.mos2es.org/.well-known/mcp/server-card.json",
+      "https://mos2es.org/.well-known/agent.json",
+      "https://mos2es.org/llms.txt",
+      "https://mos2es.org/openapi.json"
+    ],
+    "owns": [
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ Enterprise",
+        "url": "https://enterprise.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ MCP Server",
+        "url": "https://mcp.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SignalAF",
+        "url": "https://signalaf.com"
+      },
+      {
+        "@type": "WebSite",
+        "name": "Signomy",
+        "url": "https://signomy.xyz"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SigEconomy",
+        "url": "https://sigeconomy.com"
+      }
+    ],
+    "knowsAbout": [
+      "AI operator evaluation",
+      "AI operator performance measurement",
+      "Content-free token telemetry",
+      "Performative benchmarks",
+      "Enterprise AI measurement",
+      "AI workforce analytics",
+      "LLM observability",
+      "AI operator benchmarking",
+      "Token signal-to-noise ratio",
+      "AI operator interventions"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://mos2es.org/#website",
+    "name": "MO§ES™",
+    "url": "https://mos2es.org",
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://mos2es.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "FAQ",
+        "item": "https://mos2es.org/faq"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "url": "https://mos2es.org/faq",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an AI operator evaluation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An AI operator evaluation measures how a person or team actually operates AI systems across relevant tasks, workflows, models, and operating conditions. It is not a knowledge test, a certification exam, or a self-reported proficiency survey — it examines observable operating behavior and performance from telemetry data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between an operator eval and an AI knowledge test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An operator eval measures observed behavior from telemetry, while a knowledge test measures recalled information. An operator eval examines what operators do with AI systems under real conditions, not what they know about AI in theory."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is canonical token telemetry?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Canonical token telemetry is a content-free data surface with four signals: INPUT (tokens in), OUTPUT (tokens out), CACHE READ (reused context), and CACHE WRITE (new context built). No prompt text is required — only token counts and structural signals."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the five canonical derived metrics?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The five canonical metrics are Leverage ((R+W)/I), Yield (O/(I+O+R+W)), Token SNR (O/(I+O+R)), Log Leverage (log(1+L)), and Construction (W/R). All are computed from canonical telemetry without requiring prompt content."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the AI Operator Development Index?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The AI Operator Development Index is a 0–100 composite score combining Leverage (30%), Yield (30%), Token SNR (20%), and Construction (20%). It is labeled DEVELOPMENTAL — a structural signal for routing workflows, not a performance verdict or employee ranking."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a performative benchmark?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A performative benchmark compares how operators actually perform under observed or defined operating conditions, rather than relying on self-reported proficiency or generic knowledge tests. It is constructed from real telemetry, real workflows, and real operating conditions across 13 benchmark classes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is usage-operation divergence?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Usage-operation divergence identifies operators whose usage volume does not match their evaluation performance rank. The highest-volume AI users are not necessarily the highest-performing operators. Divergence is labeled HYPOTHESIS — it flags patterns for investigation, not conclusions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is an AI operator intervention?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An intervention is a targeted change to an operator's workflow, tooling, training, or operating conditions, measured with pre/post comparison against a declared target metric. 12 interventions have been tested in the synthetic demo cohort. Outcome joins are labeled ASSOCIATION — never CAUSATION."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does MO§ES™ collect prompt text or conversation content?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The system works from content-free or content-minimized telemetry — token counts and structural signals, not prompt text. This is a design principle that minimizes data collection and reduces surveillance surface. Level 2 deployments may add enriched signals, but prompt content is never required for core metrics."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can MO§ES™ results be used for employment decisions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All results carry DEVELOPMENTAL labels, which means they route workflows, not people. No adverse employment actions — hiring, firing, promotion, compensation, or performance review — are permitted from pilot data. This is enforced in code, not just policy."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does ASSOCIATION mean versus CAUSATION?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ASSOCIATION means a correlation was observed between an intervention and a business metric. CAUSATION would mean the intervention caused the business change. The system labels all outcome joins as ASSOCIATION — never CAUSATION — because a correlation is not proof of causation without separate experimental validation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is MO§ES™ validated science or a research framework?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MO§ES™ is a formal research framework, not established science. It carries papers, experiments, datasets, patents, and falsifiability work. Most derived metrics are not independently validated as performance measures. The system is designed to be wrong — if an intervention does not produce a measurable change, the system says so."
+        }
+      }
+    ]
+  }
+]</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>
