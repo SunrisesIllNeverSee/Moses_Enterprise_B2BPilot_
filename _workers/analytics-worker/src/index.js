@@ -76,6 +76,16 @@ const SITE_CONFIG = {
     ai_search: 'https://f8f5e9c3-29e1-4698-8866-dad70ae2bf23.search.ai.cloudflare.com/mcp',
     pages: 52,
   },
+  'mos2es.com': {
+    name: 'MO§ES™ Promo Site (.com)',
+    description: 'Enterprise AI operator evaluations and performative benchmarks.',
+    sitemap: 'https://mos2es.com/sitemap.xml',
+    llms_txt: 'https://mos2es.com/llms.txt',
+    openapi: 'https://mos2es.com/openapi.json',
+    mcp: 'https://mcp.mos2es.org/mcp',
+    ai_search: 'https://f8f5e9c3-29e1-4698-8866-dad70ae2bf23.search.ai.cloudflare.com/mcp',
+    pages: 52,
+  },
   'enterprise.mos2es.org': {
     name: 'MO§ES™ Enterprise Demo',
     description: 'Interactive enterprise pilot demo with real synthetic data.',

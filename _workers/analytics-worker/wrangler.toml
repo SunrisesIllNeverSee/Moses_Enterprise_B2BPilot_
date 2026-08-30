@@ -5,18 +5,26 @@ compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
 routes = [
+  # mos2es.org
   { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/dashboard", zone_name = "mos2es.org" },
+  # enterprise.mos2es.org
   { pattern = "enterprise.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/dashboard", zone_name = "mos2es.org" },
+  # mcp.mos2es.org
   { pattern = "mcp.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/dashboard", zone_name = "mos2es.org" },
+  # mos2es.com
+  { pattern = "mos2es.com/api/analytics/*", zone_name = "mos2es.com" },
+  { pattern = "mos2es.com/.well-known/agent*", zone_name = "mos2es.com" },
+  { pattern = "mos2es.com/crawl-control*", zone_name = "mos2es.com" },
+  { pattern = "mos2es.com/dashboard", zone_name = "mos2es.com" },
 ]
 
 [[kv_namespaces]]
