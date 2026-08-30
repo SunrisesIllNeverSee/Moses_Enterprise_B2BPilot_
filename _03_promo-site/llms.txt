@@ -49,6 +49,8 @@ the work that actually matters. The core commercial proposition:
 - [AI Evaluation Platform](https://mos2es.org/concepts/ai-evaluation-platform): what makes MO§ES™ different as an evaluation platform
 - [AI Model Safety Evaluation](https://mos2es.org/concepts/ai-model-safety-evaluation-benchmark-continuous-testing): safety benchmarks and continuous testing, extended to the operator layer
 - [Confirmation Hacking in AI Evaluation](https://mos2es.org/concepts/confirmation-hacking-ai-evaluation): when evaluation confirms what you already believe — and how content-free telemetry avoids it
+- [AI Evaluation News](https://mos2es.org/concepts/ai-evaluation-news): trends and developments in AI evaluation for 2026 — the shift from model benchmarks to operator evaluation
+- [AI Compliance Standards](https://mos2es.org/concepts/ai-compliance-standards): NIST AI RMF, EU AI Act, and how MO§ES™ governance maps to compliance requirements
 
 ## Guide pages
 - [How to Evaluate AI Operators](https://mos2es.org/guides/how-to-evaluate-ai-operators): step-by-step guide for enterprise teams
