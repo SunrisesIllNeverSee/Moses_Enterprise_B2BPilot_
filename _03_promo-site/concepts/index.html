@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Concepts — MO§ES™</title>
-<meta name="description" content="Canonical metric definitions for the MO§ES™ evaluation framework: Yield, Leverage, Token SNR, Construction, Composite Score, Divergence, Benchmark, Intervention, Canonical Telemetry, Governance.">
+<meta name="description" content="Canonical metric definitions for the MO§ES™ evaluation framework: Yield, Leverage, Token SNR, Construction, Composite Score, Divergence, Benchmark,">
 <link rel="canonical" href="https://mos2es.org/concepts/">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <meta property="og:type" content="website">
@@ -53,25 +53,34 @@
 <section>
 <div class="eyebrow">Canonical Metrics</div>
 <h2>The five.</h2>
+<p class="sec-intro">The MO§ES™ evaluation framework defines five canonical derived metrics computed from four content-free token primitives. Each metric captures a different dimension of AI operator performance — output efficiency, context reuse, signal quality, context building, and overall development. Together they form a complete picture of how a human operates an AI system, without ever reading a single prompt or output.</p>
 <div class="grid3" style="margin-top:20px">
-<a href="yield" style="text-decoration:none;color:inherit"><div class="card accent"><div class="num">CANONICAL</div><div class="big">Yield</div><p>O / (I + O + R + W) — productive output share of total token flow.</p></div></a>
-<a href="leverage" style="text-decoration:none;color:inherit"><div class="card blue"><div class="num">CANONICAL</div><div class="big">Leverage</div><p>(R + W) / I — context reuse and building relative to new input.</p></div></a>
-<a href="token-snr" style="text-decoration:none;color:inherit"><div class="card green"><div class="num">CANONICAL</div><div class="big">Token SNR</div><p>Signal-to-noise ratio in AI operator token flow.</p></div></a>
-<a href="construction" style="text-decoration:none;color:inherit"><div class="card amber"><div class="num">CANONICAL</div><div class="big">Construction</div><p>W / R — ratio of new context built to context reused.</p></div></a>
-<a href="composite-score" style="text-decoration:none;color:inherit"><div class="card purple"><div class="num">DEVELOPMENTAL</div><div class="big">Composite Score</div><p>AI Operator Development Index — 0-100, weighted composite. DEVELOPMENTAL.</p></div></a>
+<a href="yield" style="text-decoration:none;color:inherit"><div class="card accent"><div class="num">CANONICAL</div><div class="big">Yield</div><p>O / (I + O + R + W) — productive output share of total token flow. Measures output efficiency.</p></div></a>
+<a href="leverage" style="text-decoration:none;color:inherit"><div class="card blue"><div class="num">CANONICAL</div><div class="big">Leverage</div><p>(R + W) / I — context reuse and building relative to new input. Measures context efficiency.</p></div></a>
+<a href="token-snr" style="text-decoration:none;color:inherit"><div class="card green"><div class="num">CANONICAL</div><div class="big">Token SNR</div><p>Signal-to-noise ratio in AI operator token flow. Measures output quality and precision.</p></div></a>
+<a href="construction" style="text-decoration:none;color:inherit"><div class="card amber"><div class="num">CANONICAL</div><div class="big">Construction</div><p>W / R — ratio of new context built to context reused. Measures context architecture skill.</p></div></a>
+<a href="composite-score" style="text-decoration:none;color:inherit"><div class="card purple"><div class="num">DEVELOPMENTAL</div><div class="big">Composite Score</div><p>AI Operator Development Index — 0-100, weighted composite. DEVELOPMENTAL, not punitive.</p></div></a>
 </div>
 </section>
 
 <section>
 <div class="eyebrow">Supporting Concepts</div>
 <h2>Framework definitions.</h2>
+<p class="sec-intro">Beyond the five canonical metrics, the MO§ES™ framework includes diagnostic concepts for identifying performance patterns, reference populations for benchmarking, experimental methods for testing interventions, and governance labels that ensure measurement is used developmentally, not punitively.</p>
 <div class="grid3" style="margin-top:20px">
 <a href="divergence" style="text-decoration:none;color:inherit"><div class="card"><div class="num">DIAGNOSTIC</div><div class="big">Divergence</div><p>Usage-operation divergence — identifies operators whose usage volume doesn't match performance.</p></div></a>
-<a href="benchmark" style="text-decoration:none;color:inherit"><div class="card"><div class="num">REFERENCE</div><div class="big">Benchmark</div><p>13 benchmark classes with selection algorithm.</p></div></a>
-<a href="intervention" style="text-decoration:none;color:inherit"><div class="card"><div class="num">EXPERIMENTAL</div><div class="big">Intervention</div><p>Targeted changes with pre/post re-measurement. ASSOCIATION.</p></div></a>
-<a href="canonical-telemetry" style="text-decoration:none;color:inherit"><div class="card"><div class="num">PRIMITIVE</div><div class="big">Canonical Telemetry</div><p>INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text.</p></div></a>
-<a href="governance" style="text-decoration:none;color:inherit"><div class="card"><div class="num">GOVERNANCE</div><div class="big">Governance</div><p>DEVELOPMENTAL/HYPOTHESIS/ASSOCIATION labels, no punitive use.</p></div></a>
+<a href="benchmark" style="text-decoration:none;color:inherit"><div class="card"><div class="num">REFERENCE</div><div class="big">Benchmark</div><p>13 benchmark classes with selection algorithm for fair comparison.</p></div></a>
+<a href="intervention" style="text-decoration:none;color:inherit"><div class="card"><div class="num">EXPERIMENTAL</div><div class="big">Intervention</div><p>Targeted changes with pre/post re-measurement. Results labeled ASSOCIATION, not causation.</p></div></a>
+<a href="canonical-telemetry" style="text-decoration:none;color:inherit"><div class="card"><div class="num">PRIMITIVE</div><div class="big">Canonical Telemetry</div><p>INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text, no PII.</p></div></a>
+<a href="governance" style="text-decoration:none;color:inherit"><div class="card"><div class="num">GOVERNANCE</div><div class="big">Governance</div><p>DEVELOPMENTAL/HYPOTHESIS/ASSOCIATION labels, no punitive use, no leaderboard ranking.</p></div></a>
 </div>
+</section>
+
+<section>
+<div class="eyebrow">How the metrics connect</div>
+<h2>From primitives to decisions.</h2>
+<p class="sec-intro">The four token primitives (I, O, R, W) flow through the five canonical metrics, which feed into diagnostics, benchmarks, and intervention testing. Every metric connects to a recommended action — not just a number on a dashboard. Low Yield means context structuring coaching. Low Leverage means a context caching workshop. High divergence means a workflow review. Every measurement translates to a developmental recommendation.</p>
+<p>For the full decision-oriented mapping, see the <a href="../product.html">product page</a>. For the mathematical foundations, see the <a href="../methodology.html">methodology page</a>. For practical implementation, see the <a href="../guides/how-to-evaluate-ai-operators.html">evaluation guide</a>.</p>
 </section>
 
 </main>
