@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Evaluation Should Learn from How We Test Humans — MO§ES™</title>
+<meta name="description" content="AI evaluation focuses on models. But human evaluation has evolved over a century to measure performance, not just capability. AI operator evaluation should borrow from that tradition.">
+<link rel="canonical" href="https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans">
+<meta property="og:title" content="AI Evaluation Should Learn from How We Test Humans">
+<meta property="og:description" content="AI evaluation focuses on models. Human evaluation measures performance in context. AI operator evaluation should borrow from that tradition.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="MO§ES™">
+<meta property="article:published_time" content="2026-09-15T00:00:00+00:00">
+<meta property="article:modified_time" content="2026-09-15T00:00:00+00:00">
+<meta property="article:author" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Evaluation Should Learn from How We Test Humans">
+<meta name="twitter:description" content="AI evaluation focuses on models. Human evaluation measures performance in context. The lessons AI evaluation should borrow.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://mos2es.org/#org",
+    "name": "Ello Cello LLC",
+    "alternateName": "MO§ES™",
+    "url": "https://mos2es.org",
+    "logo": "https://mos2es.org/favicon.svg",
+    "description": "Enterprise AI operator evaluations and performative benchmarks. Content-free token telemetry measuring how humans operate AI systems.",
+    "founder": {
+      "@type": "Person",
+      "@id": "https://orcid.org/0009-0002-9904-5390",
+      "name": "Deric J McHenry",
+      "alternateName": "Deric McHenry",
+      "url": "https://orcid.org/0009-0002-9904-5390",
+      "sameAs": [
+        "https://orcid.org/0009-0002-9904-5390",
+        "https://x.com/burnmydays",
+        "https://www.linkedin.com/in/dericjmchenry",
+        "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
+        "https://github.com/SunrisesIllneverSee"
+      ]
+    },
+    "sameAs": [
+      "https://orcid.org/0009-0002-9904-5390",
+      "https://github.com/SunrisesIllneverSee",
+      "https://github.com/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_",
+      "https://doi.org/10.5281/zenodo.20029607",
+      "https://doi.org/10.5281/zenodo.19105224",
+      "https://doi.org/10.5281/zenodo.19109396",
+      "https://doi.org/10.5281/zenodo.19109397",
+      "https://doi.org/10.5281/zenodo.19102589",
+      "https://doi.org/10.5281/zenodo.18841110",
+      "https://doi.org/10.2139/ssrn.6734283",
+      "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
+      "https://mos2es.com",
+      "https://signalaf.com",
+      "https://signomy.xyz",
+      "https://sigeconomy.com",
+      "https://enterprise.mos2es.org",
+      "https://mcp.mos2es.org",
+      "https://mcp.mos2es.org/.well-known/mcp/server-card.json",
+      "https://mos2es.org/.well-known/agent.json",
+      "https://mos2es.org/llms.txt",
+      "https://mos2es.org/openapi.json"
+    ],
+    "owns": [
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ Enterprise",
+        "url": "https://enterprise.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "MO§ES™ MCP Server",
+        "url": "https://mcp.mos2es.org"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SignalAF",
+        "url": "https://signalaf.com"
+      },
+      {
+        "@type": "WebSite",
+        "name": "Signomy",
+        "url": "https://signomy.xyz"
+      },
+      {
+        "@type": "WebSite",
+        "name": "SigEconomy",
+        "url": "https://sigeconomy.com"
+      }
+    ],
+    "knowsAbout": [
+      "AI operator evaluation",
+      "AI operator performance measurement",
+      "Content-free token telemetry",
+      "Performative benchmarks",
+      "Enterprise AI measurement",
+      "AI workforce analytics",
+      "AI operator benchmarking",
+      "AI operator interventions",
+      {
+        "@type": "Thing",
+        "name": "Artificial intelligence",
+        "sameAs": "https://www.wikidata.org/wiki/Q11660"
+      },
+      {
+        "@type": "Thing",
+        "name": "Large language model",
+        "sameAs": "https://www.wikidata.org/wiki/Q115305900"
+      },
+      {
+        "@type": "Thing",
+        "name": "Benchmark (computing)",
+        "sameAs": "https://www.wikidata.org/wiki/Q816747"
+      },
+      {
+        "@type": "Thing",
+        "name": "Telemetry",
+        "sameAs": "https://www.wikidata.org/wiki/Q209867"
+      },
+      {
+        "@type": "Thing",
+        "name": "Observability",
+        "sameAs": "https://www.wikidata.org/wiki/Q1369844"
+      },
+      {
+        "@type": "Thing",
+        "name": "Signal-to-noise ratio",
+        "sameAs": "https://www.wikidata.org/wiki/Q738628"
+      },
+      {
+        "@type": "Thing",
+        "name": "Return on investment",
+        "sameAs": "https://www.wikidata.org/wiki/Q939134"
+      },
+      {
+        "@type": "Thing",
+        "name": "Software testing",
+        "sameAs": "https://www.wikidata.org/wiki/Q188522"
+      },
+      {
+        "@type": "Thing",
+        "name": "Machine learning",
+        "sameAs": "https://www.wikidata.org/wiki/Q2539"
+      },
+      {
+        "@type": "Thing",
+        "name": "Workforce",
+        "sameAs": "https://www.wikidata.org/wiki/Q13440398"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://mos2es.org/#website",
+    "name": "MO§ES™",
+    "url": "https://mos2es.org",
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://mos2es.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://mos2es.org/blog/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "AI Evaluation Should Learn from How We Test Humans",
+        "item": "https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "AI Evaluation Should Learn from How We Test Humans",
+    "description": "AI evaluation focuses on models. But human evaluation has evolved over a century to measure performance, not just capability. AI operator evaluation should borrow from that tradition.",
+    "url": "https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans",
+    "author": {
+      "@type": "Organization",
+      "name": "MO§ES™"
+    },
+    "publisher": {
+      "@id": "https://mos2es.org/#org"
+    },
+    "datePublished": "2026-09-15T00:00:00+00:00",
+    "dateModified": "2026-09-15T00:00:00+00:00",
+    "image": "https://mos2es.org/og-image.png"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why should AI evaluation learn from how we test humans?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Human evaluation has evolved over a century to measure performance in context, not just capability in isolation. Skills tests, certifications, and performance reviews all distinguish between what someone can do and what they actually do. AI evaluation should make the same distinction for operators."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between capability and performance in AI evaluation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Capability is what an AI model or operator can do in principle, measured by tests and benchmarks. Performance is what they actually do in real work, measured by observed behavior. Model benchmarks measure capability. MO§ES™ measures operator performance using content-free token telemetry."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does MO§ES™ evaluate AI operators?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MO§ES™ measures operators using content-free token telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. These reveal how effectively operators manage context, convert input to output, and improve over time. No prompt or output content is needed."
+        }
+      }
+    ]
+  }
+]</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b>MO§ES™</b>
+<div class="links">
+<a href="../index.html">Home</a>
+<a href="../product.html">Product</a>
+<a href="../pilot.html">Pilot</a>
+<a href="../methodology.html">Methodology</a>
+<a href="../research.html">Research</a>
+<a href="../contact.html" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Blog · Position</div>
+<h1>AI evaluation should learn from how we test humans.</h1>
+<p class="lead">AI evaluation focuses on models — benchmarks, safety tests, output quality. But human evaluation has evolved over a century to measure something more useful: performance in context. AI operator evaluation should borrow from that tradition.</p>
+</div>
+
+<section>
+<div class="eyebrow">The Insight</div>
+<h2>We learned this lesson with humans a century ago.</h2>
+<p class="sec-intro">In the early 20th century, industrial psychology discovered that capability tests do not predict job performance. A high IQ score does not mean someone will be a good employee. What predicts performance is... performance — observed behavior in the actual work context.</p>
+<p>This is why modern human evaluation has multiple layers:</p>
+<ul class="tight">
+<li><strong>Aptitude tests</strong> — measure capability in isolation (like model benchmarks)</li>
+<li><strong>Certifications</strong> — measure demonstrated skill (like output evaluation)</li>
+<li><strong>Performance reviews</strong> — measure observed behavior in real work (like operator evaluation)</li>
+</ul>
+<p style="margin-top:12px">No one confuses an aptitude test with a performance review. We know they measure different things. Yet in AI evaluation, we routinely confuse model benchmarks (aptitude tests) with operator performance (performance reviews). We evaluate the model and assume we have evaluated the operator.</p>
+</section>
+
+<section>
+<div class="eyebrow">The Parallel</div>
+<h2>Model benchmarks are aptitude tests.</h2>
+<p class="sec-intro">MMLU, HumanEval, and Chatbot Arena are aptitude tests. They measure what the model can do in a controlled setting. They do not measure what your operators will do with the model in real work.</p>
+<p>This is not a criticism of model benchmarks. Aptitude tests are useful — they tell you whether someone is capable of the work. But no HR department would stop at aptitude tests. They would also measure performance on the job. AI evaluation should do the same.</p>
+<div class="grid2">
+<div class="card">
+<div class="big">Human evaluation</div>
+<p>Aptitude test → Certification → Performance review. Three layers. Each measures something different. Each is necessary. None is sufficient alone.</p>
+</div>
+<div class="card">
+<div class="big">AI evaluation today</div>
+<p>Model benchmark → Output quality → ??? Most enterprises stop at the first two. The third layer — operator performance — is missing.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">The Missing Layer</div>
+<h2>Operator performance is the performance review.</h2>
+<p class="sec-intro">MO§ES™ is the performance review layer for AI operators. It measures observed behavior in real work — not what operators can do in principle, but what they actually do when interacting with AI.</p>
+<p>The method is content-free token telemetry. Every interaction between a human and an AI produces token counts: INPUT, OUTPUT, CACHE READ, CACHE WRITE. These four numbers, tracked over time, reveal:</p>
+<ul class="tight">
+<li>How efficiently the operator manages context (Leverage)</li>
+<li>How much productive output they generate relative to total token flow (Yield)</li>
+<li>How much signal they produce relative to noise (Token SNR)</li>
+<li>Whether they build new context or just reuse old context (Construction)</li>
+<li>Whether they are improving over time (Composite Score trend)</li>
+</ul>
+<p style="margin-top:12px">No prompts. No outputs. No content inspection. Just the structural patterns of how humans interact with AI — the same way a performance review observes behavior without reading the employee's emails.</p>
+</section>
+
+<section>
+<div class="eyebrow">The Lesson</div>
+<h2>What AI evaluation should borrow from human evaluation.</h2>
+<p class="sec-intro">Three principles from a century of human evaluation research that AI evaluation has yet to fully adopt:</p>
+<div class="grid3">
+<div class="card">
+<div class="big">1. Capability ≠ performance</div>
+<p>What someone can do in a test is not what they will do in the job. Measure both. Do not assume one from the other.</p>
+</div>
+<div class="card">
+<div class="big">2. Context matters</div>
+<p>Performance is context-dependent. Evaluate operators in their actual work context, not in a simulated test. MO§ES™ measures real sessions, not test scenarios.</p>
+</div>
+<div class="card">
+<div class="big">3. Development, not punishment</div>
+<p>Performance evaluation should route development, not punishment. MO§ES™ labels all results DEVELOPMENTAL — results inform training and intervention, not adverse employment actions.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="eyebrow">Conclusion</div>
+<h2>The operator layer is the performance review AI has been missing.</h2>
+<p class="sec-intro">AI evaluation has built excellent aptitude tests (benchmarks) and output quality checks (evaluation tools). What it has not built — until MO§ES™ — is the performance review: a way to measure how effectively humans actually operate AI in real work.</p>
+<p>The lesson from a century of human evaluation research is clear: capability tests are necessary but not sufficient. To understand performance, you have to measure performance. MO§ES™ does that for AI operators, using content-free token telemetry, without inspecting a single prompt.</p>
+</section>
+
+<section>
+<div class="eyebrow">FAQ</div>
+<h2>Common questions.</h2>
+<h3>Why should AI evaluation learn from how we test humans?</h3>
+<p>Human evaluation has evolved over a century to measure performance in context, not just capability in isolation. Skills tests, certifications, and performance reviews all distinguish between what someone can do and what they actually do. AI evaluation should make the same distinction for operators.</p>
+<h3>What is the difference between capability and performance in AI evaluation?</h3>
+<p>Capability is what an AI model or operator can do in principle, measured by tests and benchmarks. Performance is what they actually do in real work, measured by observed behavior. Model benchmarks measure capability. MO§ES™ measures operator performance using content-free token telemetry.</p>
+<h3>How does MO§ES™ evaluate AI operators?</h3>
+<p>MO§ES™ measures operators using content-free token telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. These reveal how effectively operators manage context, convert input to output, and improve over time. No prompt or output content is needed.</p>
+</section>
+
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="grid3">
+<div class="card"><div class="big"><a href="../concepts/ai-evaluation.html" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The core concept.</p></div>
+<div class="card"><div class="big"><a href="the-operator-layer.html" style="color:var(--ink);text-decoration:none">The Operator Layer</a></div><p>Why measuring usage isn't measuring performance.</p></div>
+<div class="card"><div class="big"><a href="../concepts/ai-evaluation-frameworks.html" style="color:var(--ink);text-decoration:none">AI Evaluation Frameworks</a></div><p>The structured approaches.</p></div>
+</div>
+<div style="margin-top:16px">
+<a class="btn-outline" href="../methodology.html">Read the Methodology</a>
+<a class="btn" href="../contact.html">Request a Pilot</a>
+</div>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../index.html">Home</a><a href="../product.html">Product</a><a href="../pilot.html">Pilot</a><a href="../methodology.html">Methodology</a><a href="../research.html">Research</a></div>
+<div><a href="../demo.html">Demo</a><a href="../concepts/leverage.html">Concepts</a><a href="../guides/how-to-evaluate-ai-operators.html">Guides</a><a href="../faq.html">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact.html">Contact</a><a href="../about.html">About</a><a href="../privacy.html">Privacy</a><a href="../docs.html">Docs</a><a href="../killer-experiment.html">Killer Experiment</a><a href="../commercial-offer.html">Pricing</a><a href="../pilot-readout.html">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div></body>
+</html>

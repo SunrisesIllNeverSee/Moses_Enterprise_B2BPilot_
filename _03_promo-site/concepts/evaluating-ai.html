@@ -3,16 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blog — MO§ES™</title>
-<meta name="description" content="Articles on AI operator evaluation, performative benchmarks, token telemetry, intervention loops, and organizational capability mapping.">
-<link rel="canonical" href="https://mos2es.org/blog/">
+<title>Evaluating AI — The Operator Layer Is the Missing Piece — MO§ES™</title>
+<meta name="description" content="Evaluating AI means assessing how well AI systems and their operators perform. Most approaches evaluate the model. MO§ES™ evaluates the human operator using content-free token telemetry.">
+<link rel="canonical" href="https://mos2es.org/concepts/evaluating-ai">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://mos2es.org/blog/">
-<meta property="og:title" content="Blog — MO§ES™">
-<meta property="og:description" content="Articles on AI operator evaluation and performative benchmarks.">
+<meta property="og:url" content="https://mos2es.org/concepts/evaluating-ai">
+<meta property="og:title" content="Evaluating AI — The Operator Layer">
+<meta property="og:description" content="Evaluating AI means evaluating both the model and the operator. MO§ES™ measures the operator.">
 <meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Evaluating AI — The Operator Layer">
+<meta name="twitter:description" content="Evaluating AI without evaluating the operator misses the biggest source of ROI variance.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">[
   {
@@ -172,18 +178,27 @@
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Blog",
-        "item": "https://mos2es.org/blog/"
+        "name": "Concepts",
+        "item": "https://mos2es.org/concepts/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Evaluating AI",
+        "item": "https://mos2es.org/concepts/evaluating-ai"
       }
     ]
   },
   {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "MO§ES™ Blog",
-    "url": "https://mos2es.org/blog/",
-    "publisher": {
-      "@id": "https://mos2es.org/#org"
+    "@type": "DefinedTerm",
+    "name": "Evaluating AI",
+    "description": "The process of assessing AI performance. MO§ES™ evaluates the operator layer — the human side of AI performance.",
+    "url": "https://mos2es.org/concepts/evaluating-ai",
+    "inDefinedTermSet": {
+      "@type": "DefinedTermSet",
+      "name": "MO§ES™ Canonical Metrics",
+      "url": "https://mos2es.org/methodology"
     }
   }
 ]</script>
@@ -199,7 +214,7 @@
 <body>
 <div class="wrap">
 <nav>
-<b><a href="../index.html" style="text-decoration:none;color:inherit">MO§ES™</a></b>
+<b>MO§ES™</b>
 <div class="links">
 <a href="../index.html">Home</a>
 <a href="../product.html">Product</a>
@@ -212,71 +227,36 @@
 <main>
 
 <div class="hero">
-<div class="eyebrow">Blog</div>
-<h1>AI operator evaluation, measured.</h1>
-<p class="lead">Articles on measuring AI operator performance, performative benchmarks, content-free telemetry, intervention testing, and organizational capability mapping.</p>
+<div class="eyebrow">Concept · Overview</div>
+<h1>Evaluating AI: the operator layer is the missing piece.</h1>
+<p class="lead">Evaluating AI is the process of assessing how well AI systems perform. But AI does not operate itself — people operate it. Evaluating AI without evaluating the operator is like evaluating a car without evaluating the driver.</p>
 </div>
 
 <section>
-<div class="eyebrow">Latest</div>
-<h2>Articles.</h2>
-<p class="sec-intro">The MO§ES™ blog covers the measurement layer between AI models and business outcomes. We write about how to evaluate the humans operating AI systems — not the models themselves, not the usage volume, but the actual operating performance that determines whether your AI investment produces results.</p>
-<div class="grid2" style="margin-top:20px">
-<a href="the-operator-layer" style="text-decoration:none;color:inherit">
-<div class="card accent">
-<div class="num">AUG 27, 2026</div>
-<div class="big">The Operator Layer</div>
-<p>Why measuring AI usage isn't measuring AI performance. The unmeasured middle layer between models and outcomes.</p>
-</div>
-</a>
-<a href="performative-benchmarks-vs-self-report" style="text-decoration:none;color:inherit">
-<div class="card blue">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Performative Benchmarks vs Self-Report</div>
-<p>What actually predicts outcomes. Why surveys measure confidence, not capability — and what to measure instead.</p>
-</div>
-</a>
-<a href="the-intervention-loop" style="text-decoration:none;color:inherit">
-<div class="card green">
-<div class="num">AUG 27, 2026</div>
-<div class="big">The Intervention Loop</div>
-<p>How to test whether your AI training actually worked. Baseline, diagnose, prescribe, re-measure.</p>
-</div>
-</a>
-<a href="token-telemetry-without-content" style="text-decoration:none;color:inherit">
-<div class="card amber">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Token Telemetry Without Content</div>
-<p>How to measure AI operator performance without reading prompts. Four token numbers, five canonical metrics.</p>
-</div>
-</a>
-<a href="where-capability-hides" style="text-decoration:none;color:inherit">
-<div class="card purple">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Where Capability Hides</div>
-<p>Mapping AI performance across teams, workflows, and operators. Where does capability actually live?</p>
-</div>
-</a>
-<a href="ai-evaluation-should-learn-from-how-we-test-humans" style="text-decoration:none;color:inherit">
-<div class="card">
-<div class="num">SEP 15, 2026</div>
-<div class="big">AI Evaluation Should Learn from How We Test Humans</div>
-<p>Model benchmarks are aptitude tests. Output evaluation is certification. Operator evaluation is the performance review AI has been missing.</p>
-</div>
-</a>
-</div>
+<div class="eyebrow">The Problem</div>
+<h2>Evaluating AI without evaluating the operator.</h2>
+<p class="sec-intro">When enterprises evaluate AI, they typically evaluate the model: benchmarks, safety tests, output quality. This is necessary. But it is not sufficient. The same model produces dramatically different outcomes depending on who is operating it.</p>
+<p>The analogy is straightforward: evaluating a car without evaluating the driver tells you whether the car is capable. It does not tell you whether it will be driven well. Both matter. In enterprise AI, the driver — the operator — is the variable that model evaluation does not capture.</p>
 </section>
 
 <section>
-<div class="eyebrow">What we cover</div>
-<h2>Topics.</h2>
-<div class="grid3" style="margin-top:20px">
-<div class="card"><div class="big">AI Operator Evaluation</div><p>How to measure the performance of humans operating AI systems. Not usage volume, not model benchmarks — actual operating behavior and outcomes.</p></div>
-<div class="card"><div class="big">Performative Benchmarks</div><p>Why self-reported proficiency doesn't predict outcomes. What does: measuring actual AI operator behavior through content-free token telemetry.</p></div>
-<div class="card"><div class="big">Token Telemetry</div><p>Four primitive numbers — input, output, cache read, cache write — yield five canonical metrics. No prompt content needed. No output text stored.</p></div>
-<div class="card"><div class="big">Intervention Testing</div><p>How to test whether AI training, tooling changes, or workflow redesigns actually improve operator performance. Baseline, intervene, re-measure.</p></div>
-<div class="card"><div class="big">Organizational Capability</div><p>Where AI capability lives in your organization. Which teams, which workflows, which operators. Dependency risk and capability concentration.</p></div>
-<div class="card"><div class="big">Governance & Privacy</div><p>Content-free measurement means no prompt text, no output text, no PII. Developmental scoring, not punitive ranking. Association, not causation.</p></div>
+<div class="eyebrow">The MO§ES™ Approach</div>
+<h2>Evaluate the operator, not the model.</h2>
+<p class="sec-intro">MO§ES™ evaluates AI operators using content-free token telemetry. Every interaction between a human and an AI produces token counts — INPUT, OUTPUT, CACHE READ, CACHE WRITE. These counts reveal how effectively the operator manages context, converts input to output, and improves over time.</p>
+<p>No prompts. No outputs. No content inspection. Just the structural patterns of human-AI interaction.</p>
+</section>
+
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="grid3">
+<div class="card"><div class="big"><a href="ai-evaluation.html" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The core concept.</p></div>
+<div class="card"><div class="big"><a href="ai-evaluation-tools.html" style="color:var(--ink);text-decoration:none">AI Evaluation Tools</a></div><p>The tools landscape.</p></div>
+<div class="card"><div class="big"><a href="../methodology.html" style="color:var(--ink);text-decoration:none">Methodology</a></div><p>The full framework.</p></div>
+</div>
+<div style="margin-top:16px">
+<a class="btn-outline" href="../guides/how-to-evaluate-ai-operators.html">Read the Guide</a>
+<a class="btn" href="../contact.html">Request a Pilot</a>
 </div>
 </section>
 
@@ -290,5 +270,5 @@
 </div>
 </div>
 </div>
-</body>
+</div></body>
 </html>

@@ -3,16 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blog — MO§ES™</title>
-<meta name="description" content="Articles on AI operator evaluation, performative benchmarks, token telemetry, intervention loops, and organizational capability mapping.">
-<link rel="canonical" href="https://mos2es.org/blog/">
+<title>AI Evaluator — What It Is and What MO§ES™ Does Differently — MO§ES™</title>
+<meta name="description" content="An AI evaluator is a system or platform that assesses AI performance. MO§ES™ is an AI evaluator that measures the human operator layer — how effectively people use AI — using content-free token telemetry.">
+<link rel="canonical" href="https://mos2es.org/concepts/ai-evaluator">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://mos2es.org/blog/">
-<meta property="og:title" content="Blog — MO§ES™">
-<meta property="og:description" content="Articles on AI operator evaluation and performative benchmarks.">
+<meta property="og:url" content="https://mos2es.org/concepts/ai-evaluator">
+<meta property="og:title" content="AI Evaluator — Measuring the Operator Layer">
+<meta property="og:description" content="An AI evaluator that measures how effectively humans use AI, not just how well models perform.">
 <meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Evaluator — Measuring the Operator Layer">
+<meta name="twitter:description" content="MO§ES™ is an AI evaluator for the human operator layer.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="../style.css">
 <script type="application/ld+json">[
   {
@@ -172,18 +178,27 @@
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Blog",
-        "item": "https://mos2es.org/blog/"
+        "name": "Concepts",
+        "item": "https://mos2es.org/concepts/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "AI Evaluator",
+        "item": "https://mos2es.org/concepts/ai-evaluator"
       }
     ]
   },
   {
     "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "MO§ES™ Blog",
-    "url": "https://mos2es.org/blog/",
-    "publisher": {
-      "@id": "https://mos2es.org/#org"
+    "@type": "DefinedTerm",
+    "name": "AI Evaluator",
+    "description": "A system or platform that assesses AI performance. MO§ES™ is an AI evaluator that measures the human operator layer.",
+    "url": "https://mos2es.org/concepts/ai-evaluator",
+    "inDefinedTermSet": {
+      "@type": "DefinedTermSet",
+      "name": "MO§ES™ Canonical Metrics",
+      "url": "https://mos2es.org/methodology"
     }
   }
 ]</script>
@@ -199,7 +214,7 @@
 <body>
 <div class="wrap">
 <nav>
-<b><a href="../index.html" style="text-decoration:none;color:inherit">MO§ES™</a></b>
+<b>MO§ES™</b>
 <div class="links">
 <a href="../index.html">Home</a>
 <a href="../product.html">Product</a>
@@ -212,71 +227,56 @@
 <main>
 
 <div class="hero">
-<div class="eyebrow">Blog</div>
-<h1>AI operator evaluation, measured.</h1>
-<p class="lead">Articles on measuring AI operator performance, performative benchmarks, content-free telemetry, intervention testing, and organizational capability mapping.</p>
+<div class="eyebrow">Concept · Role</div>
+<h1>The AI evaluator that measures the operator, not the model.</h1>
+<p class="lead">An AI evaluator is a system or platform that assesses AI performance. Most AI evaluators focus on models, outputs, or applications. MO§ES™ is an AI evaluator that focuses on the human operator — measuring how effectively people use AI in real work.</p>
 </div>
 
 <section>
-<div class="eyebrow">Latest</div>
-<h2>Articles.</h2>
-<p class="sec-intro">The MO§ES™ blog covers the measurement layer between AI models and business outcomes. We write about how to evaluate the humans operating AI systems — not the models themselves, not the usage volume, but the actual operating performance that determines whether your AI investment produces results.</p>
-<div class="grid2" style="margin-top:20px">
-<a href="the-operator-layer" style="text-decoration:none;color:inherit">
-<div class="card accent">
-<div class="num">AUG 27, 2026</div>
-<div class="big">The Operator Layer</div>
-<p>Why measuring AI usage isn't measuring AI performance. The unmeasured middle layer between models and outcomes.</p>
-</div>
-</a>
-<a href="performative-benchmarks-vs-self-report" style="text-decoration:none;color:inherit">
-<div class="card blue">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Performative Benchmarks vs Self-Report</div>
-<p>What actually predicts outcomes. Why surveys measure confidence, not capability — and what to measure instead.</p>
-</div>
-</a>
-<a href="the-intervention-loop" style="text-decoration:none;color:inherit">
-<div class="card green">
-<div class="num">AUG 27, 2026</div>
-<div class="big">The Intervention Loop</div>
-<p>How to test whether your AI training actually worked. Baseline, diagnose, prescribe, re-measure.</p>
-</div>
-</a>
-<a href="token-telemetry-without-content" style="text-decoration:none;color:inherit">
-<div class="card amber">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Token Telemetry Without Content</div>
-<p>How to measure AI operator performance without reading prompts. Four token numbers, five canonical metrics.</p>
-</div>
-</a>
-<a href="where-capability-hides" style="text-decoration:none;color:inherit">
-<div class="card purple">
-<div class="num">AUG 27, 2026</div>
-<div class="big">Where Capability Hides</div>
-<p>Mapping AI performance across teams, workflows, and operators. Where does capability actually live?</p>
-</div>
-</a>
-<a href="ai-evaluation-should-learn-from-how-we-test-humans" style="text-decoration:none;color:inherit">
-<div class="card">
-<div class="num">SEP 15, 2026</div>
-<div class="big">AI Evaluation Should Learn from How We Test Humans</div>
-<p>Model benchmarks are aptitude tests. Output evaluation is certification. Operator evaluation is the performance review AI has been missing.</p>
-</div>
-</a>
+<div class="eyebrow">Definition</div>
+<h2>What is an AI evaluator?</h2>
+<p class="sec-intro">An AI evaluator is a system, platform, or framework that systematically assesses the performance of AI systems. The term covers a range of tools and approaches, from model benchmarks to output quality checkers to full evaluation platforms.</p>
+<p>AI evaluators typically answer one of these questions:</p>
+<ul class="tight">
+<li><strong>Is this model good?</strong> — Model benchmarks (MMLU, HumanEval, Chatbot Arena)</li>
+<li><strong>Is this output good?</strong> — Output quality tools (DeepEval, Langfuse, Braintrust)</li>
+<li><strong>Is this application working?</strong> — Application monitoring (Arize, Galileo)</li>
+<li><strong>Are our people using AI well?</strong> — Operator evaluation (MO§ES™)</li>
+</ul>
+</section>
+
+<section>
+<div class="eyebrow">The MO§ES™ Difference</div>
+<h2>An AI evaluator for the operator layer.</h2>
+<p class="sec-intro">MO§ES™ is an AI evaluator that answers the fourth question. While other evaluators assess the AI, MO§ES™ assesses the person operating the AI.</p>
+<p>This is not a niche distinction. In enterprise deployments, the same AI model produces dramatically different outcomes depending on who is operating it. The variance between operators is often larger than the variance between models. An AI evaluator that only measures the model misses the biggest source of ROI variance.</p>
+<p style="margin-top:12px">MO§ES™ evaluates operators using content-free token telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. No prompt content. No output content. Just the structural patterns of how humans interact with AI.</p>
+</section>
+
+<section>
+<div class="eyebrow">What an AI Evaluator Should Do</div>
+<h2>Five capabilities.</h2>
+<p class="sec-intro">A complete AI evaluator for the operator layer should do five things. MO§ES™ does all five.</p>
+<div class="grid3">
+<div class="card"><div class="big">Measure</div><p>Collect telemetry and compute metrics without inspecting content.</p></div>
+<div class="card"><div class="big">Benchmark</div><p>Compare operators against their cohort and against workflow norms.</p></div>
+<div class="card"><div class="big">Diagnose</div><p>Identify specific patterns — low yield, poor context management, no improvement over time.</p></div>
+<div class="card"><div class="big">Intervene</div><p>Route operators to targeted training based on diagnostic patterns.</p></div>
+<div class="card"><div class="big">Track</div><p>Measure whether interventions changed behavior over time.</p></div>
 </div>
 </section>
 
 <section>
-<div class="eyebrow">What we cover</div>
-<h2>Topics.</h2>
-<div class="grid3" style="margin-top:20px">
-<div class="card"><div class="big">AI Operator Evaluation</div><p>How to measure the performance of humans operating AI systems. Not usage volume, not model benchmarks — actual operating behavior and outcomes.</p></div>
-<div class="card"><div class="big">Performative Benchmarks</div><p>Why self-reported proficiency doesn't predict outcomes. What does: measuring actual AI operator behavior through content-free token telemetry.</p></div>
-<div class="card"><div class="big">Token Telemetry</div><p>Four primitive numbers — input, output, cache read, cache write — yield five canonical metrics. No prompt content needed. No output text stored.</p></div>
-<div class="card"><div class="big">Intervention Testing</div><p>How to test whether AI training, tooling changes, or workflow redesigns actually improve operator performance. Baseline, intervene, re-measure.</p></div>
-<div class="card"><div class="big">Organizational Capability</div><p>Where AI capability lives in your organization. Which teams, which workflows, which operators. Dependency risk and capability concentration.</p></div>
-<div class="card"><div class="big">Governance & Privacy</div><p>Content-free measurement means no prompt text, no output text, no PII. Developmental scoring, not punitive ranking. Association, not causation.</p></div>
+<div class="eyebrow">Related</div>
+<h2>Go deeper.</h2>
+<div class="grid3">
+<div class="card"><div class="big"><a href="ai-evaluation.html" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The broader concept of AI evaluation.</p></div>
+<div class="card"><div class="big"><a href="ai-evaluation-tools.html" style="color:var(--ink);text-decoration:none">AI Evaluation Tools</a></div><p>The tools landscape.</p></div>
+<div class="card"><div class="big"><a href="../product.html" style="color:var(--ink);text-decoration:none">Product</a></div><p>The MO§ES™ platform.</p></div>
+</div>
+<div style="margin-top:16px">
+<a class="btn-outline" href="../methodology.html">Read the Methodology</a>
+<a class="btn" href="../contact.html">Request a Pilot</a>
 </div>
 </section>
 
@@ -290,5 +290,5 @@
 </div>
 </div>
 </div>
-</body>
+</div></body>
 </html>
