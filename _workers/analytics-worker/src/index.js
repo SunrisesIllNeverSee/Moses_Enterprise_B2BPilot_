@@ -341,50 +341,62 @@ async function handleBeacon(request, env, host) {
     });
   }
 
-  // Update KV real-time counters
+  // Update KV — consolidated to minimize operations (free tier: 1000 writes/day)
+  // Strategy: 1 read + 1 write for all counters, 1 read + 1 write for logs
+  // = 4 operations per beacon (down from ~36)
   if (env.ANALYTICS_KV) {
     const today = new Date().toISOString().slice(0, 10);
-    const keys = [
-      `${trackingHost}:total`,
-      `${trackingHost}:day:${today}`,
-      `${trackingHost}:type:${event.type}`,
-      `${trackingHost}:day:${today}:type:${event.type}`,
-    ];
-    if (botInfo) {
-      keys.push(`${trackingHost}:bots:${botInfo.bot}`);
-      keys.push(`${trackingHost}:bots:day:${today}:${botInfo.bot}`);
-      keys.push(`${trackingHost}:bots:engine:${botInfo.engine}`);
-    } else {
-      keys.push(`${trackingHost}:human`);
-      keys.push(`${trackingHost}:human:day:${today}`);
-    }
-    if (event.country) keys.push(`${trackingHost}:country:${event.country}`);
-    if (event.aiEngine) keys.push(`${trackingHost}:ai:${event.aiEngine}`);
-
-    // Crawl-to-referral ratio tracking:
-    // - Bot visits count as crawls per engine
-    // - Human visits with AI referrer count as referrals per engine
     const aiReferrerEngine = !botInfo ? detectAiReferrer(event.referrer) : null;
-    if (botInfo) {
-      keys.push(`${trackingHost}:crawl:engine:${botInfo.engine}`);
-      keys.push(`${trackingHost}:crawl:engine:day:${today}:${botInfo.engine}`);
+
+    // ── Consolidated counters: 1 read + 1 write ──────────────────────
+    const counterKey = `${trackingHost}:counters`;
+    const counterRaw = await env.ANALYTICS_KV.get(counterKey) || '{}';
+    const counters = JSON.parse(counterRaw);
+
+    // Helper to increment nested counter paths
+    function incr(...path) {
+      let obj = counters;
+      for (let i = 0; i < path.length - 1; i++) {
+        obj[path[i]] = obj[path[i]] || {};
+        obj = obj[path[i]];
+      }
+      const last = path[path.length - 1];
+      obj[last] = (obj[last] || 0) + 1;
     }
+
+    incr('total');
+    incr('byDay', today);
+    incr('byType', event.type);
+    incr('byDayType', today, event.type);
+
+    if (botInfo) {
+      incr('bots', botInfo.bot);
+      incr('botsByDay', today, botInfo.bot);
+      incr('botsByEngine', botInfo.engine);
+      incr('crawlByEngine', botInfo.engine);
+      incr('crawlByEngineByDay', today, botInfo.engine);
+    } else {
+      incr('human');
+      incr('humanByDay', today);
+    }
+    if (event.country) incr('byCountry', event.country);
+    if (event.aiEngine) incr('aiByEngine', event.aiEngine);
     if (aiReferrerEngine) {
-      keys.push(`${trackingHost}:referral:engine:${aiReferrerEngine}`);
-      keys.push(`${trackingHost}:referral:engine:day:${today}:${aiReferrerEngine}`);
+      incr('referralByEngine', aiReferrerEngine);
+      incr('referralByEngineByDay', today, aiReferrerEngine);
     }
 
-    await Promise.all(keys.map(async (key) => {
-      const current = parseInt(await env.ANALYTICS_KV.get(key) || '0', 10);
-      await env.ANALYTICS_KV.put(key, String(current + 1));
-    }));
+    // ── Consolidated logs: 1 read + 1 write ──────────────────────────
+    const logKey = `${trackingHost}:logs`;
+    const logRaw = await env.ANALYTICS_KV.get(logKey) || '{}';
+    const logs = JSON.parse(logRaw);
+    logs.botLog = logs.botLog || [];
+    logs.aiOverviewLog = logs.aiOverviewLog || [];
+    logs.eventLog = logs.eventLog || [];
 
-    // Log recent bot visits (keep last 200) — enhanced tracking
+    // Add bot visit to log
     if (botInfo) {
-      const logKey = `${trackingHost}:bot-log`;
-      const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
-      const log = JSON.parse(logRaw);
-      log.unshift({
+      logs.botLog.unshift({
         bot: botInfo.bot,
         engine: botInfo.engine,
         type: botInfo.type,
@@ -399,39 +411,53 @@ async function handleBeacon(request, env, host) {
         userAgent: userAgent.slice(0, 500),
         acceptHeader: request.headers.get('Accept')?.slice(0, 200) || null,
         timestamp: event.timestamp,
-        ipHash: request.headers.get('CF-Connecting-IP') 
+        ipHash: request.headers.get('CF-Connecting-IP')
           ? await sha256(request.headers.get('CF-Connecting-IP').slice(0, 16))
           : null,
       });
-      await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 200)));
+      logs.botLog = logs.botLog.slice(0, 200);
     }
 
-    // Log AI overview events
+    // Add AI overview event
     if (event.aiEngine) {
-      const aiKey = `${trackingHost}:ai-overview-log`;
-      const aiRaw = await env.ANALYTICS_KV.get(aiKey) || '[]';
-      const aiLog = JSON.parse(aiRaw);
-      aiLog.unshift({
+      logs.aiOverviewLog.unshift({
         engine: event.aiEngine, query: event.aiQuery,
         position: event.aiPosition, cited: event.aiCited,
         path: event.path, timestamp: event.timestamp,
       });
-      await env.ANALYTICS_KV.put(aiKey, JSON.stringify(aiLog.slice(0, 100)));
+      logs.aiOverviewLog = logs.aiOverviewLog.slice(0, 100);
     }
 
-    // Log recent events (keep last 200)
-    const eventLogKey = `${trackingHost}:event-log`;
-    const eventLogRaw = await env.ANALYTICS_KV.get(eventLogKey) || '[]';
-    const eventLog = JSON.parse(eventLogRaw);
-    eventLog.unshift(event);
-    await env.ANALYTICS_KV.put(eventLogKey, JSON.stringify(eventLog.slice(0, 200)));
+    // Add to event log
+    logs.eventLog.unshift(event);
+    logs.eventLog = logs.eventLog.slice(0, 200);
+
+    // Write both in parallel: 2 writes total
+    await Promise.all([
+      env.ANALYTICS_KV.put(counterKey, JSON.stringify(counters)),
+      env.ANALYTICS_KV.put(logKey, JSON.stringify(logs)),
+    ]);
   }
 
   return jsonResponse({ success: true, recorded: true });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Stats — aggregated analytics
+// Helper: load consolidated counters + logs in 2 reads
+// ═══════════════════════════════════════════════════════════════════════
+async function loadConsolidated(env, host) {
+  const [counterRaw, logRaw] = await Promise.all([
+    env.ANALYTICS_KV.get(`${host}:counters`),
+    env.ANALYTICS_KV.get(`${host}:logs`),
+  ]);
+  return {
+    counters: JSON.parse(counterRaw || '{}'),
+    logs: JSON.parse(logRaw || '{}'),
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Stats — aggregated analytics (2 KV reads instead of ~30)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleStats(request, env, host, url) {
   const days = parseInt(url.searchParams.get('days') || '7', 10);
@@ -439,27 +465,28 @@ async function handleStats(request, env, host, url) {
 
   if (!env.ANALYTICS_KV) return jsonResponse(stats);
 
+  const { counters, logs } = await loadConsolidated(env, host);
   const today = new Date();
-  const total = await env.ANALYTICS_KV.get(`${host}:total`) || '0';
-  const human = await env.ANALYTICS_KV.get(`${host}:human`) || '0';
-  stats.totals = { all: parseInt(total, 10), human: parseInt(human, 10), bots: parseInt(total, 10) - parseInt(human, 10) };
+  const total = counters.total || 0;
+  const human = counters.human || 0;
+  stats.totals = { all: total, human, bots: total - human };
 
   // By day
   for (let i = 0; i < days; i++) {
     const d = new Date(today.getTime() - i * 86400000).toISOString().slice(0, 10);
-    const dayCount = await env.ANALYTICS_KV.get(`${host}:day:${d}`) || '0';
-    const humanCount = await env.ANALYTICS_KV.get(`${host}:human:day:${d}`) || '0';
-    stats.byDay[d] = { total: parseInt(dayCount, 10), human: parseInt(humanCount, 10), bots: parseInt(dayCount, 10) - parseInt(humanCount, 10) };
+    const dayCount = counters.byDay?.[d] || 0;
+    const humanCount = counters.humanByDay?.[d] || 0;
+    stats.byDay[d] = { total: dayCount, human: humanCount, bots: dayCount - humanCount };
   }
 
   // By type
-  for (const type of ['pageview', 'agent_query', 'ai_overview', 'mcp_call', 'web_vitals']) {
-    const count = await env.ANALYTICS_KV.get(`${host}:type:${type}`) || '0';
-    if (parseInt(count, 10) > 0) stats.byType[type] = parseInt(count, 10);
-  }
+  stats.byType = counters.byType || {};
+
+  // By country
+  stats.byCountry = counters.byCountry || {};
 
   // Bot log
-  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  const botLog = logs.botLog || [];
   stats.bots.recentVisits = botLog.slice(0, 20);
   const botCounts = {};
   for (const entry of botLog) {
@@ -471,12 +498,13 @@ async function handleStats(request, env, host, url) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Bot stats — AI crawler visit detail
+// Bot stats — AI crawler visit detail (2 KV reads instead of ~30)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleBotStats(request, env, host, url) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, bots: [] });
 
-  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  const { counters, logs } = await loadConsolidated(env, host);
+  const botLog = logs.botLog || [];
   const byBot = {};
   const byEngine = {};
 
@@ -485,11 +513,13 @@ async function handleBotStats(request, env, host, url) {
     byEngine[entry.engine] = (byEngine[entry.engine] || 0) + 1;
   }
 
-  // Per-bot totals (all time)
+  // Per-bot totals from consolidated counters
   const botTotals = {};
+  const botsCounters = counters.bots || {};
   for (const bot of Object.keys(AI_CRAWLERS)) {
-    const count = await env.ANALYTICS_KV.get(`${host}:bots:${bot}`) || '0';
-    if (parseInt(count, 10) > 0) botTotals[bot] = { count: parseInt(count, 10), ...AI_CRAWLERS[bot] };
+    if (botsCounters[bot]) {
+      botTotals[bot] = { count: botsCounters[bot], ...AI_CRAWLERS[bot] };
+    }
   }
 
   return jsonResponse({
@@ -503,13 +533,13 @@ async function handleBotStats(request, env, host, url) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Agent Trail — detailed agent provenance: where they came from, what they
-// requested, what network they're on, what content type they prefer
+// Agent Trail — detailed agent provenance (2 KV reads instead of 1)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleAgentTrail(request, env, host, url) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, trail: [], provenance: {} });
 
-  const botLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:bot-log`) || '[]');
+  const { logs } = await loadConsolidated(env, host);
+  const botLog = logs.botLog || [];
   const limit = parseInt(url.searchParams.get('limit') || '100', 10);
   const filterBot = url.searchParams.get('bot');
   const filterEngine = url.searchParams.get('engine');
@@ -567,15 +597,14 @@ function sortObject(obj) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Crawl-to-Referral Ratio — for each AI engine, how many times they crawl
-// vs how much traffic they send back. Key metric for the agentic content
-// economy (per Cloudflare's Agentic Internet Bot Report).
+// Crawl-to-Referral Ratio (2 KV reads instead of ~480)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleCrawlReferralRatio(request, env, host, url) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, engines: [], summary: {} });
 
   const days = parseInt(url.searchParams.get('days') || '7', 10);
   const today = new Date();
+  const { counters } = await loadConsolidated(env, host);
 
   // Collect all known engines from both crawler and referrer domains
   const allEngines = new Set([
@@ -583,12 +612,16 @@ async function handleCrawlReferralRatio(request, env, host, url) {
     ...Object.values(AI_REFERRER_DOMAINS),
   ]);
 
+  const crawlByEngine = counters.crawlByEngine || {};
+  const crawlByEngineByDay = counters.crawlByEngineByDay || {};
+  const referralByEngine = counters.referralByEngine || {};
+  const referralByEngineByDay = counters.referralByEngineByDay || {};
+
   const engines = [];
 
   for (const engine of allEngines) {
-    // All-time totals
-    const crawlTotal = parseInt(await env.ANALYTICS_KV.get(`${host}:crawl:engine:${engine}`) || '0', 10);
-    const referralTotal = parseInt(await env.ANALYTICS_KV.get(`${host}:referral:engine:${engine}`) || '0', 10);
+    const crawlTotal = crawlByEngine[engine] || 0;
+    const referralTotal = referralByEngine[engine] || 0;
 
     // Per-day breakdown for the requested period
     const byDay = {};
@@ -596,8 +629,8 @@ async function handleCrawlReferralRatio(request, env, host, url) {
     let periodReferrals = 0;
     for (let i = 0; i < days; i++) {
       const d = new Date(today.getTime() - i * 86400000).toISOString().slice(0, 10);
-      const dayCrawls = parseInt(await env.ANALYTICS_KV.get(`${host}:crawl:engine:day:${d}:${engine}`) || '0', 10);
-      const dayReferrals = parseInt(await env.ANALYTICS_KV.get(`${host}:referral:engine:day:${d}:${engine}`) || '0', 10);
+      const dayCrawls = crawlByEngineByDay?.[d]?.[engine] || 0;
+      const dayReferrals = referralByEngineByDay?.[d]?.[engine] || 0;
       if (dayCrawls > 0 || dayReferrals > 0) {
         byDay[d] = { crawls: dayCrawls, referrals: dayReferrals };
         periodCrawls += dayCrawls;
@@ -658,12 +691,13 @@ async function handleCrawlReferralRatio(request, env, host, url) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// AI Overview — track which AI engines cite/reference the site
+// AI Overview (2 KV reads instead of ~30)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleAiOverview(request, env, host) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, aiOverviews: [] });
 
-  const aiLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:ai-overview-log`) || '[]');
+  const { counters, logs } = await loadConsolidated(env, host);
+  const aiLog = logs.aiOverviewLog || [];
   const byEngine = {};
   const byQuery = {};
 
@@ -674,12 +708,12 @@ async function handleAiOverview(request, env, host) {
     }
   }
 
-  // Check which known AI crawlers have visited (proxy for indexing)
+  // Check which known AI crawlers have visited (from consolidated counters)
   const crawlerPresence = {};
+  const botsCounters = counters.bots || {};
   for (const [bot, info] of Object.entries(AI_CRAWLERS)) {
-    const count = await env.ANALYTICS_KV.get(`${host}:bots:${bot}`) || '0';
-    if (parseInt(count, 10) > 0) {
-      crawlerPresence[info.engine] = { bot, visits: parseInt(count, 10), type: info.type };
+    if (botsCounters[bot] && botsCounters[bot] > 0) {
+      crawlerPresence[info.engine] = { bot, visits: botsCounters[bot], type: info.type };
     }
   }
 
@@ -695,39 +729,40 @@ async function handleAiOverview(request, env, host) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Realtime — current counters
+// Realtime — current counters (1 KV read instead of 4)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleRealtime(request, env, host) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, realtime: {} });
 
   const today = new Date().toISOString().slice(0, 10);
-  const keys = [
-    `${host}:total`, `${host}:human`, `${host}:day:${today}`,
-    `${host}:human:day:${today}`,
-  ];
-  const values = await Promise.all(keys.map(k => env.ANALYTICS_KV.get(k)));
+  const { counters } = await loadConsolidated(env, host);
+  const totalAllTime = counters.total || 0;
+  const humanAllTime = counters.human || 0;
+  const todayTotal = counters.byDay?.[today] || 0;
+  const todayHuman = counters.humanByDay?.[today] || 0;
 
   return jsonResponse({
     host,
     date: today,
     realtime: {
-      totalAllTime: parseInt(values[0] || '0', 10),
-      humanAllTime: parseInt(values[1] || '0', 10),
-      todayTotal: parseInt(values[2] || '0', 10),
-      todayHuman: parseInt(values[3] || '0', 10),
-      todayBots: parseInt(values[2] || '0', 10) - parseInt(values[3] || '0', 10),
+      totalAllTime,
+      humanAllTime,
+      todayTotal,
+      todayHuman,
+      todayBots: todayTotal - todayHuman,
     },
   });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// Core Web Vitals
+// Core Web Vitals (1 KV read instead of 2)
 // ═══════════════════════════════════════════════════════════════════════
 async function handleWebVitals(request, env, host) {
   if (!env.ANALYTICS_KV) return jsonResponse({ host, webVitals: { samples: 0, metrics: {} } });
 
-  // Read the recent events log to extract web_vitals events
-  const eventLog = JSON.parse(await env.ANALYTICS_KV.get(`${host}:event-log`) || '[]');
+  // Read the recent events log from consolidated logs
+  const { logs } = await loadConsolidated(env, host);
+  const eventLog = logs.eventLog || [];
   const vitalsEvents = eventLog.filter(e => e.type === 'web_vitals' && e.lcp != null);
 
   if (vitalsEvents.length === 0) {
@@ -1193,7 +1228,7 @@ async function loadAll() {
 }
 
 loadAll();
-setInterval(loadAll, 30000);
+setInterval(loadAll, 120000);
 </script>
 </body>
 </html>`;
