@@ -303,11 +303,11 @@
 <nav>
 <b>MO§ES™</b>
 <div class="links">
-<a href="product.html">Product</a>
-<a href="methodology.html">Methodology</a>
-<a href="demo.html">Demo</a>
-<a href="research.html">Research</a>
-<a href="contact.html" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
+<a href="product">Product</a>
+<a href="methodology">Methodology</a>
+<a href="demo">Demo</a>
+<a href="research">Research</a>
+<a href="contact" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
 </div>
 </nav>
 <main>
@@ -316,8 +316,8 @@
 <div class="eyebrow">Methodology</div>
 <h1>The eval framework.</h1>
 <p class="lead">AI operator evaluation methodology — how to measure how people operate AI systems using content-free token telemetry. Five canonical metrics (Leverage, Yield, Token SNR, Log Leverage, Construction), percentile-band benchmarking, and governance-guardrailed composite scoring. Five questions: what is an operator eval, what is measured, how benchmarks are created, how bespoke evals are constructed, and how results are interpreted.</p>
-<a class="btn" href="contact.html">Review the Eval Framework</a>
-<a class="btn-outline" href="research.html">See the Research</a>
+<a class="btn" href="contact">Review the Eval Framework</a>
+<a class="btn-outline" href="research">See the Research</a>
 </div>
 
 <!-- ═══ Q1: WHAT IS AN OPERATOR EVAL ═══ -->
@@ -367,11 +367,11 @@
 <h3 style="margin-top:20px">Five canonical derived metrics</h3>
 <table class="table">
 <tr><th>Metric</th><th>Formula</th><th>What it captures</th></tr>
-<tr><td><strong><a href="concepts/leverage.html" style="color:var(--ink);text-decoration:none">Leverage</a></strong></td><td class="formula" style="padding:4px 8px">(R + W) / I</td><td>How much context the operator reuses and builds relative to new input. Higher = more efficient context use.</td></tr>
-<tr><td><strong><a href="concepts/yield.html" style="color:var(--ink);text-decoration:none">Yield</a></strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R + W)</td><td>Productive output share of total token flow. Higher = more of the token budget becomes output.</td></tr>
-<tr><td><strong><a href="concepts/token-snr.html" style="color:var(--ink);text-decoration:none">Token SNR</a></strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R)</td><td>Output relative to input and reused context. Signal-to-noise ratio for productive generation.</td></tr>
+<tr><td><strong><a href="concepts/leverage" style="color:var(--ink);text-decoration:none">Leverage</a></strong></td><td class="formula" style="padding:4px 8px">(R + W) / I</td><td>How much context the operator reuses and builds relative to new input. Higher = more efficient context use.</td></tr>
+<tr><td><strong><a href="concepts/yield" style="color:var(--ink);text-decoration:none">Yield</a></strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R + W)</td><td>Productive output share of total token flow. Higher = more of the token budget becomes output.</td></tr>
+<tr><td><strong><a href="concepts/token-snr" style="color:var(--ink);text-decoration:none">Token SNR</a></strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R)</td><td>Output relative to input and reused context. Signal-to-noise ratio for productive generation.</td></tr>
 <tr><td><strong>Log Leverage</strong></td><td class="formula" style="padding:4px 8px">log(1 + L)</td><td>Compressed leverage scale. Reduces outlier dominance while preserving rank order.</td></tr>
-<tr><td><strong><a href="concepts/construction.html" style="color:var(--ink);text-decoration:none">Construction</a></strong></td><td class="formula" style="padding:4px 8px">W / R</td><td>Ratio of new context built to context reused. Higher = more original construction; lower = more reuse.</td></tr>
+<tr><td><strong><a href="concepts/construction" style="color:var(--ink);text-decoration:none">Construction</a></strong></td><td class="formula" style="padding:4px 8px">W / R</td><td>Ratio of new context built to context reused. Higher = more original construction; lower = more reuse.</td></tr>
 </table>
 <p class="note" style="margin-top:12px">I = Input, O = Output, R = Cache Read, W = Cache Write. All metrics are computed from canonical telemetry. No prompt content is required.</p>
 </section>
@@ -580,29 +580,29 @@
 <h2>Canonical concepts, defined.</h2>
 <p class="sec-intro">Each concept has a dedicated definition page with the formula, interpretation, how MO§ES™ uses it, and governance caveats.</p>
 <div class="grid3">
-<div class="card"><div class="big"><a href="concepts/leverage.html" style="color:var(--ink);text-decoration:none">Leverage</a></div><p>(R + W) / I — context reuse and building relative to new input.</p></div>
-<div class="card"><div class="big"><a href="concepts/yield.html" style="color:var(--ink);text-decoration:none">Yield</a></div><p>O / (I + O + R + W) — productive output share of total token flow.</p></div>
-<div class="card"><div class="big"><a href="concepts/token-snr.html" style="color:var(--ink);text-decoration:none">Token SNR</a></div><p>O / (I + O + R) — signal-to-noise ratio in operator token flow.</p></div>
-<div class="card"><div class="big"><a href="concepts/construction.html" style="color:var(--ink);text-decoration:none">Construction</a></div><p>W / R — ratio of new context built to context reused.</p></div>
-<div class="card"><div class="big"><a href="concepts/composite-score.html" style="color:var(--ink);text-decoration:none">Composite Score</a></div><p>AI Operator Development Index — 0–100, weighted, DEVELOPMENTAL.</p></div>
-<div class="card"><div class="big"><a href="concepts/divergence.html" style="color:var(--ink);text-decoration:none">Divergence</a></div><p>Usage-operation divergence — when usage volume doesn't match performance.</p></div>
-<div class="card"><div class="big"><a href="concepts/benchmark.html" style="color:var(--ink);text-decoration:none">Benchmark</a></div><p>13 benchmark classes with a selection algorithm.</p></div>
-<div class="card"><div class="big"><a href="concepts/intervention.html" style="color:var(--ink);text-decoration:none">Intervention</a></div><p>Targeted changes with pre/post re-measurement. ASSOCIATION, never CAUSATION.</p></div>
-<div class="card"><div class="big"><a href="concepts/canonical-telemetry.html" style="color:var(--ink);text-decoration:none">Canonical Telemetry</a></div><p>INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text.</p></div>
-<div class="card"><div class="big"><a href="concepts/governance.html" style="color:var(--ink);text-decoration:none">Governance</a></div><p>DEVELOPMENTAL / HYPOTHESIS / ASSOCIATION labels, no punitive use.</p></div>
+<div class="card"><div class="big"><a href="concepts/leverage" style="color:var(--ink);text-decoration:none">Leverage</a></div><p>(R + W) / I — context reuse and building relative to new input.</p></div>
+<div class="card"><div class="big"><a href="concepts/yield" style="color:var(--ink);text-decoration:none">Yield</a></div><p>O / (I + O + R + W) — productive output share of total token flow.</p></div>
+<div class="card"><div class="big"><a href="concepts/token-snr" style="color:var(--ink);text-decoration:none">Token SNR</a></div><p>O / (I + O + R) — signal-to-noise ratio in operator token flow.</p></div>
+<div class="card"><div class="big"><a href="concepts/construction" style="color:var(--ink);text-decoration:none">Construction</a></div><p>W / R — ratio of new context built to context reused.</p></div>
+<div class="card"><div class="big"><a href="concepts/composite-score" style="color:var(--ink);text-decoration:none">Composite Score</a></div><p>AI Operator Development Index — 0–100, weighted, DEVELOPMENTAL.</p></div>
+<div class="card"><div class="big"><a href="concepts/divergence" style="color:var(--ink);text-decoration:none">Divergence</a></div><p>Usage-operation divergence — when usage volume doesn't match performance.</p></div>
+<div class="card"><div class="big"><a href="concepts/benchmark" style="color:var(--ink);text-decoration:none">Benchmark</a></div><p>13 benchmark classes with a selection algorithm.</p></div>
+<div class="card"><div class="big"><a href="concepts/intervention" style="color:var(--ink);text-decoration:none">Intervention</a></div><p>Targeted changes with pre/post re-measurement. ASSOCIATION, never CAUSATION.</p></div>
+<div class="card"><div class="big"><a href="concepts/canonical-telemetry" style="color:var(--ink);text-decoration:none">Canonical Telemetry</a></div><p>INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text.</p></div>
+<div class="card"><div class="big"><a href="concepts/governance" style="color:var(--ink);text-decoration:none">Governance</a></div><p>DEVELOPMENTAL / HYPOTHESIS / ASSOCIATION labels, no punitive use.</p></div>
 </div>
 <div style="margin-top:16px">
 <h3>AI Evaluation Concepts</h3>
 <div class="grid3" style="margin-top:12px">
-<div class="card"><div class="big"><a href="concepts/ai-evaluation.html" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The core concept — what AI evaluation means and how MO§ES™ redefines it.</p></div>
-<div class="card"><div class="big"><a href="concepts/ai-evaluation-frameworks.html" style="color:var(--ink);text-decoration:none">Evaluation Frameworks</a></div><p>Structured approaches from NIST AI RMF to MO§ES™.</p></div>
-<div class="card"><div class="big"><a href="concepts/ai-evaluation-tools.html" style="color:var(--ink);text-decoration:none">Evaluation Tools</a></div><p>The complete tools landscape across all four layers.</p></div>
+<div class="card"><div class="big"><a href="concepts/ai-evaluation" style="color:var(--ink);text-decoration:none">AI Evaluation</a></div><p>The core concept — what AI evaluation means and how MO§ES™ redefines it.</p></div>
+<div class="card"><div class="big"><a href="concepts/ai-evaluation-frameworks" style="color:var(--ink);text-decoration:none">Evaluation Frameworks</a></div><p>Structured approaches from NIST AI RMF to MO§ES™.</p></div>
+<div class="card"><div class="big"><a href="concepts/ai-evaluation-tools" style="color:var(--ink);text-decoration:none">Evaluation Tools</a></div><p>The complete tools landscape across all four layers.</p></div>
 </div>
 </div>
 <div style="margin-top:16px">
-<a class="btn-outline" href="faq.html">Read the FAQ</a>
-<a class="btn-outline" href="guides/how-to-evaluate-ai-operators.html">How to Evaluate AI Operators</a>
-<a class="btn-outline" href="guides/how-to-measure-ai-operator-performance.html">How to Measure Performance</a>
+<a class="btn-outline" href="faq">Read the FAQ</a>
+<a class="btn-outline" href="guides/how-to-evaluate-ai-operators">How to Evaluate AI Operators</a>
+<a class="btn-outline" href="guides/how-to-measure-ai-operator-performance">How to Measure Performance</a>
 </div>
 </section>
 
@@ -611,15 +611,15 @@
 <h2>The system is designed to be wrong.</h2>
 <blockquote>If an intervention does not produce a measurable change in the target metric, the system says so. If a diagnosis cannot be distinguished from an alternative, the system says so. If an outcome join cannot be validated, the system says so.</blockquote>
 <p class="note" style="margin-top:12px">This is a formal research framework, not established science. It carries papers, experiments, datasets, patents, and falsifiability work. It is presented with appropriate epistemic humility.</p>
-<a class="btn-outline" href="research.html" style="margin-top:8px">Read the Research</a>
+<a class="btn-outline" href="research" style="margin-top:8px">Read the Research</a>
 </section>
 
 </main>
 <div class="footer">
 <div class="footer-grid">
 <div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
-<div><a href="demo.html">Demo</a><a href="concepts/leverage.html">Concepts</a><a href="guides/how-to-evaluate-ai-operators.html">Guides</a><a href="faq.html">FAQ</a><a href="vs/">Comparisons</a><a href="alternatives/">Alternatives</a></div>
-<div><a href="contact.html">Contact</a><a href="about.html">About</a><a href="privacy.html">Privacy</a><a href="docs.html">Docs</a><a href="commercial-offer.html">Commercial Offer</a><a href="pilot-readout.html">Pilot Readout</a><a href="blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+<div><a href="demo">Demo</a><a href="concepts/leverage">Concepts</a><a href="guides/how-to-evaluate-ai-operators">Guides</a><a href="faq">FAQ</a><a href="vs/">Comparisons</a><a href="alternatives/">Alternatives</a></div>
+<div><a href="contact">Contact</a><a href="about">About</a><a href="privacy">Privacy</a><a href="docs">Docs</a><a href="commercial-offer">Commercial Offer</a><a href="pilot-readout">Pilot Readout</a><a href="blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
 </div>
 </div>
 </div>
