@@ -1,7 +1,85 @@
 // MO§ES™ promo worker — static assets + AEO enhancements
 // Handles: clean URLs, markdown content negotiation, JSON errors, Vary header
+// Also: server-side bot detection for every request (beacon doesn't fire for crawlers)
 
 import { WELL_KNOWN_INLINE } from './well-known-content.js';
+
+// AI crawler detection — mirrors the analytics worker's list
+const AI_CRAWLERS = {
+  'gptbot': { engine: 'OpenAI/ChatGPT', type: 'training' },
+  'oai-searchbot': { engine: 'OpenAI/Search', type: 'search' },
+  'chatgpt-user': { engine: 'OpenAI/ChatGPT', type: 'user' },
+  'perplexitybot': { engine: 'Perplexity', type: 'search' },
+  'perplexity-ai': { engine: 'Perplexity', type: 'search' },
+  'claudebot': { engine: 'Anthropic/Claude', type: 'training' },
+  'anthropic-ai': { engine: 'Anthropic/Claude', type: 'training' },
+  'claude-user': { engine: 'Anthropic/Claude', type: 'user' },
+  'google-extended': { engine: 'Google/Gemini', type: 'training' },
+  'googlebot': { engine: 'Google/Search', type: 'search' },
+  'bingbot': { engine: 'Microsoft/Copilot', type: 'search' },
+  'bingpreview': { engine: 'Microsoft/Copilot', type: 'search' },
+  'bytespider': { engine: 'ByteDance/Doubao', type: 'training' },
+  'applebot': { engine: 'Apple/Intelligence', type: 'search' },
+  'applebot-extended': { engine: 'Apple/Intelligence', type: 'training' },
+  'meta-externalagent': { engine: 'Meta/LLaMA', type: 'training' },
+  'cohere-ai': { engine: 'Cohere', type: 'training' },
+  'amazonbot': { engine: 'Amazon/Rufus', type: 'search' },
+  'yandexbot': { engine: 'Yandex', type: 'search' },
+  'baiduspider': { engine: 'Baidu', type: 'search' },
+  'ccbot': { engine: 'Common Crawl', type: 'training' },
+  'facebookbot': { engine: 'Meta', type: 'search' },
+  'linkedinbot': { engine: 'LinkedIn', type: 'search' },
+  'x-bot': { engine: 'X/Grok', type: 'search' },
+  'grok': { engine: 'X/Grok', type: 'search' },
+};
+
+function detectBot(userAgent) {
+  if (!userAgent) return null;
+  const ua = userAgent.toLowerCase();
+  for (const [bot, info] of Object.entries(AI_CRAWLERS)) {
+    if (ua.includes(bot)) return { bot, ...info };
+  }
+  if (ua.includes('bot') || ua.includes('crawler') || ua.includes('spider') || ua.includes('scraper')) {
+    return { bot: 'generic', engine: 'Unknown', type: 'unknown' };
+  }
+  return null;
+}
+
+// Fire-and-forget beacon to the analytics worker
+// Uses the analytics worker's URL, not internal fetch, so it works across workers
+const ANALYTICS_BEACON_URL = 'https://moses-analytics.sigrank.workers.dev/api/analytics/beacon';
+
+async function fireBeacon(request, host, path, botInfo) {
+  try {
+    const cf = request.cf || {};
+    const referrer = request.headers.get('Referer') || null;
+    const accept = request.headers.get('Accept') || '';
+    await fetch(ANALYTICS_BEACON_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: botInfo ? 'crawl' : 'pageview',
+        path: path,
+        site: host,
+        referrer: referrer,
+        // Bot provenance — captured server-side, not from JS beacon
+        bot: botInfo?.bot,
+        engine: botInfo?.engine,
+        botType: botInfo?.type,
+        country: cf.country,
+        region: cf.region,
+        city: cf.city,
+        colo: cf.colo,
+        asn: cf.asn,
+        asOrganization: cf.asOrganization,
+        acceptHeader: accept,
+        userAgent: request.headers.get('User-Agent') || '',
+      }),
+    });
+  } catch (e) {
+    // Fire-and-forget — don't let beacon failures affect the response
+  }
+}
 
 // All pages that should be available as markdown via content negotiation
 const MARKDOWN_PAGES = {
@@ -89,10 +167,26 @@ function htmlToMarkdown(html, path) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;
     const accept = request.headers.get('Accept') || '';
+    const host = url.hostname;
+
+    // ─── Server-side bot detection ─────────────────────────────────────
+    // Detect bots on EVERY request — the JS beacon doesn't fire for crawlers
+    const userAgent = request.headers.get('User-Agent') || '';
+    const botInfo = detectBot(userAgent);
+
+    // Only fire beacon for page-like requests (not static assets)
+    const isPageRequest = !path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|xml|txt|json|map)$/i)
+      && !path.startsWith('/api/')
+      && !path.startsWith('/.well-known/');
+
+    if (isPageRequest && (botInfo || path === '/')) {
+      // Fire beacon for bots (always) and for human pageviews (only root, to avoid double-counting with JS beacon)
+      ctx.waitUntil(fireBeacon(request, host, path, botInfo));
+    }
 
     // ─── 301 permanent redirects for trailing slash URLs ─────────────────
     // Cloudflare Pages returns 307 (temporary) by default — convert to 301

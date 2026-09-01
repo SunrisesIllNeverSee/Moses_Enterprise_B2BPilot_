@@ -306,9 +306,14 @@ async function handleBeacon(request, env, host) {
   // Falls back to request host for same-origin beacons
   const trackingHost = body.site || host;
 
-  const userAgent = request.headers.get('User-Agent') || '';
+  const userAgent = body.userAgent || request.headers.get('User-Agent') || '';
   const cf = request.cf || {};
-  const botInfo = detectBot(userAgent);
+
+  // Bot detection: use payload-provided bot info (from server-side detection)
+  // or fall back to detecting from the user agent
+  const botInfo = body.bot
+    ? { bot: body.bot, engine: body.engine || 'Unknown', type: body.botType || 'unknown' }
+    : detectBot(userAgent);
 
   const event = {
     type: body.type || 'pageview',
@@ -320,10 +325,14 @@ async function handleBeacon(request, env, host) {
     bot: botInfo?.bot || null,
     botEngine: botInfo?.engine || null,
     botType: botInfo?.type || null,
-    country: cf.country || null,
-    region: cf.region || null,
-    city: cf.city || null,
-    colo: cf.colo || null,
+    // Use payload-provided geo data (from server-side detection) or fall back to request.cf
+    country: body.country || cf.country || null,
+    region: body.region || cf.region || null,
+    city: body.city || cf.city || null,
+    colo: body.colo || cf.colo || null,
+    asn: body.asn || cf.asn || null,
+    asOrganization: body.asOrganization || cf.asOrganization || null,
+    acceptHeader: body.acceptHeader || null,
     referrer: body.referrer || request.headers.get('Referer') || null,
     // AI overview tracking
     aiEngine: body.aiEngine || null,
@@ -415,11 +424,11 @@ async function handleBeacon(request, env, host) {
         region: event.region,
         city: event.city,
         colo: event.colo,
-        asn: cf.asn || null,
-        asOrganization: cf.asOrganization || null,
+        asn: event.asn || cf.asn || null,
+        asOrganization: event.asOrganization || cf.asOrganization || null,
         referrer: event.referrer,
         userAgent: userAgent.slice(0, 500),
-        acceptHeader: request.headers.get('Accept')?.slice(0, 200) || null,
+        acceptHeader: event.acceptHeader || request.headers.get('Accept')?.slice(0, 200) || null,
         timestamp: event.timestamp,
         ipHash: request.headers.get('CF-Connecting-IP')
           ? await sha256(request.headers.get('CF-Connecting-IP').slice(0, 16))
