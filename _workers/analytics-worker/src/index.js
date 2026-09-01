@@ -228,9 +228,19 @@ export default {
       return handleWebVitals(request, env, queryHost);
     }
 
+    // ─── /api/analytics/cloudflare — proxy to CF GraphQL Analytics API ──
+    if (path === '/api/analytics/cloudflare' && method === 'GET') {
+      return handleCloudflareAnalytics(request, env, url);
+    }
+
     // ─── /dashboard — live analytics dashboard ──────────────────────────
     if (path === '/dashboard' && method === 'GET') {
       return handleDashboard(host);
+    }
+
+    // ─── /dashboard/cloudflare — Cloudflare-powered analytics dashboard ─
+    if (path === '/dashboard/cloudflare' && method === 'GET') {
+      return handleCloudflareDashboard(host);
     }
 
     // ─── /crawl-control.json — machine-readable crawl rules ─────────────
@@ -1012,6 +1022,354 @@ async function handleCrawlerSelfReport(request, env, host) {
   }
 
   return jsonResponse({ success: true, crawler: botInfo.bot, engine: botInfo.engine });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Cloudflare GraphQL Analytics proxy — queries CF's own analytics API
+// Uses CF_API_TOKEN secret (needs Account Read + Analytics Read)
+// ═══════════════════════════════════════════════════════════════════════
+async function handleCloudflareAnalytics(request, env, url) {
+  // The zone tag for mos2es.org
+  const ZONE_TAG = 'd3fa790d740b94fea2395cd6348162fc';
+  const days = parseInt(url.searchParams.get('days') || '7', 10);
+
+  // Date range
+  const until = new Date();
+  const since = new Date(until.getTime() - days * 86400000);
+  const sinceStr = since.toISOString().slice(0, 10);
+  const untilStr = until.toISOString().slice(0, 10);
+
+  const query = `query {
+    viewer {
+      zones(filter: {zoneTag: "${ZONE_TAG}"}) {
+        httpRequests1dGroups(limit: ${days}, filter: {date_geq: "${sinceStr}", date_leq: "${untilStr}"}) {
+          dimensions { date }
+          sum {
+            requests
+            pageViews
+            cachedRequests
+            threats
+            bytes
+            countryMap { clientCountryName requests }
+            responseStatusMap { edgeResponseStatus requests }
+          }
+          uniq { uniques }
+        }
+      }
+    }
+  }`;
+
+  // Use the wrangler OAuth token if CF_API_TOKEN isn't set
+  const token = env.CF_API_TOKEN;
+  if (!token) {
+    return jsonResponse({
+      error: 'CF_API_TOKEN not configured. Set it with: wrangler secret put CF_API_TOKEN',
+      hint: 'Create a token at https://dash.cloudflare.com/profile/api-tokens with "Zone Analytics Read" permission for mos2es.org',
+    }, 503);
+  }
+
+  try {
+    const resp = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    const data = await resp.json();
+
+    if (data.errors) {
+      return jsonResponse({ error: 'GraphQL error', details: data.errors }, 502);
+    }
+
+    const zones = data?.data?.viewer?.zones || [];
+    const groups = zones[0]?.httpRequests1dGroups || [];
+
+    // Aggregate
+    const daily = groups.map(g => ({
+      date: g.dimensions.date,
+      requests: g.sum.requests,
+      pageViews: g.sum.pageViews,
+      cachedRequests: g.sum.cachedRequests,
+      threats: g.sum.threats,
+      bytes: g.sum.bytes,
+      uniques: g.uniq.uniques,
+      cacheRatio: g.sum.requests ? (g.sum.cachedRequests / g.sum.requests * 100).toFixed(1) : 0,
+      countries: (g.sum.countryMap || []).sort((a,b) => b.requests - a.requests).slice(0, 10),
+      statusCodes: (g.sum.responseStatusMap || []).sort((a,b) => b.requests - a.requests),
+    }));
+
+    // Totals
+    const totals = {
+      requests: daily.reduce((s, d) => s + d.requests, 0),
+      pageViews: daily.reduce((s, d) => s + d.pageViews, 0),
+      cachedRequests: daily.reduce((s, d) => s + d.cachedRequests, 0),
+      threats: daily.reduce((s, d) => s + d.threats, 0),
+      uniques: daily.reduce((s, d) => s + d.uniques, 0),
+      bytes: daily.reduce((s, d) => s + d.bytes, 0),
+    };
+    totals.cacheRatio = totals.requests ? (totals.cachedRequests / totals.requests * 100).toFixed(1) : 0;
+
+    // Top countries (aggregate)
+    const countryAgg = {};
+    for (const d of daily) {
+      for (const c of d.countries) {
+        countryAgg[c.clientCountryName] = (countryAgg[c.clientCountryName] || 0) + c.requests;
+      }
+    }
+    const topCountries = Object.entries(countryAgg).sort((a,b) => b[1] - a[1]).slice(0, 15).map(([country, requests]) => ({ country, requests }));
+
+    // Status code aggregate
+    const statusAgg = {};
+    for (const d of daily) {
+      for (const s of d.statusCodes) {
+        const code = s.edgeResponseStatus;
+        statusAgg[code] = (statusAgg[code] || 0) + s.requests;
+      }
+    }
+    const statusCodes = Object.entries(statusAgg).sort((a,b) => b[1] - a[1]).map(([code, requests]) => ({ code: parseInt(code), requests }));
+
+    return jsonResponse({
+      zone: 'mos2es.org',
+      days,
+      since: sinceStr,
+      until: untilStr,
+      totals,
+      daily,
+      topCountries,
+      statusCodes,
+    });
+  } catch (e) {
+    return jsonResponse({ error: 'Failed to fetch Cloudflare analytics', message: e.message }, 502);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Cloudflare-powered dashboard — uses CF GraphQL Analytics API
+// ═══════════════════════════════════════════════════════════════════════
+function handleCloudflareDashboard(host) {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cloudflare Analytics — ${host}</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --muted: #8b949e; --accent: #f6821f;
+  --green: #3fb950; --red: #f85149; --yellow: #d29922; --blue: #58a6ff;
+  --purple: #bc8cff; --teal: #39c5cf;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 1rem; max-width: 1400px; margin: 0 auto; }
+h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
+.grid { display: grid; gap: 0.75rem; }
+.grid-6 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.stat { text-align: center; }
+.stat .num { font-size: 1.8rem; font-weight: 700; }
+.stat .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+.stat.accent .num { color: var(--accent); }
+.stat.green .num { color: var(--green); }
+.stat.red .num { color: var(--red); }
+.stat.blue .num { color: var(--blue); }
+.stat.purple .num { color: var(--purple); }
+.stat.teal .num { color: var(--teal); }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+tr:hover { background: rgba(246,130,31,0.05); }
+.badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
+.badge.green { background: rgba(63,185,80,0.2); color: var(--green); }
+.badge.red { background: rgba(248,81,73,0.2); color: var(--red); }
+.badge.yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
+.badge.blue { background: rgba(88,166,255,0.2); color: var(--blue); }
+.badge.orange { background: rgba(246,130,31,0.2); color: var(--accent); }
+.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 120px; margin-top: 0.5rem; }
+.bar { flex: 1; border-radius: 3px 3px 0 0; min-height: 2px; position: relative; transition: height 0.3s; cursor: pointer; }
+.bar.cached { background: var(--green); }
+.bar.uncached { background: var(--accent); }
+.bar:hover { opacity: 0.8; }
+.bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: var(--muted); }
+.bar-container { padding-bottom: 1.5rem; }
+.empty { color: var(--muted); font-style: italic; padding: 1rem 0; }
+.refresh { position: fixed; top: 1rem; right: 1rem; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; z-index: 100; }
+.refresh:hover { border-color: var(--accent); }
+.loading { opacity: 0.5; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.geo-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.3rem 0; }
+.geo-bar { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.geo-fill { height: 100%; border-radius: 4px; }
+.legend { display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.75rem; color: var(--muted); }
+.legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; }
+.error-banner { background: rgba(248,81,73,0.1); border: 1px solid var(--red); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; color: var(--red); font-size: 0.85rem; }
+.back-link { margin-bottom: 1rem; font-size: 0.85rem; }
+@media(max-width:768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<button class="refresh" onclick="loadData()">↻ Refresh</button>
+<h1>Cloudflare Analytics Dashboard</h1>
+<p class="subtitle">${host} — infrastructure-level metrics from Cloudflare's GraphQL Analytics API</p>
+<div class="back-link"><a href="/dashboard">← Back to MO§ES Analytics</a></div>
+
+<div id="error-banner" style="display:none"></div>
+
+<h2>Overview (Last 7 Days)</h2>
+<div class="grid grid-6" id="overview">
+  <div class="card stat accent"><div class="num" id="ov-requests">-</div><div class="label">Total Requests</div></div>
+  <div class="card stat blue"><div class="num" id="ov-pageviews">-</div><div class="label">Page Views</div></div>
+  <div class="card stat green"><div class="num" id="ov-cache">-</div><div class="label">Cache Hit %</div></div>
+  <div class="card stat purple"><div class="num" id="ov-uniques">-</div><div class="label">Unique Visitors</div></div>
+  <div class="card stat teal"><div class="num" id="ov-bandwidth">-</div><div class="label">Bandwidth</div></div>
+  <div class="card stat red"><div class="num" id="ov-threats">-</div><div class="label">Threats</div></div>
+</div>
+
+<h2>Daily Traffic (Requests & Cache Ratio)</h2>
+<div class="card bar-container">
+  <div class="bar-chart" id="bar-chart"></div>
+  <div class="legend">
+    <span><span class="legend-dot" style="background:var(--green)"></span>Cached</span>
+    <span><span class="legend-dot" style="background:var(--accent)"></span>Uncached</span>
+  </div>
+</div>
+
+<h2>Top Countries</h2>
+<div class="grid grid-2">
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By Request Volume</h3>
+    <div id="countries"><div class="empty">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">Daily Breakdown</h3>
+    <div id="countries-daily"><div class="empty">Loading...</div></div>
+  </div>
+</div>
+
+<h2>HTTP Status Codes</h2>
+<div class="card" id="status-card">
+  <table>
+    <thead><tr><th>Status</th><th>Description</th><th>Requests</th><th>% of Total</th></tr></thead>
+    <tbody id="status-table"><tr><td colspan="4" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<h2>Daily Detail</h2>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Date</th><th>Requests</th><th>Page Views</th><th>Cached</th><th>Cache %</th><th>Uniques</th><th>Threats</th><th>Bandwidth</th></tr></thead>
+    <tbody id="daily-table"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<script>
+function formatBytes(b) {
+  if (!b) return '0 B';
+  const units = ['B','KB','MB','GB','TB'];
+  const i = Math.floor(Math.log(b) / Math.log(1024));
+  return (b / Math.pow(1024, i)).toFixed(1) + ' ' + units[i];
+}
+
+function statusName(code) {
+  const names = {200:'OK',201:'Created',204:'No Content',301:'Moved Permanently',302:'Found',304:'Not Modified',307:'Temporary Redirect',308:'Permanent Redirect',400:'Bad Request',401:'Unauthorized',403:'Forbidden',404:'Not Found',405:'Method Not Allowed',429:'Too Many Requests',500:'Internal Server Error',502:'Bad Gateway',503:'Service Unavailable',504:'Gateway Timeout',521:'Web Server Down',522:'Connection Timed Out',523:'Origin Unreachable',530:'Origin DNS Error'};
+  return names[code] || '';
+}
+
+function statusBadge(code) {
+  if (code >= 200 && code < 300) return 'green';
+  if (code >= 300 && code < 400) return 'blue';
+  if (code >= 400 && code < 500) return 'yellow';
+  if (code >= 500) return 'red';
+  return '';
+}
+
+async function loadData() {
+  document.body.classList.add('loading');
+  const d = await fetch('/api/analytics/cloudflare?days=7').then(r => r.json()).catch(() => null);
+  document.body.classList.remove('loading');
+
+  if (!d || d.error) {
+    const banner = document.getElementById('error-banner');
+    banner.style.display = '';
+    banner.innerHTML = '<strong>Setup required:</strong> ' + (d?.error || d?.hint || 'Failed to load Cloudflare analytics') + '<br><br>Run: <code>wrangler secret put CF_API_TOKEN</code> in the analytics-worker directory. Create a token at <a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank">Cloudflare API Tokens</a> with "Zone Analytics Read" for mos2es.org.';
+    return;
+  }
+
+  // Overview
+  const t = d.totals;
+  document.getElementById('ov-requests').textContent = t.requests.toLocaleString();
+  document.getElementById('ov-pageviews').textContent = t.pageViews.toLocaleString();
+  document.getElementById('ov-cache').textContent = t.cacheRatio + '%';
+  document.getElementById('ov-uniques').textContent = t.uniques.toLocaleString();
+  document.getElementById('ov-bandwidth').textContent = formatBytes(t.bytes);
+  document.getElementById('ov-threats').textContent = t.threats.toLocaleString();
+
+  // Bar chart - stacked cached/uncached
+  const daily = d.daily || [];
+  const maxReq = Math.max(...daily.map(d => d.requests), 1);
+  document.getElementById('bar-chart').innerHTML = daily.map(d => {
+    const cachedH = (d.cachedRequests / maxReq) * 110;
+    const uncachedH = ((d.requests - d.cachedRequests) / maxReq) * 110;
+    const label = d.date.slice(5);
+    return '<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">' +
+      '<div class="bar uncached" style="height:' + uncachedH + 'px;width:70%" title="Uncached: ' + (d.requests - d.cachedRequests) + '"></div>' +
+      '<div class="bar cached" style="height:' + cachedH + 'px;width:70%" title="Cached: ' + d.cachedRequests + ' (' + d.cacheRatio + '%)"></div>' +
+      '<span class="bar-label">' + label + '</span></div>';
+  }).join('');
+
+  // Top countries
+  const countries = d.topCountries || [];
+  const maxCountry = countries[0]?.requests || 1;
+  document.getElementById('countries').innerHTML = countries.length
+    ? countries.map(c => '<div class="geo-row"><span style="min-width:50px;font-size:0.8rem">' + c.country + '</span><div class="geo-bar"><div class="geo-fill" style="width:' + (c.requests/maxCountry*100) + '%;background:var(--accent)"></div></div><span style="min-width:60px;text-align:right;font-size:0.8rem">' + c.requests.toLocaleString() + '</span></div>').join('')
+    : '<div class="empty">No country data</div>';
+
+  // Countries daily (top 5 countries by day)
+  const top5 = countries.slice(0, 5).map(c => c.country);
+  if (top5.length) {
+    document.getElementById('countries-daily').innerHTML = '<table><thead><tr><th>Date</th>' + top5.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>' +
+      daily.map(d => {
+        const dayCountries = {};
+        for (const c of d.countries) dayCountries[c.clientCountryName] = c.requests;
+        return '<tr><td>' + d.date.slice(5) + '</td>' + top5.map(c => '<td>' + (dayCountries[c] || 0) + '</td>').join('') + '</tr>';
+      }).join('') + '</tbody></table>';
+  } else {
+    document.getElementById('countries-daily').innerHTML = '<div class="empty">No data</div>';
+  }
+
+  // Status codes
+  const statuses = d.statusCodes || [];
+  const totalReqs = t.requests || 1;
+  document.getElementById('status-table').innerHTML = statuses.length
+    ? statuses.map(s => '<tr><td><span class="badge ' + statusBadge(s.code) + '">' + s.code + '</span></td><td>' + statusName(s.code) + '</td><td>' + s.requests.toLocaleString() + '</td><td>' + (s.requests/totalReqs*100).toFixed(1) + '%</td></tr>').join('')
+    : '<tr><td colspan="4" class="empty">No status code data</td></tr>';
+
+  // Daily table
+  document.getElementById('daily-table').innerHTML = daily.length
+    ? daily.map(d => '<tr><td>' + d.date + '</td><td>' + d.requests.toLocaleString() + '</td><td>' + d.pageViews.toLocaleString() + '</td><td>' + d.cachedRequests.toLocaleString() + '</td><td>' + d.cacheRatio + '%</td><td>' + d.uniques.toLocaleString() + '</td><td>' + d.threats + '</td><td>' + formatBytes(d.bytes) + '</td></tr>').join('')
+    : '<tr><td colspan="8" class="empty">No daily data</td></tr>';
+}
+
+loadData();
+setInterval(loadData, 300000); // 5 min refresh
+</script>
+</body>
+</html>`;
+  return new Response(html, {
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-cache',
+    },
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
