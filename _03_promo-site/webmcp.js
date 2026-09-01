@@ -40,8 +40,8 @@
         { url: '/about', title: 'About', keywords: ['about', 'company', 'ello cello', 'team'] },
         { url: '/contact', title: 'Contact', keywords: ['contact', 'demo', 'book', 'pilot', 'commercial'] },
         { url: '/faq', title: 'FAQ', keywords: ['faq', 'questions', 'answers', 'help'] },
-        { url: '/killer-experiment', title: 'Killer Experiment', keywords: ['killer', 'experiment', '15k', '30 days'] },
-        { url: '/commercial-offer', title: 'Commercial Offer', keywords: ['commercial', 'pricing', 'offer', 'pilot', 'annual'] }
+        { url: '/killer-experiment', title: 'Baseline Assessment', keywords: ['baseline', 'assessment', '15k', '30 days'] },
+        { url: '/commercial-offer', title: 'Commercial Offer', keywords: ['commercial', 'offer', 'pilot', 'baseline'] }
       ];
       const matches = pages.filter(p =>
         p.title.toLowerCase().includes(q) ||
@@ -132,7 +132,7 @@
     },
     annotations: { readOnlyHint: true },
     async execute() {
-      return { content: [{ type: 'text', text: 'MOSES Enterprise Commercial Offers:\n\n1. Killer Experiment: $15K, 30 days\n   - Prove or disprove that AI operator evaluation reveals actionable gaps\n   - 10-operator evaluation with full metrics\n   - See: https://mos2es.org/killer-experiment\n\n2. Upsilon Pilot: $45K, 90 days\n   - Full enterprise pilot with the Upsilon measurement engine\n   - 50-operator evaluation, benchmarking, diagnosis, intervention\n   - See: https://mos2es.org/pilot\n\n3. Annual Operating Index: $150K/year\n   - Continuous evaluation and benchmarking\n   - Quarterly readouts and trend analysis\n   - See: https://mos2es.org/commercial-offer\n\nContact: pilots@mos2es.org' }] };
+      return { content: [{ type: 'text', text: 'MOSES Enterprise Commercial Offer:\n\n1. Baseline Assessment: $15K, 30 days\n   - Establish a measured baseline of your enterprise AI operating system\n   - 25-100 operator evaluation with full metrics\n   - Baseline, diagnose, intervene, re-measure, evidence report\n   - See: https://mos2es.org/commercial-offer\n\nExtended engagement available after the baseline. Contact to discuss.\n\nContact: pilots@mos2es.org' }] };
     }
   });
 
