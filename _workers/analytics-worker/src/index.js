@@ -1035,12 +1035,17 @@ async function handleCrawlerSelfReport(request, env, host) {
 
 // ═══════════════════════════════════════════════════════════════════════
 // Cloudflare GraphQL Analytics proxy — queries CF's own analytics API
-// Uses CF_API_TOKEN secret (needs Account Read + Analytics Read)
+// Aggregates data across ALL zones in the account
 // ═══════════════════════════════════════════════════════════════════════
+const ALL_ZONES = [
+  { tag: 'd3fa790d740b94fea2395cd6348162fc', name: 'mos2es.org' },
+  { tag: '7bbc2a090617046b13658ac7f9651dcb', name: 'mos2es.com' },
+  { tag: '451ccf3ac9ae20feb61820442a6233b8', name: 'sigeconomy.com' },
+];
+
 async function handleCloudflareAnalytics(request, env, url) {
-  // The zone tag for mos2es.org
-  const ZONE_TAG = 'd3fa790d740b94fea2395cd6348162fc';
   const days = parseInt(url.searchParams.get('days') || '7', 10);
+  const zoneFilter = url.searchParams.get('zone'); // optional: filter to one zone
 
   // Date range
   const until = new Date();
@@ -1048,111 +1053,146 @@ async function handleCloudflareAnalytics(request, env, url) {
   const sinceStr = since.toISOString().slice(0, 10);
   const untilStr = until.toISOString().slice(0, 10);
 
-  const query = `query {
-    viewer {
-      zones(filter: {zoneTag: "${ZONE_TAG}"}) {
-        httpRequests1dGroups(limit: ${days}, filter: {date_geq: "${sinceStr}", date_leq: "${untilStr}"}) {
-          dimensions { date }
-          sum {
-            requests
-            pageViews
-            cachedRequests
-            threats
-            bytes
-            countryMap { clientCountryName requests }
-            responseStatusMap { edgeResponseStatus requests }
-          }
-          uniq { uniques }
-        }
-      }
-    }
-  }`;
-
-  // Use the wrangler OAuth token if CF_API_TOKEN isn't set
   const token = env.CF_API_TOKEN;
   if (!token) {
     return jsonResponse({
-      error: 'CF_API_TOKEN not configured. Set it with: wrangler secret put CF_API_TOKEN',
-      hint: 'Create a token at https://dash.cloudflare.com/profile/api-tokens with "Zone Analytics Read" permission for mos2es.org',
+      error: 'CF_API_TOKEN not configured. Run: wrangler secret put CF_API_TOKEN',
+      hint: 'Create a token at https://dash.cloudflare.com/profile/api-tokens with "Zone Analytics Read" for all zones, then run: wrangler secret put CF_API_TOKEN',
     }, 503);
   }
 
-  try {
-    const resp = await fetch('https://api.cloudflare.com/client/v4/graphql', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query }),
-    });
+  // Query all zones (or filtered subset) in parallel
+  const zonesToQuery = zoneFilter
+    ? ALL_ZONES.filter(z => z.name === zoneFilter)
+    : ALL_ZONES;
 
-    const data = await resp.json();
+  const zonePromises = zonesToQuery.map(async (zone) => {
+    const query = `query {
+      viewer {
+        zones(filter: {zoneTag: "${zone.tag}"}) {
+          httpRequests1dGroups(limit: ${days}, filter: {date_geq: "${sinceStr}", date_leq: "${untilStr}"}) {
+            dimensions { date }
+            sum {
+              requests
+              pageViews
+              cachedRequests
+              threats
+              bytes
+              countryMap { clientCountryName requests }
+              responseStatusMap { edgeResponseStatus requests }
+            }
+            uniq { uniques }
+          }
+        }
+      }
+    }`;
 
-    if (data.errors) {
-      return jsonResponse({ error: 'GraphQL error', details: data.errors }, 502);
+    try {
+      const resp = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+      const data = await resp.json();
+      if (data.errors) return { zone: zone.name, error: data.errors, groups: [] };
+      const zones = data?.data?.viewer?.zones || [];
+      const groups = zones[0]?.httpRequests1dGroups || [];
+      return { zone: zone.name, groups };
+    } catch (e) {
+      return { zone: zone.name, error: e.message, groups: [] };
     }
+  });
 
-    const zones = data?.data?.viewer?.zones || [];
-    const groups = zones[0]?.httpRequests1dGroups || [];
+  const zoneResults = await Promise.all(zonePromises);
 
-    // Aggregate
-    const daily = groups.map(g => ({
-      date: g.dimensions.date,
-      requests: g.sum.requests,
-      pageViews: g.sum.pageViews,
-      cachedRequests: g.sum.cachedRequests,
-      threats: g.sum.threats,
-      bytes: g.sum.bytes,
-      uniques: g.uniq.uniques,
-      cacheRatio: g.sum.requests ? (g.sum.cachedRequests / g.sum.requests * 100).toFixed(1) : 0,
-      countries: (g.sum.countryMap || []).sort((a,b) => b.requests - a.requests).slice(0, 10),
-      statusCodes: (g.sum.responseStatusMap || []).sort((a,b) => b.requests - a.requests),
-    }));
-
-    // Totals
-    const totals = {
-      requests: daily.reduce((s, d) => s + d.requests, 0),
-      pageViews: daily.reduce((s, d) => s + d.pageViews, 0),
-      cachedRequests: daily.reduce((s, d) => s + d.cachedRequests, 0),
-      threats: daily.reduce((s, d) => s + d.threats, 0),
-      uniques: daily.reduce((s, d) => s + d.uniques, 0),
-      bytes: daily.reduce((s, d) => s + d.bytes, 0),
+  // Per-zone summary
+  const perZone = zoneResults.map(zr => {
+    const groups = zr.groups || [];
+    const reqs = groups.reduce((s, g) => s + g.sum.requests, 0);
+    const cached = groups.reduce((s, g) => s + g.sum.cachedRequests, 0);
+    const pvs = groups.reduce((s, g) => s + g.sum.pageViews, 0);
+    const uniques = groups.reduce((s, g) => s + g.uniq.uniques, 0);
+    const threats = groups.reduce((s, g) => s + g.sum.threats, 0);
+    const bytes = groups.reduce((s, g) => s + g.sum.bytes, 0);
+    return {
+      zone: zr.zone,
+      requests: reqs,
+      pageViews: pvs,
+      cachedRequests: cached,
+      cacheRatio: reqs ? (cached / reqs * 100).toFixed(1) : 0,
+      uniques,
+      threats,
+      bytes,
+      error: zr.error,
     };
-    totals.cacheRatio = totals.requests ? (totals.cachedRequests / totals.requests * 100).toFixed(1) : 0;
+  });
 
-    // Top countries (aggregate)
-    const countryAgg = {};
-    for (const d of daily) {
-      for (const c of d.countries) {
+  // Aggregate daily data across all zones
+  const dailyMap = {};
+  const countryAgg = {};
+  const statusAgg = {};
+
+  for (const zr of zoneResults) {
+    for (const g of (zr.groups || [])) {
+      const date = g.dimensions.date;
+      if (!dailyMap[date]) {
+        dailyMap[date] = { date, requests: 0, pageViews: 0, cachedRequests: 0, threats: 0, bytes: 0, uniques: 0, countries: {}, statusCodes: {} };
+      }
+      const d = dailyMap[date];
+      d.requests += g.sum.requests;
+      d.pageViews += g.sum.pageViews;
+      d.cachedRequests += g.sum.cachedRequests;
+      d.threats += g.sum.threats;
+      d.bytes += g.sum.bytes;
+      d.uniques += g.uniq.uniques;
+
+      for (const c of (g.sum.countryMap || [])) {
+        d.countries[c.clientCountryName] = (d.countries[c.clientCountryName] || 0) + c.requests;
         countryAgg[c.clientCountryName] = (countryAgg[c.clientCountryName] || 0) + c.requests;
       }
-    }
-    const topCountries = Object.entries(countryAgg).sort((a,b) => b[1] - a[1]).slice(0, 15).map(([country, requests]) => ({ country, requests }));
-
-    // Status code aggregate
-    const statusAgg = {};
-    for (const d of daily) {
-      for (const s of d.statusCodes) {
+      for (const s of (g.sum.responseStatusMap || [])) {
         const code = s.edgeResponseStatus;
+        d.statusCodes[code] = (d.statusCodes[code] || 0) + s.requests;
         statusAgg[code] = (statusAgg[code] || 0) + s.requests;
       }
     }
-    const statusCodes = Object.entries(statusAgg).sort((a,b) => b[1] - a[1]).map(([code, requests]) => ({ code: parseInt(code), requests }));
-
-    return jsonResponse({
-      zone: 'mos2es.org',
-      days,
-      since: sinceStr,
-      until: untilStr,
-      totals,
-      daily,
-      topCountries,
-      statusCodes,
-    });
-  } catch (e) {
-    return jsonResponse({ error: 'Failed to fetch Cloudflare analytics', message: e.message }, 502);
   }
+
+  const daily = Object.values(dailyMap).sort((a, b) => a.date.localeCompare(b.date)).map(d => ({
+    ...d,
+    cacheRatio: d.requests ? (d.cachedRequests / d.requests * 100).toFixed(1) : 0,
+    countries: Object.entries(d.countries).sort((a,b) => b[1] - a[1]).slice(0, 10).map(([country, requests]) => ({ country, requests })),
+    statusCodes: Object.entries(d.statusCodes).sort((a,b) => b[1] - a[1]).map(([code, requests]) => ({ code: parseInt(code), requests })),
+  }));
+
+  // Totals across all zones
+  const totals = {
+    requests: daily.reduce((s, d) => s + d.requests, 0),
+    pageViews: daily.reduce((s, d) => s + d.pageViews, 0),
+    cachedRequests: daily.reduce((s, d) => s + d.cachedRequests, 0),
+    threats: daily.reduce((s, d) => s + d.threats, 0),
+    uniques: daily.reduce((s, d) => s + d.uniques, 0),
+    bytes: daily.reduce((s, d) => s + d.bytes, 0),
+  };
+  totals.cacheRatio = totals.requests ? (totals.cachedRequests / totals.requests * 100).toFixed(1) : 0;
+
+  const topCountries = Object.entries(countryAgg).sort((a,b) => b[1] - a[1]).slice(0, 15).map(([country, requests]) => ({ country, requests }));
+  const statusCodes = Object.entries(statusAgg).sort((a,b) => b[1] - a[1]).map(([code, requests]) => ({ code: parseInt(code), requests }));
+
+  return jsonResponse({
+    zones: zonesToQuery.map(z => z.name),
+    days,
+    since: sinceStr,
+    until: untilStr,
+    totals,
+    perZone,
+    daily,
+    topCountries,
+    statusCodes,
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -1233,7 +1273,7 @@ a:hover { text-decoration: underline; }
 
 <div id="error-banner" style="display:none"></div>
 
-<h2>Overview (Last 7 Days)</h2>
+<h2>Overview (Last 7 Days — All Zones)</h2>
 <div class="grid grid-6" id="overview">
   <div class="card stat accent"><div class="num" id="ov-requests">-</div><div class="label">Total Requests</div></div>
   <div class="card stat blue"><div class="num" id="ov-pageviews">-</div><div class="label">Page Views</div></div>
@@ -1243,7 +1283,15 @@ a:hover { text-decoration: underline; }
   <div class="card stat red"><div class="num" id="ov-threats">-</div><div class="label">Threats</div></div>
 </div>
 
-<h2>Daily Traffic (Requests & Cache Ratio)</h2>
+<h2>Per-Zone Breakdown</h2>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Zone</th><th>Requests</th><th>Page Views</th><th>Cache %</th><th>Uniques</th><th>Threats</th><th>Bandwidth</th></tr></thead>
+    <tbody id="perzone-table"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<h2>Daily Traffic (All Zones — Requests & Cache Ratio)</h2>
 <div class="card bar-container">
   <div class="bar-chart" id="bar-chart"></div>
   <div class="legend">
@@ -1321,6 +1369,12 @@ async function loadData() {
   document.getElementById('ov-uniques').textContent = t.uniques.toLocaleString();
   document.getElementById('ov-bandwidth').textContent = formatBytes(t.bytes);
   document.getElementById('ov-threats').textContent = t.threats.toLocaleString();
+
+  // Per-zone breakdown
+  const perZone = d.perZone || [];
+  document.getElementById('perzone-table').innerHTML = perZone.length
+    ? perZone.map(z => '<tr><td><strong>' + z.zone + '</strong></td><td>' + z.requests.toLocaleString() + '</td><td>' + z.pageViews.toLocaleString() + '</td><td>' + z.cacheRatio + '%</td><td>' + z.uniques.toLocaleString() + '</td><td>' + z.threats + '</td><td>' + formatBytes(z.bytes) + '</td></tr>').join('')
+    : '<tr><td colspan="7" class="empty">No zone data</td></tr>';
 
   // Bar chart - stacked cached/uncached
   const daily = d.daily || [];
