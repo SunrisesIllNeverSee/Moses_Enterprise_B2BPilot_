@@ -1030,15 +1030,18 @@ function handleDashboard(host) {
   --bg: #0d1117; --card: #161b22; --border: #30363d;
   --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
   --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff;
+  --orange: #db6d28; --teal: #39c5cf;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 1rem; max-width: 1200px; margin: 0 auto; }
+body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 1rem; max-width: 1400px; margin: 0 auto; }
 h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
 h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
 .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
 .grid { display: grid; gap: 0.75rem; }
+.grid-6 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
 .grid-4 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
 .stat { text-align: center; }
 .stat .num { font-size: 1.8rem; font-weight: 700; }
@@ -1047,46 +1050,96 @@ h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--muted); text-tran
 .stat.bot .num { color: var(--yellow); }
 .stat.total .num { color: var(--accent); }
 .stat.ai .num { color: var(--purple); }
+.stat.ratio .num { color: var(--orange); }
+.stat.unique .num { color: var(--teal); }
 table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 th, td { padding: 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
 th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+tr:hover { background: rgba(88,166,255,0.05); }
 .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; }
 .badge.green { background: rgba(63,185,80,0.2); color: var(--green); }
 .badge.yellow { background: rgba(210,153,34,0.2); color: var(--yellow); }
 .badge.blue { background: rgba(88,166,255,0.2); color: var(--accent); }
 .badge.purple { background: rgba(188,140,255,0.2); color: var(--purple); }
 .badge.red { background: rgba(248,81,73,0.2); color: var(--red); }
-.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 0.5rem; }
-.bar { flex: 1; background: var(--accent); border-radius: 3px 3px 0 0; min-height: 2px; position: relative; transition: height 0.3s; }
-.bar:hover { background: var(--purple); }
+.badge.orange { background: rgba(219,109,40,0.2); color: var(--orange); }
+.badge.teal { background: rgba(57,197,207,0.2); color: var(--teal); }
+.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 100px; margin-top: 0.5rem; }
+.bar { flex: 1; border-radius: 3px 3px 0 0; min-height: 2px; position: relative; transition: height 0.3s; cursor: pointer; }
+.bar.human { background: var(--green); }
+.bar.bot { background: var(--yellow); }
+.bar:hover { opacity: 0.8; }
 .bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: var(--muted); }
 .bar-container { padding-bottom: 1.5rem; }
 .empty { color: var(--muted); font-style: italic; padding: 1rem 0; }
-.refresh { position: fixed; top: 1rem; right: 1rem; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+.refresh { position: fixed; top: 1rem; right: 1rem; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; z-index: 100; }
 .refresh:hover { border-color: var(--accent); }
 .loading { opacity: 0.5; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 .endpoints { font-size: 0.75rem; }
 .endpoints code { background: var(--bg); padding: 0.2rem 0.4rem; border-radius: 3px; color: var(--green); }
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+.tab { padding: 0.4rem 0.8rem; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 0.8rem; color: var(--muted); }
+.tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.ratio-bar { display: flex; height: 24px; border-radius: 4px; overflow: hidden; margin-top: 0.3rem; }
+.ratio-crawl { background: var(--yellow); }
+.ratio-referral { background: var(--green); }
+.ratio-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; display: flex; justify-content: space-between; }
+.geo-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.3rem 0; }
+.geo-bar { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.geo-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+.mono { font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; }
+.progress-ring { width: 80px; height: 80px; position: relative; margin: 0 auto; }
+.progress-ring svg { transform: rotate(-90deg); }
+.progress-ring circle { fill: none; stroke-width: 6; }
+.progress-ring .bg { stroke: var(--border); }
+.progress-ring .fg { stroke: var(--accent); transition: stroke-dashoffset 0.5s; }
+.progress-ring .text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.2rem; font-weight: 700; }
+@media(max-width:768px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<button class="refresh" onclick="loadAll()">Refresh</button>
+<button class="refresh" onclick="loadAll()">↻ Refresh</button>
 <h1>MO\u00a7ES\u2122 Analytics Dashboard</h1>
-<p class="subtitle">${host} \u2014 live agent + visitor + crawler monitoring</p>
+<p class="subtitle">${host} \u2014 agent intelligence, crawl economics & visitor monitoring</p>
 
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('overview')">Overview</div>
+  <div class="tab" onclick="switchTab('agents')">Agent Trail</div>
+  <div class="tab" onclick="switchTab('economics')">Crawl Economics</div>
+  <div class="tab" onclick="switchTab('geo')">Geographic</div>
+</div>
+
+<!-- ═══ OVERVIEW TAB ═══ -->
+<div id="tab-overview">
 <h2>Realtime</h2>
-<div class="grid grid-4" id="realtime">
-  <div class="card stat total"><div class="num" id="rt-total">-</div><div class="label">Total Today</div></div>
+<div class="grid grid-6" id="realtime">
+  <div class="card stat total"><div class="num" id="rt-total">-</div><div class="label">Today Total</div></div>
   <div class="card stat human"><div class="num" id="rt-human">-</div><div class="label">Human Today</div></div>
   <div class="card stat bot"><div class="num" id="rt-bots">-</div><div class="label">Bots Today</div></div>
   <div class="card stat total"><div class="num" id="rt-all">-</div><div class="label">All Time</div></div>
+  <div class="card stat ai"><div class="num" id="rt-engines">-</div><div class="label">AI Engines</div></div>
+  <div class="card stat unique"><div class="num" id="rt-unique">-</div><div class="label">Unique IPs</div></div>
 </div>
 
 <h2>7-Day Activity</h2>
 <div class="card bar-container">
   <div class="bar-chart" id="bar-chart"></div>
+</div>
+
+<h2>Agent Readiness Score</h2>
+<div class="grid grid-2">
+  <div class="card" style="text-align:center">
+    <div class="progress-ring" id="readiness-ring">
+      <svg width="80" height="80"><circle class="bg" cx="40" cy="40" r="35"/><circle class="fg" cx="40" cy="40" r="35" stroke-dasharray="220" stroke-dashoffset="220" id="ring-fg"/></svg>
+      <div class="text" id="ring-text">0%</div>
+    </div>
+    <p style="margin-top:0.5rem;color:var(--muted);font-size:0.85rem" id="readiness-detail">Loading...</p>
+  </div>
+  <div class="card" id="readiness-engines">
+    <div class="empty">Loading...</div>
+  </div>
 </div>
 
 <h2>AI Crawler Presence</h2>
@@ -1097,14 +1150,6 @@ a:hover { text-decoration: underline; }
   </table>
 </div>
 
-<h2>AI Overview Citations</h2>
-<div class="card" id="ai-card">
-  <table>
-    <thead><tr><th>Engine</th><th>Query</th><th>Position</th><th>Cited</th><th>Time</th></tr></thead>
-    <tbody id="ai-table"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
-  </table>
-</div>
-
 <h2>By Type</h2>
 <div class="card" id="types-card">
   <table>
@@ -1112,25 +1157,116 @@ a:hover { text-decoration: underline; }
     <tbody id="types-table"><tr><td colspan="2" class="empty">Loading...</td></tr></tbody>
   </table>
 </div>
-
-<h2>Agent Readiness</h2>
-<div class="card" id="readiness-card">
-  <div id="readiness" class="empty">Loading...</div>
 </div>
 
+<!-- ═══ AGENT TRAIL TAB ═══ -->
+<div id="tab-agents" style="display:none">
+<h2>Agent Provenance — Where Are They Coming From?</h2>
+<div class="grid grid-3">
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By Country</h3>
+    <div id="trail-country"><div class="empty">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By Network (ASN)</h3>
+    <div id="trail-asn"><div class="empty">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By Content Type</h3>
+    <div id="trail-accept"><div class="empty">Loading...</div></div>
+  </div>
+</div>
+
+<h2>By City</h2>
+<div class="card" id="trail-city-card">
+  <div id="trail-city"><div class="empty">Loading...</div></div>
+</div>
+
+<h2>By Referrer</h2>
+<div class="card" id="trail-referrer-card">
+  <div id="trail-referrer"><div class="empty">Loading...</div></div>
+</div>
+
+<h2>Recent Agent Visits (Last 50)</h2>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Bot</th><th>Engine</th><th>Type</th><th>Path</th><th>Country</th><th>City</th><th>ASN</th><th>Referrer</th><th>Accept</th><th>When</th></tr></thead>
+    <tbody id="trail-table"><tr><td colspan="10" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+</div>
+
+<!-- ═══ CRAWL ECONOMICS TAB ═══ -->
+<div id="tab-economics" style="display:none">
+<h2>Crawl-to-Referral Ratio</h2>
+<p class="subtitle" style="margin-bottom:0.75rem">How many times each AI engine crawls your site vs how much traffic they send back. Per Cloudflare's Agentic Internet Bot Report.</p>
+
+<div class="grid grid-4" id="economics-summary">
+  <div class="card stat total"><div class="num" id="eco-total-crawls">-</div><div class="label">Total Crawls</div></div>
+  <div class="card stat human"><div class="num" id="eco-total-referrals">-</div><div class="label">Total Referrals</div></div>
+  <div class="card stat ratio"><div class="num" id="eco-ratio">-</div><div class="label">Overall Ratio</div></div>
+  <div class="card stat ai"><div class="num" id="eco-engines">-</div><div class="label">Engines Active</div></div>
+</div>
+
+<h2>Per-Engine Breakdown</h2>
+<div class="card" id="economics-engines-card">
+  <div id="economics-engines"><div class="empty">Loading...</div></div>
+</div>
+
+<h2>7-Day Trend</h2>
+<div class="card" id="economics-trend-card">
+  <div id="economics-trend"><div class="empty">Loading...</div></div>
+</div>
+</div>
+
+<!-- ═══ GEOGRAPHIC TAB ═══ -->
+<div id="tab-geo" style="display:none">
+<h2>Geographic Distribution</h2>
+<div class="grid grid-2">
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By Country</h3>
+    <div id="geo-country"><div class="empty">Loading...</div></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:0.85rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">By City</h3>
+    <div id="geo-city"><div class="empty">Loading...</div></div>
+  </div>
+</div>
+
+<h2>By Path (Most Crawled)</h2>
+<div class="card" id="geo-path-card">
+  <div id="geo-path"><div class="empty">Loading...</div></div>
+</div>
+</div>
+
+<!-- ═══ API ENDPOINTS ═══ -->
 <h2>API Endpoints</h2>
 <div class="card endpoints">
-  <code>GET /api/analytics/realtime</code> \u2014 current counters<br>
-  <code>GET /api/analytics/stats?days=7</code> \u2014 aggregated stats<br>
-  <code>GET /api/analytics/bots</code> \u2014 AI crawler visits<br>
-  <code>GET /api/analytics/ai-overview</code> \u2014 AI engine visibility<br>
-  <code>POST /api/analytics/beacon</code> \u2014 record event<br>
-  <code>GET /.well-known/agent.json</code> \u2014 agent manifest<br>
-  <code>GET /crawl-control.json</code> \u2014 crawl rules<br>
-  <code>GET /dashboard</code> \u2014 this page
+  <code>GET /api/analytics/realtime</code> — current counters<br>
+  <code>GET /api/analytics/stats?days=7</code> — aggregated stats<br>
+  <code>GET /api/analytics/bots</code> — AI crawler visits<br>
+  <code>GET /api/analytics/agent-trail</code> — agent provenance<br>
+  <code>GET /api/analytics/crawl-referral-ratio</code> — crawl economics<br>
+  <code>GET /api/analytics/ai-overview</code> — AI engine visibility<br>
+  <code>GET /api/analytics/web-vitals</code> — Core Web Vitals<br>
+  <code>POST /api/analytics/beacon</code> — record event<br>
+  <code>GET /.well-known/agent.json</code> — agent manifest<br>
+  <code>GET /crawl-control.json</code> — crawl rules<br>
+  <code>GET /dashboard</code> — this page
 </div>
 
 <script>
+let currentTab = 'overview';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = '';
+  event.target.classList.add('active');
+  loadTabData(tab);
+}
+
 async function fetchJSON(url) {
   try {
     const r = await fetch(url);
@@ -1147,6 +1283,20 @@ function timeAgo(ts) {
   return Math.floor(s/86400) + 'd ago';
 }
 
+function truncate(str, n) { return str ? (str.length > n ? str.slice(0,n) + '…' : str) : '-'; }
+
+function makeGeoBars(data, color) {
+  const entries = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0, 15);
+  if (!entries.length) return '<div class="empty">No data yet</div>';
+  const max = entries[0][1];
+  return entries.map(([k,v]) => 
+    '<div class="geo-row"><span style="min-width:80px;font-size:0.8rem">' + truncate(k, 12) + '</span>' +
+    '<div class="geo-bar"><div class="geo-fill" style="width:' + (v/max*100) + '%;background:' + color + '"></div></div>' +
+    '<span style="min-width:40px;text-align:right;font-size:0.8rem">' + v + '</span></div>'
+  ).join('');
+}
+
+// ─── Realtime ─────────────────────────────────────────
 async function loadRealtime() {
   const d = await fetchJSON('/api/analytics/realtime');
   if (!d || !d.realtime) return;
@@ -1157,6 +1307,7 @@ async function loadRealtime() {
   document.getElementById('rt-all').textContent = r.totalAllTime;
 }
 
+// ─── Stats + 7-day chart ──────────────────────────────
 async function loadStats() {
   const d = await fetchJSON('/api/analytics/stats?days=7');
   if (!d || !d.byDay) return;
@@ -1164,9 +1315,13 @@ async function loadStats() {
   const max = Math.max(...days.map(([,v]) => v.total), 1);
   const chart = document.getElementById('bar-chart');
   chart.innerHTML = days.map(([date, v]) => {
-    const h = (v.total / max) * 70;
+    const humanH = (v.human / max) * 90;
+    const botH = (v.bots / max) * 90;
     const label = date.slice(5);
-    return '<div class="bar" style="height:' + h + 'px" title="' + label + ': ' + v.total + ' (H:' + v.human + ' B:' + v.bots + ')"><span class="bar-label">' + label + '</span></div>';
+    return '<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center">' +
+      '<div class="bar bot" style="height:' + botH + 'px;width:60%" title="Bots: ' + v.bots + '"></div>' +
+      '<div class="bar human" style="height:' + humanH + 'px;width:60%" title="Human: ' + v.human + '"></div>' +
+      '<span class="bar-label">' + label + '</span></div>';
   }).join('');
 
   if (d.byType) {
@@ -1177,6 +1332,7 @@ async function loadStats() {
   }
 }
 
+// ─── Bots ─────────────────────────────────────────────
 async function loadBots() {
   const d = await fetchJSON('/api/analytics/bots');
   if (!d) return;
@@ -1197,33 +1353,107 @@ async function loadBots() {
     : '<tr><td colspan="5" class="empty">No AI crawlers detected yet</td></tr>';
 }
 
+// ─── AI Overview + Readiness ──────────────────────────
 async function loadAiOverview() {
   const d = await fetchJSON('/api/analytics/ai-overview');
   if (!d) return;
-  const events = d.aiOverviewEvents || [];
-  const rows = events.slice(0, 20).map(e => {
-    const cited = e.cited ? '<span class="badge green">Yes</span>' : '<span class="badge red">No</span>';
-    return '<tr><td><strong>' + e.engine + '</strong></td><td>' + (e.query || '-') + '</td><td>' + (e.position || '-') + '</td><td>' + cited + '</td><td>' + timeAgo(e.timestamp) + '</td></tr>';
-  });
-  document.getElementById('ai-table').innerHTML = rows.length
-    ? rows.join('')
-    : '<tr><td colspan="5" class="empty">No AI overview events yet</td></tr>';
-
-  const presence = d.crawlerPresence || {};
   const score = d.readinessScore || 0;
   const total = d.totalKnownEngines || 18;
   const pct = Math.round((score / total) * 100);
+  
+  // Progress ring
+  const circumference = 220;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('ring-fg').setAttribute('stroke-dashoffset', offset);
+  document.getElementById('ring-text').textContent = pct + '%';
+  document.getElementById('readiness-detail').textContent = score + ' of ' + total + ' AI engines have crawled this site';
+  
+  const presence = d.crawlerPresence || {};
   const engines = Object.entries(presence).map(([engine, info]) =>
-    '<span class="badge ' + (info.type === 'training' ? 'yellow' : 'blue') + '">' + engine + ' (' + info.visits + ')</span>'
+    '<span class="badge ' + (info.type === 'training' ? 'yellow' : 'blue') + '" style="margin:0.2rem">' + engine + ' (' + info.visits + ')</span>'
   ).join(' ');
-  document.getElementById('readiness').innerHTML =
-    '<div style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem">' + pct + '% <span style="font-size:0.85rem;color:var(--muted)">(' + score + '/' + total + ' engines)</span></div>' +
-    '<div>' + (engines || '<span class="empty">No AI engines have crawled this site yet</span>') + '</div>';
+  document.getElementById('readiness-engines').innerHTML = engines || '<div class="empty">No AI engines have crawled this site yet</div>';
+  document.getElementById('rt-engines').textContent = score;
+}
+
+// ─── Agent Trail ──────────────────────────────────────
+async function loadAgentTrail() {
+  const d = await fetchJSON('/api/analytics/agent-trail?limit=50');
+  if (!d) return;
+  
+  const prov = d.provenance || {};
+  document.getElementById('trail-country').innerHTML = makeGeoBars(prov.byCountry || {}, 'var(--accent)');
+  document.getElementById('trail-asn').innerHTML = makeGeoBars(prov.byAsn || {}, 'var(--purple)');
+  document.getElementById('trail-accept').innerHTML = makeGeoBars(prov.byAcceptType || {}, 'var(--teal)');
+  document.getElementById('trail-city').innerHTML = makeGeoBars(prov.byCity || {}, 'var(--green)');
+  document.getElementById('trail-referrer').innerHTML = makeGeoBars(prov.byReferrer || {}, 'var(--orange)');
+  document.getElementById('geo-country').innerHTML = makeGeoBars(prov.byCountry || {}, 'var(--accent)');
+  document.getElementById('geo-city').innerHTML = makeGeoBars(prov.byCity || {}, 'var(--green)');
+  document.getElementById('geo-path').innerHTML = makeGeoBars(prov.byPath || {}, 'var(--purple)');
+  
+  document.getElementById('rt-unique').textContent = d.uniqueVisitors || 0;
+  
+  const trail = d.trail || [];
+  document.getElementById('trail-table').innerHTML = trail.length
+    ? trail.map(e => '<tr><td>' + (e.bot || '-') + '</td><td><strong>' + (e.engine || '-') + '</strong></td><td><span class="badge ' + (e.type === 'training' ? 'yellow' : e.type === 'unknown' ? 'red' : 'blue') + '">' + (e.type || '-') + '</span></td><td class="mono">' + truncate(e.path, 30) + '</td><td>' + (e.country || '-') + '</td><td>' + truncate(e.city || '-', 10) + '</td><td class="mono">' + (e.asn ? 'AS' + e.asn : '-') + '</td><td class="mono">' + truncate(e.referrer || '', 20) + '</td><td class="mono">' + truncate(e.acceptHeader || '-', 15) + '</td><td>' + timeAgo(e.timestamp) + '</td></tr>').join('')
+    : '<tr><td colspan="10" class="empty">No agent visits recorded yet</td></tr>';
+}
+
+// ─── Crawl-Referral Ratio ─────────────────────────────
+async function loadCrawlReferralRatio() {
+  const d = await fetchJSON('/api/analytics/crawl-referral-ratio?days=7');
+  if (!d) return;
+  const s = d.summary || {};
+  
+  document.getElementById('eco-total-crawls').textContent = s.totalCrawls || 0;
+  document.getElementById('eco-total-referrals').textContent = s.totalReferrals || 0;
+  document.getElementById('eco-ratio').textContent = s.overallRatioLabel || '\u221e';
+  document.getElementById('eco-engines').textContent = s.enginesTracked || 0;
+  
+  const engines = d.engines || [];
+  if (!engines.length) {
+    document.getElementById('economics-engines').innerHTML = '<div class="empty">No crawl or referral data yet. Data populates as bots crawl and humans arrive via AI referrers.</div>';
+    document.getElementById('economics-trend').innerHTML = '<div class="empty">No trend data yet.</div>';
+    return;
+  }
+  
+  // Per-engine breakdown
+  document.getElementById('economics-engines').innerHTML = 
+    '<table><thead><tr><th>Engine</th><th>Crawls</th><th>Referrals</th><th>Ratio</th><th>Distribution</th></tr></thead><tbody>' +
+    engines.map(e => {
+      const total = e.allTime.crawls + e.allTime.referrals || 1;
+      const crawlPct = (e.allTime.crawls / total * 100).toFixed(0);
+      const referralPct = (e.allTime.referrals / total * 100).toFixed(0);
+      return '<tr><td><strong>' + e.engine + '</strong></td><td>' + e.allTime.crawls + '</td><td>' + e.allTime.referrals + '</td><td><span class="badge ' + (e.allTime.ratio > 100 ? 'red' : e.allTime.ratio > 10 ? 'orange' : 'green') + '">' + e.allTime.ratioLabel + ':1</span></td><td style="min-width:150px"><div class="ratio-bar"><div class="ratio-crawl" style="width:' + crawlPct + '%"></div><div class="ratio-referral" style="width:' + referralPct + '%"></div></div><div class="ratio-label"><span>' + crawlPct + '% crawl</span><span>' + referralPct + '% referral</span></div></td></tr>';
+    }).join('') + '</tbody></table>';
+  
+  // 7-day trend
+  const allDays = new Set();
+  engines.forEach(e => Object.keys(e.byDay).forEach(d => allDays.add(d)));
+  const sortedDays = [...allDays].sort();
+  if (sortedDays.length) {
+    document.getElementById('economics-trend').innerHTML = 
+      '<table><thead><tr><th>Date</th>' + engines.slice(0, 5).map(e => '<th>' + truncate(e.engine, 12) + '</th>').join('') + '</tr></thead><tbody>' +
+      sortedDays.map(d => '<tr><td>' + d.slice(5) + '</td>' + engines.slice(0, 5).map(e => {
+        const day = e.byDay[d];
+        if (!day) return '<td>-</td>';
+        return '<td>' + day.crawls + 'C / ' + day.referrals + 'R</td>';
+      }).join('') + '</tr>').join('') + '</tbody></table>';
+  } else {
+    document.getElementById('economics-trend').innerHTML = '<div class="empty">No daily breakdown yet.</div>';
+  }
+}
+
+// ─── Tab loader ───────────────────────────────────────
+function loadTabData(tab) {
+  if (tab === 'agents') loadAgentTrail();
+  if (tab === 'economics') loadCrawlReferralRatio();
+  if (tab === 'geo') loadAgentTrail();
 }
 
 async function loadAll() {
   document.body.classList.add('loading');
-  await Promise.all([loadRealtime(), loadStats(), loadBots(), loadAiOverview()]);
+  await Promise.all([loadRealtime(), loadStats(), loadBots(), loadAiOverview(), loadAgentTrail(), loadCrawlReferralRatio()]);
   document.body.classList.remove('loading');
 }
 
