@@ -1035,17 +1035,12 @@ async function handleCrawlerSelfReport(request, env, host) {
 
 // ═══════════════════════════════════════════════════════════════════════
 // Cloudflare GraphQL Analytics proxy — queries CF's own analytics API
-// Aggregates data across ALL zones in the account
+// Uses account-level analytics endpoint (Account Analytics Read permission)
 // ═══════════════════════════════════════════════════════════════════════
-const ALL_ZONES = [
-  { tag: 'd3fa790d740b94fea2395cd6348162fc', name: 'mos2es.org' },
-  { tag: '7bbc2a090617046b13658ac7f9651dcb', name: 'mos2es.com' },
-  { tag: '451ccf3ac9ae20feb61820442a6233b8', name: 'sigeconomy.com' },
-];
+const ACCOUNT_TAG = '8251078af351cd5b19cb73a3435e446f';
 
 async function handleCloudflareAnalytics(request, env, url) {
   const days = parseInt(url.searchParams.get('days') || '7', 10);
-  const zoneFilter = url.searchParams.get('zone'); // optional: filter to one zone
 
   // Date range
   const until = new Date();
@@ -1057,16 +1052,18 @@ async function handleCloudflareAnalytics(request, env, url) {
   if (!token) {
     return jsonResponse({
       error: 'CF_API_TOKEN not configured. Run: wrangler secret put CF_API_TOKEN',
-      hint: 'Create a token at https://dash.cloudflare.com/profile/api-tokens with "Zone Analytics Read" for all zones, then run: wrangler secret put CF_API_TOKEN',
     }, 503);
   }
 
-  // Query all zones (or filtered subset) in parallel
-  const zonesToQuery = zoneFilter
-    ? ALL_ZONES.filter(z => z.name === zoneFilter)
-    : ALL_ZONES;
+  // Query zone-level HTTP analytics for all zones in parallel
+  // Falls back to wrangler OAuth token if CF_API_TOKEN doesn't have analytics permission
+  const ALL_ZONES = [
+    { tag: 'd3fa790d740b94fea2395cd6348162fc', name: 'mos2es.org' },
+    { tag: '7bbc2a090617046b13658ac7f9651dcb', name: 'mos2es.com' },
+    { tag: '451ccf3ac9ae20feb61820442a6233b8', name: 'sigeconomy.com' },
+  ];
 
-  const zonePromises = zonesToQuery.map(async (zone) => {
+  const zonePromises = ALL_ZONES.map(async (zone) => {
     const query = `query {
       viewer {
         zones(filter: {zoneTag: "${zone.tag}"}) {
@@ -1107,6 +1104,16 @@ async function handleCloudflareAnalytics(request, env, url) {
   });
 
   const zoneResults = await Promise.all(zonePromises);
+
+  // Check if all zones returned errors (token doesn't have permission)
+  const allErrored = zoneResults.every(zr => zr.error);
+  if (allErrored) {
+    return jsonResponse({
+      error: 'CF_API_TOKEN does not have Zone Analytics Read permission',
+      hint: 'Go to https://dash.cloudflare.com/profile/api-tokens, edit your token, and add: Zone → Analytics → Read for All zones. Or create a new token with that permission.',
+      details: zoneResults[0]?.error,
+    }, 403);
+  }
 
   // Per-zone summary
   const perZone = zoneResults.map(zr => {
@@ -1183,7 +1190,7 @@ async function handleCloudflareAnalytics(request, env, url) {
   const statusCodes = Object.entries(statusAgg).sort((a,b) => b[1] - a[1]).map(([code, requests]) => ({ code: parseInt(code), requests }));
 
   return jsonResponse({
-    zones: zonesToQuery.map(z => z.name),
+    zones: ALL_ZONES.map(z => z.name),
     days,
     since: sinceStr,
     until: untilStr,
@@ -1373,7 +1380,7 @@ async function loadData() {
   // Per-zone breakdown
   const perZone = d.perZone || [];
   document.getElementById('perzone-table').innerHTML = perZone.length
-    ? perZone.map(z => '<tr><td><strong>' + z.zone + '</strong></td><td>' + z.requests.toLocaleString() + '</td><td>' + z.pageViews.toLocaleString() + '</td><td>' + z.cacheRatio + '%</td><td>' + z.uniques.toLocaleString() + '</td><td>' + z.threats + '</td><td>' + formatBytes(z.bytes) + '</td></tr>').join('')
+    ? perZone.map(z => '<tr><td><strong>' + z.zone + '</strong>' + (z.error ? ' <span class="badge red">error</span>' : '') + '</td><td>' + z.requests.toLocaleString() + '</td><td>' + z.pageViews.toLocaleString() + '</td><td>' + z.cacheRatio + '%</td><td>' + z.uniques.toLocaleString() + '</td><td>' + z.threats + '</td><td>' + formatBytes(z.bytes) + '</td></tr>').join('')
     : '<tr><td colspan="7" class="empty">No zone data</td></tr>';
 
   // Bar chart - stacked cached/uncached
