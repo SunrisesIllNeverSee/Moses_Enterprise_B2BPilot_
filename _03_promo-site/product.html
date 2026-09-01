@@ -20,8 +20,16 @@
 <meta name="twitter:description" content="Operator evals, performative benchmarks, bespoke enterprise evals.">
 <meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="style.css">
-<script type="application/ld+json">{
-  "@context": "https://schema.org",
+<script type="application/ld+json">
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "moses": "https://mos2es.com/ontology/0.1/",
+    "sourceSystem": "moses:sourceSystem",
+    "canonBacked": "moses:canonBacked",
+    "authorityApprovalRef": "moses:authorityApprovalRef",
+    "associatedWith": "moses:associatedWith"
+  },
   "@type": "SoftwareApplication",
   "name": "MO§ES™",
   "applicationCategory": "BusinessApplication",
@@ -40,11 +48,23 @@
   "@id": "https://mos2es.com/ontology/0.1/entity/moses",
   "sourceSystem": "search-authority",
   "canonBacked": true,
-  "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-MOSES-001)"
-}</script>
-<script type="application/ld+json">[
+  "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-MOSES-001)",
+  "associatedWith": {
+    "@id": "https://mos2es.org/#org"
+  }
+}
+  </script>
+<script type="application/ld+json">
+[
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "Organization",
     "@id": "https://mos2es.org/#org",
     "name": "Ello Cello LLC",
@@ -175,17 +195,41 @@
         "name": "Workforce",
         "sameAs": "https://www.wikidata.org/wiki/Q13440398"
       }
-    ]
+    ],
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": {
+      "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+    }
   },
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "WebSite",
     "@id": "https://mos2es.org/#website",
     "name": "MO§ES™",
     "url": "https://mos2es.org",
     "publisher": {
       "@id": "https://mos2es.org/#org"
-    }
+    },
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": [
+      {
+        "@id": "https://mos2es.org/#org"
+      },
+      {
+        "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+      }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -214,9 +258,13 @@
       "@id": "https://mos2es.org/#org"
     },
     "description": "Operator evals, performative benchmarks, bespoke enterprise evals, operator intelligence, org AI topology, workflow fit, operator × model fit, team composition, capability dependency risk, operator similarity, AI learning curves, experiment as product, intervention + re-evaluation, governance.",
-    "serviceType": "Enterprise AI operator evaluations and performative benchmarks"
+    "serviceType": "Enterprise AI operator evaluations and performative benchmarks",
+    "about": {
+      "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+    }
   }
-]</script>
+]
+  </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>

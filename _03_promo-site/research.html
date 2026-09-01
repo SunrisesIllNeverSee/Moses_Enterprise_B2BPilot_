@@ -20,9 +20,17 @@
 <meta name="twitter:description" content="Commitment Theory and the Conservation Law of Commitment.">
 <meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="style.css">
-<script type="application/ld+json">[
+<script type="application/ld+json">
+[
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "Organization",
     "@id": "https://mos2es.org/#org",
     "name": "Ello Cello LLC",
@@ -153,17 +161,41 @@
         "name": "Workforce",
         "sameAs": "https://www.wikidata.org/wiki/Q13440398"
       }
-    ]
+    ],
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": {
+      "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+    }
   },
   {
-    "@context": "https://schema.org",
+    "@context": {
+      "@vocab": "https://schema.org/",
+      "moses": "https://mos2es.com/ontology/0.1/",
+      "sourceSystem": "moses:sourceSystem",
+      "canonBacked": "moses:canonBacked",
+      "authorityApprovalRef": "moses:authorityApprovalRef",
+      "associatedWith": "moses:associatedWith"
+    },
     "@type": "WebSite",
     "@id": "https://mos2es.org/#website",
     "name": "MO§ES™",
     "url": "https://mos2es.org",
     "publisher": {
       "@id": "https://mos2es.org/#org"
-    }
+    },
+    "sourceSystem": "search-authority",
+    "canonBacked": true,
+    "authorityApprovalRef": "APPROVAL-2026-08-14-001 (ID-ELLO-001)",
+    "associatedWith": [
+      {
+        "@id": "https://mos2es.org/#org"
+      },
+      {
+        "@id": "https://mos2es.com/ontology/0.1/entity/moses"
+      }
+    ]
   },
   {
     "@context": "https://schema.org",
@@ -200,7 +232,10 @@
       "@type": "CreativeWorkSeries",
       "name": "Commitment Theory Research Program"
     },
-    "citation": "https://doi.org/10.5281/zenodo.19105225"
+    "citation": "https://doi.org/10.5281/zenodo.19105225",
+    "mentions": {
+      "@id": "https://mos2es.org/#org"
+    }
   },
   {
     "@context": "https://schema.org",
@@ -213,9 +248,13 @@
       "name": "Deric J. McHenry",
       "@id": "https://orcid.org/0009-0002-9904-5390"
     },
-    "about": "AI governance enforcement architecture"
+    "about": "AI governance enforcement architecture",
+    "mentions": {
+      "@id": "https://mos2es.org/#org"
+    }
   }
-]</script>
+]
+  </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>
