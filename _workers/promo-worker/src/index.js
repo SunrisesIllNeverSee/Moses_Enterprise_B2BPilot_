@@ -183,8 +183,10 @@ export default {
       && !path.startsWith('/api/')
       && !path.startsWith('/.well-known/');
 
-    if (isPageRequest && (botInfo || path === '/')) {
-      // Fire beacon for bots (always) and for human pageviews (only root, to avoid double-counting with JS beacon)
+    // Fire beacon for ALL bot visits (they don't run JS beacon).
+    // For humans: only fire for non-HTML requests or when JS beacon might not fire.
+    // Human pageviews are tracked by the JS beacon — don't double-count.
+    if (isPageRequest && botInfo) {
       ctx.waitUntil(fireBeacon(request, host, path, botInfo));
     }
 
