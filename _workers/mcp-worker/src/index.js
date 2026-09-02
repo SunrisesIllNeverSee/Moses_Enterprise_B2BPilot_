@@ -29,7 +29,7 @@ import observations from "./observations.js";
 import lineages from "./lineages.js";
 
 // ─── Constants ──────────────────────────────────────────────────────
-const CANONICAL_METRICS = ["leverage", "yield", "token_snr", "log_leverage", "construction"];
+const CANONICAL_METRICS = ["leverage", "yield", "token_snr", "log_leverage", "construction", "velocity", "scale_v", "efficiency"];
 const COMPOSITE_METRICS = ["leverage", "yield", "token_snr", "construction"];
 const METRIC_WEIGHTS = { leverage: 0.30, yield: 0.30, token_snr: 0.20, construction: 0.20 };
 const INTERPRETATION_LIMIT_METRICS = new Set(["token_snr", "construction"]);
@@ -39,6 +39,9 @@ const METRIC_STATUS = {
   token_snr: "CANONICAL_WITH_INTERPRETATION_LIMIT",
   log_leverage: "CANONICAL",
   construction: "CANONICAL_WITH_INTERPRETATION_LIMIT",
+  velocity: "CANONICAL",
+  scale_v: "CANONICAL",
+  efficiency: "CANONICAL_DISPLAY_ONLY",
 };
 const SYNTHETIC = true;
 const WINDOW_START = cohortData.window_start;
@@ -66,6 +69,19 @@ function construction(R, W) {
   if (R <= 0) return null;
   return W / R;
 }
+function velocity(I, O) {
+  if (I <= 0) return null;
+  return O / I;
+}
+function scaleV(I, O, W, R) {
+  const total = I + O + W + R;
+  if (total <= 0) return null;
+  return Math.log10(total);
+}
+function efficiency(I, O, R, W) {
+  if (I <= 0) return null;
+  return (R + W + O) / I / 4;
+}
 
 const METRIC_FNS = {
   leverage: (I, O, R, W) => leverage(I, R),
@@ -73,6 +89,9 @@ const METRIC_FNS = {
   token_snr: (I, O, R, W) => tokenSnr(I, O),
   log_leverage: (I, O, R, W) => logLeverage(I, R),
   construction: (I, O, R, W) => construction(R, W),
+  velocity: (I, O, R, W) => velocity(I, O),
+  scale_v: (I, O, R, W) => scaleV(I, O, W, R),
+  efficiency: (I, O, R, W) => efficiency(I, O, R, W),
 };
 
 // ─── Scoring Engine (ported from src/metrics/engine.py) ─────────────
@@ -869,7 +888,7 @@ const TOOLS = [
   },
   {
     name: "get_operator_profile",
-    description: "Get operator profile — operator details, measurements (5 canonical metrics computed from raw token observations with values, percentiles, status), and benchmark availability. Operator IDs are pseudonymous (e.g., op_001). Data is synthetic.",
+    description: "Get operator profile — operator details, measurements (8 canon metrics computed from raw token observations with values, percentiles, status), and benchmark availability. Operator IDs are pseudonymous (e.g., op_001). Data is synthetic.",
     inputSchema: {
       type: "object",
       required: ["operator_id"],
@@ -908,7 +927,7 @@ const TOOLS = [
     description: "Get cohort metric distribution — min, p10, p25, median, p75, p90, max, mean, std, and outliers for a given metric across the 50-operator cohort. Computed from raw observations.",
     inputSchema: {
       type: "object",
-      properties: { metric: { type: "string", default: "leverage", description: "Metric: leverage, yield, token_snr, log_leverage, construction" } }
+      properties: { metric: { type: "string", default: "leverage", description: "Metric: leverage, yield, token_snr, log_leverage, construction, velocity, scale_v, efficiency" } }
     },
     outputSchema: {
       type: "object",
@@ -933,7 +952,7 @@ const TOOLS = [
   },
   {
     name: "get_composite_score",
-    description: "Get developmental composite score (0-100) for an operator. Computed from raw metrics normalized via reference percentiles. Labeled DEVELOPMENTAL, not PERSONNEL. Weighted: leverage 30%, yield 30%, token_snr 20%, construction 20%. Data is synthetic.",
+    description: "Get developmental composite score (0-100) for an operator. Computed from 4 canon metrics normalized via reference percentiles. Labeled DEVELOPMENTAL, not PERSONNEL. Note: composite score is a developmental aggregation, not a canon metric. Weighted: leverage 30%, yield 30%, token_snr 20%, construction 20%. Data is synthetic.",
     inputSchema: {
       type: "object",
       required: ["operator_id"],
@@ -1069,7 +1088,7 @@ const TOOLS = [
   },
   {
     name: "list_pilot_options",
-    description: "List available pilot options — 5 canonical metrics, 15 eval families, 13 benchmark classes, 5 intervention types.",
+    description: "List available pilot options — 8 canon metrics, 15 eval families, 13 benchmark classes, 5 intervention types.",
     inputSchema: { type: "object", properties: {} },
     outputSchema: {
       type: "object",
@@ -1187,7 +1206,7 @@ const TOOLS = [
           properties: {
             cohort_size: { type: "integer", description: "Number of operators in the cohort (defaults to 50 if not supplied)" },
             duration_days: { type: "integer", description: "Pilot duration in days (defaults to 30 if not supplied)" },
-            metrics: { type: "array", items: { type: "string" }, description: "Selected metric IDs (defaults to all 5 canonical metrics if not supplied)" }
+            metrics: { type: "array", items: { type: "string" }, description: "Selected metric IDs (defaults to all 8 canon metrics if not supplied)" }
           }
         },
         valid: { type: "boolean", description: "Whether the configuration is structurally valid (always true for this read-only generator)" },
@@ -1441,7 +1460,7 @@ const TOOLS = [
   },
   {
     name: "get_operator_similarity",
-    description: "Nearest-neighbor operator search using percentile-rank normalization and Euclidean distance across 5 canonical metrics. Computed from raw measurements. Returns comparable operators/cohorts, NOT personality matching.",
+    description: "Nearest-neighbor operator search using percentile-rank normalization and Euclidean distance across canon metrics. Computed from raw measurements. Returns comparable operators/cohorts, NOT personality matching.",
     inputSchema: {
       type: "object",
       required: ["operator_id"],
@@ -1520,7 +1539,7 @@ function handlePromptGet(promptName, args) {
   let text;
   switch (promptName) {
     case "operator_evaluation_summary":
-      text = `Generate a summary evaluation for operator ${operatorId}. Follow these steps:\n\n1. Call get_operator_profile with operator_id="${operatorId}" to retrieve the operator's 5 canonical metric measurements and percentiles.\n2. Call get_composite_score with operator_id="${operatorId}" to retrieve the developmental composite score and component breakdown.\n3. Call get_diagnostics with operator_id="${operatorId}" to retrieve pattern detections and diagnoses.\n4. Call get_operator_similarity with operator_id="${operatorId}" to find the operator's nearest peer group.\n5. Synthesize the results into a summary covering: (a) overall developmental score and where the operator sits relative to the cohort, (b) metric-level strengths and gaps with percentile context, (c) any detected divergence patterns (e.g., HIGH_USAGE_LOW_OPERATION), (d) peer group context, and (e) developmental recommendations. Remember: all labels are DEVELOPMENTAL, all diagnoses are HYPOTHESIS.`;
+      text = `Generate a summary evaluation for operator ${operatorId}. Follow these steps:\n\n1. Call get_operator_profile with operator_id="${operatorId}" to retrieve the operator's 8 canon metric measurements and percentiles.\n2. Call get_composite_score with operator_id="${operatorId}" to retrieve the developmental composite score and component breakdown.\n3. Call get_diagnostics with operator_id="${operatorId}" to retrieve pattern detections and diagnoses.\n4. Call get_operator_similarity with operator_id="${operatorId}" to find the operator's nearest peer group.\n5. Synthesize the results into a summary covering: (a) overall developmental score and where the operator sits relative to the cohort, (b) metric-level strengths and gaps with percentile context, (c) any detected divergence patterns (e.g., HIGH_USAGE_LOW_OPERATION), (d) peer group context, and (e) developmental recommendations. Remember: all labels are DEVELOPMENTAL, all diagnoses are HYPOTHESIS.`;
       break;
 
     case "intervention_recommendation":
@@ -1536,7 +1555,7 @@ function handlePromptGet(promptName, args) {
       break;
 
     case "pilot_scoping_guide":
-      text = `Generate a pilot scoping guide for a new enterprise engagement. Follow these steps:\n\n1. Call list_pilot_options to retrieve available canonical metrics, eval families, benchmark classes, and intervention types.\n2. Call get_pilot_status to see the current demo pilot as a reference example.\n3. Call create_pilot_configuration with cohort_size=50, duration_days=90, and metrics=["leverage","yield","token_snr","construction"] to generate a sample configuration.\n4. Call validate_pilot_configuration with the generated configuration to demonstrate the validation step.\n5. Synthesize a scoping guide covering: (a) recommended cohort size and rationale, (b) observation window length and trade-offs, (c) which metrics to select and why, (d) governance commitments (DEVELOPMENTAL labels, ASSOCIATION evidence standard, no punitive use), and (e) the validation workflow before deployment.`;
+      text = `Generate a pilot scoping guide for a new enterprise engagement. Follow these steps:\n\n1. Call list_pilot_options to retrieve available canon metrics, eval families, benchmark classes, and intervention types.\n2. Call get_pilot_status to see the current demo pilot as a reference example.\n3. Call create_pilot_configuration with cohort_size=50, duration_days=90, and metrics=["leverage","yield","token_snr","construction"] to generate a sample configuration.\n4. Call validate_pilot_configuration with the generated configuration to demonstrate the validation step.\n5. Synthesize a scoping guide covering: (a) recommended cohort size and rationale, (b) observation window length and trade-offs, (c) which metrics to select and why, (d) governance commitments (DEVELOPMENTAL labels, ASSOCIATION evidence standard, no punitive use), and (e) the validation workflow before deployment.`;
       break;
 
     default:
@@ -1559,7 +1578,7 @@ const RESOURCES = [
   {
     uri: "moses://metrics/canonical",
     name: "Canonical Metric Definitions",
-    description: "The 5 canonical metric definitions (yield, leverage, token SNR, construction, divergence) with formulas, units, and status.",
+    description: "The 8 canon metric definitions (yield, leverage, token SNR, 10xDEV, construction, velocity, scale V, efficiency) with formulas, units, and status.",
     mimeType: "application/json"
   },
   {

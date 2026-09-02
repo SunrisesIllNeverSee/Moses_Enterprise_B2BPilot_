@@ -1,6 +1,6 @@
 {
-  "registry_version": "0.2",
-  "date": "2026-08-17",
+  "registry_version": "0.3",
+  "date": "2026-09-02",
   "metrics": [
     {
       "metric_id": "leverage",
@@ -56,23 +56,32 @@
     {
       "metric_id": "velocity",
       "name": "Velocity",
-      "status": "NEEDS_CANONICAL_LOCK",
-      "formula": null,
-      "unit": null
+      "status": "CANONICAL",
+      "formula": "O/I",
+      "requires": [
+        "I>0"
+      ],
+      "unit": "ratio"
     },
     {
-      "metric_id": "compression_operating_ratio",
-      "name": "Compression / Operating Ratio",
-      "status": "NEEDS_CANONICAL_LOCK",
-      "formula": null,
-      "unit": null
+      "metric_id": "scale_v",
+      "name": "Scale V",
+      "status": "CANONICAL",
+      "formula": "log10(I+O+W+R)",
+      "requires": [
+        "I+O+W+R>0"
+      ],
+      "unit": "log10_volume"
     },
     {
-      "metric_id": "stability",
-      "name": "Stability",
-      "status": "NEEDS_CANONICAL_LOCK",
-      "formula": null,
-      "unit": "score"
+      "metric_id": "efficiency",
+      "name": "Efficiency",
+      "status": "CANONICAL_DISPLAY_ONLY",
+      "formula": "(R+W+O)/I/4",
+      "requires": [
+        "I>0"
+      ],
+      "unit": "ratio"
     }
   ]
 }

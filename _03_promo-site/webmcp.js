@@ -58,13 +58,13 @@
   // Tool: Get MOSES metric definition
   mc.registerTool({
     name: 'get_metric',
-    description: 'Get a MOSES canonical metric definition. Available metrics: yield, leverage, token-snr, construction, divergence.',
+    description: 'Get a MOSES canon metric definition. Available metrics: yield, leverage, token-snr, 10xdev, construction, velocity, scale-v, efficiency.',
     inputSchema: {
       type: 'object',
       properties: {
         metric: {
           type: 'string',
-          enum: ['yield', 'leverage', 'token-snr', 'construction', 'divergence'],
+          enum: ['yield', 'leverage', 'token-snr', '10xdev', 'construction', 'velocity', 'scale-v', 'efficiency'],
           description: 'The metric to retrieve'
         }
       },
@@ -73,11 +73,14 @@
     annotations: { readOnlyHint: true },
     async execute({ metric }) {
       const metrics = {
-        'yield': 'Yield (U): (cache_read x output) / input^2. Measures how efficiently an operator converts input tokens into useful output, boosted by cache reuse. The canonical efficiency metric in the Upsilon measurement engine.',
-        'leverage': 'Leverage: output / input. Measures the raw amplification of an operator\'s input tokens into output. Higher leverage means more output per token of input.',
-        'token-snr': 'Token SNR (Signal-to-Noise Ratio): The ratio of productive tokens to total tokens. Measures how much of the token budget is actually useful work versus noise.',
-        'construction': 'Construction: Measures how much of the output is genuinely new construction versus regurgitation or minor edits. Higher construction means more original work.',
-        'divergence': 'Divergence: Measures the semantic distance between an operator\'s output and reference outputs. Higher divergence can indicate either creativity or drift.'
+        'yield': 'Yield (Υ): (cache_read × output) / input². The signature Upsilon metric — how efficiently an operator converts input tokens into useful output, boosted by cache reuse. Cascade: Transmission × Commitment × Reuse.',
+        'leverage': 'Leverage: cache_read / input. Cache reuse per fresh input. Higher leverage means more cache reads per token of fresh input.',
+        'token-snr': 'Token SNR: output / (input + output). Output share of fresh flow. Measures how much of the token budget is actually useful output.',
+        '10xdev': '10xDEV: log₁₀(leverage). Logarithmic cascade summary — the order-of-magnitude scale of cache reuse efficiency.',
+        'construction': 'Construction: cache_write / cache_read. New context per read. Higher construction means more original context creation relative to reuse.',
+        'velocity': 'Velocity: output / input. Output per fresh input. Measures raw output productivity per token of fresh input.',
+        'scale-v': 'Scale V: log₁₀(input + output + cache_create + cache_read). Log token volume — the overall scale of processing activity.',
+        'efficiency': 'Efficiency: (cache_read + cache_create + output) / input / 4. Display diagnostic only — composite flow efficiency.'
       };
       const result = metrics[metric] || 'Unknown metric: ' + metric;
       return { content: [{ type: 'text', text: result }] };
