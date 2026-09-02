@@ -71,7 +71,7 @@ only).
 | faq.html | Organization, WebSite | FAQPage | YES | mentions→entity/moses | YES | YES |
 | privacy.html | Organization, WebSite | PrivacyPolicy | YES | about→#org | YES | YES |
 | commercial-offer.html | Organization, WebSite | Product x3 | YES | about→entity/moses | YES | YES |
-| killer-experiment.html | Organization, WebSite | Product | YES | about→entity/moses | YES | YES |
+| baseline-assessment.html | Organization, WebSite | Product | YES | about→entity/moses | YES | YES |
 | upsilon-logo-concepts.html | — | — | — | — | — | — |
 
 ## Completion checklist

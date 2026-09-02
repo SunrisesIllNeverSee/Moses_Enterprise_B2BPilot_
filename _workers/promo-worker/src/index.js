@@ -96,7 +96,7 @@ const MARKDOWN_PAGES = {
   '/pilot-readout': 'pilot-readout',
   '/faq': 'faq',
   '/commercial-offer': 'commercial-offer',
-  '/killer-experiment': 'killer-experiment',
+  '/baseline-assessment': 'baseline-assessment',
 };
 
 // Simple HTML-to-Markdown converter for agent content negotiation
@@ -274,6 +274,8 @@ export default {
       '/concepts/ai-compliance-standards': '/concepts/ai-evaluation',
       // confirmation-hacking-ai-evaluation → confirmation-hacking (clean URL)
       '/concepts/confirmation-hacking-ai-evaluation': '/concepts/confirmation-hacking',
+      // killer-experiment → baseline-assessment (URL rename)
+      '/killer-experiment': '/baseline-assessment',
     };
     if (CONSOLIDATED[path]) {
       return Response.redirect(new URL(CONSOLIDATED[path], url.origin).toString(), 301);

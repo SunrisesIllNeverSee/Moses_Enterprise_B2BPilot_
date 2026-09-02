@@ -38,7 +38,7 @@ the work that actually matters. The core commercial proposition:
 - [AI Operator Evaluation vs Skills Assessment](https://mos2es.org/guides/ai-operator-evaluation-vs-skills-assessment): what's the difference?
 
 ## Commercial offer
-- [The Baseline Assessment](https://mos2es.org/killer-experiment): a 30-day controlled assessment, $15K — baseline, diagnose, intervene, re-measure, evidence report
+- [The Baseline Assessment](https://mos2es.org/baseline-assessment): a 30-day controlled assessment, $15K — baseline, diagnose, intervene, re-measure, evidence report
 - [Commercial Offer](https://mos2es.org/commercial-offer): the Baseline Assessment — a 30-day early access pilot starting at $15K
 
 ## Blog

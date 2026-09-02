@@ -40,7 +40,7 @@
         { url: '/about', title: 'About', keywords: ['about', 'company', 'ello cello', 'team'] },
         { url: '/contact', title: 'Contact', keywords: ['contact', 'demo', 'book', 'pilot', 'commercial'] },
         { url: '/faq', title: 'FAQ', keywords: ['faq', 'questions', 'answers', 'help'] },
-        { url: '/killer-experiment', title: 'Baseline Assessment', keywords: ['baseline', 'assessment', '15k', '30 days'] },
+        { url: '/baseline-assessment', title: 'Baseline Assessment', keywords: ['baseline', 'assessment', '15k', '30 days'] },
         { url: '/commercial-offer', title: 'Commercial Offer', keywords: ['commercial', 'offer', 'pilot', 'baseline'] }
       ];
       const matches = pages.filter(p =>
@@ -93,7 +93,7 @@
       properties: {
         page: {
           type: 'string',
-          enum: ['home', 'product', 'pilot', 'methodology', 'research', 'demo', 'docs', 'about', 'contact', 'faq', 'killer-experiment', 'commercial-offer'],
+          enum: ['home', 'product', 'pilot', 'methodology', 'research', 'demo', 'docs', 'about', 'contact', 'faq', 'baseline-assessment', 'commercial-offer'],
           description: 'The page to navigate to'
         }
       },
@@ -111,7 +111,7 @@
         'about': '/about',
         'contact': '/contact',
         'faq': '/faq',
-        'killer-experiment': '/killer-experiment',
+        'baseline-assessment': '/baseline-assessment',
         'commercial-offer': '/commercial-offer'
       };
       const path = pages[page] || '/';
