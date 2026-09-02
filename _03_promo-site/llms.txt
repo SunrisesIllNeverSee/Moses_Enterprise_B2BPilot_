@@ -27,30 +27,9 @@ the work that actually matters. The core commercial proposition:
 - [Privacy](https://mos2es.org/privacy): privacy policy — content-free token counts, pseudonymous operator IDs, no prompt text, no adverse employment decisions, data minimization
 
 ## Concept pages (definitions for AI engines)
-- [Leverage](https://mos2es.org/concepts/leverage): (R + W) / I — context reuse and building relative to new input
-- [Yield](https://mos2es.org/concepts/yield): O / (I + O + R + W) — productive output share of total token flow
-- [Token SNR](https://mos2es.org/concepts/token-snr): signal-to-noise ratio in AI operator token flow
-- [Construction](https://mos2es.org/concepts/construction): W / R — ratio of new context built to context reused
-- [Composite Score](https://mos2es.org/concepts/composite-score): AI Operator Development Index — 0-100, weighted (Leverage 30%, Yield 30%, Token SNR 20%, Construction 20%), DEVELOPMENTAL
-- [Divergence](https://mos2es.org/concepts/divergence): usage-operation divergence — identifies operators whose usage volume doesn't match performance
-- [Benchmark](https://mos2es.org/concepts/benchmark): 13 benchmark classes with selection algorithm
-- [Intervention](https://mos2es.org/concepts/intervention): targeted changes with pre/post re-measurement, ASSOCIATION
-- [Canonical Telemetry](https://mos2es.org/concepts/canonical-telemetry): INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free, no prompt text
-- [Governance](https://mos2es.org/concepts/governance): DEVELOPMENTAL/HYPOTHESIS/ASSOCIATION labels, no punitive use
-- [AI Evaluation](https://mos2es.org/concepts/ai-evaluation): what AI evaluation means and how MO§ES™ redefines it around the operator layer
-- [AI Evaluations](https://mos2es.org/concepts/ai-evaluations): the four layers of AI evaluations — model, output, safety, operator
-- [AI Agent Evaluation](https://mos2es.org/concepts/ai-agent-evaluation): evaluating autonomous AI agents and the humans who direct them
-- [AI Evaluator](https://mos2es.org/concepts/ai-evaluator): what an AI evaluator is and what MO§ES™ does differently
-- [AI Model Evaluation](https://mos2es.org/concepts/ai-model-evaluation): model evaluation vs operator evaluation — necessary but not sufficient
-- [AI Evaluation Frameworks](https://mos2es.org/concepts/ai-evaluation-frameworks): structured approaches from NIST AI RMF to MO§ES™
-- [Evaluating AI](https://mos2es.org/concepts/evaluating-ai): the operator layer is the missing piece in AI evaluation
-- [AI Evaluation Tools](https://mos2es.org/concepts/ai-evaluation-tools): the complete tools landscape across all four layers
-- [Best AI Evaluation Tools for Production](https://mos2es.org/concepts/best-ai-evaluation-tools-for-production): the complete production evaluation stack
-- [AI Evaluation Platform](https://mos2es.org/concepts/ai-evaluation-platform): what makes MO§ES™ different as an evaluation platform
-- [AI Model Safety Evaluation](https://mos2es.org/concepts/ai-model-safety-evaluation-benchmark-continuous-testing): safety benchmarks and continuous testing, extended to the operator layer
-- [Confirmation Hacking in AI Evaluation](https://mos2es.org/concepts/confirmation-hacking-ai-evaluation): when evaluation confirms what you already believe — and how content-free telemetry avoids it
-- [AI Evaluation News](https://mos2es.org/concepts/ai-evaluation-news): trends and developments in AI evaluation for 2026 — the shift from model benchmarks to operator evaluation
-- [AI Compliance Standards](https://mos2es.org/concepts/ai-compliance-standards): NIST AI RMF, EU AI Act, and how MO§ES™ governance maps to compliance requirements
+- [Canonical Metrics & Framework Definitions](https://mos2es.org/concepts/metrics): the eight Upsilon metrics (Yield (R×O)/I², SNR O/(I+O), Velocity O/I, Leverage R/I, 10xDEV log₁₀(L), Scale V log₁₀(total), Construction W/R, Efficiency) and five MO§ES™ framework definitions (Divergence, Benchmark, Intervention, Canonical Telemetry, Governance). Content-free token telemetry, formulas, governance labels.
+- [AI Evaluation — The Complete Landscape](https://mos2es.org/concepts/ai-evaluation): the four layers of AI evaluation (model, output, safety, operator), tools, frameworks, compliance standards, the production stack, and where MO§ES™ fits as the only operator-layer platform.
+- [Confirmation Hacking in AI Evaluation](https://mos2es.org/concepts/confirmation-hacking): when evaluation confirms what you already believe — cherry-picking, custom evaluators, ambiguous interpretation, stopping early. How content-free telemetry and governance labels avoid it.
 
 ## Guide pages
 - [How to Evaluate AI Operators](https://mos2es.org/guides/how-to-evaluate-ai-operators): step-by-step guide for enterprise teams

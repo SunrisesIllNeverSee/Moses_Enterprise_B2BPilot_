@@ -247,6 +247,33 @@ export default {
     const CONSOLIDATED = {
       '/alternatives/workera-alternatives': '/vs/workera',
       '/alternatives/worklytics-alternatives': '/vs/worklytics',
+      // Concept consolidation: 24 pages → 3 (metrics, ai-evaluation, confirmation-hacking)
+      // 10 metric/framework definition pages → /concepts/metrics
+      '/concepts/yield': '/concepts/metrics#yield',
+      '/concepts/leverage': '/concepts/metrics#leverage',
+      '/concepts/token-snr': '/concepts/metrics#snr',
+      '/concepts/construction': '/concepts/metrics#construction',
+      '/concepts/composite-score': '/concepts/metrics',
+      '/concepts/divergence': '/concepts/metrics#divergence',
+      '/concepts/benchmark': '/concepts/metrics#benchmark',
+      '/concepts/intervention': '/concepts/metrics#intervention',
+      '/concepts/canonical-telemetry': '/concepts/metrics#canonical-telemetry',
+      '/concepts/governance': '/concepts/metrics#governance',
+      // 13 AI evaluation landscape pages → /concepts/ai-evaluation
+      '/concepts/ai-evaluations': '/concepts/ai-evaluation',
+      '/concepts/ai-agent-evaluation': '/concepts/ai-evaluation',
+      '/concepts/ai-evaluator': '/concepts/ai-evaluation',
+      '/concepts/ai-model-evaluation': '/concepts/ai-evaluation',
+      '/concepts/ai-evaluation-frameworks': '/concepts/ai-evaluation',
+      '/concepts/evaluating-ai': '/concepts/ai-evaluation',
+      '/concepts/ai-evaluation-tools': '/concepts/ai-evaluation',
+      '/concepts/best-ai-evaluation-tools-for-production': '/concepts/ai-evaluation',
+      '/concepts/ai-evaluation-platform': '/concepts/ai-evaluation',
+      '/concepts/ai-model-safety-evaluation-benchmark-continuous-testing': '/concepts/ai-evaluation',
+      '/concepts/ai-evaluation-news': '/concepts/ai-evaluation',
+      '/concepts/ai-compliance-standards': '/concepts/ai-evaluation',
+      // confirmation-hacking-ai-evaluation → confirmation-hacking (clean URL)
+      '/concepts/confirmation-hacking-ai-evaluation': '/concepts/confirmation-hacking',
     };
     if (CONSOLIDATED[path]) {
       return Response.redirect(new URL(CONSOLIDATED[path], url.origin).toString(), 301);

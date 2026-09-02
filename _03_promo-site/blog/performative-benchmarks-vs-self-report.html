@@ -290,17 +290,17 @@
 
 <div class="grid3">
 <div class="card">
-<div class="big"><a href="../concepts/leverage" style="color:var(--ink);text-decoration:none">Leverage</a></div>
+<div class="big"><a href="../concepts/metrics" style="color:var(--ink);text-decoration:none">Leverage</a></div>
 <p class="formula" style="padding:4px 0">(R + W) / I</p>
 <p>How much context the operator reuses and builds relative to new input. Higher leverage means the operator is getting more mileage out of existing context rather than feeding fresh input every turn. It captures context reuse efficiency — the operator's ability to compound prior work instead of restarting from scratch.</p>
 </div>
 <div class="card">
-<div class="big"><a href="../concepts/yield" style="color:var(--ink);text-decoration:none">Yield</a></div>
+<div class="big"><a href="../concepts/metrics#yield" style="color:var(--ink);text-decoration:none">Yield</a></div>
 <p class="formula" style="padding:4px 0">O / (I + O + R + W)</p>
 <p>Productive output share of total token flow. Yield is the canonical metric: it asks what fraction of the entire token economy the operator converted into useful output. A high-yield operator turns a larger share of their token budget into results. A low-yield operator spends tokens on input and context management without converting them to output.</p>
 </div>
 <div class="card">
-<div class="big"><a href="../concepts/token-snr" style="color:var(--ink);text-decoration:none">Token SNR</a></div>
+<div class="big"><a href="../concepts/metrics#snr" style="color:var(--ink);text-decoration:none">Token SNR</a></div>
 <p class="formula" style="padding:4px 0">O / (I + O + R)</p>
 <p>Signal-to-noise ratio for productive generation. Token SNR measures output relative to input and reused context, excluding newly written context. It isolates the efficiency of the generation step itself — how much signal the operator extracts per unit of input and reused context, independent of how much new context they are building.</p>
 </div>
@@ -310,7 +310,7 @@
 <p>Iteration speed — how rapidly the operator cycles through turns within an evaluation window. Velocity captures the operator's cadence: how quickly they move from one turn to the next, how aggressively they iterate. High velocity without yield is churn; high velocity with yield is productive iteration.</p>
 </div>
 <div class="card">
-<div class="big"><a href="../concepts/construction" style="color:var(--ink);text-decoration:none">Construction</a></div>
+<div class="big"><a href="../concepts/metrics#construction" style="color:var(--ink);text-decoration:none">Construction</a></div>
 <p class="formula" style="padding:4px 0">W / R</p>
 <p>Ratio of new context built to context reused. Construction captures context building quality — whether the operator is writing fresh context (high construction) or leaning on reused context (low construction). Neither extreme is universally better. The right construction ratio depends on the task, the model, and the workflow.</p>
 </div>
@@ -354,7 +354,7 @@
 <div class="footer">
 <div class="footer-grid">
 <div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
-<div><a href="../demo">Demo</a><a href="../concepts/leverage">Concepts</a><a href="../guides/how-to-evaluate-ai-operators">Guides</a><a href="../faq">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../demo">Demo</a><a href="../concepts/metrics">Concepts</a><a href="../guides/how-to-evaluate-ai-operators">Guides</a><a href="../faq">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
 <div><a href="../contact">Contact</a><a href="../about">About</a><a href="../privacy">Privacy</a><a href="../docs">Docs</a><a href="../commercial-offer">Commercial Offer</a><a href="../pilot-readout">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
 </div>
 </div>

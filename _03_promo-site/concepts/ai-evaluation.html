@@ -3,244 +3,48 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI Evaluation — What It Means and How MO§ES™ Measures Operators — MO§ES™</title>
-<meta name="description" content="AI evaluation is the process of assessing how well AI systems and their human operators perform. MO§ES™ evaluates the operator layer using content-free token telemetry — no prompts, no outputs, no content inspection.">
+<title>AI Evaluation — The Complete Landscape — MO§ES™</title>
+<meta name="description" content="AI evaluation spans model benchmarks, output quality, safety testing, and operator performance. The four-layer landscape, tools, frameworks, compliance standards, and where MO§ES™ fits as the only operator-layer evaluation platform.">
 <link rel="canonical" href="https://mos2es.org/concepts/ai-evaluation">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:url" content="https://mos2es.org/concepts/ai-evaluation">
-<meta property="og:title" content="AI Evaluation — Measuring the Operator Layer">
-<meta property="og:description" content="AI evaluation is the process of assessing how well AI systems perform. MO§ES™ evaluates the human operator, not just the model.">
+<meta property="og:title" content="AI Evaluation — The Complete Landscape — MO§ES™">
+<meta property="og:description" content="The four layers of AI evaluation: model, output, safety, operator. Tools, frameworks, compliance, and where MO§ES™ fits.">
 <meta property="og:image" content="https://mos2es.org/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="MO§ES™">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI Evaluation — Measuring the Operator Layer">
-<meta name="twitter:description" content="AI evaluation redefined: measure the operator, not just the model.">
+<meta name="twitter:title" content="AI Evaluation — The Complete Landscape — MO§ES™">
+<meta name="twitter:description" content="The four layers of AI evaluation: model, output, safety, operator. Tools, frameworks, compliance, and where MO§ES™ fits.">
 <meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="../style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<script type="application/ld+json">[
+<script type="application/ld+json">
+[
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://mos2es.org/#org",
-    "name": "Ello Cello LLC",
-    "alternateName": "MO§ES™",
-    "url": "https://mos2es.org",
-    "logo": "https://mos2es.org/favicon.svg",
-    "description": "Enterprise AI operator evaluations and performative benchmarks. Content-free token telemetry measuring how humans operate AI systems.",
-    "founder": {
-      "@type": "Person",
-      "@id": "https://orcid.org/0009-0002-9904-5390",
-      "name": "Deric J McHenry",
-      "alternateName": "Deric McHenry",
-      "url": "https://orcid.org/0009-0002-9904-5390",
-      "sameAs": [
-        "https://orcid.org/0009-0002-9904-5390",
-        "https://x.com/burnmydays",
-        "https://www.linkedin.com/in/dericjmchenry",
-        "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
-        "https://github.com/SunrisesIllneverSee"
-      ]
-    },
-    "sameAs": [
-      "https://orcid.org/0009-0002-9904-5390",
-      "https://github.com/SunrisesIllneverSee",
-      "https://github.com/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_",
-      "https://doi.org/10.5281/zenodo.20029607",
-      "https://doi.org/10.5281/zenodo.19105224",
-      "https://doi.org/10.5281/zenodo.19109396",
-      "https://doi.org/10.5281/zenodo.19109397",
-      "https://doi.org/10.5281/zenodo.19102589",
-      "https://doi.org/10.5281/zenodo.18841110",
-      "https://doi.org/10.2139/ssrn.6734283",
-      "https://www.lens.org/lens/orcid/0009-0002-9904-5390",
-      "https://mos2es.com",
-      "https://signalaf.com",
-      "https://signomy.xyz",
-      "https://sigeconomy.com",
-      "https://enterprise.mos2es.org",
-      "https://mcp.mos2es.org",
-      "https://mcp.mos2es.org/.well-known/mcp/server-card.json",
-      "https://mos2es.org/.well-known/agent.json",
-      "https://mos2es.org/llms.txt",
-      "https://mos2es.org/openapi.json"
-    ],
-    "owns": [
-      {
-        "@type": "WebSite",
-        "name": "MO§ES™ Enterprise",
-        "url": "https://enterprise.mos2es.org"
-      },
-      {
-        "@type": "WebSite",
-        "name": "MO§ES™ MCP Server",
-        "url": "https://mcp.mos2es.org"
-      },
-      {
-        "@type": "WebSite",
-        "name": "SignalAF",
-        "url": "https://signalaf.com"
-      },
-      {
-        "@type": "WebSite",
-        "name": "Signomy",
-        "url": "https://signomy.xyz"
-      },
-      {
-        "@type": "WebSite",
-        "name": "SigEconomy",
-        "url": "https://sigeconomy.com"
-      }
-    ],
-    "knowsAbout": [
-      "AI operator evaluation",
-      "AI operator performance measurement",
-      "Content-free token telemetry",
-      "Performative benchmarks",
-      "Enterprise AI measurement",
-      "AI workforce analytics",
-      "AI operator benchmarking",
-      "AI operator interventions",
-      {
-        "@type": "Thing",
-        "name": "Artificial intelligence",
-        "sameAs": "https://www.wikidata.org/wiki/Q11660"
-      },
-      {
-        "@type": "Thing",
-        "name": "Large language model",
-        "sameAs": "https://www.wikidata.org/wiki/Q115305900"
-      },
-      {
-        "@type": "Thing",
-        "name": "Benchmark (computing)",
-        "sameAs": "https://www.wikidata.org/wiki/Q816747"
-      },
-      {
-        "@type": "Thing",
-        "name": "Telemetry",
-        "sameAs": "https://www.wikidata.org/wiki/Q209867"
-      },
-      {
-        "@type": "Thing",
-        "name": "Observability",
-        "sameAs": "https://www.wikidata.org/wiki/Q1369844"
-      },
-      {
-        "@type": "Thing",
-        "name": "Signal-to-noise ratio",
-        "sameAs": "https://www.wikidata.org/wiki/Q738628"
-      },
-      {
-        "@type": "Thing",
-        "name": "Return on investment",
-        "sameAs": "https://www.wikidata.org/wiki/Q939134"
-      },
-      {
-        "@type": "Thing",
-        "name": "Software testing",
-        "sameAs": "https://www.wikidata.org/wiki/Q188522"
-      },
-      {
-        "@type": "Thing",
-        "name": "Machine learning",
-        "sameAs": "https://www.wikidata.org/wiki/Q2539"
-      },
-      {
-        "@type": "Thing",
-        "name": "Workforce",
-        "sameAs": "https://www.wikidata.org/wiki/Q13440398"
-      }
-    ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://mos2es.org/#website",
-    "name": "MO§ES™",
-    "url": "https://mos2es.org",
-    "publisher": {
-      "@id": "https://mos2es.org/#org"
+    "@type": "Article",
+    "headline": "AI Evaluation — The Complete Landscape",
+    "description": "The four layers of AI evaluation: model, output, safety, operator. Tools, frameworks, compliance, and where MO§ES™ fits.",
+    "url": "https://mos2es.org/concepts/ai-evaluation",
+    "publisher": { "@id": "https://mos2es.org/#org" },
+    "about": {
+      "@type": "Thing",
+      "name": "AI evaluation",
+      "sameAs": "https://www.wikidata.org/wiki/Q11660"
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://mos2es.org/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Concepts",
-        "item": "https://mos2es.org/concepts/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "AI Evaluation",
-        "item": "https://mos2es.org/concepts/ai-evaluation"
-      }
-    ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "DefinedTerm",
-    "name": "AI Evaluation",
-    "description": "The systematic process of assessing AI system and operator performance. MO§ES™ evaluates the operator layer using content-free token telemetry.",
-    "url": "https://mos2es.org/concepts/ai-evaluation",
-    "inDefinedTermSet": {
-      "@type": "DefinedTermSet",
-      "name": "MO§ES™ Canonical Metrics",
-      "url": "https://mos2es.org/methodology"
-    }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is AI evaluation?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "AI evaluation is the systematic process of assessing the performance, capability, and behavior of AI systems. It includes model evaluation (benchmarks), output evaluation (quality), application evaluation (product context), and operator evaluation (how humans use AI)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the difference between model evaluation and operator evaluation?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Model evaluation assesses what an AI model can do in principle using benchmarks and test sets. Operator evaluation assesses how effectively humans use AI in real work. MO§ES™ focuses on operator evaluation using content-free token telemetry."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can you evaluate AI operators without reading their prompts?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. MO§ES™ uses only token-level telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. No prompt content or output content is needed. The structural patterns in token flow reveal how effectively an operator manages context, converts input to output, and builds on prior work."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What metrics does MO§ES™ use for AI evaluation?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "MO§ES™ computes five canonical derived metrics: Yield (productive output share), Leverage (context reuse), Token SNR (signal-to-noise), Construction (new vs reused context), and a Composite Score (0–100 AI Operator Development Index)."
-        }
-      }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mos2es.org/" },
+      { "@type": "ListItem", "position": 2, "name": "Concepts", "item": "https://mos2es.org/concepts/" },
+      { "@type": "ListItem", "position": 3, "name": "AI Evaluation", "item": "https://mos2es.org/concepts/ai-evaluation" }
     ]
   }
-]</script>
+]
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
 <script>
@@ -253,7 +57,7 @@
 <body>
 <div class="wrap">
 <nav>
-<b>MO§ES™</b>
+<b><a href="/" style="text-decoration:none;color:inherit">MO§ES™</a></b>
 <div class="links">
 <a href="../product">Product</a>
 <a href="../methodology">Methodology</a>
@@ -264,88 +68,216 @@
 <main>
 
 <div class="hero">
-<div class="eyebrow">Concept · Core Term</div>
+<div class="eyebrow">Concepts · AI Evaluation</div>
 <h1>AI evaluation, redefined around the operator.</h1>
-<p class="lead">AI evaluation is the process of assessing how well AI systems perform. But most AI evaluation focuses on the model — benchmarks, safety tests, output quality. MO§ES™ evaluates the other side: the human operator driving the AI. Content-free token telemetry measures how effectively people use AI in real work, not how well models score on tests.</p>
+<p class="lead">AI evaluation is not one thing. It spans four layers — model, output, safety, and operator. Most enterprises measure the first three and miss the fourth. MO§ES™ is the only platform that evaluates the human operator: the person between the model and the outcome, where performance variance actually lives.</p>
+<div class="tags">
+<span class="label dark-bg">4 LAYERS</span>
+<span class="label">TOOLS</span>
+<span class="label">FRAMEWORKS</span>
+<span class="label">COMPLIANCE</span>
+</div>
 </div>
 
+<!-- ═══ THE FOUR LAYERS ═══ -->
 <section>
-<div class="eyebrow">Definition</div>
-<h2>What is AI evaluation?</h2>
-<p class="sec-intro">AI evaluation is the systematic process of assessing the performance, capability, and behavior of artificial intelligence systems. It encompasses model evaluation, output quality assessment, safety benchmarking, and increasingly — operator evaluation.</p>
-<p>The term covers several distinct activities that are often conflated:</p>
-<ul class="tight">
-<li><strong>Model evaluation</strong> — benchmarking an AI model against test sets, measuring accuracy, safety, and capability. Examples: MMLU, HumanEval, LMSYS Chatbot Arena.</li>
-<li><strong>Output evaluation</strong> — assessing the quality of specific AI outputs: correctness, relevance, hallucination rate. Examples: DeepEval, Langfuse, Braintrust.</li>
-<li><strong>Application evaluation</strong> — testing AI features within a product context: latency, user satisfaction, error rates.</li>
-<li><strong>Operator evaluation</strong> — measuring how effectively humans use AI systems in real work. This is what MO§ES™ does.</li>
-</ul>
-<p style="margin-top:12px">The first three evaluate the AI. The fourth evaluates the person operating the AI. This distinction matters because in enterprise settings, the same model with the same capabilities produces dramatically different outcomes depending on who is operating it.</p>
+<div class="eyebrow">The Landscape</div>
+<h2>The four layers of AI evaluation.</h2>
+<p class="sec-intro">Every AI evaluation falls into one of four layers. Each measures a different object, answers a different question, and requires different tools. An enterprise AI program that measures only one or two layers is measuring blind.</p>
+<div class="grid2" style="margin-top:20px">
+<div class="card accent">
+<div class="num">LAYER 1</div>
+<div class="big">Model Evaluation</div>
+<p><strong>What it measures:</strong> The AI model itself — reasoning, knowledge, safety, bias, capabilities.</p>
+<p><strong>Question it answers:</strong> Is this model good?</p>
+<p><strong>Tools:</strong> MMLU, HumanEval, LMSYS Chatbot Arena, OpenAI Evals, BIG-Bench, HELM.</p>
+<p><strong>Limit:</strong> A 90th-percentile model can still produce poor results with a bad operator. Model evaluation is necessary but not sufficient.</p>
+</div>
+<div class="card blue">
+<div class="num">LAYER 2</div>
+<div class="big">Output Evaluation</div>
+<p><strong>What it measures:</strong> The quality of AI outputs — accuracy, relevance, hallucination rate, faithfulness.</p>
+<p><strong>Question it answers:</strong> Is this output good?</p>
+<p><strong>Tools:</strong> DeepEval, Braintrust, Langfuse, Ragas, Arize, Opik.</p>
+<p><strong>Limit:</strong> Output quality depends on the operator who generated it. Two operators using the same model produce different quality. Output evaluation tells you what came out, not who produced it or why.</p>
+</div>
+<div class="card green">
+<div class="num">LAYER 3</div>
+<div class="big">Safety Evaluation</div>
+<p><strong>What it measures:</strong> Safety properties — toxicity, bias, jailbreak resistance, harmful content, compliance.</p>
+<p><strong>Question it answers:</strong> Is this safe?</p>
+<p><strong>Tools:</strong> NIST AI RMF, Confident AI, Garak, red-teaming frameworks, EU AI Act compliance tools.</p>
+<p><strong>Limit:</strong> Safety is also an operator property. An operator who jailbreaks a model or bypasses safety guardrails is a safety risk — and model-level safety testing cannot detect that.</p>
+</div>
+<div class="card purple">
+<div class="num">LAYER 4</div>
+<div class="big">Operator Evaluation</div>
+<p><strong>What it measures:</strong> The human operating the AI system — how they use context, how efficiently they work, how their performance develops over time.</p>
+<p><strong>Question it answers:</strong> Is this person operating AI well?</p>
+<p><strong>Tools:</strong> MO§ES™. The only platform in this layer.</p>
+<p><strong>Method:</strong> Content-free token telemetry. Four token counts per interaction. Five canonical metrics. No prompt text, no output text, no surveillance.</p>
+</div>
+</div>
 </section>
 
+<!-- ═══ WHY THE OPERATOR LAYER MATTERS ═══ -->
 <section>
 <div class="eyebrow">The Gap</div>
-<h2>What most AI evaluation misses.</h2>
-<p class="sec-intro">The dominant approaches to AI evaluation share a common blind spot: they evaluate the tool, not the operator. They tell you whether the model is capable, not whether your people are using it effectively.</p>
-<div class="grid2">
-<div class="card">
-<div class="big">Model-centric evaluation</div>
-<p>Benchmarks like MMLU, HumanEval, and Chatbot Arena measure what the model can do in principle. They do not measure what your operators actually do with it. A model that scores 90th percentile on benchmarks can produce poor results when operated ineffectively.</p>
-</div>
-<div class="card">
-<div class="big">Operator-centric evaluation</div>
-<p>MO§ES™ measures the operator layer: how humans interact with AI in real sessions. Token telemetry reveals whether operators build context efficiently, reuse prior work, convert input to output, and improve over time. No prompts or outputs needed.</p>
-</div>
-</div>
-<p style="margin-top:16px">This is not a replacement for model evaluation. It is a complementary layer. Enterprises need both: know what your models can do, and know how well your people use them.</p>
+<h2>Evaluating AI without the operator is like evaluating a car without the driver.</h2>
+<p class="sec-intro">Model evaluation tells you the engine works. Output evaluation tells you the car moved. Safety evaluation tells you the brakes function. None of them tell you whether the driver knows what they're doing. The operator layer is where performance variance lives — and it's the layer almost no one measures.</p>
+<p>Consider two developers using the same Claude model on the same codebase. Developer A has high Yield and Leverage — efficient context use, productive output. Developer B has low Yield and high Divergence — lots of activity, poor results. Model evaluation says the model is fine. Output evaluation says some outputs are good and some aren't. Neither tells you <em>why</em>. Operator evaluation does: Developer B needs context structuring coaching, not a different model.</p>
 </section>
 
+<!-- ═══ AI AGENT EVALUATION ═══ -->
 <section>
-<div class="eyebrow">How MO§ES™ Approaches It</div>
-<h2>Content-free operator evaluation.</h2>
-<p class="sec-intro">MO§ES™ evaluates AI operators using only token-level telemetry — INPUT, OUTPUT, CACHE READ, and CACHE WRITE counts. No prompt content. No output content. No inspection of what was said.</p>
-<p>From these four primitives, MO§ES™ computes five canonical derived metrics:</p>
+<div class="eyebrow">Agent Layer</div>
+<h2>AI agent evaluation, extended to the human operator.</h2>
+<p class="sec-intro">AI agent evaluation measures autonomous agents — goal completion, reasoning quality, tool use, safety. But every agent has a human directing it. The missing layer in agent evaluation is the human who sets the goal, provides the context, reviews the output, and decides whether to iterate.</p>
+<p>MO§ES™ measures the human-agent collaboration at the session level via token telemetry. When an operator directs an autonomous agent, the same four primitives apply: input (the instruction), output (the agent's response), cache read (reused context), cache write (new context built). The five canonical metrics compute the same way. The operator's performance is measurable even when the agent is doing the execution.</p>
+</section>
+
+<!-- ═══ FRAMEWORKS ═══ -->
+<section>
+<div class="eyebrow">Frameworks</div>
+<h2>AI evaluation frameworks, from models to operators.</h2>
+<p class="sec-intro">Several frameworks structure AI evaluation. MO§ES™ extends them to the operator layer.</p>
+<table class="table">
+<tr><th>Framework</th><th>Scope</th><th>Operator layer?</th></tr>
+<tr><td><strong>NIST AI RMF</strong></td><td>Risk management across the AI lifecycle — govern, map, measure, manage.</td><td>Partial. The "Measure" function covers model and system performance but not human operator performance.</td></tr>
+<tr><td><strong>OpenAI Evals</strong></td><td>Model evaluation framework — benchmark tasks, human evaluation, automated scoring.</td><td>No. Evaluates the model, not the operator.</td></tr>
+<tr><td><strong>DeepEval</strong></td><td>Output evaluation framework — faithfulness, answer relevancy, hallucination detection.</td><td>No. Evaluates outputs, not the operator who generated them.</td></tr>
+<tr><td><strong>Braintrust</strong></td><td>Product evaluation — CI/CD for AI, regression testing, experiment tracking.</td><td>No. Evaluates the product, not the operator.</td></tr>
+<tr><td><strong>Anthropic Evals</strong></td><td>Model evaluation — safety, capability, alignment.</td><td>No. Evaluates the model.</td></tr>
+<tr><td><strong>MO§ES™</strong></td><td>Operator evaluation — content-free token telemetry, five canonical metrics, benchmarking, intervention testing, governance.</td><td>Yes. The only framework that evaluates the human operator.</td></tr>
+</table>
+<p style="margin-top:12px">The MO§ES™ framework answers six questions: <strong>what</strong> to measure (canonical metrics), <strong>how</strong> to measure (content-free token telemetry), <strong>how to interpret</strong> (percentile bands, benchmark classes), <strong>how to act</strong> (intervention testing with ASSOCIATION labels), <strong>governance</strong> (evidence and decision-use labels), and <strong>outcomes</strong> (lineage tracking with validation requirements).</p>
+</section>
+
+<!-- ═══ TOOLS ═══ -->
+<section>
+<div class="eyebrow">Tools</div>
+<h2>The production evaluation stack.</h2>
+<p class="sec-intro">A complete enterprise AI evaluation program needs all four layers. Here's the production stack — the best tools for each layer and what each does.</p>
+<div class="grid2" style="margin-top:20px">
+<div>
+<h3>Model Layer</h3>
+<ul class="tight">
+<li><strong>LMSYS Chatbot Arena</strong> — crowdsourced model preference ranking</li>
+<li><strong>OpenAI Evals</strong> — benchmark task suite for model capability</li>
+<li><strong>HELM</strong> — holistic evaluation across multiple dimensions</li>
+</ul>
+<h3 style="margin-top:16px">Output Layer</h3>
+<ul class="tight">
+<li><strong>Langfuse</strong> — LLM observability, tracing, trace-level scoring</li>
+<li><strong>Braintrust</strong> — AI product eval, regression testing in CI/CD</li>
+<li><strong>DeepEval</strong> — faithfulness, relevancy, hallucination detection</li>
+</ul>
+</div>
+<div>
+<h3>Safety Layer</h3>
+<ul class="tight">
+<li><strong>NIST AI RMF</strong> — risk management framework</li>
+<li><strong>Confident AI</strong> — safety and alignment testing</li>
+<li><strong>Garak</strong> — vulnerability scanning and red-teaming</li>
+</ul>
+<h3 style="margin-top:16px">Operator Layer</h3>
+<ul class="tight">
+<li><strong>MO§ES™</strong> — the only operator-layer evaluation platform</li>
+<li>Content-free token telemetry</li>
+<li>Five canonical metrics, 13 benchmark classes</li>
+<li>Intervention testing with governance labels</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:16px"><strong>Deployment order:</strong> Start with the layer that answers your most pressing question. If you don't know which model to use, start with model evaluation. If you're shipping an AI product, add output evaluation. If you're in a regulated industry, add safety evaluation. If you've deployed AI to your workforce and can't answer whether they're using it well — that's when you add MO§ES™.</p>
+</section>
+
+<!-- ═══ WHAT MAKES MOSES DIFFERENT ═══ -->
+<section>
+<div class="eyebrow">Platform</div>
+<h2>What makes MO§ES™ different as an evaluation platform.</h2>
 <div class="grid3">
-<div class="card"><div class="big"><a href="yield" style="color:var(--ink);text-decoration:none">Yield</a></div><p>Productive output share. O / (I + O + R + W).</p></div>
-<div class="card"><div class="big"><a href="leverage" style="color:var(--ink);text-decoration:none">Leverage</a></div><p>Context reuse and construction. (R + W) / I.</p></div>
-<div class="card"><div class="big"><a href="token-snr" style="color:var(--ink);text-decoration:none">Token SNR</a></div><p>Signal-to-noise ratio. O / (I + O + R).</p></div>
-<div class="card"><div class="big"><a href="construction" style="color:var(--ink);text-decoration:none">Construction</a></div><p>New context vs reused context. W / R.</p></div>
-<div class="card"><div class="big"><a href="composite-score" style="color:var(--ink);text-decoration:none">Composite Score</a></div><p>The 0–100 AI Operator Development Index.</p></div>
-<div class="card"><div class="big"><a href="divergence" style="color:var(--ink);text-decoration:none">Divergence</a></div><p>How far an operator deviates from cohort norms.</p></div>
+<div class="card"><div class="big">Content-Free</div><p>No prompt text. No output text. No conversation content. Four token counts per interaction. Privacy is structural, not policy-based.</p></div>
+<div class="card"><div class="big">Continuous</div><p>Measures real work sessions, not test environments. Every interaction is a data point. No synthetic benchmarks, no lab conditions.</p></div>
+<div class="card"><div class="big">Cohort-Relative</div><p>Performance is normalized within the operator's peer group. No absolute standards that ignore context. Fair comparison by design.</p></div>
+<div class="card"><div class="big">Developmental</div><p>Results carry evidence and decision-use labels. No punitive use. No employee ranking by name. Coaching-oriented, not surveillance-oriented.</p></div>
+<div class="card"><div class="big">Governed</div><p>Provenance tracked for every result. Evidence labels enforced. Intervention outcomes labeled ASSOCIATION, never CAUSATION without controlled experiments.</p></div>
+<div class="card"><div class="big">Accessible</div><p>CLI, TUI, MCP server, web dashboard, API. Operators can self-assess. Enterprises can deploy at scale. No black box.</p></div>
 </div>
-<p style="margin-top:16px">These metrics are labeled DERIVED. Their relationship to business outcomes is labeled ASSOCIATION, not CAUSATION, unless validated through controlled experiments. Results are DEVELOPMENTAL — they route workflows and interventions, not personnel actions.</p>
 </section>
 
+<!-- ═══ COMPLIANCE ═══ -->
 <section>
-<div class="eyebrow">Why It Matters</div>
-<h2>The operator layer is where ROI lives or dies.</h2>
-<p class="sec-intro">Enterprises invest in AI licenses, model access, and infrastructure. But the return on that investment depends on how effectively people use the tools they are given.</p>
-<p>A model evaluation tells you whether you bought the right tool. An operator evaluation tells you whether your investment is paying off. Both are necessary. Only the second one connects to workforce ROI.</p>
-<p style="margin-top:12px">MO§ES™ makes the operator layer measurable without inspecting content, without surveilling employees, and without relying on self-reporting. The telemetry is already being generated — every API call produces token counts. MO§ES™ turns that exhaust into signal.</p>
+<div class="eyebrow">Compliance</div>
+<h2>AI compliance standards, met with governed operator evaluation.</h2>
+<p class="sec-intro">AI compliance frameworks increasingly require evaluation of how AI is used, not just how AI models perform. MO§ES™ maps to the major standards.</p>
+<table class="table">
+<tr><th>Standard</th><th>What it requires</th><th>How MO§ES™ maps</th></tr>
+<tr><td><strong>NIST AI RMF</strong></td><td>Measure and Govern functions — continuous evaluation, risk management, documentation.</td><td>Operator evaluation fills the Measure gap for human-AI interaction. Governance labels map to Govern. Provenance provides documentation.</td></tr>
+<tr><td><strong>EU AI Act</strong></td><td>Post-market monitoring, human oversight, transparency for high-risk AI systems.</td><td>Continuous operator evaluation is post-market monitoring for the human side. Governance labels provide transparency. No surveillance by default aligns with oversight requirements.</td></tr>
+<tr><td><strong>ISO/IEC 42001</strong></td><td>AI management system — documentation, risk assessment, continuous improvement.</td><td>Provenance tracking, evidence labels, and intervention testing provide the documentation and improvement loop.</td></tr>
+<tr><td><strong>Privacy/Employment Law</strong></td><td>Data minimization, purpose limitation, no automated decision-making.</td><td>Content-free telemetry is data minimization by design. DEVELOPMENTAL label prohibits automated adverse employment actions. No prompt content means no PII risk from AI conversations.</td></tr>
+</table>
+</section>
+
+<!-- ═══ TRENDS ═══ -->
+<section>
+<div class="eyebrow">Trends</div>
+<h2>AI evaluation in 2026 — the shift to operator evaluation.</h2>
+<p class="sec-intro">The AI evaluation landscape is shifting. Model benchmarks are saturating. Enterprises are asking about ROI. Privacy-preserving telemetry is becoming the standard. Agent evaluation is emerging. And the operator layer — the human between model and outcome — is finally being measured.</p>
+<div class="grid2" style="margin-top:20px">
+<div>
+<h3>What's happening now</h3>
+<ul class="tight">
+<li><strong>Benchmark saturation.</strong> Model benchmarks are hitting ceilings. MMLU is near-saturated. The frontier has moved from "can the model do it" to "can the operator use it well."</li>
+<li><strong>ROI pressure.</strong> Enterprises that spent millions on AI licenses are being asked to prove returns. Usage dashboards don't answer the ROI question. Operator evaluation does.</li>
+<li><strong>Privacy-preserving telemetry.</strong> Content-free measurement is becoming the enterprise standard. No one wants to store prompt text. Token counts are enough.</li>
+</ul>
+</div>
+<div>
+<h3>What to watch</h3>
+<ul class="tight">
+<li><strong>Agent evaluation.</strong> As autonomous agents deploy, evaluating the human-agent collaboration loop becomes critical. MO§ES™ extends to this layer.</li>
+<li><strong>Continuous evaluation.</strong> One-time assessments are giving way to continuous measurement. Operator evaluation is inherently continuous — every session is a data point.</li>
+<li><strong>Governance and compliance.</strong> EU AI Act enforcement is driving demand for governed evaluation with provenance and evidence labels. MO§ES™ governance framework is designed for this.</li>
+<li><strong>Operator benchmarking.</strong> Public reference fields (SigRank) are emerging. Cohort-relative benchmarking against peer populations is becoming standard practice.</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Governance</div>
+<h2>What this is not.</h2>
+<ul class="tight">
+<li>Not a model evaluation. MO§ES™ does not evaluate AI models. Use LMSYS, OpenAI Evals, or HELM for that.</li>
+<li>Not an output evaluation. MO§ES™ does not score output quality. Use DeepEval, Braintrust, or Langfuse for that.</li>
+<li>Not a safety evaluation. MO§ES™ does not test for toxicity or jailbreaks. Use NIST AI RMF, Confident AI, or Garak for that.</li>
+<li>Not a replacement for any of the above. MO§ES™ is the fourth layer — the operator layer. It complements the other three. A complete enterprise AI evaluation program needs all four.</li>
+</ul>
 </section>
 
 <section>
 <div class="eyebrow">Related</div>
-<h2>Go deeper.</h2>
-<div class="grid3">
-<div class="card"><div class="big"><a href="ai-evaluation-frameworks" style="color:var(--ink);text-decoration:none">AI Evaluation Frameworks</a></div><p>The structured approaches used to evaluate AI systems and operators.</p></div>
-<div class="card"><div class="big"><a href="ai-evaluation-tools" style="color:var(--ink);text-decoration:none">AI Evaluation Tools</a></div><p>The landscape of tools for evaluating AI — models, outputs, and operators.</p></div>
-<div class="card"><div class="big"><a href="../methodology" style="color:var(--ink);text-decoration:none">Methodology</a></div><p>The full MO§ES™ evaluation framework.</p></div>
-</div>
-<div style="margin-top:16px">
-<a class="btn-outline" href="../vs/">See Competitor Comparisons</a>
-<a class="btn" href="../contact">Request a Pilot</a>
-</div>
+<h2>Go deeper</h2>
+<ul>
+<li><a href="metrics" style="color:var(--ink)">Canonical Metrics & Framework Definitions — formulas, interpretation, governance</a></li>
+<li><a href="confirmation-hacking" style="color:var(--ink)">Confirmation Hacking — how AI evaluation can go wrong</a></li>
+<li><a href="../methodology" style="color:var(--ink)">Methodology — the full eval framework</a></li>
+<li><a href="../product" style="color:var(--ink)">Product — what MO§ES™ benchmarks</a></li>
+<li><a href="../vs/" style="color:var(--ink)">Comparisons — MO§ES™ vs other AI evaluation tools</a></li>
+<li><a href="../alternatives/" style="color:var(--ink)">Alternatives — best AI evaluation tools by category</a></li>
+</ul>
 </section>
 
 </main>
 <div class="footer">
 <div class="footer-grid">
 <div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
-<div><a href="../demo">Demo</a><a href="../concepts/leverage">Concepts</a><a href="../guides/how-to-evaluate-ai-operators">Guides</a><a href="../faq">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../demo">Demo</a><a href="../concepts/metrics">Concepts</a><a href="../guides/how-to-evaluate-ai-operators">Guides</a><a href="../faq">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
 <div><a href="../contact">Contact</a><a href="../about">About</a><a href="../privacy">Privacy</a><a href="../docs">Docs</a><a href="../commercial-offer">Commercial Offer</a><a href="../pilot-readout">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
 </div>
 </div>
 </div>
-</div></body>
+</body>
 </html>

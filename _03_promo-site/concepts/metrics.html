@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Canonical Metrics & Framework Definitions — MO§ES™</title>
+<meta name="description" content="The Upsilon metrics (Yield, SNR, Velocity, Leverage, 10xDEV, Scale V, Construction, Efficiency) computed from four content-free token primitives, plus MO§ES™ framework definitions (Divergence, Benchmark, Intervention, Governance). Formulas, interpretation, and governance labels.">
+<link rel="canonical" href="https://mos2es.org/concepts/metrics">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mos2es.org/concepts/metrics">
+<meta property="og:title" content="Canonical Metrics & Framework Definitions — MO§ES™">
+<meta property="og:description" content="Upsilon metrics and MO§ES™ framework definitions. Content-free token telemetry, formulas, governance labels.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:site_name" content="MO§ES™">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Canonical Metrics & Framework Definitions — MO§ES™">
+<meta name="twitter:description" content="Upsilon metrics and MO§ES™ framework definitions. Content-free token telemetry, formulas, governance labels.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTermSet",
+    "name": "MO§ES™ Canonical Metrics and Framework Definitions",
+    "url": "https://mos2es.org/concepts/metrics",
+    "publisher": { "@id": "https://mos2es.org/#org" },
+    "hasDefinedTerm": [
+      { "@type": "DefinedTerm", "name": "Yield (Υ)", "description": "(cache_read × output) / input² — combined reuse and output relationship" },
+      { "@type": "DefinedTerm", "name": "SNR", "description": "output / (input + output) — output share of fresh input plus output" },
+      { "@type": "DefinedTerm", "name": "Velocity", "description": "output / input — output per fresh input" },
+      { "@type": "DefinedTerm", "name": "Leverage", "description": "cache_read / input — cache reuse per fresh input" },
+      { "@type": "DefinedTerm", "name": "10xDEV", "description": "log₁₀(leverage) — logarithmic cascade summary" },
+      { "@type": "DefinedTerm", "name": "Scale V", "description": "log₁₀(total tokens) — log token volume" },
+      { "@type": "DefinedTerm", "name": "Construction", "description": "cache_write / cache_read — new context built per read" },
+      { "@type": "DefinedTerm", "name": "Efficiency", "description": "(cache_read + cache_create + output) / input / 4 — display diagnostic" },
+      { "@type": "DefinedTerm", "name": "Divergence", "description": "Usage Rank − Evaluation Rank — diagnostic signal" },
+      { "@type": "DefinedTerm", "name": "Benchmark", "description": "13 benchmark classes with selection algorithm" },
+      { "@type": "DefinedTerm", "name": "Intervention", "description": "Targeted changes with pre/post re-measurement" },
+      { "@type": "DefinedTerm", "name": "Canonical Telemetry", "description": "INPUT, OUTPUT, CACHE READ, CACHE WRITE — content-free" },
+      { "@type": "DefinedTerm", "name": "Governance", "description": "DEVELOPMENTAL/HYPOTHESIS/ASSOCIATION labels, no punitive use" }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mos2es.org/" },
+      { "@type": "ListItem", "position": 2, "name": "Concepts", "item": "https://mos2es.org/concepts/" },
+      { "@type": "ListItem", "position": 3, "name": "Metrics & Definitions", "item": "https://mos2es.org/concepts/metrics" }
+    ]
+  }
+]
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ESTYRZKKH6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ESTYRZKKH6');
+</script>
+</head>
+<body>
+<div class="wrap">
+<nav>
+<b><a href="/" style="text-decoration:none;color:inherit">MO§ES™</a></b>
+<div class="links">
+<a href="../product">Product</a>
+<a href="../methodology">Methodology</a>
+<a href="../research">Research</a>
+<a href="../contact" style="font-weight:700;color:var(--accent,#c0392b)">Book a Demo</a>
+</div>
+</nav>
+<main>
+
+<div class="hero">
+<div class="eyebrow">Concepts · Metrics & Definitions</div>
+<h1>Canonical metrics and framework definitions.</h1>
+<p class="lead">The Upsilon measurement engine computes eight metrics from four content-free token primitives. The MO§ES™ governance framework adds diagnostic concepts for benchmarking, intervention testing, and governance labels. This page defines all of them — formulas, interpretation, and governance caveats.</p>
+<div class="tags">
+<span class="label dark-bg">8 UPSILON METRICS</span>
+<span class="label">5 FRAMEWORK DEFINITIONS</span>
+<span class="label">CONTENT-FREE</span>
+</div>
+</div>
+
+<!-- ═══ CANONICAL TELEMETRY (the primitives) ═══ -->
+<section>
+<div class="eyebrow">Primitives</div>
+<h2>Canonical token telemetry.</h2>
+<p class="sec-intro">All Upsilon metrics are computed from four token counts collected per AI interaction. No prompt text. No output text. No conversation content. The privacy model is structural, not policy-based: the content was never collected, so it cannot leak.</p>
+<table class="table">
+<tr><th>Primitive</th><th>Symbol</th><th>What it is</th></tr>
+<tr><td><strong>Input</strong></td><td class="formula">I</td><td>Fresh input tokens supplied to the model (prompt + context the operator provides)</td></tr>
+<tr><td><strong>Output</strong></td><td class="formula">O</td><td>Tokens generated by the model (the productive response)</td></tr>
+<tr><td><strong>Cache Read</strong></td><td class="formula">R</td><td>Tokens reused from prior context (cached input the operator leverages)</td></tr>
+<tr><td><strong>Cache Write</strong></td><td class="formula">W</td><td>New context written to cache for future reuse (context the operator builds)</td></tr>
+</table>
+<p class="note" style="margin-top:12px">Provider coverage: ChatGPT, Claude, Codex, Copilot, Cursor, MCP-connected tools. Telemetry is labeled <strong>MEASURED</strong> — it is observed directly, not derived. Derived metrics carry their own evidence labels. Client-safe implementations use <code>safeI = max(I, 1)</code> to avoid division-by-zero.</p>
+</section>
+
+<!-- ═══ THE CASCADE ═══ -->
+<section>
+<div class="eyebrow">The Cascade</div>
+<h2>From input to Yield: the token cascade.</h2>
+<p class="sec-intro">A cascade is the token-flow decomposition from fresh input through generated output, cache commitment, and cache reuse. Three cascade stages telescope into Yield — the signature Upsilon metric.</p>
+<table class="table">
+<tr><th>Stage</th><th>Formula</th><th>What it captures</th></tr>
+<tr><td><strong>Transmission</strong></td><td class="formula">O / I</td><td>Output per fresh input — how much signal the operator extracts from each unit of input</td></tr>
+<tr><td><strong>Commitment</strong></td><td class="formula">W / O</td><td>Cache creation per output — how much the operator invests in future context</td></tr>
+<tr><td><strong>Reuse</strong></td><td class="formula">R / W</td><td>Cache read per cache write — how efficiently the operator reuses what they built</td></tr>
+</table>
+<p style="margin-top:12px"><span class="formula" style="font-size:1.1em">Transmission × Commitment × Reuse = (O/I) × (W/O) × (R/W) = (R × O) / I² = Yield (Υ)</span></p>
+<p>The cascade telescopes: the intermediate terms cancel, and the product reduces to <strong>(cache_read × output) / input²</strong>. This is why Yield is the signature metric — it captures the entire cascade in a single number.</p>
+</section>
+
+<!-- ═══ THE EIGHT UPSILON METRICS ═══ -->
+<section>
+<div class="eyebrow">Upsilon Metrics</div>
+<h2>The eight.</h2>
+<p class="sec-intro">Each metric captures a different dimension of AI operator token-flow behavior. Together they form a complete picture of how a human operates an AI system, without ever reading a single prompt or output.</p>
+
+<h3 id="yield">Yield (Υ)</h3>
+<p><span class="formula" style="font-size:1.1em">Yield = (R × O) / max(I, 1)²</span></p>
+<p>Combined reuse and output relationship — how much reusable signal the operator creates from each unit of input. The signature Upsilon metric. Sensitive to small input denominators; plausibility checks matter. Client-safe implementation uses <code>safeI = max(I, 1)</code>.</p>
+<p><strong>Does NOT establish:</strong> Correctness, novelty, user satisfaction, economic value, code quality, safety, talent, effort, or intelligence. Yield measures a token-flow relationship, not a productivity or quality verdict.</p>
+<p><strong>How MO§ES™ uses it:</strong> Low Yield flags operators who either burn input without producing proportional output, or fail to reuse cached context. The recommended action depends on which cascade stage is weak — context structuring coaching for low Transmission, context caching workshops for low Reuse.</p>
+
+<h3 id="snr">Signal-to-Noise Ratio (SNR)</h3>
+<p><span class="formula" style="font-size:1.1em">SNR = O / (I + O)</span></p>
+<p>Output share of fresh input plus output. Measures the signal quality of the ongoing token exchange — how much of the fresh flow is productive output versus input. Returns 0 when the denominator is not positive.</p>
+<p><strong>Does NOT establish:</strong> Output quality. SNR measures the ratio, not whether the output is correct or useful.</p>
+<p><strong>How MO§ES™ uses it:</strong> Low SNR flags operators whose output is drowned by fresh input. The recommended action is prompt precision coaching — helping the operator reduce noise in their input strategy.</p>
+
+<h3 id="velocity">Velocity</h3>
+<p><span class="formula" style="font-size:1.1em">Velocity = O / max(I, 1)</span></p>
+<p>Output per fresh input. Measures how productively the operator converts input to output. Ignores cache creation cost — a high velocity achieved by never building context is not sustainable.</p>
+<p><strong>Does NOT establish:</strong> Ignores cache creation cost. Velocity alone doesn't tell you whether the operator is building reusable context or just burning input.</p>
+<p><strong>How MO§ES™ uses it:</strong> Velocity is the Transmission stage of the cascade. Low Velocity with high input flags operators who over-prompt without producing proportional output.</p>
+
+<h3 id="leverage">Leverage</h3>
+<p><span class="formula" style="font-size:1.1em">Leverage = R / max(I, 1)</span></p>
+<p>Cache reuse per fresh input. Measures how much the operator leverages previously built context rather than supplying fresh input. High leverage means the operator reuses cached context efficiently. Low leverage means more fresh input per interaction.</p>
+<p><strong>Does NOT establish:</strong> Causal leverage or business value. Leverage measures a token-flow ratio, not whether the reused context actually helped.</p>
+<p><strong>How MO§ES™ uses it:</strong> Low leverage flags operators who start from scratch every session. The recommended action is a context caching workshop — teaching the operator to reuse and build on prior context.</p>
+
+<h3 id="10xdev">10xDEV</h3>
+<p><span class="formula" style="font-size:1.1em">10xDEV = log₁₀(Leverage) = log₁₀(R / I)</span></p>
+<p>Logarithmic cascade summary. The product form <code>log₁₀((O/I) × (W/O) × (R/W))</code> algebraically simplifies to <code>log₁₀(R/I) = log₁₀(Leverage)</code> when I > 0. Unavailable for incomplete cascades — only valid when all four pillars are positive.</p>
+<p><strong>How MO§ES™ uses it:</strong> 10xDEV compresses the cascade into a single logarithmic score. A 10xDEV of 1 means Leverage of 10 (10× more cache reuse than fresh input). A 10xDEV of 2 means Leverage of 100. The log scale makes cohort comparison tractable.</p>
+
+<h3 id="scale-v">Scale V</h3>
+<p><span class="formula" style="font-size:1.1em">V = log₁₀(I + O + W + R)</span></p>
+<p>Log token volume. Measures the scale of the operator's AI usage — total tokens flowing through the system. Does not establish activity quality. A high V with low Yield is the divergence signature: lots of activity, poor efficiency.</p>
+<p><strong>How MO§ES™ uses it:</strong> V is the usage dimension for divergence analysis. Combined with evaluation rank, it identifies operators whose usage volume doesn't match their performance.</p>
+
+<h3 id="construction">Construction</h3>
+<p><span class="formula" style="font-size:1.1em">Construction = W / R</span></p>
+<p>How much new context the operator builds per read. Used in archetype classification. Greater than 1 means the operator builds more new context than they reuse. Less than 1 means they reuse more than they build. Neither direction is inherently better — construction describes the operator's context architecture pattern, not a quality verdict.</p>
+<p><strong>How MO§ES™ uses it:</strong> Extreme construction values flag operators whose context strategy may be imbalanced. The recommended action is a context architecture review — not a verdict, a diagnostic.</p>
+
+<h3 id="efficiency">Efficiency</h3>
+<p><span class="formula" style="font-size:1.1em">Efficiency = (R + W + O) / max(I, 1) / 4</span></p>
+<p>Display diagnostic. A policy choice, not a scientific universal. Combines cache read, cache write, and output relative to input, normalized by 4. Used for dashboard display and quick scanning, not for benchmarking or decisions.</p>
+<p><strong>Does NOT establish:</strong> Scientific universal. Efficiency is a display convenience, not a canonical metric. Use Yield, Leverage, and SNR for actual evaluation.</p>
+</section>
+
+<!-- ═══ FRAMEWORK DEFINITIONS ═══ -->
+<section>
+<div class="eyebrow">Framework Definitions</div>
+<h2>MO§ES™ supporting concepts.</h2>
+<p class="sec-intro">Beyond the eight Upsilon metrics, the MO§ES™ governance framework defines diagnostic concepts for identifying performance patterns, reference populations for benchmarking, experimental methods for testing interventions, and governance labels that ensure measurement is used developmentally, not punitively.</p>
+
+<h3 id="divergence">Divergence</h3>
+<p><span class="formula" style="font-size:1.1em">Divergence = Usage Rank − Evaluation Rank</span></p>
+<p>Usage rank is by Scale V (log token volume). Evaluation rank is by Yield or 10xDEV. Positive divergence means high usage, low performance — the operator is active but not effective. Negative divergence means low usage, high performance — the operator is efficient. Divergence is a diagnostic signal labeled <strong>HYPOTHESIS</strong>, not a verdict. It is task-dependent and should trigger investigation, not action.</p>
+<p><strong>How MO§ES™ uses it:</strong> High positive divergence flags operators who may need coaching despite appearing "active" on usage dashboards. High negative divergence identifies efficient operators whose practices may be worth sharing.</p>
+
+<h3 id="benchmark">Benchmark</h3>
+<p>A performative benchmark in MO§ES™ is defined as <span class="formula">TASK × MODEL × OPERATOR × CONTEXT</span>. The framework defines 13 benchmark classes:</p>
+<ol>
+<li><strong>Standard Metrics</strong> — the eight Upsilon metrics as baseline</li>
+<li><strong>Internal Cohort</strong> — comparison within the same organization</li>
+<li><strong>External Field</strong> — comparison against the public reference field (SigRank)</li>
+<li><strong>Bespoke Workflow</strong> — company-specific workflow evaluation</li>
+<li><strong>Longitudinal</strong> — same operator over time</li>
+<li><strong>Intervention</strong> — pre/post comparison around a targeted change</li>
+<li><strong>Role-Specific</strong> — comparison within a job function</li>
+<li><strong>Model-Specific</strong> — comparison across operators using the same model</li>
+<li><strong>Task-Specific</strong> — comparison on the same task type</li>
+<li><strong>Cross-Model</strong> — same operator across different models</li>
+<li><strong>Team-Level</strong> — aggregate team performance</li>
+<li><strong>Percentile Band</strong> — positioning within a reference distribution</li>
+<li><strong>Divergence</strong> — usage vs performance gap analysis</li>
+</ol>
+<p>Results are reported as percentile bands: 50th, 75th, 90th, 95th, 99th, 99.9th. The selection algorithm: define the question → identify scope → select classes → compute → report with bands.</p>
+
+<h3 id="intervention">Intervention</h3>
+<p>A targeted change to workflow, tooling, or training, measured with pre/post comparison. The target metric and follow-up window are declared <em>before</em> the intervention deploys. The framework defines 12 tested interventions:</p>
+<div class="grid2">
+<div>
+<ul class="tight">
+<li>Context Window Training</li>
+<li>Prompt Template Library</li>
+<li>Model Switching</li>
+<li>MCP Tool Access</li>
+<li>Workflow Restructuring</li>
+<li>Session Continuity</li>
+</ul>
+</div>
+<div>
+<ul class="tight">
+<li>Output Review Loop</li>
+<li>Provider Diversification</li>
+<li>Context Cleanup Protocol</li>
+<li>Construction Coaching</li>
+<li>Divergence Remediation</li>
+<li>Eval Family Alignment</li>
+</ul>
+</div>
+</div>
+<p style="margin-top:12px"><strong>Governance:</strong> Intervention outcomes are labeled <strong>ASSOCIATION</strong>, never <strong>CAUSATION</strong>. The pre/post design controls for some confounds but not all. A controlled experiment with a comparison group is required before claiming causation.</p>
+
+<h3 id="canonical-telemetry">Canonical Telemetry</h3>
+<p>The four content-free token primitives (I, O, R, W) defined above. What is collected: four token counts per interaction. What is not collected: prompt text, output text, conversation content, PII, code, transcripts. Telemetry is labeled <strong>MEASURED</strong> — directly observed, not derived. Provider coverage: ChatGPT, Claude, Codex, Copilot, Cursor, MCP-connected tools.</p>
+
+<h3 id="governance">Governance</h3>
+<p>The governance framework defines evidence labels and decision-use labels that constrain how measurement results can be used.</p>
+<h4>Evidence Labels</h4>
+<ul class="tight">
+<li><strong>PROVEN</strong> — established, replicated, peer-reviewed</li>
+<li><strong>MEASURED</strong> — directly observed from telemetry</li>
+<li><strong>OBSERVED</strong> — recorded but not directly measured</li>
+<li><strong>DERIVED</strong> — computed from measured values</li>
+<li><strong>HYPOTHESIS</strong> — proposed explanation, not yet tested</li>
+<li><strong>PILOT</strong> — early-stage, limited scope, not generalizable</li>
+</ul>
+<h4>Decision-Use Labels</h4>
+<ul class="tight">
+<li><strong>DEVELOPMENTAL</strong> — for coaching, training, improvement</li>
+<li><strong>ASSOCIATION</strong> — correlated, not causally established</li>
+<li><strong>VALIDATION REQUIRED</strong> — cannot be used for decisions without further validation</li>
+</ul>
+<h4>Core Constraints</h4>
+<ul class="tight">
+<li>No punitive use. No automatic adverse employment actions.</li>
+<li>No employee ranking by name in reports shared with management.</li>
+<li>No surveillance by default. No prompt or output content collection.</li>
+<li>No collapsing evidence levels (e.g., reporting HYPOTHESIS as PROVEN).</li>
+<li>No retroactive metric selection (declaring a metric significant only after seeing results).</li>
+</ul>
+<p style="margin-top:12px">Provenance is tracked for every result: source system, canon backing, authority approval reference. Privacy is structural — content was never collected, so it cannot leak.</p>
+</section>
+
+<section class="dark">
+<div class="eyebrow">Governance</div>
+<h2>What this is not.</h2>
+<ul class="tight">
+<li>Not a personnel evaluation system. Operators are measured by token-flow behavior, not ranked by name.</li>
+<li>Not a productivity claim. Metrics quantify token-flow relationships, not business outcomes.</li>
+<li>Not a leaderboard. No individual scores are published or shared with management by name.</li>
+<li>Not surveillance. No prompt content, no output text, no conversation content.</li>
+<li>Not a verdict. Every metric carries an evidence label. Every intervention result is ASSOCIATION, not CAUSATION, unless a controlled experiment proves otherwise.</li>
+<li>Not a quality measure. Upsilon measures a token-flow relationship. It does not measure correctness, novelty, user satisfaction, economic value, code quality, safety, talent, effort, or intelligence.</li>
+</ul>
+</section>
+
+<section>
+<div class="eyebrow">Related</div>
+<h2>Go deeper</h2>
+<ul>
+<li><a href="../methodology" style="color:var(--ink)">Methodology — the full eval framework</a></li>
+<li><a href="ai-evaluation" style="color:var(--ink)">AI Evaluation — the four-layer landscape</a></li>
+<li><a href="confirmation-hacking" style="color:var(--ink)">Confirmation Hacking — how evaluation can go wrong</a></li>
+<li><a href="../product" style="color:var(--ink)">Product — what MO§ES™ benchmarks</a></li>
+<li><a href="../guides/how-to-evaluate-ai-operators" style="color:var(--ink)">How to Evaluate AI Operators</a></li>
+</ul>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="../demo">Demo</a><a href="../concepts/metrics">Concepts</a><a href="../guides/how-to-evaluate-ai-operators">Guides</a><a href="../faq">FAQ</a><a href="../vs/">Comparisons</a><a href="../alternatives/">Alternatives</a></div>
+<div><a href="../contact">Contact</a><a href="../about">About</a><a href="../privacy">Privacy</a><a href="../docs">Docs</a><a href="../commercial-offer">Commercial Offer</a><a href="../pilot-readout">Pilot Readout</a><a href="../blog/">Blog</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</body>
+</html>
