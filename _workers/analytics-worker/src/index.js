@@ -228,6 +228,12 @@ export default {
       return handleWebVitals(request, env, queryHost);
     }
 
+    // ─── /api/analytics/mcp — MCP server usage stats ───────────────────
+    if (path === '/api/analytics/mcp' && method === 'GET') {
+      const queryHost = url.searchParams.get('host') || 'mcp.mos2es.org';
+      return handleMcpStats(request, env, queryHost, url);
+    }
+
     // ─── /api/analytics/cloudflare — proxy to CF GraphQL Analytics API ──
     if (path === '/api/analytics/cloudflare' && method === 'GET') {
       return handleCloudflareAnalytics(request, env, url);
@@ -403,6 +409,15 @@ async function handleBeacon(request, env, host) {
     if (aiReferrerEngine) {
       incr('referralByEngine', aiReferrerEngine);
       incr('referralByEngineByDay', today, aiReferrerEngine);
+    }
+    // MCP-specific tracking
+    if (body.rpcMethod) {
+      incr('mcpByMethod', body.rpcMethod);
+      incr('mcpByMethodByDay', today, body.rpcMethod);
+    }
+    if (body.toolName) {
+      incr('mcpByTool', body.toolName);
+      incr('mcpByToolByDay', today, body.toolName);
     }
 
     // ── Consolidated logs: 1 read + 1 write ──────────────────────────
@@ -771,6 +786,52 @@ async function handleRealtime(request, env, host) {
       todayBots: todayTotal - todayHuman,
     },
   });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// MCP Server Usage Stats
+// ═══════════════════════════════════════════════════════════════════════
+async function handleMcpStats(request, env, host, url) {
+  const days = parseInt(url.searchParams.get('days') || '7', 10);
+  const stats = { host, days, totals: {}, byMethod: {}, byTool: {}, byDay: {} };
+
+  if (!env.ANALYTICS_KV) return jsonResponse(stats);
+
+  const { counters, logs } = await loadConsolidated(env, host);
+  const today = new Date();
+
+  // MCP request totals
+  const mcpTotal = counters.byType?.mcp_request || 0;
+  stats.totals = { mcpRequests: mcpTotal };
+
+  // By RPC method
+  stats.byMethod = counters.mcpByMethod || {};
+
+  // By tool name
+  stats.byTool = counters.mcpByTool || {};
+
+  // By day
+  for (let i = 0; i < days; i++) {
+    const d = new Date(today.getTime() - i * 86400000).toISOString().slice(0, 10);
+    const dayCount = counters.byDayType?.[d]?.mcp_request || 0;
+    const methods = counters.mcpByMethodByDay?.[d] || {};
+    const tools = counters.mcpByToolByDay?.[d] || {};
+    stats.byDay[d] = { total: dayCount, byMethod: methods, byTool: tools };
+  }
+
+  // Recent MCP requests from event log
+  const eventLog = logs.eventLog || [];
+  stats.recentRequests = eventLog
+    .filter(e => e.type === 'mcp_request')
+    .slice(0, 50)
+    .map(e => ({
+      timestamp: e.timestamp,
+      path: e.path,
+      country: e.country,
+      userAgent: (e.userAgent || '').slice(0, 100),
+    }));
+
+  return jsonResponse(stats);
 }
 
 // ═══════════════════════════════════════════════════════════════════════

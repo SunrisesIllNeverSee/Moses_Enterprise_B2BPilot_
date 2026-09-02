@@ -2119,9 +2119,37 @@ function handleToolCall(name, args) {
   };
 }
 
+// ─── MCP analytics beacon ───────────────────────────────────────────
+const MCP_ANALYTICS_URL = 'https://moses-analytics.sigrank.workers.dev/api/analytics/beacon';
+
+async function fireMcpBeacon(request, path, rpcMethod, toolName) {
+  try {
+    const userAgent = request.headers.get('User-Agent') || '';
+    const cf = request.cf || {};
+    await fetch(MCP_ANALYTICS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'mcp_request',
+        path: path,
+        site: 'mcp.mos2es.org',
+        host: 'mcp.mos2es.org',
+        bot: null,
+        rpcMethod: rpcMethod || null,
+        toolName: toolName || null,
+        userAgent: userAgent.slice(0, 500),
+        country: cf.country || null,
+        city: cf.city || null,
+        colo: cf.colo || null,
+        referrer: request.headers.get('Referer') || null,
+      }),
+    });
+  } catch {}
+}
+
 // ─── MCP Streamable HTTP server ─────────────────────────────────────
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const method = request.method;
 
@@ -2134,6 +2162,12 @@ export default {
 
     if (method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders });
+    }
+
+    // Fire analytics beacon for non-MCP requests (health, server card, 404s)
+    // MCP protocol requests get a richer beacon inside the handler
+    if (url.pathname !== "/mcp" && url.pathname !== "/sse") {
+      ctx.waitUntil(fireMcpBeacon(request, url.pathname, null, null));
     }
 
     // Health check / info
@@ -2185,6 +2219,12 @@ export default {
       }
 
       const { jsonrpc, method: rpcMethod, params, id } = body;
+
+      // Extract tool name for analytics
+      const toolName = rpcMethod === "tools/call" ? params?.name : null;
+
+      // Fire analytics beacon with RPC details
+      ctx.waitUntil(fireMcpBeacon(request, url.pathname, rpcMethod, toolName));
 
       let result;
       switch (rpcMethod) {
