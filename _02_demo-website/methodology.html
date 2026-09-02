@@ -26,10 +26,14 @@
   {"@context":"https://schema.org","@type":"DefinedTermSet","name":"MO§ES™ Eval & Benchmark Glossary","url":"https://mos2es.org/methodology","hasDefinedTerm":[
     {"@type":"DefinedTerm","name":"Operator Evaluation","description":"Measures how a person or team actually operates AI systems across relevant tasks, workflows, models, and operating conditions","url":"https://mos2es.org/methodology#operator-eval"},
     {"@type":"DefinedTerm","name":"Performative Benchmark","description":"Compares how operators actually perform under observed or defined operating conditions rather than relying on self-reported proficiency or generic knowledge tests","url":"https://mos2es.org/methodology#benchmark"},
-    {"@type":"DefinedTerm","name":"Leverage","description":"(R + W) / I — how much context the operator reuses and builds relative to new input","url":"https://mos2es.org/methodology#leverage"},
-    {"@type":"DefinedTerm","name":"Yield","description":"O / (I + O + R + W) — productive output share of total token flow","url":"https://mos2es.org/methodology#yield"},
-    {"@type":"DefinedTerm","name":"Token SNR","description":"O / (I + O + R) — output relative to input and reused context","url":"https://mos2es.org/methodology#snr"},
-    {"@type":"DefinedTerm","name":"Construction","description":"W / R — ratio of new context built to context reused","url":"https://mos2es.org/methodology#construction"},
+    {"@type":"DefinedTerm","name":"Leverage","description":"R / I — cache reuse per fresh input","url":"https://mos2es.org/methodology#leverage"},
+    {"@type":"DefinedTerm","name":"Yield","description":"(R × O) / I² — how efficiently an operator converts input into output, boosted by cache reuse","url":"https://mos2es.org/methodology#yield"},
+    {"@type":"DefinedTerm","name":"Token SNR","description":"O / (I + O) — output share of fresh flow","url":"https://mos2es.org/methodology#snr"},
+    {"@type":"DefinedTerm","name":"10xDEV","description":"log₁₀(R / I) — logarithmic cascade summary of leverage","url":"https://mos2es.org/methodology#10xdev"},
+    {"@type":"DefinedTerm","name":"Construction","description":"W / R — new context per read","url":"https://mos2es.org/methodology#construction"},
+    {"@type":"DefinedTerm","name":"Velocity","description":"O / I — output per fresh input","url":"https://mos2es.org/methodology#velocity"},
+    {"@type":"DefinedTerm","name":"Scale V","description":"log₁₀(I + O + W + R) — log token volume","url":"https://mos2es.org/methodology#scale-v"},
+    {"@type":"DefinedTerm","name":"Efficiency","description":"(R + W + O) / I / 4 — display diagnostic, composite flow efficiency","url":"https://mos2es.org/methodology#efficiency"},
     {"@type":"DefinedTerm","name":"ASSOCIATION","description":"Outcome joins between interventions and business metrics are labeled ASSOCIATION, never CAUSATION","url":"https://mos2es.org/methodology#association"},
     {"@type":"DefinedTerm","name":"HYPOTHESIS","description":"Diagnoses carry evidence, alternatives, and HYPOTHESIS status — never presented as fact","url":"https://mos2es.org/methodology#hypothesis"},
     {"@type":"DefinedTerm","name":"DEVELOPMENTAL","description":"Production gate results route workflows, not people — never used for adverse employment actions","url":"https://mos2es.org/methodology#developmental"},
@@ -113,14 +117,17 @@
 <div class="stat"><div class="val">CACHE WRITE</div><div class="desc">New context built</div></div>
 </div>
 <p style="margin-top:16px">Level 2 deployments add: timestamps, sessions, model/tool/agent identifiers, acceptance signals, retries, errors, and richer provider fields where available. No prompt content is required for any core measurement.</p>
-<h3 style="margin-top:20px">Five canonical derived metrics</h3>
+<h3 style="margin-top:20px">Eight canon derived metrics</h3>
 <table class="table">
 <tr><th>Metric</th><th>Formula</th><th>What it captures</th></tr>
-<tr><td><strong>Leverage</strong></td><td class="formula" style="padding:4px 8px">(R + W) / I</td><td>How much context the operator reuses and builds relative to new input. Higher = more efficient context use.</td></tr>
-<tr><td><strong>Yield</strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R + W)</td><td>Productive output share of total token flow. Higher = more of the token budget becomes output.</td></tr>
-<tr><td><strong>Token SNR</strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R)</td><td>Output relative to input and reused context. Signal-to-noise ratio for productive generation.</td></tr>
-<tr><td><strong>Log Leverage</strong></td><td class="formula" style="padding:4px 8px">log(1 + L)</td><td>Compressed leverage scale. Reduces outlier dominance while preserving rank order.</td></tr>
-<tr><td><strong>Construction</strong></td><td class="formula" style="padding:4px 8px">W / R</td><td>Ratio of new context built to context reused. Higher = more original construction; lower = more reuse.</td></tr>
+<tr><td><strong>Yield (Υ)</strong></td><td class="formula" style="padding:4px 8px">(R × O) / I²</td><td>How efficiently an operator converts fresh input into useful output, boosted by cache reuse. The signature Upsilon metric.</td></tr>
+<tr><td><strong>Leverage</strong></td><td class="formula" style="padding:4px 8px">R / I</td><td>Cache reuse per fresh input. Higher = more efficient context reuse.</td></tr>
+<tr><td><strong>Token SNR</strong></td><td class="formula" style="padding:4px 8px">O / (I + O)</td><td>Output share of fresh flow. Higher = more of the token budget is useful output.</td></tr>
+<tr><td><strong>10xDEV</strong></td><td class="formula" style="padding:4px 8px">log₁₀(R / I)</td><td>Logarithmic cascade summary of leverage. Compresses heavy-tailed distributions.</td></tr>
+<tr><td><strong>Construction</strong></td><td class="formula" style="padding:4px 8px">W / R</td><td>New context per read. Higher = more original construction; lower = more reuse.</td></tr>
+<tr><td><strong>Velocity</strong></td><td class="formula" style="padding:4px 8px">O / I</td><td>Output per fresh input. Raw output productivity.</td></tr>
+<tr><td><strong>Scale V</strong></td><td class="formula" style="padding:4px 8px">log₁₀(I + O + W + R)</td><td>Log token volume. Overall scale of processing activity.</td></tr>
+<tr><td><strong>Efficiency</strong></td><td class="formula" style="padding:4px 8px">(R + W + O) / I / 4</td><td>Display diagnostic only. Composite flow efficiency.</td></tr>
 </table>
 <p class="note" style="margin-top:12px">I = Input, O = Output, R = Cache Read, W = Cache Write. All metrics are computed from canonical telemetry. No prompt content is required.</p>
 </section>

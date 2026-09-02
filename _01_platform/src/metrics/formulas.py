@@ -21,3 +21,16 @@ def log_leverage(I, R):
 def construction(R, W):
     if R <= 0: return None
     return W / R
+
+def velocity(I, O):
+    if I <= 0: return None
+    return O / I
+
+def scale_v(I, O, W, R):
+    total = I + O + W + R
+    if total <= 0: return None
+    return math.log10(total)
+
+def efficiency(I, O, R, W):
+    if I <= 0: return None
+    return (R + W + O) / I / 4

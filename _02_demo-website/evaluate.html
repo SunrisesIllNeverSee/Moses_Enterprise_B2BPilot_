@@ -87,36 +87,51 @@
 <!-- CORE METRICS -->
 <section>
 <div class="eyebrow">Core metrics</div>
-<h2>Five metrics. Each derived from the primitives.</h2>
-<p class="lead">From four primitives we construct five core metrics. Each has a construct definition, a mathematical definition, and a valid domain. Each is labeled MEASURED because it is computed directly from telemetry — not inferred.</p>
+<h2>Eight canon metrics. Each derived from the primitives.</h2>
+<p class="lead">From four primitives (input, output, cache write, cache read) we construct eight canon metrics. Each has a construct definition, a mathematical definition, and a valid domain. Each is labeled MEASURED because it is computed directly from telemetry — not inferred.</p>
 <table class="table">
 <thead>
 <tr><th>Metric</th><th>Definition</th><th>Status</th></tr>
 </thead>
 <tbody>
 <tr>
-<td><b>leverage</b></td>
-<td>Output tokens relative to net new input tokens. How much value the operator extracts per unit of input they author. High leverage = the operator makes the model do more with less new prompting.</td>
+<td><b>yield (Υ)</b></td>
+<td>(cache_read × output) / input². How efficiently an operator converts fresh input into useful output, boosted by cache reuse. The signature Upsilon metric. Cascade: Transmission × Commitment × Reuse.</td>
 <td><span class="label measured">measured</span></td>
 </tr>
 <tr>
-<td><b>yield</b></td>
-<td>Usable output tokens relative to total output tokens. How much of what the model generates is actually retained, committed, or carried forward. High yield = low waste.</td>
+<td><b>leverage</b></td>
+<td>cache_read / input. Cache reuse per fresh input. High leverage = the operator reuses prior context efficiently rather than re-prompting from scratch.</td>
 <td><span class="label measured">measured</span></td>
 </tr>
 <tr>
 <td><b>token_snr</b></td>
-<td>Signal-to-noise ratio across the token stream. Distinguishes productive tokens from redundant or discarded ones. High SNR = the operator's token budget is spent on signal.</td>
+<td>output / (input + output). Output share of fresh flow. High SNR = the operator's token budget is spent on useful output, not redundant input.</td>
 <td><span class="label measured">measured</span></td>
 </tr>
 <tr>
-<td><b>log_leverage</b></td>
-<td>Log-scaled leverage to normalize heavy-tailed distributions. Compresses extreme values so a few high-leverage sessions do not dominate the operator's profile.</td>
+<td><b>10xDEV</b></td>
+<td>log₁₀(leverage). Log-scaled leverage to normalize heavy-tailed distributions. Compresses extreme values so a few high-leverage sessions do not dominate the operator's profile.</td>
 <td><span class="label measured">measured</span></td>
 </tr>
 <tr>
 <td><b>construction</b></td>
-<td>Ratio of cache writes to total input. Measures how deliberately the operator builds reusable context versus re-prompting from scratch each turn.</td>
+<td>cache_write / cache_read. New context per read. Measures how much the operator builds fresh context versus reusing existing context.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>velocity</b></td>
+<td>output / input. Output per fresh input. Measures raw output productivity per token of fresh input.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>scale_v</b></td>
+<td>log₁₀(input + output + cache_write + cache_read). Log token volume — the overall scale of processing activity.</td>
+<td><span class="label measured">measured</span></td>
+</tr>
+<tr>
+<td><b>efficiency</b></td>
+<td>(cache_read + cache_write + output) / input / 4. Display diagnostic only — composite flow efficiency.</td>
 <td><span class="label measured">measured</span></td>
 </tr>
 </tbody>
@@ -128,7 +143,7 @@
 <section>
 <div class="eyebrow">Operator profile module</div>
 <h2>Every operator becomes a profile. Every label is traceable.</h2>
-<p class="lead">The operator profile is the core deliverable of evaluation. It aggregates the five core metrics plus derived fields — context reuse, stability, trajectory, volatility, and operating pattern — into a single traceable record.</p>
+<p class="lead">The operator profile is the core deliverable of evaluation. It aggregates the eight canon metrics plus derived fields — context reuse, stability, trajectory, volatility, and operating pattern — into a single traceable record.</p>
 <div class="profile-card">
 <div class="header">
 <div class="id">OPERATOR 031</div>
