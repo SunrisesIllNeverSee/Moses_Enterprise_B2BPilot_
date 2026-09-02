@@ -4,7 +4,7 @@
 
 You are continuing work on the MO§ES™ enterprise B2B pilot. The previous session consolidated 24 concept pages into 3, aligned metric formulas with the owner-approved canon, and committed everything (`862dfc2`).
 
-Full handoff: `_workspace/handoffs/2026-09-02-b2b-pilot-handoff.md`
+Full handoff: `_workspace/handoffs/2026-09-02-b2blead-handoff.md`
 Scratch notes: `_workspace/scratch/business-notes.md`
 
 ## Immediate priorities (in order)

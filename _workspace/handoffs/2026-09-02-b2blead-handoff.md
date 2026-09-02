@@ -1,4 +1,4 @@
-# B2B Pilot Handoff — 2026-09-02
+# B2B Lead Handoff — 2026-09-02
 
 ## Session chain
 
