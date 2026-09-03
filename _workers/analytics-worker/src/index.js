@@ -369,7 +369,14 @@ async function handleBeacon(request, env, host) {
   // Update KV — consolidated to minimize operations (free tier: 1000 writes/day)
   // Strategy: 1 read + 1 write for all counters, 1 read + 1 write for logs
   // = 4 operations per beacon (down from ~36)
+  // Throttle: skip KV writes for ~1 in 5 bot crawls to stay under daily write limit.
+  // Always write for human + MCP traffic (more valuable, lower volume).
   if (env.ANALYTICS_KV) {
+    if (botInfo && Math.random() < 0.2) {
+      // Skip KV write for this bot crawl — counters will be slightly undercounted
+      // but we stay under the 1000 writes/day free tier limit
+      return jsonResponse({ success: true, recorded: true, kvSkipped: true });
+    }
     const today = new Date().toISOString().slice(0, 10);
     const aiReferrerEngine = !botInfo ? detectAiReferrer(event.referrer) : null;
 
