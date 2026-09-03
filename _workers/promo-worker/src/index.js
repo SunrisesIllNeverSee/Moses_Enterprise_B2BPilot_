@@ -190,6 +190,20 @@ export default {
       ctx.waitUntil(fireBeacon(request, host, path, botInfo));
     }
 
+    // ─── Google site verification files — serve directly, no redirect ───
+    if (path.match(/^\/google[0-9a-f]{16}\.html$/)) {
+      const assetResponse = await env.ASSETS.fetch(new URL(path, url.origin));
+      if (assetResponse.ok) {
+        const content = await assetResponse.text();
+        return new Response(content, {
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Cache-Control': 'public, max-age=86400',
+          },
+        });
+      }
+    }
+
     // ─── 301 permanent redirects for trailing slash URLs ─────────────────
     // Cloudflare Pages returns 307 (temporary) by default — convert to 301
     // Skip root path, directory index pages (which need the slash)
