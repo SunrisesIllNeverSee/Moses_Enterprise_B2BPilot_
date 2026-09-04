@@ -181,6 +181,13 @@ export default {
       return new Response(null, { headers: corsHeaders() });
     }
 
+    // ─── /api/search — AI Search (RAG) endpoint ─────────────────────────
+    // Routes to the correct AI Search instance based on the request host.
+    // Supports both GET (query param) and POST (JSON body).
+    if (path === '/api/search') {
+      return handleSearch(request, env, host, url);
+    }
+
     // ─── /api/analytics/beacon — record event ───────────────────────────
     if (path === '/api/analytics/beacon' && method === 'POST') {
       return handleBeacon(request, env, host);
@@ -296,6 +303,94 @@ export default {
     return jsonResponse({ error: 'NOT_FOUND', path }, 404);
   },
 };
+
+// ═══════════════════════════════════════════════════════════════════════
+// AI Search — RAG-powered semantic search via Cloudflare AI Search bindings
+// ═══════════════════════════════════════════════════════════════════════
+
+// Map request hosts to AI Search bindings
+const HOST_TO_BINDING = {
+  'mos2es.org': 'MOSES_SEARCH',
+  'mos2es.com': 'MOSES_SEARCH',
+  'enterprise.mos2es.org': 'MOSES_SEARCH',
+  'mcp.mos2es.org': 'MOSES_SEARCH',
+  'sigeconomy.com': 'SIGECONOMY_SEARCH',
+  'signalaf.com': 'SIGNALAF_SEARCH',
+};
+
+async function handleSearch(request, env, host, url) {
+  // When proxied from the promo worker, use the original host
+  const originalHost = request.headers.get('X-Original-Host');
+  const effectiveHost = originalHost || host;
+  // Determine which AI Search instance to use
+  const bindingName = HOST_TO_BINDING[effectiveHost] || 'MOSES_SEARCH';
+  const searchBinding = env[bindingName];
+
+  if (!searchBinding) {
+    return jsonResponse({ error: 'AI Search not configured for this host', host }, 503);
+  }
+
+  // Parse query from GET params or POST body
+  let query, messages, limit = 5;
+  let retrievalOpts = {};
+
+  if (request.method === 'GET') {
+    query = url.searchParams.get('q') || url.searchParams.get('query');
+    const lim = url.searchParams.get('limit');
+    if (lim) limit = Math.min(parseInt(lim, 10) || 5, 20);
+  } else if (request.method === 'POST') {
+    try {
+      const body = await request.json();
+      query = body.query || body.q;
+      messages = body.messages;
+      if (body.limit) limit = Math.min(body.limit, 20);
+      if (body.retrieval) retrievalOpts = body.retrieval;
+    } catch {
+      return jsonResponse({ error: 'Invalid JSON body' }, 400);
+    }
+  }
+
+  if (!query && !messages) {
+    return jsonResponse({ error: 'Missing "query" or "messages" parameter' }, 400);
+  }
+
+  try {
+    const searchParams = {
+      ai_search_options: {
+        retrieval: {
+          max_num_results: limit,
+          ...retrievalOpts,
+        },
+      },
+    };
+
+    if (messages) {
+      searchParams.messages = messages;
+    } else {
+      searchParams.query = query;
+    }
+
+    const results = await searchBinding.search(searchParams);
+
+    // Format response — return chunks with scores and source URLs
+    const chunks = (results.chunks || []).map(c => ({
+      score: c.score,
+      text: c.text,
+      url: c.item?.key || null,
+      source: c.item?.key || null,
+    }));
+
+    return jsonResponse({
+      query: results.search_query || query,
+      host: effectiveHost,
+      instance: bindingName,
+      results: chunks,
+      count: chunks.length,
+    });
+  } catch (err) {
+    return jsonResponse({ error: 'Search failed', detail: err.message }, 500);
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════════════
 // Beacon — record a page view or agent event

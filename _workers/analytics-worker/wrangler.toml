@@ -7,33 +7,52 @@ workers_dev = true
 routes = [
   # mos2es.org
   { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "mos2es.org/api/search", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/dashboard", zone_name = "mos2es.org" },
   { pattern = "mos2es.org/dashboard/*", zone_name = "mos2es.org" },
   # enterprise.mos2es.org
   { pattern = "enterprise.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "enterprise.mos2es.org/api/search", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/dashboard", zone_name = "mos2es.org" },
   { pattern = "enterprise.mos2es.org/dashboard/*", zone_name = "mos2es.org" },
   # mcp.mos2es.org
   { pattern = "mcp.mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
+  { pattern = "mcp.mos2es.org/api/search", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/.well-known/agent*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/crawl-control*", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/dashboard", zone_name = "mos2es.org" },
   { pattern = "mcp.mos2es.org/dashboard/*", zone_name = "mos2es.org" },
   # mos2es.com
   { pattern = "mos2es.com/api/analytics/*", zone_name = "mos2es.com" },
+  { pattern = "mos2es.com/api/search", zone_name = "mos2es.com" },
   { pattern = "mos2es.com/.well-known/agent*", zone_name = "mos2es.com" },
   { pattern = "mos2es.com/crawl-control*", zone_name = "mos2es.com" },
   { pattern = "mos2es.com/dashboard", zone_name = "mos2es.com" },
   { pattern = "mos2es.com/dashboard/*", zone_name = "mos2es.com" },
+  # sigeconomy.com
+  { pattern = "sigeconomy.com/api/search", zone_name = "sigeconomy.com" },
 ]
 
 [[kv_namespaces]]
 binding = "ANALYTICS_KV"
 id = "eeebad0bd19c4cefadd032b6fcdcb72c"
+
+# AI Search bindings — one per domain
+[[ai_search]]
+binding = "MOSES_SEARCH"
+instance_name = "moses-search"
+
+[[ai_search]]
+binding = "SIGECONOMY_SEARCH"
+instance_name = "sigeconomy-search"
+
+[[ai_search]]
+binding = "SIGNALAF_SEARCH"
+instance_name = "signalaf-search"
 
 # Analytics Engine — enable in dashboard first:
 # https://dash.cloudflare.com/8251078af351cd5b19cb73a3435e446f/workers/analytics-engine

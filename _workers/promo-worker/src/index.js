@@ -262,6 +262,29 @@ export default {
     }
 
     // ─── JSON error responses for /api/* paths ───────────────────────────
+    // Exception: /api/search is proxied to the analytics worker (AI Search binding)
+    if (path === '/api/search') {
+      const searchUrl = new URL('https://moses-analytics.sigrank.workers.dev/api/search');
+      // Forward query params
+      url.searchParams.forEach((v, k) => searchUrl.searchParams.set(k, v));
+      const searchReq = new Request(searchUrl.toString(), {
+        method: request.method,
+        headers: { 'Content-Type': 'application/json' },
+        body: request.method === 'POST' ? await request.text() : undefined,
+      });
+      // Override host header so the analytics worker routes to the correct AI Search instance
+      searchReq.headers.set('X-Original-Host', host);
+      const searchResp = await fetch(searchReq);
+      return new Response(searchResp.body, {
+        status: searchResp.status,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-cache',
+        },
+      });
+    }
+
     if (path.startsWith('/api/') && !path.startsWith('/api/analytics/') && !path.startsWith('/api/openapi')) {
       const errorResponse = (status, code, message, resolution) => {
         return new Response(JSON.stringify({ error: code, message, resolution }), {
