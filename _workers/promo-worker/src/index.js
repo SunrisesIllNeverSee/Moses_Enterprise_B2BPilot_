@@ -326,6 +326,57 @@ export default {
       return Response.redirect(new URL('/favicon.svg', url.origin).toString(), 301);
     }
 
+    // ─── robots.txt — serve directly to bypass Cloudflare AI Scrapers toggle ─
+    // Cloudflare's "AI Scrapers and Crawlers" dashboard toggle prepends a managed
+    // block that disallows all AI bots. We serve the clean robots.txt from the
+    // worker to ensure AI crawlers can access the site.
+    if (path === '/robots.txt') {
+      const robotsBody = `User-agent: *
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# AI crawlers explicitly allowed
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: PerplexityBot-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://mos2es.org/sitemap.xml
+
+# ARD: Agentic Resource Discovery
+Agentmap: https://mos2es.org/.well-known/ai-catalog.json
+`;
+      return new Response(robotsBody, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'public, max-age=3600',
+        },
+      });
+    }
+
     // ─── Well-known discovery endpoints with correct Content-Types ───────
     // Serve from inline content first (reliable), fall back to assets
     if (WELL_KNOWN_INLINE[path]) {
