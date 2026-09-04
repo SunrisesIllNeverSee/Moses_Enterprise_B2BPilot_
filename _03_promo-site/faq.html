@@ -250,7 +250,7 @@
         "name": "What are the five canonical derived metrics?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The five canonical metrics are Leverage ((R+W)/I), Yield (O/(I+O+R+W)), Token SNR (O/(I+O+R)), Log Leverage (log(1+L)), and Construction (W/R). All are computed from canonical telemetry without requiring prompt content."
+          "text": "The five canonical metrics are Yield ((R×O)/I²), Leverage (R/I), Velocity (O/I), output_fraction (O/(I+O), displayed as SNR), and log_leverage (log10(R/I), displayed as 10xDEV). All are computed from canonical telemetry without requiring prompt content."
         }
       },
       {
@@ -377,7 +377,7 @@
 <h2>How operators are measured.</h2>
 
 <h3>What are the five canonical derived metrics?</h3>
-<p>The five canonical metrics are Leverage ((R+W)/I), Yield (O/(I+O+R+W)), Token SNR (O/(I+O+R)), Log Leverage (log(1+L)), and Construction (W/R). All are computed from canonical telemetry without requiring prompt content. Each metric captures a different aspect of the operator's token economy — context reuse efficiency, output share, signal quality, compressed leverage scale, and context construction ratio. Together they form the structural foundation for benchmarking and composite scoring.</p>
+<p>The five canonical metrics are Yield ((R×O)/I²), Leverage (R/I), Velocity (O/I), output_fraction (O/(I+O), displayed as SNR), and log_leverage (log10(R/I), displayed as 10xDEV). All are computed from canonical telemetry without requiring prompt content. Each metric captures a different aspect of the operator's token economy — combined reuse and output efficiency, cache reuse leverage, output generation rate, output share of total flow, and compressed leverage scale. Together they form the structural foundation for benchmarking and composite scoring.</p>
 
 <h3>What is the AI Operator Development Index?</h3>
 <p>The AI Operator Development Index is a 0–100 composite score combining Leverage (30%), Yield (30%), Token SNR (20%), and Construction (20%). It is labeled DEVELOPMENTAL — a structural signal for routing workflows, not a performance verdict or employee ranking. Each component is percentile-normalized within the cohort before weighting. Two operators with the same index score can have very different component profiles, which is why the index is a summary, not a substitute for reading the individual metrics.</p>
