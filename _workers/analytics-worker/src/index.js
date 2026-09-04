@@ -366,17 +366,11 @@ async function handleBeacon(request, env, host) {
     });
   }
 
-  // Update KV — consolidated to minimize operations (free tier: 1000 writes/day)
+  // Update KV — record every event, no throttling.
   // Strategy: 1 read + 1 write for combined counters+logs (single put)
-  // = 2 operations per beacon (down from 4)
-  // Throttle: skip KV writes for ~1 in 3 bot crawls to stay under daily write limit.
-  // Always write for human + MCP traffic (more valuable, lower volume).
+  // = 2 operations per beacon (down from 4 via consolidation)
+  // If KV limit is hit, upgrade to Workers Paid plan ($5/mo, 1M puts/day).
   if (env.ANALYTICS_KV) {
-    if (botInfo && Math.random() < 0.33) {
-      // Skip KV write for this bot crawl — counters will be slightly undercounted
-      // but we stay under the 1000 writes/day free tier limit
-      return jsonResponse({ success: true, recorded: true, kvSkipped: true });
-    }
     const today = new Date().toISOString().slice(0, 10);
     const aiReferrerEngine = !botInfo ? detectAiReferrer(event.referrer) : null;
 
@@ -1092,12 +1086,8 @@ async function handleCrawlerSelfReport(request, env, host) {
     });
   }
 
-  // Update KV — throttle to stay under free tier limit
+  // Update KV — record every crawler self-report, no throttling
   if (env.ANALYTICS_KV) {
-    // Skip 1 in 3 crawler self-reports to conserve KV writes
-    if (Math.random() < 0.33) {
-      return jsonResponse({ success: true, crawler: botInfo.bot, engine: botInfo.engine, kvSkipped: true });
-    }
     const logKey = `${host}:bot-log`;
     const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
     const log = JSON.parse(logRaw);
