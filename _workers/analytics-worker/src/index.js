@@ -367,12 +367,12 @@ async function handleBeacon(request, env, host) {
   }
 
   // Update KV — consolidated to minimize operations (free tier: 1000 writes/day)
-  // Strategy: 1 read + 1 write for all counters, 1 read + 1 write for logs
-  // = 4 operations per beacon (down from ~36)
-  // Throttle: skip KV writes for ~1 in 5 bot crawls to stay under daily write limit.
+  // Strategy: 1 read + 1 write for combined counters+logs (single put)
+  // = 2 operations per beacon (down from 4)
+  // Throttle: skip KV writes for ~2 in 3 bot crawls to stay under daily write limit.
   // Always write for human + MCP traffic (more valuable, lower volume).
   if (env.ANALYTICS_KV) {
-    if (botInfo && Math.random() < 0.2) {
+    if (botInfo && Math.random() < 0.67) {
       // Skip KV write for this bot crawl — counters will be slightly undercounted
       // but we stay under the 1000 writes/day free tier limit
       return jsonResponse({ success: true, recorded: true, kvSkipped: true });
@@ -473,11 +473,12 @@ async function handleBeacon(request, env, host) {
     logs.eventLog.unshift(event);
     logs.eventLog = logs.eventLog.slice(0, 200);
 
-    // Write both in parallel: 2 writes total
-    await Promise.all([
-      env.ANALYTICS_KV.put(counterKey, JSON.stringify(counters)),
-      env.ANALYTICS_KV.put(logKey, JSON.stringify(logs)),
-    ]);
+    // Write combined: 1 write total (counters + logs in a single KV value)
+    await env.ANALYTICS_KV.put(`${trackingHost}:data`, JSON.stringify({ counters, logs }));
+    // Also update legacy keys for backward compat (1 extra write, but only for human/MCP)
+    if (!botInfo) {
+      await env.ANALYTICS_KV.put(counterKey, JSON.stringify(counters));
+    }
   }
 
   return jsonResponse({ success: true, recorded: true });
@@ -487,6 +488,16 @@ async function handleBeacon(request, env, host) {
 // Helper: load consolidated counters + logs in 2 reads
 // ═══════════════════════════════════════════════════════════════════════
 async function loadConsolidated(env, host) {
+  // Try combined key first (new format), fall back to legacy split keys
+  const combinedRaw = await env.ANALYTICS_KV.get(`${host}:data`);
+  if (combinedRaw) {
+    const combined = JSON.parse(combinedRaw);
+    return {
+      counters: combined.counters || {},
+      logs: combined.logs || {},
+    };
+  }
+  // Legacy: read from separate keys
   const [counterRaw, logRaw] = await Promise.all([
     env.ANALYTICS_KV.get(`${host}:counters`),
     env.ANALYTICS_KV.get(`${host}:logs`),
@@ -1081,8 +1092,12 @@ async function handleCrawlerSelfReport(request, env, host) {
     });
   }
 
-  // Update KV
+  // Update KV — throttle to stay under free tier limit
   if (env.ANALYTICS_KV) {
+    // Skip 2 in 3 crawler self-reports to conserve KV writes
+    if (Math.random() < 0.67) {
+      return jsonResponse({ success: true, crawler: botInfo.bot, engine: botInfo.engine, kvSkipped: true });
+    }
     const logKey = `${host}:bot-log`;
     const logRaw = await env.ANALYTICS_KV.get(logKey) || '[]';
     const log = JSON.parse(logRaw);
@@ -1092,10 +1107,6 @@ async function handleCrawlerSelfReport(request, env, host) {
       selfReported: true, timestamp: event.timestamp,
     });
     await env.ANALYTICS_KV.put(logKey, JSON.stringify(log.slice(0, 100)));
-
-    const countKey = `${host}:bots:${event.bot}`;
-    const current = parseInt(await env.ANALYTICS_KV.get(countKey) || '0', 10);
-    await env.ANALYTICS_KV.put(countKey, String(current + (event.pagesCrawled || 1)));
   }
 
   return jsonResponse({ success: true, crawler: botInfo.bot, engine: botInfo.engine });
