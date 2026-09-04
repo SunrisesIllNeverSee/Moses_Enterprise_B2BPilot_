@@ -175,6 +175,30 @@ export default {
     const accept = request.headers.get('Accept') || '';
     const host = url.hostname;
 
+    // ─── Security: block path traversal and sensitive-file probes ──────
+    // These are scanner/bot attacks probing for env files, credentials,
+    // and server internals. Return 403 immediately — no logging, no beacon.
+    const SECURITY_PATTERNS = [
+      /^\/\.env/i,              // .env, .env.production, .env.docker, etc.
+      /^\/\.git/i,              // .git-credentials, .git/config, etc.
+      /^\/@fs\//i,              // Vite dev server path traversal
+      /^\/privatekey/i,         // private key files
+      /^\/bootstrap\.properties$/i,
+      /^\/serverless-state/i,
+      /^\/proc\/self\//i,       // /proc/self/environ
+      /^\/root\/\.env/i,
+      /\.(key|pem|pfx|p12)$/i,  // certificate/key files
+      /^\/wp-admin/i,           // WordPress admin (we don't run WP)
+      /^\/xmlrpc\.php$/i,       // WordPress XML-RPC
+      /^\/\.ssh\//i,            // SSH keys
+      /^\/\.aws\//i,            // AWS credentials
+    ];
+    for (const pattern of SECURITY_PATTERNS) {
+      if (pattern.test(path)) {
+        return new Response('Forbidden', { status: 403 });
+      }
+    }
+
     // ─── Server-side bot detection ─────────────────────────────────────
     // Detect bots on EVERY request — the JS beacon doesn't fire for crawlers
     const userAgent = request.headers.get('User-Agent') || '';
