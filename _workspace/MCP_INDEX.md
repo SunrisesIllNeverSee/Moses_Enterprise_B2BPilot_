@@ -199,16 +199,58 @@
 **Secondary:** `brave-search`, `context7`
 
 ### `1_application-hub` (AQUA / mos2es.xyz)
-**Primary:** `gsc-seo-mos2es-xyz`, `moses-search`, `web-scrape`
-**Secondary:** `context7`, `playwright`
+**Primary:** `gsc-seo-mos2es-xyz`, `moses-search`, `web-scrape`, `indexnow`
+**Secondary:** `context7`, `playwright`, `no-slop`, `ai-slop-checker`, `repomix`
+
+### `3_application-hub-test` (AQUA test harness)
+**Primary:** `playwright`, `chrome-devtools`, `context7`, `web-scrape`
+**Secondary:** `repomix`, `no-slop`, `ai-slop-checker`
 
 ### `SigRank-gtm` (outreach/GTM)
 **Primary:** `sigadmin`, `brave-search`, `web-scrape`, `screenpipe`
 **Secondary:** `crowdreply`, `posthog`
 
 ### `search-authority` (canon)
-**Primary:** `knowledge-graph`, `santismm-knowledge`, `markitdown`
-**Secondary:** `brave-search`, `gitmcp`
+**Primary:** `knowledge-graph`, `santismm-knowledge`, `markitdown`, `repomix`
+**Secondary:** `brave-search`, `gitmcp`, `context7`
+
+### `ello-repo-control` (estate control plane)
+**Primary:** `filesystem`, `gitmcp`, `repomix`, `knowledge-graph`
+**Secondary:** `brave-search`, `context7`
+
+### `stickypads` (operational board)
+**Primary:** `filesystem`, `knowledge-graph`
+**Secondary:** `context7`
+
+### `moses-integration` (framework/schema distribution)
+**Primary:** `knowledge-graph`, `repomix`, `markitdown`, `gitmcp`
+**Secondary:** `context7`, `brave-search`
+
+### `2_mos2es_signomy` (signomy bridge)
+**Primary:** `moses-search`, `web-scrape`, `markitdown`, `no-slop`, `ai-slop-checker`
+**Secondary:** `context7`, `brave-search`, `playwright`, `chrome-devtools`
+
+### Labs
+
+#### `1_matraix` (lab experiment)
+**Primary:** `ds-server`, `context7`, `repomix`
+**Secondary:** `brave-search`, `knowledge-graph`
+
+#### `wolfram-audit` (lab audit)
+**Primary:** `ds-server`, `context7`, `repomix`
+**Secondary:** `brave-search`, `markitdown`
+
+#### `upsilon_financial_integrity` (lab — financial integrity)
+**Primary:** `ds-server`, `context7`, `repomix`, `codebase-memory`
+**Secondary:** `brave-search`, `knowledge-graph`, `markitdown`
+
+#### `northstar` (lab)
+**Primary:** `ds-server`, `context7`, `repomix`
+**Secondary:** `brave-search`, `knowledge-graph`
+
+#### `3_commitment-test-harness` (commitment theory tests)
+**Primary:** `ds-server`, `context7`, `repomix`
+**Secondary:** `brave-search`, `knowledge-graph`
 
 ---
 
@@ -216,8 +258,8 @@
 
 These servers are configured but their tools could not be listed — likely need re-authentication:
 
-- `cloudflare` — re-auth at https://dash.cloudflare.com
-- `cloudflare-observability` — same Cloudflare account
+- ~~`cloudflare`~~ — **uninstalled** (removed from config, reinstall when ready)
+- ~~`cloudflare-observability`~~ — **uninstalled** (removed from config, reinstall when ready)
 - `supabase` — re-auth at https://supabase.com
 - `apify` — re-auth at https://apify.com
 - `skyvern` — check remote MCP connection
