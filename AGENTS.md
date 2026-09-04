@@ -86,3 +86,29 @@ dependencies) to orient yourself in 2-3 calls instead of reading files one
 by one. Useful for canon alignment audits (grep for formula implementations
 and compare against Search Authority definitions) and cross-repo consistency
 checks.
+
+
+## MCP Server Recommendations for This Repo
+
+Full index: `_workspace/MCP_INDEX.md`
+
+**Primary (use regularly):**
+- `moses-search` / `sigeconomy-search` / `signalaf-search` — AI Search bindings for all three domains
+- `posthog` — product analytics, traffic, events for deployed workers
+- `ds-server` — Plotly charts for operator telemetry visualization
+- `sigadmin` — operator admin (lookup, reparse, retire, CRM scan)
+- `codebase-memory` — index multi-worker repo for cross-file call tracing
+- `indexnow` — submit new/changed URLs to Bing/Yandex for instant indexing
+- `gsc-seo-mos2es-org` — Google Search Console data for mos2es.org
+
+**Secondary (use as needed):**
+- `context7` — verify Cloudflare Workers/KV/Hono API patterns before writing
+- `repomix` — pack codebase for handoffs or cross-repo audits
+- `knowledge-graph` — map MOSES ecosystem entities and relationships
+- `brave-search` — competitive research, find similar tools/benchmarks
+- `web-scrape` — extract content from competitor sites for comparison
+- `no-slop` / `ai-slop-checker` — check promo/demo copy for AI writing tells
+
+**Not needed here:**
+- `supabase` / `vercel` — those are for the sigrank-app repo
+- `blender` / `worldmonitor` — unrelated to this repo
