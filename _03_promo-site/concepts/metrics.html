@@ -99,22 +99,22 @@
 <tr><td><strong>Cache Read</strong></td><td class="formula">R</td><td>Tokens reused from prior context (cached input the operator leverages)</td></tr>
 <tr><td><strong>Cache Write</strong></td><td class="formula">W</td><td>New context written to cache for future reuse (context the operator builds)</td></tr>
 </table>
-<p class="note" style="margin-top:12px">Provider coverage: ChatGPT, Claude, Codex, Copilot, Cursor, MCP-connected tools. Telemetry is labeled <strong>MEASURED</strong> — it is observed directly, not derived. Derived metrics carry their own evidence labels. Client-safe implementations use <code>safeI = max(I, 1)</code> to avoid division-by-zero.</p>
+<p class="note" style="margin-top:12px">Provider coverage: ChatGPT, Claude, Codex, Copilot, Cursor, MCP-connected tools. Telemetry is labeled <strong>MEASURED</strong> — it is observed directly, not derived. Derived metrics carry their own evidence labels. <strong>Null semantics:</strong> per TTEOP, metrics with a zero or missing denominator are <code>null</code> (displayed as N/A), not zero or infinity. Some formulas below show <code>safeI = max(I, 1)</code> as a <em>legacy display calculation</em> for backward compatibility — this is not the canonical computation and should not be used in rankings or canonical exports.</p>
 </section>
 
 <!-- ═══ THE CASCADE ═══ -->
 <section>
 <div class="eyebrow">The Cascade</div>
 <h2>From input to Yield: the token cascade.</h2>
-<p class="sec-intro">A cascade is the token-flow decomposition from fresh input through generated output, cache commitment, and cache reuse. Three cascade stages telescope into Yield — the signature Upsilon metric.</p>
+<p class="sec-intro">A cascade is the token-flow decomposition from fresh input through generated output, cache commitment, and cache reuse. Three cascade stages telescope into Leverage, and Yield combines Leverage with Velocity — the signature Upsilon metric.</p>
 <table class="table">
 <tr><th>Stage</th><th>Formula</th><th>What it captures</th></tr>
 <tr><td><strong>Transmission</strong></td><td class="formula">O / I</td><td>Output per fresh input — how much signal the operator extracts from each unit of input</td></tr>
 <tr><td><strong>Commitment</strong></td><td class="formula">W / O</td><td>Cache creation per output — how much the operator invests in future context</td></tr>
 <tr><td><strong>Reuse</strong></td><td class="formula">R / W</td><td>Cache read per cache write — how efficiently the operator reuses what they built</td></tr>
 </table>
-<p style="margin-top:12px"><span class="formula" style="font-size:1.1em">Transmission × Commitment × Reuse = (O/I) × (W/O) × (R/W) = (R × O) / I² = Yield (Υ)</span></p>
-<p>The cascade telescopes: the intermediate terms cancel, and the product reduces to <strong>(cache_read × output) / input²</strong>. This is why Yield is the signature metric — it captures the entire cascade in a single number.</p>
+<p style="margin-top:12px"><span class="formula" style="font-size:1.1em">Transmission × Commitment × Reuse = (O/I) × (W/O) × (R/W) = R/I = Leverage</span></p>
+<p>The cascade telescopes: the intermediate terms (O and W) cancel, and the product reduces to <strong>cache_read / input</strong>, which is Leverage. Yield is then <strong>Velocity × Leverage = (O/I) × (R/I) = (R × O) / I²</strong>. This is why Yield is the signature metric — it combines both the cascade reuse (Leverage) and the output generation (Velocity) in a single number.</p>
 </section>
 
 <!-- ═══ THE EIGHT UPSILON METRICS ═══ -->
@@ -124,32 +124,32 @@
 <p class="sec-intro">Each metric captures a different dimension of AI operator token-flow behavior. Together they form a complete picture of how a human operates an AI system, without ever reading a single prompt or output.</p>
 
 <h3 id="yield">Yield (Υ)</h3>
-<p><span class="formula" style="font-size:1.1em">Yield = (R × O) / max(I, 1)²</span></p>
-<p>Combined reuse and output relationship — how much reusable signal the operator creates from each unit of input. The signature Upsilon metric. Sensitive to small input denominators; plausibility checks matter. Client-safe implementation uses <code>safeI = max(I, 1)</code>.</p>
+<p><span class="formula" style="font-size:1.1em">Yield = (R × O) / I²</span></p>
+<p>Combined reuse and output relationship — how much reusable signal the operator creates from each unit of input. The signature Upsilon metric. <strong>Null</strong> when input = 0 or cache_read is missing. Legacy display calculation: <code>(R × O) / max(I, 1)²</code> — labeled as legacy, not used in canonical rankings.</p>
 <p><strong>Does NOT establish:</strong> Correctness, novelty, user satisfaction, economic value, code quality, safety, talent, effort, or intelligence. Yield measures a token-flow relationship, not a productivity or quality verdict.</p>
 <p><strong>How MO§ES™ uses it:</strong> Low Yield flags operators who either burn input without producing proportional output, or fail to reuse cached context. The recommended action depends on which cascade stage is weak — context structuring coaching for low Transmission, context caching workshops for low Reuse.</p>
 
 <h3 id="snr">Signal-to-Noise Ratio (SNR)</h3>
 <p><span class="formula" style="font-size:1.1em">SNR = O / (I + O)</span></p>
-<p>Output share of fresh input plus output. Measures the signal quality of the ongoing token exchange — how much of the fresh flow is productive output versus input. Returns 0 when the denominator is not positive.</p>
+<p>Output share of fresh input plus output. Measures the signal quality of the ongoing token exchange — how much of the fresh flow is productive output versus input. <strong>Null</strong> when input + output = 0. The canonical TTEOP name is <code>output_fraction</code>; SNR is a display alias.</p>
 <p><strong>Does NOT establish:</strong> Output quality. SNR measures the ratio, not whether the output is correct or useful.</p>
 <p><strong>How MO§ES™ uses it:</strong> Low SNR flags operators whose output is drowned by fresh input. The recommended action is prompt precision coaching — helping the operator reduce noise in their input strategy.</p>
 
 <h3 id="velocity">Velocity</h3>
-<p><span class="formula" style="font-size:1.1em">Velocity = O / max(I, 1)</span></p>
-<p>Output per fresh input. Measures how productively the operator converts input to output. Ignores cache creation cost — a high velocity achieved by never building context is not sustainable.</p>
+<p><span class="formula" style="font-size:1.1em">Velocity = O / I</span></p>
+<p>Output per fresh input. Measures how productively the operator converts input to output. <strong>Null</strong> when input = 0. Legacy display calculation: <code>O / max(I, 1)</code>. Ignores cache creation cost — a high velocity achieved by never building context is not sustainable.</p>
 <p><strong>Does NOT establish:</strong> Ignores cache creation cost. Velocity alone doesn't tell you whether the operator is building reusable context or just burning input.</p>
 <p><strong>How MO§ES™ uses it:</strong> Velocity is the Transmission stage of the cascade. Low Velocity with high input flags operators who over-prompt without producing proportional output.</p>
 
 <h3 id="leverage">Leverage</h3>
-<p><span class="formula" style="font-size:1.1em">Leverage = R / max(I, 1)</span></p>
-<p>Cache reuse per fresh input. Measures how much the operator leverages previously built context rather than supplying fresh input. High leverage means the operator reuses cached context efficiently. Low leverage means more fresh input per interaction.</p>
+<p><span class="formula" style="font-size:1.1em">Leverage = R / I</span></p>
+<p>Cache reuse per fresh input. Measures how much the operator leverages previously built context rather than supplying fresh input. <strong>Null</strong> when input = 0 or cache_read is missing. Legacy display calculation: <code>R / max(I, 1)</code>. High leverage means the operator reuses cached context efficiently. Low leverage means more fresh input per interaction.</p>
 <p><strong>Does NOT establish:</strong> Causal leverage or business value. Leverage measures a token-flow ratio, not whether the reused context actually helped.</p>
 <p><strong>How MO§ES™ uses it:</strong> Low leverage flags operators who start from scratch every session. The recommended action is a context caching workshop — teaching the operator to reuse and build on prior context.</p>
 
 <h3 id="10xdev">10xDEV</h3>
 <p><span class="formula" style="font-size:1.1em">10xDEV = log₁₀(Leverage) = log₁₀(R / I)</span></p>
-<p>Logarithmic cascade summary. The product form <code>log₁₀((O/I) × (W/O) × (R/W))</code> algebraically simplifies to <code>log₁₀(R/I) = log₁₀(Leverage)</code> when I > 0. Unavailable for incomplete cascades — only valid when all four pillars are positive.</p>
+<p>Logarithmic cascade summary. The canonical TTEOP name is <code>log_leverage</code>; 10xDEV is a display alias. The product form <code>log₁₀((O/I) × (W/O) × (R/W))</code> algebraically simplifies to <code>log₁₀(R/I) = log₁₀(Leverage)</code> when I > 0. <strong>Null</strong> when input = 0, cache_read is missing, or any of the four pillars is zero. Unavailable for incomplete cascades — only valid when all four pillars are positive.</p>
 <p><strong>How MO§ES™ uses it:</strong> 10xDEV compresses the cascade into a single logarithmic score. A 10xDEV of 1 means Leverage of 10 (10× more cache reuse than fresh input). A 10xDEV of 2 means Leverage of 100. The log scale makes cohort comparison tractable.</p>
 
 <h3 id="scale-v">Scale V</h3>
@@ -163,8 +163,8 @@
 <p><strong>How MO§ES™ uses it:</strong> Extreme construction values flag operators whose context strategy may be imbalanced. The recommended action is a context architecture review — not a verdict, a diagnostic.</p>
 
 <h3 id="efficiency">Efficiency</h3>
-<p><span class="formula" style="font-size:1.1em">Efficiency = (R + W + O) / max(I, 1) / 4</span></p>
-<p>Display diagnostic. A policy choice, not a scientific universal. Combines cache read, cache write, and output relative to input, normalized by 4. Used for dashboard display and quick scanning, not for benchmarking or decisions.</p>
+<p><span class="formula" style="font-size:1.1em">Efficiency = (R + W + O) / I / 4</span></p>
+<p>Display diagnostic. A policy choice, not a scientific universal. Combines cache read, cache write, and output relative to input, normalized by 4. <strong>Null</strong> when input = 0. Legacy display calculation: <code>(R + W + O) / max(I, 1) / 4</code>. Used for dashboard display and quick scanning, not for benchmarking or decisions.</p>
 <p><strong>Does NOT establish:</strong> Scientific universal. Efficiency is a display convenience, not a canonical metric. Use Yield, Leverage, and SNR for actual evaluation.</p>
 </section>
 
