@@ -24,6 +24,8 @@ the work that actually matters. The core commercial proposition:
 - [FAQ](https://mos2es.org/faq): frequently asked questions about AI operator evaluation
 - [Docs](https://mos2es.org/docs): developer documentation — OpenAPI spec, MCP server with 27 tools, CLI, telemetry schema, governance constraints, demo instructions
 - [About](https://mos2es.org/about): MO§ES™ is an enterprise AI operator evaluation platform built by Deric J. McHenry — content-free token telemetry, no prompt text required
+- [Ecosystem](https://mos2es.org/ecosystem): complete domain map — mos2es.org (enterprise pilot), mos2es.com (governance framework), enterprise.mos2es.org (demo), mcp.mos2es.org (MCP server), signalaf.com (SigRank leaderboard), sigeconomy.com (satellite leaderboard), signomy.xyz (governed marketplace), mos2es.xyz (Application Hub)
+- [How to Engage](https://mos2es.org/engage): the pilot engagement process — discovery call, 30-day baseline assessment, bespoke evaluation design, intervention testing, re-evaluation, pilot readout. Escalation paths and contact flow.
 - [Privacy](https://mos2es.org/privacy): privacy policy — content-free token counts, pseudonymous operator IDs, no prompt text, no adverse employment decisions, data minimization
 
 ## Concept pages (definitions for AI engines)

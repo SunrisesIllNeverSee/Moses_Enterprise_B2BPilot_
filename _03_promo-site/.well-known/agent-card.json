@@ -23,7 +23,7 @@
     {
       "id": "operator-evaluation",
       "name": "operator-evaluation",
-      "description": "Evaluate AI operator performance across 5 canonical metrics: yield, leverage, token SNR, construction, divergence.",
+      "description": "Evaluate AI operator performance across 8 canonical metrics: yield, leverage, token SNR, log leverage, construction, velocity, scale V, efficiency.",
       "url": "https://mos2es.org/methodology"
     },
     {

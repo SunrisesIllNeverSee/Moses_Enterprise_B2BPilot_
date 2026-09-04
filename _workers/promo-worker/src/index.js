@@ -90,6 +90,8 @@ const MARKDOWN_PAGES = {
   '/research': 'research',
   '/contact': 'contact',
   '/about': 'about',
+  '/ecosystem': 'ecosystem',
+  '/engage': 'engage',
   '/privacy': 'privacy',
   '/docs': 'docs',
   '/demo': 'demo',

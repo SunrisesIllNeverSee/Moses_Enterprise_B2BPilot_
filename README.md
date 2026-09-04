@@ -15,7 +15,7 @@ MO§ES™ curates a company's system intelligence: how effectively people drive 
 [![enterprise](https://img.shields.io/badge/demo-enterprise.mos2es.org-blue.svg?style=flat-square)](https://enterprise.mos2es.org)
 [![MCP](https://img.shields.io/badge/MCP-27%20tools-green.svg?style=flat-square)](https://mcp.mos2es.org/mcp)
 [![demo](https://img.shields.io/badge/demo-11%20steps-orange.svg?style=flat-square)](https://mos2es.org/demo)
-[![tests](https://img.shields.io/badge/tests-527%20pass-brightgreen.svg?style=flat-square)](#run-the-test-suite)
+[![tests](https://img.shields.io/badge/tests-676%20pass-brightgreen.svg?style=flat-square)](#run-the-test-suite)
 [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](./LICENSE)
 [![deploy](https://img.shields.io/badge/deploy-Cloudflare-F38020.svg?style=flat-square&logo=cloudflare&logoColor=white)](https://cloudflare.com)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
@@ -38,7 +38,7 @@ MO§ES™ curates a company's system intelligence: how effectively people drive 
 - [Live surfaces](#live-surfaces)
 - [Quick start](#quick-start)
 - [The 11-step demo pipeline](#the-11-step-demo-pipeline)
-- [The 5 canonical metrics](#the-5-canonical-metrics)
+- [The 8 canonical metrics](#the-8-canonical-metrics)
 - [Repository structure](#repository-structure)
 - [MCP server](#mcp-server)
 - [Cloudflare Workers](#cloudflare-workers)
@@ -124,7 +124,7 @@ python3 -m src.cli.main demo full
 ```bash
 cd _01_platform
 python3 -m pytest tests/ -q
-# 527 tests pass
+# 676 tests pass
 ```
 
 ### Run the MCP server locally
@@ -180,15 +180,20 @@ curl -s -X POST https://mcp.mos2es.org/mcp \
 
 The demo runs on fully synthetic data. No real operators, no real prompt text, no real API calls. Deterministic: running twice produces identical results.
 
-## The 5 canonical metrics
+## The 8 canonical metrics
 
-| Metric | What it measures |
-|--------|-----------------|
-| **Yield** | Fraction of AI output that survives to committed state |
-| **Leverage** | Output value per token consumed |
-| **Token SNR** | Signal-to-noise ratio in token usage |
-| **Construction** | Fraction of output built incrementally vs replaced |
-| **Divergence** | Gap between usage patterns and operational patterns |
+| Metric | Formula | What it measures |
+|--------|---------|-----------------|
+| **Yield (Υ)** | `(R × O) / I²` | Productive output relative to input squared |
+| **Leverage** | `R / I` | Context reuse efficiency |
+| **Token SNR** | `O / (I + O)` | Signal-to-noise ratio in token usage |
+| **Log Leverage (10xDEV)** | `log₁₀(R / I)` | Leverage on a logarithmic scale |
+| **Construction** | `W / R` | New context built vs reused |
+| **Velocity** | `O / I` | Raw output efficiency |
+| **Scale V** | `log₁₀(I + O + W + R)` | Total volume on a log scale |
+| **Efficiency** | `(R + W + O) / I / 4` | Composite display metric |
+
+Where I = input, O = output, R = cache read, W = cache write.
 
 **15 evaluation families. 13 benchmark classes. 4 measurement levels (Operator, Team, Workflow, Organization).**
 
@@ -197,7 +202,7 @@ The demo runs on fully synthetic data. No real operators, no real prompt text, n
 ```
 _01_platform/          Python platform (the product)
   src/                 Source code (domain, metrics, analysis, diagnostics, CLI, MCP server)
-  tests/               527 tests
+  tests/               676 tests
   demo_data/           Synthetic demo cohort (50 operators, 1,668 observations)
   scripts/             Utility scripts
   schemas/             JSON schemas
@@ -302,7 +307,7 @@ MO§ES™ works alongside your existing BI, eval suites, observability tools, an
 | # | Pillar | What |
 |---|--------|------|
 | 1 | **Systems Intelligence** | MO§ES™ sees the human-AI operating system the way BI sees the business. Operator performance, workflow fit, tool selection, capability distribution, intervention outcomes, all measured from structure, not content. |
-| 2 | **Standard Operational Performative Metrics** | 5 canonical metrics. 15 eval families. 13 benchmark classes. 4 measurement levels. An open, documented spec for measuring how humans operate AI. The reference implementation is MO§ES™. |
+| 2 | **Standard Operational Performative Metrics** | 8 canonical metrics. 15 eval families. 13 benchmark classes. 4 measurement levels. An open, documented spec for measuring how humans operate AI. The reference implementation is MO§ES™. |
 | 3 | **Bespoke Enterprise Evals** | Your company should not inherit someone else's definition of AI proficiency. Evals built around your workflows, roles, models, and performance questions. |
 | 4 | **Complement, Don't Replace** | Works alongside your existing BI, eval suites, observability tools, and productivity analytics. The missing piece, not a replacement. |
 | 5 | **Privacy-First / Governance** | Content-free token telemetry. No prompt text. No surveillance. DEVELOPMENTAL / HYPOTHESIS / ASSOCIATION evidence labels on every output. Governance-ready out of the box. |

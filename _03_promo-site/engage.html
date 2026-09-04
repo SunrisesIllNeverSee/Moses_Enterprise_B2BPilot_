@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to Engage — MO§ES™ Pilot Process</title>
+<meta name="description" content="The MO§ES™ engagement process: discovery call, 30-day baseline assessment, bespoke evaluation design, intervention testing, re-evaluation, and pilot readout. How to go from first contact to measured outcomes.">
+<link rel="canonical" href="https://mos2es.org/engage">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mos2es.org/engage">
+<meta property="og:title" content="How to Engage — MO§ES™ Pilot Process">
+<meta property="og:description" content="Discovery call → 30-day baseline → bespoke eval design → intervention testing → re-evaluation → pilot readout. The complete engagement path.">
+<meta property="og:image" content="https://mos2es.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Engage — MO§ES™ Pilot Process">
+<meta name="twitter:description" content="Discovery call → baseline → intervention → re-evaluation → readout.">
+<meta name="twitter:image" content="https://mos2es.org/og-image.png">
+<meta property="og:site_name" content="MO§ES™">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "WebPage",
+    "name": "How to Engage — MO§ES™ Pilot Process",
+    "url": "https://mos2es.org/engage",
+    "description": "The MO§ES™ engagement process from first contact to measured outcomes.",
+    "isPartOf": { "@id": "https://mos2es.org/#website" }
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "HowTo",
+    "name": "MO§ES™ Enterprise Pilot Engagement",
+    "description": "How to go from first contact to measured AI operator outcomes with MO§ES™.",
+    "step": [
+      { "@type": "HowToStep", "name": "Discovery Call", "text": "Email pilots@mos2es.org to schedule a 30-minute discovery call. We discuss your team size, AI tools in use, and evaluation goals." },
+      { "@type": "HowToStep", "name": "30-Day Baseline Assessment", "text": "25–100 users, 30 days. We collect content-free token telemetry (input, output, cache read, cache write — no prompt text) and compute your baseline metrics." },
+      { "@type": "HowToStep", "name": "Bespoke Evaluation Design", "text": "We design evaluations around your specific workflows, not generic benchmarks. Diagnosis identifies capability gaps and intervention targets." },
+      { "@type": "HowToStep", "name": "Intervention Testing", "text": "Targeted interventions are tested against the baseline. We re-measure to determine what worked. All outcomes labeled ASSOCIATION, never CAUSATION, unless backed by controlled experiments." },
+      { "@type": "HowToStep", "name": "Pilot Readout", "text": "You receive a full pilot readout: baseline metrics, benchmark comparisons, diagnostic findings, intervention results, and recommended next steps." }
+    ],
+    "tool": [
+      { "@type": "HowToTool", "text": "Content-free token telemetry (input, output, cache read, cache write)" },
+      { "@type": "HowToTool", "text": "8 canonical metrics: yield, leverage, token SNR, log leverage, construction, velocity, scale V, efficiency" },
+      { "@type": "HowToTool", "text": "MCP server with 27 live-computed tools" }
+    ]
+  }
+]
+</script>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+<div class="hero-inner">
+<h1>How to Engage</h1>
+<p class="lead">From first contact to measured outcomes. The complete pilot process.</p>
+</div>
+</div>
+<div class="content">
+
+<main>
+
+<section>
+<div class="eyebrow">The Process</div>
+<h2>Five steps from contact to readout.</h2>
+<div class="pipeline" style="margin-top:18px;font-size:14px">
+<span>Discovery Call</span><span class="arrow">→</span>
+<span>Baseline</span><span class="arrow">→</span>
+<span>Diagnose</span><span class="arrow">→</span>
+<span>Intervene</span><span class="arrow">→</span>
+<span>Re-evaluate</span><span class="arrow">→</span>
+<span>Readout</span>
+</div>
+</section>
+
+<section>
+<h2>Step 1 — Discovery Call</h2>
+<p>Email <a href="mailto:pilots@mos2es.org" style="color:var(--ink)">pilots@mos2es.org</a> to schedule a 30-minute call. We discuss:</p>
+<ul>
+<li>Team size and structure (25–100 users for baseline)</li>
+<li>AI tools currently in use (Claude, Cursor, Copilot, Windsurf, etc.)</li>
+<li>What you want to measure (operator performance, workflow efficiency, intervention impact)</li>
+<li>Privacy and governance requirements</li>
+</ul>
+<p class="note">No commitment required. The call is to determine fit.</p>
+</section>
+
+<section>
+<h2>Step 2 — 30-Day Baseline Assessment</h2>
+<p>We collect <strong>content-free token telemetry</strong> from your team's AI tool usage. This means:</p>
+<ul>
+<li><strong>What we collect:</strong> input tokens, output tokens, cache read, cache write</li>
+<li><strong>What we do NOT collect:</strong> prompt text, response content, code content, or any personal data</li>
+<li><strong>How long:</strong> 30 days of passive observation</li>
+<li><strong>What you get:</strong> baseline metrics across 8 canonical measures</li>
+</ul>
+<p>The 8 canonical metrics computed from your baseline:</p>
+<div class="grid2" style="margin-top:14px">
+<div class="card"><div class="big">Yield (Υ)</div><p><code>(cache_read × output) / input²</code> — the signature metric. How much usable output you get relative to what you put in.</p></div>
+<div class="card"><div class="big">Leverage</div><p><code>cache_read / input</code> — how efficiently you reuse prior context.</p></div>
+<div class="card"><div class="big">Token SNR</div><p><code>output / (input + output)</code> — signal-to-noise ratio. What fraction of total tokens are useful output.</p></div>
+<div class="card"><div class="big">Log Leverage (10xDEV)</div><p><code>log₁₀(cache_read / input)</code> — leverage on a logarithmic scale. 10x = one order of magnitude.</p></div>
+<div class="card"><div class="big">Construction</div><p><code>cache_write / cache_read</code> — how much new context you build vs reuse.</p></div>
+<div class="card"><div class="big">Velocity</div><p><code>output / input</code> — raw output efficiency. Tokens out per token in.</p></div>
+<div class="card"><div class="big">Scale V</div><p><code>log₁₀(input + output + cache_write + cache_read)</code> — total volume on a log scale.</p></div>
+<div class="card"><div class="big">Efficiency</div><p><code>(cache_read + cache_write + output) / input / 4</code> — composite display metric.</p></div>
+</div>
+<p class="note" style="margin-top:14px">Composite scores are DEVELOPMENTAL, never PERSONNEL. No punitive use, no employee leaderboard.</p>
+</section>
+
+<section>
+<h2>Step 3 — Bespoke Evaluation Design</h2>
+<p>We design evaluations around <strong>your specific workflows</strong>, not generic benchmarks. This includes:</p>
+<ul>
+<li>Workflow-specific operator evaluation (your tools, your tasks)</li>
+<li>Internal benchmarking (how do your operators compare to each other?)</li>
+<li>External reference comparisons (how do your operators compare to the public SigRank field?)</li>
+<li>Capability gap diagnosis (where are the bottlenecks?)</li>
+</ul>
+</section>
+
+<section>
+<h2>Step 4 — Intervention Testing</h2>
+<p>Based on the diagnosis, we identify targeted interventions and test them:</p>
+<ul>
+<li>Training changes (prompt patterns, context management strategies)</li>
+<li>Tool configuration changes (model selection, context window settings)</li>
+<li>Workflow restructuring (task assignment, collaboration patterns)</li>
+</ul>
+<p>We re-measure after the intervention period to determine what worked. <strong>All outcomes are labeled ASSOCIATION, never CAUSATION</strong>, unless backed by controlled experiments.</p>
+</section>
+
+<section>
+<h2>Step 5 — Pilot Readout</h2>
+<p>You receive a full <a href="pilot-readout" style="color:var(--ink)">pilot readout</a> that includes:</p>
+<ul>
+<li>Baseline metrics and percentile bands</li>
+<li>Internal and external benchmark comparisons</li>
+<li>Diagnostic findings and capability gap analysis</li>
+<li>Intervention results (what worked, what didn't)</li>
+<li>Recommended next steps for ongoing measurement</li>
+</ul>
+</section>
+
+<section>
+<div class="eyebrow">Escalation</div>
+<h2>Human escalation paths.</h2>
+<div class="grid2">
+<div class="card">
+<div class="big">Pilot Inquiries</div>
+<p><a href="mailto:pilots@mos2es.org" style="color:var(--ink)">pilots@mos2es.org</a><br>For enterprise pilot discussions, scheduling, and process questions.</p>
+</div>
+<div class="card">
+<div class="big">MCP Write Operations</div>
+<p>The MCP server has 5 write tools that require authorization. Contact us to provision API credentials for automated pilot data submission.</p>
+</div>
+<div class="card">
+<div class="big">Technical Questions</div>
+<p><a href="docs" style="color:var(--ink)">Read the docs</a> or connect to the <a href="https://mcp.mos2es.org/mcp" style="color:var(--ink)">MCP server</a> for technical integration questions.</p>
+</div>
+<div class="card">
+<div class="big">General Contact</div>
+<p><a href="contact" style="color:var(--ink)">Contact form</a> for any other inquiries.</p>
+</div>
+</div>
+</section>
+
+<section>
+<h2>Ready to start?</h2>
+<p>Email <a href="mailto:pilots@mos2es.org" style="color:var(--ink)">pilots@mos2es.org</a> or review the <a href="pilot" style="color:var(--ink)">30-day baseline assessment details</a>.</p>
+</section>
+
+</main>
+<div class="footer">
+<div class="footer-grid">
+<div><b>MO§ES™</b><p class="note">Enterprise AI operator evaluations and performative benchmarks.</p></div>
+<div><a href="index">Home</a><a href="product">Product</a><a href="pilot">Pilot</a><a href="methodology">Methodology</a><a href="research">Research</a></div>
+<div><a href="demo">Demo</a><a href="concepts/metrics">Concepts</a><a href="guides/how-to-evaluate-ai-operators">Guides</a><a href="faq">FAQ</a><a href="vs/">Comparisons</a><a href="alternatives/">Alternatives</a></div>
+<div><a href="contact">Contact</a><a href="about">About</a><a href="ecosystem">Ecosystem</a><a href="engage">Engage</a><a href="privacy">Privacy</a><a href="docs">Docs</a><a href="baseline-assessment">Baseline Assessment</a><a href="commercial-offer">Pricing</a><p class="note" style="margin-top:8px">© 2026 Ello Cello LLC. All Rights Reserved.</p></div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
