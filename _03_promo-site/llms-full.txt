@@ -1,0 +1,178 @@
+# MO§ES™
+
+> Enterprise AI operator evaluations and performative benchmarks.
+
+MO§ES™ evaluates how people operate AI and benchmarks their performance against
+the work that actually matters. The core commercial proposition:
+
+1. Evaluate the humans operating AI systems.
+2. Benchmark how those operators actually perform.
+3. Build bespoke company-specific evals around real workflows, tasks, models, and roles.
+4. Compare operators, cohorts, teams, and operating patterns against relevant benchmarks.
+5. Design targeted interventions.
+6. Re-measure performance after intervention.
+
+## Architecture
+
+**MO§ES → Upsilon → SigRank | SignalAF**
+
+- **MO§ES™**: governance framework / methodology
+- **Upsilon**: enterprise measurement engine (the engine that measures)
+- **SigRank**: public leaderboard / benchmark / proof surface (live at signalaf.com)
+- **SignalAF**: public distribution / platform brand
+- **TTEOP**: Token Telemetry Evaluation Operator Protocol — the sole interoperability protocol authority. The legacy sigrank/0.1-draft wire identifier remains an accepted compatibility alias resolving to current TTEOP semantics.
+
+## Canonical Metrics (TTEOP)
+
+Five canonical metrics derived from four token primitives (I=input, O=output, W=cache_write, R=cache_read):
+
+- **Yield (Υ)** = (R × O) / I² — compound reuse and output relationship. The signature metric. Null when input=0.
+- **Leverage** = R / I — cache reuse per fresh input. Null when input=0.
+- **Velocity** = O / I — output per fresh input. Null when input=0.
+- **output_fraction** (displayed as SNR) = O / (I + O) — output share of fresh flow. Null when input+output=0. Note: SNR is a display alias; the canonical TTEOP name is output_fraction.
+- **log_leverage** (displayed as 10xDEV) = log₁₀(R / I) — leverage on a readable scale. Null when input=0 or any pillar is zero. 10xDEV is a display alias; the canonical TTEOP name is log_leverage.
+
+The cascade: (O/I)(W/O)(R/W) = R/I = Leverage. Yield = Velocity × Leverage = (O/I)(R/I) = (R×O)/I².
+
+Additional Upsilon display metrics (not TTEOP canonical):
+- **Scale V** = log₁₀(I + O + W + R) — log token volume
+- **Construction** = W / R — context building ratio
+- **Efficiency** = (R + W + O) / I / 4 — display diagnostic only
+
+Null semantics per TTEOP: metrics with a zero or missing denominator are null (displayed as N/A), not zero or infinity. Legacy display calculations using safeI=max(I,1) are labeled as legacy and not used in canonical rankings.
+
+## Core pages
+- [Home](https://mos2es.org/): evaluate the humans operating your AI
+- [Product](https://mos2es.org/product): 14 modules — operator evals, performative benchmarks, bespoke evals, operator intelligence, org AI topology, workflow fit, operator × model fit, team composition, capability dependency risk, operator similarity, AI learning curves, experiment as product, intervention + re-evaluation, governance
+- [Pilot](https://mos2es.org/pilot): 30-day enterprise operator eval pilot — 25–100 users, 7-step sequence (instrument, baseline, bespoke evals, benchmark, diagnose, intervene, re-evaluate), 6 benchmark types, 12 commercial pilots, 15 eval families, configurator
+- [Methodology](https://mos2es.org/methodology): the eval framework — 5 questions, canonical telemetry, derived metrics, percentile bands, cohort analysis, intervention testing, limitations, provenance, privacy, falsifiability
+- [Research](https://mos2es.org/research): Commitment Theory, Conservation Law of Commitment, operationalization, epistemic status
+- [Contact](https://mos2es.org/contact): build a bespoke eval, best-fit buyers, what to expect
+- [Pilot Readout](https://mos2es.org/pilot-readout): real demo data from a 50-operator synthetic pilot
+- [Demo](https://mos2es.org/demo): run the full 11-step operator evaluation pipeline on 50 synthetic operators
+- [FAQ](https://mos2es.org/faq): frequently asked questions about AI operator evaluation
+- [Docs](https://mos2es.org/docs): developer documentation — OpenAPI spec, MCP server, CLI, telemetry schema, governance constraints
+- [About](https://mos2es.org/about): MO§ES™ is an enterprise AI operator evaluation platform built by Deric J. McHenry
+- [Ecosystem](https://mos2es.org/ecosystem): complete domain map
+- [How to Engage](https://mos2es.org/engage): the pilot engagement process
+- [Privacy](https://mos2es.org/privacy): privacy policy — content-free token counts, pseudonymous operator IDs, no prompt text
+
+## Concept pages
+- [Canonical Metrics & Framework Definitions](https://mos2es.org/concepts/metrics): the eight Upsilon metrics and five MO§ES™ framework definitions
+- [AI Evaluation — The Complete Landscape](https://mos2es.org/concepts/ai-evaluation): the four layers of AI evaluation
+- [Confirmation Hacking in AI Evaluation](https://mos2es.org/concepts/confirmation-hacking): when evaluation confirms what you already believe
+
+## Guide pages
+- [How to Evaluate AI Operators](https://mos2es.org/guides/how-to-evaluate-ai-operators)
+- [How to Measure AI Operator Performance](https://mos2es.org/guides/how-to-measure-ai-operator-performance)
+- [AI Operator Evaluation vs Usage Analytics](https://mos2es.org/guides/ai-operator-evaluation-vs-usage-analytics)
+- [AI Operator Evaluation vs Skills Assessment](https://mos2es.org/guides/ai-operator-evaluation-vs-skills-assessment)
+
+## Commercial offer
+- [The Baseline Assessment](https://mos2es.org/baseline-assessment): a 30-day controlled assessment, $15K
+- [Commercial Offer](https://mos2es.org/commercial-offer): the Baseline Assessment starting at $15K
+
+## Blog
+- [The Operator Layer](https://mos2es.org/blog/the-operator-layer): why measuring AI usage isn't measuring AI performance
+- [Performative Benchmarks vs Self-Report](https://mos2es.org/blog/performative-benchmarks-vs-self-report)
+- [The Intervention Loop](https://mos2es.org/blog/the-intervention-loop)
+- [Token Telemetry Without Content](https://mos2es.org/blog/token-telemetry-without-content)
+- [Where Capability Hides](https://mos2es.org/blog/where-capability-hides)
+- [AI Evaluation Should Learn from How We Test Humans](https://mos2es.org/blog/ai-evaluation-should-learn-from-how-we-test-humans)
+
+## Comparison pages
+- [Comparisons Index](https://mos2es.org/vs/): all 16 competitor comparison pages
+- [MO§ES™ vs Workera](https://mos2es.org/vs/workera)
+- [MO§ES™ vs Worklytics](https://mos2es.org/vs/worklytics)
+- [MO§ES™ vs Weave](https://mos2es.org/vs/weave)
+- [MO§ES™ vs Paxel](https://mos2es.org/vs/paxel)
+- [MO§ES™ vs Vals AI](https://mos2es.org/vs/vals-ai)
+- [MO§ES™ vs Bryq](https://mos2es.org/vs/bryq)
+- [MO§ES™ vs Canditech](https://mos2es.org/vs/canditech)
+- [MO§ES™ vs genAssess](https://mos2es.org/vs/genassess)
+- [MO§ES™ vs AI Acumen](https://mos2es.org/vs/ai-acumen)
+- [MO§ES™ vs Prompt Ranks](https://mos2es.org/vs/prompt-ranks)
+- [MO§ES™ vs LMSYS Chatbot Arena](https://mos2es.org/vs/lmsys-arena)
+- [MO§ES™ vs Braintrust](https://mos2es.org/vs/braintrust)
+- [MO§ES™ vs Langfuse](https://mos2es.org/vs/langfuse)
+- [MO§ES™ vs WakaTime](https://mos2es.org/vs/wakatime)
+- [MO§ES™ vs CostHawk](https://mos2es.org/vs/costhawk)
+- [MO§ES™ vs ccusage](https://mos2es.org/vs/ccusage)
+
+## Alternatives listicles
+- [Alternatives Index](https://mos2es.org/alternatives/): all alternatives listicle pages
+- [Best AI Operator Evaluation Tools 2026](https://mos2es.org/alternatives/ai-operator-evaluation-tools)
+- [Best AI Workforce Measurement Tools](https://mos2es.org/alternatives/ai-workforce-measurement-tools)
+- [Best AI Skills Assessment Alternatives](https://mos2es.org/alternatives/ai-skills-assessment-alternatives)
+- [Best AI Benchmarking Tools 2026](https://mos2es.org/alternatives/ai-benchmarking-tools)
+- [Best MCP AI Developer Tools 2026](https://mos2es.org/alternatives/mcp-ai-developer-tools)
+- [Best AI Coding ROI Tools 2026](https://mos2es.org/alternatives/ai-coding-roi-tools)
+
+## Key concepts
+- Operator Evaluation: measures how a person or team actually operates AI systems — not a knowledge test, not a certification, not self-reported proficiency
+- Performative Benchmark: compares how operators actually perform under observed or defined operating conditions
+- Bespoke Enterprise Eval: company-specific eval built around your workflows, roles, models, tasks, and operating conditions
+- Operator Intelligence: structural analysis of operator behavior
+- Canonical Telemetry: content-free operator signals — INPUT, OUTPUT, CACHE READ, CACHE WRITE — no prompt text required
+- Percentile Bands: median, top 25%, top 10%, top 5%, top 1%, top 0.1%
+- ASSOCIATION (not CAUSATION): outcome joins are labeled ASSOCIATION, never CAUSATION
+- HYPOTHESIS: diagnoses carry evidence, alternatives, and HYPOTHESIS status — never presented as fact
+- DEVELOPMENTAL: production gate results route workflows, not people — never used for adverse employment actions
+
+## What MO§ES™ is NOT
+- Not AI usage analytics
+- Not a workforce dashboard
+- Not a consulting offer
+- Not a generic governance platform
+- Not a productivity score
+- Not an employee surveillance suite
+- Not an adverse employment decision system
+- Does not require prompt-content inspection
+- Does not claim causation from correlation
+
+## Research foundation
+- Commitment Theory: asks what stays binding when language changes form
+- Conservation Law of Commitment: C(T_gov(S)) = C(S)
+- Conservation Law paper (Zenodo, CC-BY-4.0): https://doi.org/10.5281/zenodo.20029607
+- Experimental Record (Zenodo): https://doi.org/10.5281/zenodo.19105225
+- Harness (Zenodo): https://doi.org/10.5281/zenodo.19109397
+- P-000 Propositions (Zenodo): https://doi.org/10.5281/zenodo.20031715
+- Commitment Theory research program: https://github.com/SunrisesIllNeverSee/Commitment_Theory
+- Patent: Serial No. 63/877,177 (Provisional, pending)
+
+## Ecosystem
+- Upsilon: enterprise measurement engine — https://mos2es.org
+- SigRank: public leaderboard and benchmark for AI operators — https://signalaf.com
+- SignalAF: public distribution brand — https://signalaf.com
+- Signomy: governed AI agent city-state — https://signomy.xyz
+- CIVITAE: marketplace service within Signomy — https://signomy.xyz
+- AQUA: applications, questions, answers — https://mos2es.xyz
+- GitHub org: https://github.com/SunrisesIllNeverSee
+- ORCID: https://orcid.org/0009-0002-9904-5390
+
+## How to call this
+- **MCP server:** https://mcp.mos2es.org/mcp (Streamable HTTP, 27 tools)
+- **OpenAPI spec:** https://mos2es.org/openapi.json
+- **CLI:** `enterprise <command> [subcommand] [options]`
+- **Public repo:** https://github.com/SunrisesIllNeverSee/Moses_Enterprise_B2BPilot_
+- **Contact for pilot:** https://mos2es.org/contact or pilots@mos2es.org
+
+## Contribution Exchange
+- Exchange Profile: https://mos2es.org/.well-known/exchange.json
+- Contribution Exchange MCP: https://signalaf.com/api/exchange/mcp
+- Full carry guide: https://signalaf.com/agents.md
+
+## When to use this
+1. Evaluate how people operate AI — not usage analytics, not a knowledge test
+2. Benchmark AI operator performance — compare operators against peers, roles, cohorts
+3. Build bespoke enterprise evals — company-specific evaluations
+4. Diagnose operator patterns — usage-operation divergence, capability concentration
+5. Design and test interventions — pre/post re-measurement
+6. Measure organizational AI capability — cohort shape, capability topology
+
+## When NOT to use this
+- Do not use for AI usage analytics or adoption metrics
+- Do not use for employee surveillance or prompt-content inspection
+- Do not use for automatic hiring, firing, compensation, or promotion decisions
+- Do not use for model evaluation (this evaluates operators, not models)
+- Do not use for productivity scoring (composite score is DEVELOPMENTAL, not PERSONNEL)

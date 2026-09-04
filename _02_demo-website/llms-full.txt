@@ -1,0 +1,85 @@
+# MO§ES™ — Enterprise Demo
+
+> Enterprise AI operator evaluations and performative benchmarks — demo environment.
+
+This is the enterprise demo surface for MO§ES™, served at enterprise.mos2es.org.
+It demonstrates the full operator evaluation pipeline on 50 synthetic operators.
+
+## Architecture
+
+**MO§ES → Upsilon → SigRank | SignalAF**
+
+- **MO§ES™**: governance framework / methodology
+- **Upsilon**: enterprise measurement engine
+- **SigRank**: public leaderboard / benchmark / proof surface (live at signalaf.com)
+- **SignalAF**: public distribution / platform brand
+- **TTEOP**: Token Telemetry Evaluation Operator Protocol — the sole interoperability protocol authority
+
+## Canonical Metrics (TTEOP)
+
+Five canonical metrics derived from four token primitives (I=input, O=output, W=cache_write, R=cache_read):
+
+- **Yield (Υ)** = (R × O) / I² — compound reuse and output relationship. The signature metric.
+- **Leverage** = R / I — cache reuse per fresh input.
+- **Velocity** = O / I — output per fresh input.
+- **output_fraction** (displayed as SNR) = O / (I + O) — output share of fresh flow. SNR is a display alias; canonical TTEOP name is output_fraction.
+- **log_leverage** (displayed as 10xDEV) = log₁₀(R / I) — leverage on a readable scale. 10xDEV is a display alias; canonical TTEOP name is log_leverage.
+
+The cascade: (O/I)(W/O)(R/W) = R/I = Leverage. Yield = Velocity × Leverage = (O/I)(R/I) = (R×O)/I².
+
+Null semantics per TTEOP: metrics with a zero or missing denominator are null (displayed as N/A), not zero or infinity.
+
+## Demo pages
+- [Home](https://enterprise.mos2es.org/): enterprise demo landing
+- [Enterprise](https://enterprise.mos2es.org/enterprise.html): enterprise overview
+- [Evaluate](https://enterprise.mos2es.org/evaluate.html): operator evaluation pipeline
+- [Compare](https://enterprise.mos2es.org/compare.html): operator comparison
+- [Diagnose](https://enterprise.mos2es.org/diagnose.html): diagnostic findings
+- [Develop](https://enterprise.mos2es.org/develop.html): development planning
+- [Verify](https://enterprise.mos2es.org/verify.html): verification and re-evaluation
+- [Data](https://enterprise.mos2es.org/data.html): data and telemetry
+- [Workflow](https://enterprise.mos2es.org/workflow.html): workflow analysis
+- [Methodology](https://enterprise.mos2es.org/methodology.html): evaluation methodology
+- [Product](https://enterprise.mos2es.org/product.html): product modules
+- [Pilot](https://enterprise.mos2es.org/pilot.html): pilot program
+- [Research](https://enterprise.mos2es.org/research.html): research foundation
+- [Contact](https://enterprise.mos2es.org/contact.html): contact for pilot
+
+## Key concepts
+- Operator Evaluation: measures how a person or team actually operates AI systems — not a knowledge test, not a certification
+- Performative Benchmark: compares how operators actually perform under observed conditions
+- Canonical Telemetry: content-free operator signals — INPUT, OUTPUT, CACHE READ, CACHE WRITE — no prompt text required
+- ASSOCIATION (not CAUSATION): outcome joins are labeled ASSOCIATION, never CAUSATION
+- HYPOTHESIS: diagnoses carry evidence, alternatives, and HYPOTHESIS status — never presented as fact
+- DEVELOPMENTAL: production gate results route workflows, not people — never used for adverse employment actions
+
+## What MO§ES™ is NOT
+- Not AI usage analytics
+- Not a workforce dashboard
+- Not a productivity score
+- Not an employee surveillance suite
+- Not an adverse employment decision system
+- Does not require prompt-content inspection
+- Does not claim causation from correlation
+
+## Research foundation
+- Commitment Theory: asks what stays binding when language changes form
+- Conservation Law of Commitment: C(T_gov(S)) = C(S)
+- Conservation Law paper (Zenodo, CC-BY-4.0): https://doi.org/10.5281/zenodo.20029607
+- Commitment Theory research program: https://github.com/SunrisesIllNeverSee/Commitment_Theory
+
+## Ecosystem
+- Upsilon: enterprise measurement engine — https://mos2es.org
+- SigRank: public leaderboard — https://signalaf.com
+- SignalAF: public distribution brand — https://signalaf.com
+- Signomy: governed AI agent city-state — https://signomy.xyz
+- AQUA: applications, questions, answers — https://mos2es.xyz
+- GitHub org: https://github.com/SunrisesIllNeverSee
+- ORCID: https://orcid.org/0009-0002-9904-5390
+
+## Demo data
+- 50 synthetic operators
+- 1,668 observations
+- 5 AI providers (ChatGPT, Claude, Codex, Copilot, Cursor)
+- 12 interventions
+- 30-day window
