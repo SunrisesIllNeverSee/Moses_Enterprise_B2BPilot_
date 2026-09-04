@@ -4,6 +4,9 @@ compatibility_date = "2025-07-01"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
+[observability]
+enabled = true
+
 routes = [
   # mos2es.org
   { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
