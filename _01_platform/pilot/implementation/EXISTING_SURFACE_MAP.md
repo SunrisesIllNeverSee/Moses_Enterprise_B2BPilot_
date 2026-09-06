@@ -33,9 +33,9 @@
 | Config | `src/config/` | PilotConfigurator + EvalRegistry (15 eval families) + PilotRegistry (12 commercial pilots) + Validation |
 | Reporting | `src/reporting/` (6 modules) | Exporters, executive brief, dashboard, decision report, config report, PDF |
 | Service | `src/service.py` (1792 lines) | PilotService — single shared service layer for all interfaces |
-| CLI | `src/cli/main.py` (1272 lines) | `enterprise` CLI — 14 command groups |
+| CLI | `src/cli/main.py` (1272 lines) | `enterprise` CLI — 17 command groups |
 | TUI | `src/tui/app.py` (512 lines) | 12-screen rich TUI console |
-| MCP | `src/mcp_server/server.py` (1055 lines) | 26 registered tools (10 read + 3 write + 13 additional) |
+| MCP | `src/mcp_server/server.py` (1055 lines) | 27 registered tools (21 read + 6 write) + 6 resources |
 | Demo entry | `src/enterprise_demo.py` | Legacy 7-command demo CLI (delegates to PilotService) |
 
 ## Capability inventory
@@ -65,7 +65,7 @@
 | Divergence analysis | `compute_divergence()` classifies operators into 4 quadrants (HIGH_USAGE_LOW_OPERATION, LOW_USAGE_HIGH_OPERATION, LOW_LOW, MIXED) based on usage vs yield percentiles | `src/analysis/divergence.py` | CLI `compare usage-operation`; TUI screen 4; MCP `find_usage_operation_divergence` | Working — demo: 5 LO-USAGE/HI-OP, 3 HI-USAGE/LO-OP, 12 LO/LO, 30 MIXED | DIAGNOSE |
 | Eligibility checking | `check_eligibility()` / `check_cohort_eligibility()` — minimum observation count, non-null metrics | `src/analysis/eligibility.py` | CLI `verify operator`; TUI screen 8; MCP `verify_change` | Working — 50/50 eligible in demo | BASELINE / VERIFY |
 | Data quality checks | 6 checks: missingness, impossible_values, duplicates, provenance, source_confidence, sparse_operators. Severity: OK/WARNING/BLOCKING | `src/analysis/data_quality.py` | CLI `validate outcomes`; TUI screen 9; MCP `get_data_quality` | Working — demo: 50 OK, 1882 WARNING (source_confidence + impossible_values), 0 BLOCKING | BASELINE / VERIFY |
-| Pattern detection | `PatternEngine` detects P-CTX-01, P-CTX-02, P-BURN-01, P-HIDDEN-01, P-MODEL-01, P-STAGE-01 patterns from metrics + observations + workflow observations | `src/diagnostics/pattern_engine.py` (446 lines) | CLI `diagnose`; MCP `get_diagnostics` | Working — 56 patterns detected across 39 operators in demo | DIAGNOSE |
+| Pattern detection | `PatternEngine` detects P-CTX-01, P-CTX-02, P-BURN-01, P-HIDDEN-01, P-MODEL-01, P-STAGE-01 patterns from metrics + observations + workflow observations | `src/diagnostics/pattern_engine.py` (447 lines) | CLI `diagnose`; MCP `get_diagnostics` | Working — 56 patterns detected across 39 operators in demo | DIAGNOSE |
 | Diagnosis generation | `DiagnosisEngine` generates hypotheses from detected patterns. Every diagnosis: evidence + alternatives + status=HYPOTHESIS + recommended interventions | `src/diagnostics/diagnosis_engine.py` | CLI `diagnose cohort/operator`; TUI screen 5; MCP `get_diagnostics` | Working — 56 diagnoses generated; all carry HYPOTHESIS status | DIAGNOSE |
 | Intervention catalog | 12-entry fixed catalog: CTX-001/002/003, FRM-001/002, MOD-001, AGT-001, REV-001, STD-001, COA-001, LRN-001, STG-001. Pattern→intervention mapping | `src/interventions/registry.py` | CLI `intervention catalog`; MCP `get_intervention_status` | Working — 12 catalog entries with type, target metric, followup days | DIAGNOSE / INTERVENE |
 | Intervention assignment | `InterventionManager.assign()` creates interventions with declared target_metric + followup_days. Requires `authorized_by` in CLI/MCP | `src/interventions/manager.py`, `src/service.py` | CLI `intervention assign/close`; MCP `assign_intervention`, `close_intervention` | Working — authorization enforced; demo has 12 pre-loaded interventions | INTERVENE |
@@ -84,7 +84,7 @@
 | Operator×System decomposition | `compute_operator_system_decomposition()` — separates operator/system/interaction effects for operators on 2+ systems | `src/analysis/operator_system.py` | CLI `compare operator-system`; MCP `get_operator_system_decomposition` | Working — decomposition computed | DIAGNOSE |
 | Context architecture | `compute_context_architecture()` — reuse ratio, construction ratio, context efficiency, pattern classification | `src/analysis/context_architecture.py` | CLI `score operator`; MCP `get_operator_profile` | Working — per-operator context patterns | DIAGNOSE |
 | Longitudinal movement | `compute_longitudinal_movement()` — metric deltas, trend direction, band movement, stability over N sub-windows | `src/analysis/longitudinal.py` | CLI indirect; service method | Working — 3-window movement computed | DIAGNOSE / VERIFY |
-| Team composition | `compute_team_composition()` — archetype distribution, coverage gaps, complementarity (Shannon evenness) | `src/analysis/team_composition.py` | CLI `compare teams`; MCP `get_cohort_overview` | Working — per-team analysis | DIAGNOSE |
+| Team composition | `compute_team_composition()` — archetype distribution, coverage gaps, complementarity (Shannon evenness) | `src/analysis/team_composition.py` | CLI `compare teams`; MCP resource `enterprise://cohort/{cohort_id}` (`get_cohort_overview`) | Working — per-team analysis | DIAGNOSE |
 | Dependency risk | `compute_dependency_risk()` — per-metric Gini across teams, single-point-of-failure detection (>40% concentration) | `src/analysis/dependency_risk.py` | CLI indirect; service method | Working — risk summary produced | DIAGNOSE |
 | Learning curve | `compute_learning_curve()` — improvement rate, curve shape (linear/diminishing/accelerating/flat), 95% CI, plateau detection | `src/analysis/learning_curve.py` | CLI indirect; service method | Working — 4-window trajectory modeled | DIAGNOSE / VERIFY |
 | Replication | `ReplicationEngine` — replicates findings across window/cohort splits. Descriptive stability, NOT causal validation | `src/analysis/replication.py` | CLI indirect; service method `replicate_finding()` | Working — pattern + divergence replication supported | VERIFY |
@@ -150,7 +150,7 @@
 | C | Configure (bespoke pilot menu) | DEFINE |
 | E | Export | READOUT / EXPORT |
 
-### MCP tools (26 registered)
+### MCP tools (27 registered)
 
 | Tool | Type | Pilot stage |
 |---|---|---|
@@ -167,7 +167,6 @@
 | get_composite_score | read | BASELINE |
 | get_composite_score_summary | read | BASELINE |
 | get_executive_dashboard | read | READOUT |
-| get_cohort_overview | read | BASELINE |
 | assign_intervention | write | INTERVENE |
 | close_intervention | write | INTERVENE / VERIFY |
 | create_experiment | write | INTERVENE |
@@ -182,6 +181,22 @@
 | get_outcome_correlation | read | VERIFY / READOUT |
 | get_org_topology | read | DIAGNOSE |
 | get_operator_similarity | read | DIAGNOSE |
+
+### MCP resources (6 registered)
+
+| Resource URI template | Handler | Pilot stage |
+|---|---|---|
+| `enterprise://pilot/{cohort_id}` | `resource_pilot` (wraps `get_pilot_status`) | DEFINE / BASELINE |
+| `enterprise://cohort/{cohort_id}` | `resource_cohort` (wraps `get_cohort_overview`) | BASELINE |
+| `enterprise://operator/{operator_id}` | `resource_operator` (wraps `get_operator_profile`) | BASELINE / DIAGNOSE |
+| `enterprise://metrics/registry` | `resource_metrics_registry` | BASELINE |
+| `enterprise://interventions/catalog` | `resource_intervention_catalog` | INTERVENE |
+| `enterprise://workflow/{workflow_id}` | `resource_workflow` | DIAGNOSE |
+
+> **Note:** `get_cohort_overview` is exposed as an MCP resource
+> (`enterprise://cohort/{cohort_id}`), not as an `@mcp.tool`. It is
+> callable directly via `call_tool_directly()` but is not registered
+> as a tool in the MCP server.
 
 ## Demo data inventory (validated 2026-09-06)
 

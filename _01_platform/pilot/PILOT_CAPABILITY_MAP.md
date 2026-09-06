@@ -52,23 +52,22 @@
 
 | Score | Count | Requirements |
 |---:|---:|---|
-| 5 | 10 | bounded population, bounded duration, observation collection, data quality, baseline, cohort analysis, operator analysis, divergence, diagnosis, intervention, readout |
-| 4 | 7 | instrumentation, privacy boundary, benchmarking, workflow analysis, verification, lineage, pre/post comparison |
+| 5 | 12 | bounded population, bounded duration, observation collection, data quality, baseline, cohort analysis, operator analysis, divergence, diagnosis, intervention, pre/post comparison, readout |
+| 4 | 6 | instrumentation, privacy boundary, benchmarking, workflow analysis, verification, lineage |
 | 3 | 1 | progress/status |
 | 2 | 4 | success criteria, pilot state, decision gates, production transition |
 | 1 | 1 | milestones |
 | 0 | 2 | pilot closure, institutional memory |
 
-**Note:** The pre/post comparison row was listed twice in the count above;
-the correct distribution is 10 at score 5, 7 at score 4, 1 at score 3,
-4 at score 2, 1 at score 1, 2 at score 0 — totaling 25 requirements.
+**Total: 26 requirements.** 18 score 4–5 (strong/built), 1 score 3
+(partial), 7 score 0–2 (thin/missing).
 
 ## Key findings
 
 1. **Measurement and analysis are strong (scores 4–5).** The platform's core
    value — computing canonical metrics, detecting patterns, generating
    diagnoses, verifying interventions — is materially implemented and
-   demonstrated with 676 passing tests.
+   demonstrated with 676 passing tests. 18 of 26 requirements score 4–5.
 
 2. **Governance is the primary gap (scores 0–2).** Pilot-level decision gates,
    success-criteria locking, pilot state machine, milestone tracking, and
