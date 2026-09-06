@@ -16,3 +16,7 @@ venv/
 # Generated demo outputs (regenerated on demo run)
 _01_platform/demo_data/graphics/*.pdf
 *.zip
+
+# Skylos scan output
+skylos-sec.json
+.skylos/
