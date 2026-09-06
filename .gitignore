@@ -15,3 +15,4 @@ venv/
 
 # Generated demo outputs (regenerated on demo run)
 _01_platform/demo_data/graphics/*.pdf
+*.zip
