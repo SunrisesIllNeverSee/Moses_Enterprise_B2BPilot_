@@ -54,6 +54,9 @@ the pilot design. It exists to:
 | `PILOT_PROOF_POINTS.md` | Strongest demonstrated capabilities of the current platform |
 | `OPEN_QUESTIONS.md` | Unresolved design questions |
 | `DECISION_LOG.md` | Consequential pilot-architecture decisions |
+| `ORIGINAL_DOSSIER_TRACEABILITY.md` | Requirement-by-requirement map from the August 17 dossier to current code, tests, demo, reports, and surfaces |
+| `DRIFT_AND_CONTRADICTIONS.md` | Drifts and contradictions between the original dossier, the current platform, and the canonization package |
+| `REPORTING_INTEGRITY_INVARIANTS.md` | The 12 reporting integrity invariants from the deep-dive review, with canonical status traceability |
 
 ## Relationship to canonical documents
 
@@ -64,9 +67,9 @@ pilot/UPSILON_PILOT_SPEC.md        context/ORIGIN_AND_RATIONALE.md
 pilot/PILOT_LIFECYCLE.md           context/DECISION_LOG.md
 pilot/governance/                  context/OPEN_QUESTIONS.md
 pilot/stages/                      context/PILOT_PROOF_POINTS.md
-pilot/schemas/
-pilot/operations/
-pilot/implementation/
+pilot/schemas/                     context/ORIGINAL_DOSSIER_TRACEABILITY.md
+pilot/operations/                  context/DRIFT_AND_CONTRADICTIONS.md
+pilot/implementation/              context/REPORTING_INTEGRITY_INVARIANTS.md
 ```
 
 > Canonical documents define WHAT the pilot is. Context documents

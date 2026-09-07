@@ -235,9 +235,79 @@ publicly. Both may have value as references.
 the synthetic reference, and the first real pilot as the real
 reference (anonymized).
 
+### OQ-011 — Original developmental ontology (Trans Ladder)
+
+**Question:** Should the original developmental ontology (Trans Ladder,
+Seeker, Refiner, Bearer, Igniter, Base, Power, Arch, Transmitter) be
+restored, or should the underlying ideas remain expressed through
+current eval families (longitudinal movement, learning curves,
+similarity, development engine)?
+
+**Context:** The deep-dive review
+(`review/UPSILON_ORIGINAL_TO_CURRENT_DEEP_DIVE_REVIEW.md` §17, Drift 5)
+references this ontology as part of the original SignalAF commercial
+field dossier. None of these terms appear in the codebase, demo data,
+or available spec files. The underlying ideas survived through eval
+families, but the labels did not.
+
+**Why it matters:** If the ontology improves measurement or
+communication, it should be restored. If it merely adds product
+language without empirical value, it should remain in context/research
+material until validated.
+
+**Status:** UNRESOLVED — the original ontology's source (SignalAF
+commercial field dossier) is not present in the repository. See
+`ORIGINAL_DOSSIER_TRACEABILITY.md` requirement #17 and
+`DRIFT_AND_CONTRADICTIONS.md` Drift 5.
+
 ---
 
-## Resolved questions
+### OQ-012 — Three-pilot-layer formalization
+
+**Question:** Should the three-pilot-layer architecture
+(CommercialPilotTemplate → PilotConfiguration → PilotRun) be
+formalized as a canonical architecture document, or is the current
+treatment (build plan + decision log) sufficient?
+
+**Context:** The deep-dive review (§9) identifies three concepts that
+all sit close to the word "pilot." The first two exist in code; the
+third (PilotRun) is the missing connective tissue. The decision log
+records the decision to use a thin control-plane approach, and the
+build plan implements it, but the three-layer naming is not
+formalized as a canonical architecture document.
+
+**Why it matters:** Without formal separation, future runtime classes
+and schemas may conflate the three layers. A canonical architecture
+document would lock the names and relationships before implementation.
+
+**Status:** UNRESOLVED — see `DRIFT_AND_CONTRADICTIONS.md` Drift 7
+and `DECISION_LOG.md` (decision: "Upsilon Pilot Mode is primarily an
+orchestration/control layer over existing capabilities").
+
+---
+
+### OQ-013 — Success criteria tiering
+
+**Question:** Should success criteria be formally tiered into global
+pilot criteria, commercial-template criteria, and customer-defined
+criteria?
+
+**Context:** The deep-dive review (§19) recommends tiering. The
+current `pilot/governance/SUCCESS_CRITERIA.md` defines the criterion
+structure and provides examples but does not distinguish tiers. The
+original dossier supplied criteria at multiple levels (product
+criteria, commercial criteria).
+
+**Why it matters:** Without tiering, every pilot defines criteria from
+scratch. Global criteria (e.g., "at least 90% usable cohort
+telemetry") should apply to all pilots. Template criteria should
+apply to specific commercial pilot types. Customer criteria should be
+pilot-specific. Conflating these produces either over-rigid or
+under-specified criteria.
+
+**Status:** UNRESOLVED — see `DRIFT_AND_CONTRADICTIONS.md` C4.
+
+---
 
 (When a question is resolved, move it here with the resolution date
 and rationale, then add it to `DECISION_LOG.md`.)

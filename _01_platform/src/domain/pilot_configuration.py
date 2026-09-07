@@ -24,6 +24,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import List, Optional
 
+from .success_criteria import SuccessCriteria
+
 
 @dataclass(frozen=True, slots=True)
 class EvalFamilySelection:
@@ -205,6 +207,11 @@ class PilotConfiguration:
     governance: GovernanceConfig = field(default_factory=GovernanceConfig)
     reference_population: ReferencePopulationConfig = field(default_factory=ReferencePopulationConfig)
     commercial_pilot_id: Optional[str] = None
+    pilot_id: Optional[str] = None
+    enterprise_name: str = ""
+    pilot_question: str = ""
+    best_buyer: str = ""
+    success_criteria: SuccessCriteria = field(default_factory=SuccessCriteria)
     name: str = ""
     description: str = ""
     created_at: str = ""
@@ -214,11 +221,14 @@ class PilotConfiguration:
         return {
             "config_id": self.config_id, "name": self.name, "description": self.description,
             "mode": self.mode, "commercial_pilot_id": self.commercial_pilot_id,
+            "pilot_id": self.pilot_id, "enterprise_name": self.enterprise_name,
+            "pilot_question": self.pilot_question, "best_buyer": self.best_buyer,
             "eval_families": [e.to_dict() for e in self.eval_families],
             "cohort": self.cohort.to_dict(), "deployment_level": self.deployment_level,
             "workflow": self.workflow.to_dict(), "gates": self.gates.to_dict(),
             "outcome_join": self.outcome_join.to_dict(), "governance": self.governance.to_dict(),
             "reference_population": self.reference_population.to_dict(),
+            "success_criteria": self.success_criteria.to_dict(),
             "created_at": self.created_at, "created_by": self.created_by,
         }
 
@@ -235,6 +245,11 @@ class PilotConfiguration:
             governance=GovernanceConfig.from_dict(d.get("governance", {})),
             reference_population=ReferencePopulationConfig.from_dict(d.get("reference_population", {})),
             commercial_pilot_id=d.get("commercial_pilot_id"),
+            pilot_id=d.get("pilot_id"),
+            enterprise_name=d.get("enterprise_name", ""),
+            pilot_question=d.get("pilot_question", ""),
+            best_buyer=d.get("best_buyer", ""),
+            success_criteria=SuccessCriteria.from_dict(d.get("success_criteria", {})),
             name=d.get("name", ""), description=d.get("description", ""),
             created_at=d.get("created_at", ""), created_by=d.get("created_by", ""),
         )

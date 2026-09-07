@@ -59,7 +59,10 @@ class TestDemoCLI(unittest.TestCase):
         if not source_md.exists():
             self.skipTest("Sample report markdown not found")
 
-        result_path = render_sample_report_pdf(pdf_path)
+        # Per reporting invariant (review §18, Drift 3): PDF must derive
+        # from an explicit source — the static sample is no longer a
+        # valid implicit default. Pass source_md explicitly.
+        result_path = render_sample_report_pdf(pdf_path, source_md=str(source_md))
         self.assertTrue(os.path.exists(result_path))
         self.assertGreater(os.path.getsize(result_path), 1000)  # at least 1KB
 

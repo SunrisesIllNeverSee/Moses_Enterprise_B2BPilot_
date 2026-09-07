@@ -90,6 +90,7 @@ class TuiApp:
                 "g": self.screen_gates,
                 "c": self.screen_configure,
                 "e": self.screen_export,
+                "p": self.screen_pilot_governance,
             }.get(choice)
             if handler:
                 try:
@@ -112,6 +113,7 @@ class TuiApp:
             "[bold cyan]g[/bold cyan] Gates  "
             "[bold cyan]c[/bold cyan] Configure  "
             "[bold cyan]e[/bold cyan] Export  "
+            "[bold cyan]p[/bold cyan] Pilot Governance  "
             "[bold cyan]0[/bold cyan] Exit"
         )
 
@@ -495,6 +497,84 @@ class TuiApp:
         # Print to console (in production, write to file)
         self.console.print(Panel(output[:5000] + ("..." if len(output) > 5000 else ""),
                                  title=f"[E] EXPORT — {target} ({fmt})"))
+
+    # ── Screen P: Pilot Governance (T1.6) ────────────────────────────────
+
+    def screen_pilot_governance(self) -> None:
+        """Pilot Mode governance screen: lifecycle, criteria, gates, decision."""
+        run = self.svc.pilot_run
+        if run is None:
+            self.console.print(Panel(
+                "[yellow]No active pilot. Use 'enterprise pilot create' to initialize Pilot Mode.[/yellow]",
+                title="[P] PILOT GOVERNANCE",
+                border_style="yellow",
+            ))
+            return
+
+        # Lifecycle display
+        lifecycle = run.state_machine.lifecycle_display()
+        lifecycle_str = "  ".join(
+            f"[{'green' if s['status'] == 'complete' else 'cyan' if s['status'] == 'current' else 'dim'}]"
+            f"{s['marker']} {s['stage']}[/]"
+            for s in lifecycle
+        )
+        self.console.print(Panel(
+            f"[bold]PILOT GOVERNANCE — {run.pilot_id}[/bold]\n\n"
+            f"Customer: {run.customer}\n"
+            f"Decision Owner: {run.decision_owner}\n"
+            f"Window: {run.start_date} to {run.target_end_date}\n"
+            f"Objectives: {run.objectives or '—'}\n\n"
+            f"[bold]Lifecycle:[/bold]\n{lifecycle_str}\n\n"
+            f"Current Stage: [bold cyan]{run.current_stage.value}[/bold cyan]\n"
+            f"Final Decision: {run.final_decision or 'PENDING'}\n"
+            f"Milestones: {len(run.milestones)}\n"
+            f"Gate Records: {len(run.gate_records)}\n"
+            f"Open Blockers: {sum(1 for b in run.blockers if not b.resolved)}",
+            title="[P] PILOT GOVERNANCE",
+            border_style="magenta",
+        ))
+
+        # Success criteria
+        sc = run.success_criteria
+        if sc.criteria:
+            t = Table(title="Success Criteria")
+            t.add_column("ID"); t.add_column("Metric"); t.add_column("Threshold")
+            t.add_column("Direction"); t.add_column("Tier"); t.add_column("Locked")
+            for c in sc.criteria:
+                t.add_row(
+                    c.criterion_id, c.metric, str(c.threshold),
+                    c.direction.value, c.tier.value,
+                    "[green]YES[/]" if sc.is_locked else "[red]NO[/]",
+                )
+            self.console.print(t)
+
+        # Gate records
+        if run.gate_records:
+            t = Table(title="Pilot-Level Gate Records")
+            t.add_column("Gate ID"); t.add_column("Type"); t.add_column("Outcome")
+            t.add_column("Evaluated By"); t.add_column("At")
+            for g in run.gate_records:
+                t.add_row(
+                    g.gate_id, g.gate_type.value, g.outcome,
+                    g.evaluated_by, g.evaluated_at[:19],
+                )
+            self.console.print(t)
+
+        # Decision record
+        if run.decision_record:
+            dr = run.decision_record
+            self.console.print(Panel(
+                f"[bold]DECISION RECORD — {dr.decision_id}[/bold]\n\n"
+                f"Closure Outcome: [bold {'green' if dr.closure_outcome.value == 'DEPLOY' else 'yellow'}]"
+                f"{dr.closure_outcome.value}[/]\n"
+                f"Rationale: {dr.rationale}\n"
+                f"Decided By: {dr.decided_by}\n"
+                f"Decided At: {dr.decided_at[:19]}\n"
+                f"Gate 3 Record: {dr.gate_3_record_id}\n"
+                f"Immutable: {dr.immutable}",
+                title="DECISION",
+                border_style="green" if dr.closure_outcome.value == "DEPLOY" else "yellow",
+            ))
 
 
 def main():

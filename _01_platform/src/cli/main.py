@@ -70,7 +70,7 @@ def _governance_annotation(svc: PilotService) -> dict:
 def cmd_pilot(args, json_mode):
     svc = _svc()
     if args.subcommand == "status":
-        data = svc.pilot_status()
+        data = svc.get_pilot_status_extended()
         _output(data, json_mode)
     elif args.subcommand == "init":
         _output({
@@ -83,6 +83,100 @@ def cmd_pilot(args, json_mode):
             "note": "In-memory pilot session initialized. No persistent storage in demo mode.",
             **_governance_annotation(svc),
         }, json_mode)
+    elif args.subcommand == "create":
+        from domain import create_pilot_run
+        run = svc.create_pilot(
+            pilot_id=args.pilot_id,
+            configuration_id=args.config_id,
+            customer=args.customer,
+            decision_owner=args.decision_owner,
+            start_date=args.start_date,
+            target_end_date=args.target_end,
+            objectives=args.objectives,
+            created_by=args.created_by,
+        )
+        _output(run.to_dict(), json_mode)
+    elif args.subcommand == "lifecycle":
+        data = svc.get_pilot_lifecycle()
+        _output(data, json_mode)
+    elif args.subcommand == "engagement":
+        data = svc.get_pilot_engagement_status()
+        _output(data, json_mode)
+    elif args.subcommand == "advance":
+        from domain import PilotState
+        target = PilotState(args.target_stage) if args.target_stage else None
+        data = svc.advance_pilot_stage(
+            target_stage=target,
+            gate_label=args.gate_label,
+            rationale=args.rationale,
+        )
+        _output(data, json_mode)
+    elif args.subcommand == "criteria-lock":
+        from domain import SuccessCriterion, CriterionDirection, CriterionAggregation, CriterionTier
+        import json as _json
+        criteria_data = _json.loads(args.criteria_json) if args.criteria_json else []
+        criteria = [SuccessCriterion.from_dict(c) for c in criteria_data]
+        locked = svc.lock_success_criteria(criteria, locked_by=args.locked_by)
+        _output(locked.to_dict(), json_mode)
+    elif args.subcommand == "criteria-show":
+        _output(svc.success_criteria.to_dict(), json_mode)
+    elif args.subcommand == "gate-evaluate":
+        from domain import ExtendRequirements
+        import json as _json
+        extend_req = None
+        if args.extend_json:
+            extend_req = ExtendRequirements.from_dict(_json.loads(args.extend_json))
+        if args.gate_number == "1":
+            record = svc.evaluate_pilot_gate_1(
+                evaluated_by=args.evaluated_by,
+                rationale=args.rationale,
+            )
+        elif args.gate_number == "2":
+            record = svc.evaluate_pilot_gate_2(
+                evaluated_by=args.evaluated_by,
+                rationale=args.rationale,
+            )
+        elif args.gate_number == "3":
+            record = svc.evaluate_pilot_gate_3(
+                evaluated_by=args.evaluated_by,
+                rationale=args.rationale,
+                extend_requirements=extend_req,
+            )
+        else:
+            _output({"error": f"Unknown gate number: {args.gate_number}"}, json_mode)
+            return
+        _output(record.to_dict(), json_mode)
+    elif args.subcommand == "decide":
+        from domain import ClosureOutcome, ExtendPlan, ExpandPlan, DeployPlan, StopLessons
+        import json as _json
+        outcome = ClosureOutcome(args.outcome)
+        extend_plan = expand_plan = deploy_plan = stop_lessons = None
+        if args.extend_plan_json:
+            extend_plan = ExtendPlan(**_json.loads(args.extend_plan_json))
+        if args.expand_plan_json:
+            expand_plan = ExpandPlan(**_json.loads(args.expand_plan_json))
+        if args.deploy_plan_json:
+            deploy_plan = DeployPlan(**_json.loads(args.deploy_plan_json))
+        if args.stop_lessons_json:
+            stop_lessons = StopLessons(**_json.loads(args.stop_lessons_json))
+        record = svc.create_pilot_decision(
+            closure_outcome=outcome,
+            rationale=args.rationale,
+            decided_by=args.decided_by,
+            extend_plan=extend_plan,
+            expand_plan=expand_plan,
+            deploy_plan=deploy_plan,
+            stop_lessons=stop_lessons,
+        )
+        _output(record.to_dict(), json_mode)
+    elif args.subcommand == "report":
+        from reporting import build_canonical_report, render_canonical_markdown
+        report = build_canonical_report(svc)
+        md = render_canonical_markdown(report)
+        if args.format == "json":
+            _output(report.to_dict(), json_mode)
+        else:
+            print(md)
 
 
 def cmd_cohort(args, json_mode):
@@ -1112,9 +1206,41 @@ def build_parser() -> argparse.ArgumentParser:
 
     # pilot
     sp = sub.add_parser("pilot")
-    sp.add_argument("subcommand", choices=["init", "status"])
+    sp.add_argument("subcommand", choices=[
+        "init", "status", "create", "lifecycle", "engagement", "advance",
+        "criteria-lock", "criteria-show", "gate-evaluate", "decide", "report",
+    ])
     sp.add_argument("--cohort", default="acme-50")
     sp.add_argument("--window", default="30d")
+    # pilot create
+    sp.add_argument("--pilot-id", dest="pilot_id", default="")
+    sp.add_argument("--config-id", dest="config_id", default="")
+    sp.add_argument("--customer", default="")
+    sp.add_argument("--decision-owner", dest="decision_owner", default="")
+    sp.add_argument("--start-date", dest="start_date", default="")
+    sp.add_argument("--target-end", dest="target_end", default="")
+    sp.add_argument("--objectives", default="")
+    sp.add_argument("--created-by", dest="created_by", default="")
+    # pilot advance
+    sp.add_argument("--target-stage", dest="target_stage", default="")
+    sp.add_argument("--gate-label", dest="gate_label", default="")
+    sp.add_argument("--rationale", default="")
+    # pilot criteria-lock
+    sp.add_argument("--criteria-json", dest="criteria_json", default="")
+    sp.add_argument("--locked-by", dest="locked_by", default="")
+    # pilot gate-evaluate
+    sp.add_argument("--gate-number", dest="gate_number", default="")
+    sp.add_argument("--evaluated-by", dest="evaluated_by", default="")
+    sp.add_argument("--extend-json", dest="extend_json", default="")
+    # pilot decide
+    sp.add_argument("--outcome", default="")
+    sp.add_argument("--decided-by", dest="decided_by", default="")
+    sp.add_argument("--extend-plan-json", dest="extend_plan_json", default="")
+    sp.add_argument("--expand-plan-json", dest="expand_plan_json", default="")
+    sp.add_argument("--deploy-plan-json", dest="deploy_plan_json", default="")
+    sp.add_argument("--stop-lessons-json", dest="stop_lessons_json", default="")
+    # pilot report
+    sp.add_argument("--format", default="md", choices=["md", "json"])
     sp.set_defaults(func=cmd_pilot)
 
     # cohort

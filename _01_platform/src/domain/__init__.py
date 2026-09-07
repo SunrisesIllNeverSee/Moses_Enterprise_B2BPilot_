@@ -78,6 +78,26 @@ from .outcome import Outcome, OutcomeType, OutcomeStatus
 from .evidence_grade import EvidenceGrade, EvidenceGradeAssessment
 from .context import TaskContext, adjust_metric_for_context, context_adjustment
 from .operator_identity import OperatorIdentity, IdentityConflictError
+from .pilot_state import (
+    PilotState, PilotStateMachine, StageTransition, InvalidTransitionError,
+    stage_order, valid_transitions,
+)
+from .success_criteria import (
+    SuccessCriterion, SuccessCriteria, CriterionResult, CriteriaEvaluation,
+    CriterionDirection, CriterionAggregation, CriterionTier, CriterionStatus,
+    evaluate_criterion, evaluate_criteria,
+)
+from .gate_record import (
+    GateRecord, GateType, Gate1Outcome, Gate2Outcome, Gate3Outcome,
+    ExtendRequirements, evaluate_gate_1, evaluate_gate_2, evaluate_gate_3,
+)
+from .decision_record import (
+    DecisionRecord, ClosureOutcome, ExtendPlan, ExpandPlan, DeployPlan,
+    StopLessons, create_decision_record,
+)
+from .pilot_run import (
+    PilotRun, Milestone, Blocker, validate_pilot_id, create_pilot_run,
+)
 
 __all__ = [
     "Observation",
@@ -148,4 +168,41 @@ __all__ = [
     "context_adjustment",
     "OperatorIdentity",
     "IdentityConflictError",
+    "PilotState",
+    "PilotStateMachine",
+    "StageTransition",
+    "InvalidTransitionError",
+    "stage_order",
+    "valid_transitions",
+    "SuccessCriterion",
+    "SuccessCriteria",
+    "CriterionResult",
+    "CriteriaEvaluation",
+    "CriterionDirection",
+    "CriterionAggregation",
+    "CriterionTier",
+    "CriterionStatus",
+    "evaluate_criterion",
+    "evaluate_criteria",
+    "GateRecord",
+    "GateType",
+    "Gate1Outcome",
+    "Gate2Outcome",
+    "Gate3Outcome",
+    "ExtendRequirements",
+    "evaluate_gate_1",
+    "evaluate_gate_2",
+    "evaluate_gate_3",
+    "DecisionRecord",
+    "ClosureOutcome",
+    "ExtendPlan",
+    "ExpandPlan",
+    "DeployPlan",
+    "StopLessons",
+    "create_decision_record",
+    "PilotRun",
+    "Milestone",
+    "Blocker",
+    "validate_pilot_id",
+    "create_pilot_run",
 ]

@@ -701,6 +701,187 @@ def get_operator_similarity(operator_id: str, n_neighbors: int = 5) -> dict:
     return {**data, **_governance(svc)}
 
 
+# ── Pilot Mode: governance lifecycle tools (T1.6) ────────────────────────
+
+def create_pilot_charter(
+    pilot_id: str,
+    configuration_id: str,
+    customer: str,
+    decision_owner: str,
+    start_date: str,
+    target_end_date: str,
+    objectives: str = "",
+    created_by: str = "",
+) -> dict:
+    """Create a new PilotRun (active engagement) in the DEFINED state.
+
+    This is the entry point for Pilot Mode. The PilotRun references a
+    frozen PilotConfiguration and coordinates existing analytical systems
+    through the lifecycle.
+    """
+    svc = _get_service()
+    run = svc.create_pilot(
+        pilot_id=pilot_id,
+        configuration_id=configuration_id,
+        customer=customer,
+        decision_owner=decision_owner,
+        start_date=start_date,
+        target_end_date=target_end_date,
+        objectives=objectives,
+        created_by=created_by,
+    )
+    return {**run.to_dict(), **_governance(svc)}
+
+
+def get_pilot_lifecycle() -> dict:
+    """Return the current pilot lifecycle state, transition history, and display."""
+    svc = _get_service()
+    try:
+        return {**svc.get_pilot_lifecycle(), **_governance(svc)}
+    except ValueError as e:
+        return {"error": str(e), **_governance(svc)}
+
+
+def get_pilot_engagement() -> dict:
+    """Return the engagement-centric pilot status (day, stage, objectives, gates)."""
+    svc = _get_service()
+    try:
+        return {**svc.get_pilot_engagement_status(), **_governance(svc)}
+    except ValueError as e:
+        return {"error": str(e), **_governance(svc)}
+
+
+def advance_pilot_stage(
+    target_stage: str = "",
+    gate_label: str = "",
+    rationale: str = "",
+) -> dict:
+    """Advance the pilot to the next lifecycle stage (or a specific target)."""
+    svc = _get_service()
+    from domain import PilotState
+    target = PilotState(target_stage) if target_stage else None
+    try:
+        data = svc.advance_pilot_stage(
+            target_stage=target,
+            gate_label=gate_label,
+            rationale=rationale,
+        )
+        return {**data, **_governance(svc)}
+    except ValueError as e:
+        return {"error": str(e), **_governance(svc)}
+
+
+def lock_success_criteria(
+    criteria: List[dict],
+    locked_by: str,
+) -> dict:
+    """Lock success criteria before measurement (Gate 1 precondition).
+
+    Each criterion dict should contain:
+        criterion_id, metric, threshold, direction, aggregation,
+        rationale, tier, closure_mapping, tolerance_band.
+    """
+    svc = _get_service()
+    from domain import SuccessCriterion
+    objs = [SuccessCriterion.from_dict(c) for c in criteria]
+    locked = svc.lock_success_criteria(objs, locked_by=locked_by)
+    return {**locked.to_dict(), **_governance(svc)}
+
+
+def get_success_criteria() -> dict:
+    """Return the current (possibly unlocked) success criteria."""
+    svc = _get_service()
+    return {**svc.success_criteria.to_dict(), **_governance(svc)}
+
+
+def evaluate_pilot_gate(
+    gate_number: str,
+    evaluated_by: str,
+    rationale: str = "",
+    extend_requirements: Optional[dict] = None,
+) -> dict:
+    """Evaluate a pilot-level decision gate (1, 2, or 3).
+
+    Gate 1 — Launch Readiness: LAUNCH / LAUNCH_WITH_CONDITIONS / DEFER / DECLINE
+    Gate 2 — Pilot Health: CONTINUE / ADJUST / ESCALATE / TERMINATE
+    Gate 3 — Closure / Scale: STOP / EXTEND / EXPAND / DEPLOY
+    """
+    svc = _get_service()
+    from domain import ExtendRequirements
+    ext_req = ExtendRequirements.from_dict(extend_requirements) if extend_requirements else None
+    try:
+        if gate_number == "1":
+            record = svc.evaluate_pilot_gate_1(evaluated_by=evaluated_by, rationale=rationale)
+        elif gate_number == "2":
+            record = svc.evaluate_pilot_gate_2(evaluated_by=evaluated_by, rationale=rationale)
+        elif gate_number == "3":
+            record = svc.evaluate_pilot_gate_3(
+                evaluated_by=evaluated_by, rationale=rationale, extend_requirements=ext_req,
+            )
+        else:
+            return {"error": f"Unknown gate number: {gate_number}. Use 1, 2, or 3.", **_governance(svc)}
+        return {**record.to_dict(), **_governance(svc)}
+    except ValueError as e:
+        return {"error": str(e), **_governance(svc)}
+
+
+def create_decision_record(
+    closure_outcome: str,
+    rationale: str,
+    decided_by: str,
+    extend_plan: Optional[dict] = None,
+    expand_plan: Optional[dict] = None,
+    deploy_plan: Optional[dict] = None,
+    stop_lessons: Optional[dict] = None,
+    evidence_cited: Optional[List[str]] = None,
+) -> dict:
+    """Create the final immutable decision record for the pilot.
+
+    closure_outcome must be one of: STOP, EXTEND, EXPAND, DEPLOY.
+    Outcome-specific requirements:
+        EXTEND requires extend_plan
+        EXPAND requires expand_plan
+        DEPLOY requires deploy_plan
+        STOP requires stop_lessons
+    """
+    svc = _get_service()
+    from domain import (
+        ClosureOutcome, ExtendPlan, ExpandPlan, DeployPlan, StopLessons,
+    )
+    outcome = ClosureOutcome(closure_outcome)
+    ext = ExtendPlan(**extend_plan) if extend_plan else None
+    xp = ExpandPlan(**expand_plan) if expand_plan else None
+    dp = DeployPlan(**deploy_plan) if deploy_plan else None
+    sl = StopLessons(**stop_lessons) if stop_lessons else None
+    try:
+        record = svc.create_pilot_decision(
+            closure_outcome=outcome,
+            rationale=rationale,
+            decided_by=decided_by,
+            extend_plan=ext,
+            expand_plan=xp,
+            deploy_plan=dp,
+            stop_lessons=sl,
+            evidence_cited=evidence_cited,
+        )
+        return {**record.to_dict(), **_governance(svc)}
+    except ValueError as e:
+        return {"error": str(e), **_governance(svc)}
+
+
+def get_canonical_report() -> dict:
+    """Return the canonical report model (single source for all formats).
+
+    Per reporting invariant: every number originates from canonical
+    pilot evidence or state. All presentation formats derive from this
+    one report model.
+    """
+    svc = _get_service()
+    from reporting import build_canonical_report
+    report = build_canonical_report(svc)
+    return {**report.to_dict(), **_governance(svc)}
+
+
 # ── Tool registry for direct invocation ──────────────────────────────────
 
 TOOL_REGISTRY = {
@@ -733,6 +914,16 @@ TOOL_REGISTRY = {
     # Org Topology and Operator Similarity
     "get_org_topology": get_org_topology,
     "get_operator_similarity": get_operator_similarity,
+    # Pilot Mode governance lifecycle (T1.6)
+    "create_pilot_charter": create_pilot_charter,
+    "get_pilot_lifecycle": get_pilot_lifecycle,
+    "get_pilot_engagement": get_pilot_engagement,
+    "advance_pilot_stage": advance_pilot_stage,
+    "lock_success_criteria": lock_success_criteria,
+    "get_success_criteria": get_success_criteria,
+    "evaluate_pilot_gate": evaluate_pilot_gate,
+    "create_decision_record": create_decision_record,
+    "get_canonical_report": get_canonical_report,
 }
 
 

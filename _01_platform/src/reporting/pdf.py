@@ -214,29 +214,43 @@ def _markdown_to_html(md_text: str) -> str:
 def render_sample_report_pdf(
     output_path: str = "sample_customer_report.pdf",
     source_md: Optional[str] = None,
+    runtime_markdown: Optional[str] = None,
 ) -> str:
     """Render the sample customer report as a polished PDF.
 
+    Reporting invariant (review §18, Drift 3): the PDF must derive from
+    canonical pilot evidence, not from a stale static report. If
+    runtime_markdown is provided (the runtime-generated pilot readout),
+    it is used as the source. If source_md is explicitly provided, it is
+    used (for backward compatibility). If neither is provided, raises
+    ValueError — the static sample report is no longer a valid default
+    source for a customer-facing PDF.
+
     Args:
         output_path: Where to write the PDF.
-        source_md: Path to the markdown source. If None, uses the default
-                   demo_data/graphics/g09_sample_customer_report.md.
+        source_md: Path to a markdown source. Explicit override only.
+        runtime_markdown: Runtime-generated pilot readout markdown.
+            This is the preferred source — it derives from canonical
+            pilot evidence and state.
 
     Returns:
         The absolute path to the generated PDF.
     """
     from weasyprint import HTML
 
-    # Locate the source markdown
-    if source_md is None:
-        demo_data = Path(__file__).resolve().parents[1].parent / "demo_data"
-        source_md = str(demo_data / "graphics" / "g09_sample_customer_report.md")
-
-    md_path = Path(source_md)
-    if not md_path.exists():
-        raise FileNotFoundError(f"Sample report not found: {source_md}")
-
-    md_text = md_path.read_text(encoding="utf-8")
+    if runtime_markdown is not None:
+        md_text = runtime_markdown
+    elif source_md is not None:
+        md_path = Path(source_md)
+        if not md_path.exists():
+            raise FileNotFoundError(f"Report source not found: {source_md}")
+        md_text = md_path.read_text(encoding="utf-8")
+    else:
+        raise ValueError(
+            "render_sample_report_pdf requires runtime_markdown or source_md. "
+            "The static sample report is no longer a valid default source for "
+            "a customer-facing PDF (reporting invariant: review §18, Drift 3)."
+        )
 
     # Strip the top-level header (we replace it with the title block)
     lines = md_text.split("\n")

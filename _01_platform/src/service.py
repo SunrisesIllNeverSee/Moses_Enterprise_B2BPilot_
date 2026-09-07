@@ -33,6 +33,15 @@ from domain import (
     Artifact, Lineage, System, Outcome,
     TaskContext, adjust_metric_for_context, context_adjustment,
     OperatorIdentity, IdentityConflictError,
+    PilotState, PilotStateMachine, InvalidTransitionError,
+    SuccessCriterion, SuccessCriteria, CriterionResult, CriteriaEvaluation,
+    CriterionDirection, CriterionAggregation, CriterionTier, CriterionStatus,
+    evaluate_criterion, evaluate_criteria,
+    GateRecord, GateType, Gate1Outcome, Gate2Outcome, Gate3Outcome,
+    ExtendRequirements, evaluate_gate_1, evaluate_gate_2, evaluate_gate_3,
+    DecisionRecord, ClosureOutcome, ExtendPlan, ExpandPlan, DeployPlan,
+    StopLessons, create_decision_record,
+    PilotRun, Milestone, Blocker, validate_pilot_id, create_pilot_run,
 )
 from metrics.engine import ScoringEngine
 from metrics.composite_score import (
@@ -100,6 +109,9 @@ class PilotService:
         # from multiple platforms can be attributed correctly. Populated
         # incrementally via add_operator_identity.
         self._identity_registry: OperatorIdentity = OperatorIdentity()
+        # Pilot Mode state (T1 governance lifecycle).
+        self._pilot_run: Optional[PilotRun] = None
+        self._success_criteria: SuccessCriteria = SuccessCriteria()
 
     # ── Cohort / pilot overview ──────────────────────────────────────────
 
@@ -1790,3 +1802,318 @@ class PilotService:
         """
         from reporting import build_decision_report
         return build_decision_report(self, operator_id=operator_id)
+
+    # ── Pilot Mode: governance lifecycle (T1.1–T1.5) ──────────────────────
+    #
+    # These methods implement the thin governance layer that binds existing
+    # analytical capabilities into a formal pilot lifecycle. They do NOT
+    # re-implement measurements, diagnoses, or interventions — those are
+    # existing domain objects referenced by the pilot.
+    #
+    # See pilot/governance/PILOT_STATE_MACHINE.md, DECISION_GATES.md,
+    # SUCCESS_CRITERIA.md, CLOSURE_OUTCOMES.md, and
+    # pilot/implementation/PILOT_MODE_BUILD_PLAN.md.
+
+    @property
+    def pilot_run(self) -> Optional[PilotRun]:
+        """The active PilotRun, or None if no pilot is active."""
+        return getattr(self, "_pilot_run", None)
+
+    def create_pilot(
+        self,
+        pilot_id: str,
+        configuration_id: str,
+        customer: str,
+        decision_owner: str,
+        start_date: str,
+        target_end_date: str,
+        objectives: str = "",
+        created_by: str = "",
+    ) -> PilotRun:
+        """Create a new PilotRun in the DEFINED state.
+
+        This is the entry point for Pilot Mode. The PilotRun references
+        a frozen PilotConfiguration (configuration_id) and coordinates
+        existing analytical systems through the lifecycle.
+        """
+        run = create_pilot_run(
+            pilot_id=pilot_id,
+            configuration_id=configuration_id,
+            customer=customer,
+            decision_owner=decision_owner,
+            start_date=start_date,
+            target_end_date=target_end_date,
+            objectives=objectives,
+            created_by=created_by,
+        )
+        self._pilot_run = run
+        return run
+
+    def get_pilot_status_extended(self) -> dict:
+        """Extended pilot status including engagement state.
+
+        Combines the measurement-centric pilot_status() with the
+        engagement-centric PilotRun state (review §12).
+        """
+        base = self.pilot_status()
+        run = self.pilot_run
+        if run is None:
+            base["pilot_mode"] = "inactive"
+            base["engagement_status"] = None
+            return base
+        base["pilot_mode"] = "active"
+        base["pilot_id"] = run.pilot_id
+        base["engagement_status"] = run.engagement_status()
+        return base
+
+    def lock_success_criteria(
+        self,
+        criteria: List[SuccessCriterion],
+        locked_by: str,
+    ) -> SuccessCriteria:
+        """Lock success criteria before measurement (Gate 1 precondition).
+
+        Raises if criteria are already locked.
+        """
+        unlocked = SuccessCriteria.unlocked(criteria)
+        locked = unlocked.lock(locked_by)
+        self._success_criteria = locked
+        if self._pilot_run is not None:
+            self._pilot_run.success_criteria = locked
+        return locked
+
+    @property
+    def success_criteria(self) -> SuccessCriteria:
+        """The current (possibly unlocked) success criteria."""
+        return getattr(self, "_success_criteria", SuccessCriteria())
+
+    def evaluate_success_criteria(self, measured_values: dict) -> CriteriaEvaluation:
+        """Evaluate locked success criteria against measured values (Gate 3 input).
+
+        Raises if criteria are not locked.
+        """
+        return evaluate_criteria(self.success_criteria, measured_values)
+
+    def evaluate_pilot_gate_1(
+        self,
+        evaluated_by: str,
+        charter_valid: bool = True,
+        success_criteria_locked: Optional[bool] = None,
+        population_bounded: bool = True,
+        duration_bounded: bool = True,
+        governance_cleared: bool = True,
+        authorized: bool = True,
+        instrumentable: bool = True,
+        conditions: Optional[List[str]] = None,
+        rationale: str = "",
+    ) -> GateRecord:
+        """Evaluate Gate 1 — Launch Readiness."""
+        run = self._require_pilot_run()
+        sc_locked = success_criteria_locked if success_criteria_locked is not None else self.success_criteria.is_locked
+        record = evaluate_gate_1(
+            pilot_id=run.pilot_id,
+            evaluated_by=evaluated_by,
+            charter_valid=charter_valid,
+            success_criteria_locked=sc_locked,
+            population_bounded=population_bounded,
+            duration_bounded=duration_bounded,
+            governance_cleared=governance_cleared,
+            authorized=authorized,
+            instrumentable=instrumentable,
+            conditions=conditions,
+            rationale=rationale,
+        )
+        run.add_gate_record(record)
+        return record
+
+    def evaluate_pilot_gate_2(
+        self,
+        evaluated_by: str,
+        data_sufficient: Optional[bool] = None,
+        no_blocking_quality: Optional[bool] = None,
+        participation_ok: bool = True,
+        governance_ok: bool = True,
+        protocol_ok: bool = True,
+        rationale: str = "",
+    ) -> GateRecord:
+        """Evaluate Gate 2 — Pilot Health.
+
+        If data_sufficient / no_blocking_quality are not provided, they
+        are derived from the current pilot status.
+        """
+        run = self._require_pilot_run()
+        if data_sufficient is None or no_blocking_quality is None:
+            status = self.pilot_status()
+            dq = status.get("data_quality", {})
+            if data_sufficient is None:
+                data_sufficient = status.get("observation_count", 0) > 0
+            if no_blocking_quality is None:
+                no_blocking_quality = dq.get("BLOCKING", 0) == 0
+        record = evaluate_gate_2(
+            pilot_id=run.pilot_id,
+            evaluated_by=evaluated_by,
+            data_sufficient=data_sufficient,
+            no_blocking_quality=no_blocking_quality,
+            participation_ok=participation_ok,
+            governance_ok=governance_ok,
+            protocol_ok=protocol_ok,
+            rationale=rationale,
+        )
+        run.add_gate_record(record)
+        return record
+
+    def evaluate_pilot_gate_3(
+        self,
+        evaluated_by: str,
+        measured_values: Optional[dict] = None,
+        rationale: str = "",
+        extend_requirements: Optional[ExtendRequirements] = None,
+    ) -> GateRecord:
+        """Evaluate Gate 3 — Closure / Scale.
+
+        Uses the locked success criteria. If measured_values is not
+        provided, attempts to derive them from the current pilot data.
+        """
+        run = self._require_pilot_run()
+        if measured_values is None:
+            measured_values = self._derive_success_criteria_values()
+        criteria_eval = self.evaluate_success_criteria(measured_values)
+        record = evaluate_gate_3(
+            pilot_id=run.pilot_id,
+            evaluated_by=evaluated_by,
+            criteria_eval=criteria_eval,
+            rationale=rationale,
+            extend_requirements=extend_requirements,
+        )
+        run.add_gate_record(record)
+        return record
+
+    def create_pilot_decision(
+        self,
+        closure_outcome: ClosureOutcome,
+        rationale: str,
+        decided_by: str,
+        gate_3_record_id: str = "",
+        extend_plan: Optional[ExtendPlan] = None,
+        expand_plan: Optional[ExpandPlan] = None,
+        deploy_plan: Optional[DeployPlan] = None,
+        stop_lessons: Optional[StopLessons] = None,
+        evidence_cited: Optional[List[str]] = None,
+    ) -> DecisionRecord:
+        """Create the final decision record for the pilot.
+
+        Only allowed in DECIDING state. The decision is immutable once
+        created. Validates outcome-specific requirements.
+        """
+        run = self._require_pilot_run()
+        if not gate_3_record_id and run.gate_records:
+            gate3 = next((g for g in run.gate_records if g.gate_type == GateType.GATE_3_CLOSURE_SCALE), None)
+            if gate3:
+                gate_3_record_id = gate3.gate_id
+        sc_comparison = None
+        if run.gate_records:
+            gate3 = next((g for g in run.gate_records if g.gate_type == GateType.GATE_3_CLOSURE_SCALE), None)
+            if gate3 and gate3.criteria_evaluation:
+                sc_comparison = gate3.criteria_evaluation
+        record = create_decision_record(
+            pilot_id=run.pilot_id,
+            closure_outcome=closure_outcome,
+            rationale=rationale,
+            decided_by=decided_by,
+            gate_3_record_id=gate_3_record_id,
+            success_criteria_comparison=sc_comparison,
+            evidence_cited=evidence_cited,
+            extend_plan=extend_plan,
+            expand_plan=expand_plan,
+            deploy_plan=deploy_plan,
+            stop_lessons=stop_lessons,
+        )
+        run.set_decision_record(record)
+        # Transition to TERMINATED
+        if run.current_stage == PilotState.DECIDING:
+            run.state_machine.transition_to(
+                PilotState.TERMINATED,
+                gate_label=f"Gate 3: {closure_outcome.value}",
+                rationale=rationale,
+            )
+        return record
+
+    def advance_pilot_stage(
+        self,
+        target_stage: Optional[PilotState] = None,
+        gate_label: str = "",
+        rationale: str = "",
+    ) -> dict:
+        """Advance the pilot to the next stage (or a specific target).
+
+        If target_stage is None, advances to the next canonical stage.
+        Enforces the state machine transition rules.
+        """
+        run = self._require_pilot_run()
+        sm = run.state_machine
+        if target_stage is None:
+            # Auto-advance to next canonical stage
+            from domain import stage_order
+            order = stage_order()
+            current_idx = order.index(sm.current_state)
+            if current_idx >= len(order) - 1:
+                raise ValueError(f"Pilot is already in terminal state: {sm.current_state.value}")
+            target_stage = order[current_idx + 1]
+        transition = sm.transition_to(target_stage, gate_label=gate_label, rationale=rationale)
+        run.add_milestone(
+            stage=target_stage.value,
+            description=rationale or f"Transitioned to {target_stage.value}",
+        )
+        return transition.to_dict()
+
+    def get_pilot_lifecycle(self) -> dict:
+        """Return the full pilot lifecycle state."""
+        run = self._require_pilot_run()
+        return run.state_machine.to_dict()
+
+    def get_pilot_engagement_status(self) -> dict:
+        """Return the engagement-centric pilot status (review §12)."""
+        run = self._require_pilot_run()
+        status = run.engagement_status()
+        # Enrich with service-layer data
+        status["findings"] = len(self.diagnoses)
+        status["interventions"] = len(self.interventions)
+        return status
+
+    def _require_pilot_run(self) -> PilotRun:
+        """Get the active PilotRun or raise."""
+        run = self.pilot_run
+        if run is None:
+            raise ValueError(
+                "No active pilot. Call create_pilot() first to initialize Pilot Mode."
+            )
+        return run
+
+    def _derive_success_criteria_values(self) -> dict:
+        """Derive measured values for success criteria from current pilot data.
+
+        Maps criterion metric IDs to computed values from the service layer.
+        This is a convenience for Gate 3 evaluation when explicit values
+        are not provided.
+        """
+        values: dict = {}
+        status = self.pilot_status()
+        for c in self.success_criteria.criteria:
+            metric = c.metric
+            if metric == "eligible_fraction":
+                total = status.get("total_operators", 1)
+                eligible = status.get("eligible_operators", 0)
+                values[c.criterion_id] = eligible / total if total > 0 else 0.0
+            elif metric == "observation_count":
+                values[c.criterion_id] = status.get("observation_count", 0)
+            elif metric == "active_interventions":
+                values[c.criterion_id] = status.get("active_interventions", 0)
+            elif metric == "blocking_quality_issues":
+                dq = status.get("data_quality", {})
+                values[c.criterion_id] = dq.get("BLOCKING", 0)
+            elif metric == "warning_count":
+                dq = status.get("data_quality", {})
+                values[c.criterion_id] = dq.get("WARNING", 0)
+            else:
+                values[c.criterion_id] = None
+        return values

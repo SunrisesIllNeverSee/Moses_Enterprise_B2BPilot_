@@ -232,6 +232,16 @@ class TestMCPTools(unittest.TestCase):
             # Org Topology and Operator Similarity
             "get_org_topology",
             "get_operator_similarity",
+            # Pilot Mode governance lifecycle (T1.6)
+            "create_pilot_charter",
+            "get_pilot_lifecycle",
+            "get_pilot_engagement",
+            "advance_pilot_stage",
+            "lock_success_criteria",
+            "get_success_criteria",
+            "evaluate_pilot_gate",
+            "create_decision_record",
+            "get_canonical_report",
         }
         self.assertEqual(set(TOOL_REGISTRY.keys()), expected)
 

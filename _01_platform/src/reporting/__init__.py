@@ -25,6 +25,13 @@ from .decision_report import (
     build_cohort_decision_report,
     export_decision_report_markdown,
 )
+from .canonical_report import (
+    CanonicalReport,
+    build_canonical_report,
+    render_canonical_markdown,
+    render_canonical_html,
+    render_canonical_pdf,
+)
 
 __all__ = [
     "export_cohort_json", "export_cohort_csv", "export_cohort_markdown",
@@ -43,4 +50,9 @@ __all__ = [
     "build_operator_decision_report",
     "build_cohort_decision_report",
     "export_decision_report_markdown",
+    "CanonicalReport",
+    "build_canonical_report",
+    "render_canonical_markdown",
+    "render_canonical_html",
+    "render_canonical_pdf",
 ]
