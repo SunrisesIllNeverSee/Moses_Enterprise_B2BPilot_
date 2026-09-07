@@ -4,9 +4,6 @@ compatibility_date = "2025-07-01"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = true
 
-[observability]
-enabled = true
-
 routes = [
   # mos2es.org
   { pattern = "mos2es.org/api/analytics/*", zone_name = "mos2es.org" },
@@ -39,6 +36,9 @@ routes = [
   # sigeconomy.com
   { pattern = "sigeconomy.com/api/search", zone_name = "sigeconomy.com" },
 ]
+
+[observability]
+enabled = true
 
 [[kv_namespaces]]
 binding = "ANALYTICS_KV"
