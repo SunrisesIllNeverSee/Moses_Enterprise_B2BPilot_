@@ -339,6 +339,10 @@ export default {
       '/concepts/confirmation-hacking-ai-evaluation': '/concepts/confirmation-hacking',
       // killer-experiment → baseline-assessment (URL rename)
       '/killer-experiment': '/baseline-assessment',
+      // commercial-offer → baseline-assessment (unified offer page)
+      '/commercial-offer': '/baseline-assessment',
+      // /vs/ccusage → signalaf.com (cross-domain consolidation)
+      '/vs/ccusage': 'https://signalaf.com/vs/ccusage',
     };
     if (CONSOLIDATED[path]) {
       return Response.redirect(new URL(CONSOLIDATED[path], url.origin).toString(), 301);
