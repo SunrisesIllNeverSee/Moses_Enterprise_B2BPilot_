@@ -7,12 +7,22 @@ the decision gates defined in `pilot/governance/DECISION_GATES.md`.
 The state machine is distinct from operator-level routing gates
 (`production_gate.py`). Pilot-level gates govern the pilot lifecycle;
 operator-level gates route individual operators to coaching/review.
+
+Durable execution (HRN-010): the state machine supports checkpoint/resume.
+After every transition, the state can be persisted to disk. On restart,
+the state machine resumes from the last checkpoint rather than resetting
+to DEFINED. This makes the pilot workflow crash-safe — a crash mid-stage
+does not lose progress or require restarting from the beginning.
 """
 from __future__ import annotations
 
+import json
+import os
+import tempfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
+from pathlib import Path
 from typing import List, Optional, Tuple
 
 
@@ -110,11 +120,16 @@ class PilotStateMachine:
         target: PilotState,
         gate_label: str = "",
         rationale: str = "",
+        checkpoint_path: Optional[str] = None,
     ) -> StageTransition:
         """Transition to the target state.
 
         Raises InvalidTransitionError if the transition is not valid.
         Records the transition in the history.
+
+        If checkpoint_path is provided, persists the state to disk after
+        the transition succeeds (durable execution, HRN-010). The write is
+        atomic — a crash during the write cannot corrupt the checkpoint.
         """
         valid = self.can_transition_to(target)
         if not valid:
@@ -140,7 +155,62 @@ class PilotStateMachine:
         )
         self._history.append(record)
         self.current_state = target
+        # Durable execution: checkpoint after transition if path is provided.
+        # This makes the pilot workflow crash-safe — on restart, resume from
+        # the last checkpoint rather than losing all progress.
+        if checkpoint_path:
+            self.checkpoint(checkpoint_path)
         return record
+
+    def checkpoint(self, path: str) -> None:
+        """Persist the current state machine to disk (HRN-010 durable execution).
+
+        Writes atomically: the data is written to a temp file first, then
+        renamed to the target path. A crash during the write cannot corrupt
+        the existing checkpoint — the old file remains intact until the rename.
+        """
+        p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        data = json.dumps(self.to_dict(), indent=2, sort_keys=True)
+        # Atomic write: write to temp file, then rename (POSIX atomic).
+        fd, tmp_path = tempfile.mkstemp(dir=str(p.parent), suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w") as f:
+                f.write(data)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp_path, path)
+        except Exception:
+            # Clean up the temp file on failure — never leave partial writes.
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+            raise
+
+    @classmethod
+    def resume(cls, path: str) -> "PilotStateMachine":
+        """Resume a state machine from a checkpoint file (HRN-010 durable execution).
+
+        If the checkpoint file does not exist, returns a fresh state machine
+        in the DEFINED state (new pilot). If it exists, loads the full state
+        including transition history.
+
+        Raises ValueError if the checkpoint file is corrupted or contains
+        an invalid state.
+        """
+        p = Path(path)
+        if not p.exists():
+            # No checkpoint — start a new pilot.
+            return cls(pilot_id="resumed")
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+            return cls.from_dict(data)
+        except (json.JSONDecodeError, KeyError) as e:
+            raise ValueError(
+                f"Corrupted checkpoint at {path}: {e}. "
+                f"Delete the file to start a fresh pilot."
+            ) from e
 
     @property
     def history(self) -> List[StageTransition]:

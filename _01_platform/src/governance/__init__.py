@@ -43,6 +43,19 @@ from .enforcement import (
     GovernanceAuditLog,
     GovernanceAuditEntry,
 )
+from .tool_registry import (
+    ToolBlastRadius,
+    RegisteredTool,
+    ToolRegistry,
+    UnregisteredToolError,
+)
+from .online_eval import (
+    SignalType,
+    LiveTrace,
+    OperationalSignal,
+    OnlineEvalReport,
+    OnlineEvaluator,
+)
 
 __all__ = [
     "DecisionUse",
@@ -75,4 +88,15 @@ __all__ = [
     "CorrectionManager",
     "GovernanceAuditLog",
     "GovernanceAuditEntry",
+    # Tool registration gate (HRN-008)
+    "ToolBlastRadius",
+    "RegisteredTool",
+    "ToolRegistry",
+    "UnregisteredToolError",
+    # Online evaluation (HRN-009)
+    "SignalType",
+    "LiveTrace",
+    "OperationalSignal",
+    "OnlineEvalReport",
+    "OnlineEvaluator",
 ]

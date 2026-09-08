@@ -6,9 +6,27 @@ P2-A: Per `21` P2 acceptance:
 
 Architecture:
     workflow/fit_engine.py — computes stage fit with sample-size gates
+    workflow/worker_budget.py — per-worker budgets (HRN-010 orchestration)
 """
 from __future__ import annotations
 
 from .fit_engine import WorkflowFitEngine, StageFitResult, WorkflowFitReport
+from .worker_budget import (
+    WorkerBudget,
+    BudgetTracker,
+    BudgetUsage,
+    BudgetExceededError,
+    BudgetDimension,
+)
 
-__all__ = ["WorkflowFitEngine", "StageFitResult", "WorkflowFitReport"]
+__all__ = [
+    "WorkflowFitEngine",
+    "StageFitResult",
+    "WorkflowFitReport",
+    # Per-worker budgets (HRN-010)
+    "WorkerBudget",
+    "BudgetTracker",
+    "BudgetUsage",
+    "BudgetExceededError",
+    "BudgetDimension",
+]
