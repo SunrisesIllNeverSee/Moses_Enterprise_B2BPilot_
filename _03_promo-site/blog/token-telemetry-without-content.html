@@ -10,14 +10,14 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://mos2es.org/blog/token-telemetry-without-content">
 <meta property="og:title" content="Token Telemetry Without Content: How to Measure AI Operator Performance Without Reading Prompts">
-<meta property="og:description" content="How to measure AI operator performance from four content-free token counts plus structural signals. No prompt text required. Five canonical metrics from four numbers, with GDPR and SOC 2 alignment.">
+<meta property="og:description" content="How to measure AI operator performance from four content-free token counts plus structural signals. No prompt text required. Eight Upsilon metrics from four numbers, with GDPR and SOC 2 alignment.">
 <meta property="og:image" content="https://mos2es.org/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="MO§ES™">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Token Telemetry Without Content: How to Measure AI Operator Performance Without Reading Prompts">
-<meta name="twitter:description" content="How to measure AI operator performance from four content-free token counts. No prompt text required. Five canonical metrics from four numbers.">
+<meta name="twitter:description" content="How to measure AI operator performance from four content-free token counts. No prompt text required. Eight Upsilon metrics from four numbers.">
 <meta name="twitter:image" content="https://mos2es.org/og-image.png">
 <link rel="stylesheet" href="../style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -194,7 +194,7 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Token Telemetry Without Content: How to Measure AI Operator Performance Without Reading Prompts",
-    "description": "How to measure AI operator performance from four content-free token counts — Input, Output, Cache Read, Cache Write — plus structural signals. No prompt text required. Five canonical metrics derived from four numbers, with GDPR, SOC 2, and enterprise data governance alignment.",
+    "description": "How to measure AI operator performance from four content-free token counts — Input, Output, Cache Read, Cache Write — plus structural signals. No prompt text required. Eight Upsilon metrics derived from four numbers, with GDPR, SOC 2, and enterprise data governance alignment.",
     "url": "https://mos2es.org/blog/token-telemetry-without-content",
     "author": {
       "@type": "Organization",
@@ -259,7 +259,7 @@
 <section>
 <div class="eyebrow">Section 2</div>
 <h2>The four token numbers</h2>
-<p class="sec-intro">Input, Output, Cache Read, Cache Write. These four numbers, plus structural signals — timestamps, model IDs, session duration — are enough to compute all five canonical metrics. No prompt text. No output text. No conversation content.</p>
+<p class="sec-intro">Input, Output, Cache Read, Cache Write. These four numbers, plus structural signals — timestamps, model IDs, session duration — are enough to compute all eight Upsilon metrics. No prompt text. No output text. No conversation content.</p>
 <p>The breakthrough is that operator skill leaves a structural fingerprint in token flow, even when the content of that flow is never inspected. Every modern AI provider bills on, and reports, four token quantities per request. MO§ES™ treats those four quantities as the entire measurement surface.</p>
 <div class="grid4">
 <div class="stat"><div class="val">INPUT</div><div class="desc">Fresh tokens sent to the model — the operator's new instructions, questions, and pasted material for this turn.</div></div>
@@ -273,25 +273,28 @@
 <p>This is the core design principle: measure the shape of operator-AI interaction, not its contents. The shape turns out to be surprisingly informative. How much new input an operator sends versus how much context they reuse is a behavioral signal. How much output they generate relative to total token flow is an efficiency signal. How much new context they build versus how much they reuse is a construction signal. Each of these is derivable from four integers — and each captures a different dimension of how a person operates an AI system.</p>
 </section>
 
-<!-- ═══ 3. THE FIVE CANONICAL METRICS ═══ -->
+<!-- ═══ 3. THE EIGHT UPSILON METRICS ═══ -->
 <section>
 <div class="eyebrow">Section 3</div>
-<h2>The five canonical metrics from four numbers</h2>
-<p class="sec-intro">Yield, Leverage, Token SNR, Log Leverage, Construction. Each metric captures a different dimension of operator skill. All are derived from the same four token counts. No metric requires content.</p>
-<p>From the four token numbers — Input (I), Output (O), Cache Read (R), Cache Write (W) — MO§ES™ computes five canonical derived metrics. Each isolates a distinct behavioral dimension. Together they form a performance profile that is richer than any single number, without ever requiring the system to know what the operator actually wrote.</p>
+<h2>The eight Upsilon metrics from four numbers</h2>
+<p class="sec-intro">Yield, SNR, Velocity, Leverage, 10xDEV, Scale V, Construction, Efficiency. Each metric captures a different dimension of operator skill. All are derived from the same four token counts. No metric requires content.</p>
+<p>From the four token numbers — Input (I), Output (O), Cache Read (R), Cache Write (W) — the Upsilon measurement engine computes eight derived metrics. Each isolates a distinct behavioral dimension. Together they form a performance profile that is richer than any single number, without ever requiring the system to know what the operator actually wrote.</p>
 <table class="table">
 <tr><th>Metric</th><th>Formula</th><th>What it captures</th></tr>
-<tr><td><strong>Yield</strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R + W)</td><td>Productive output share of total token flow. The canonical metric. Higher = more of the token budget becomes useful output rather than input overhead, reused context, or cache construction.</td></tr>
-<tr><td><strong>Leverage</strong></td><td class="formula" style="padding:4px 8px">(R + W) / I</td><td>How much context the operator reuses and builds relative to new input. Higher = the operator is getting more mileage out of established context rather than retyping fresh instructions.</td></tr>
-<tr><td><strong>Token SNR</strong></td><td class="formula" style="padding:4px 8px">O / (I + O + R)</td><td>Output relative to input and reused context — a signal-to-noise ratio for productive generation. Higher = more signal, less noise in the token flow.</td></tr>
-<tr><td><strong>Log Leverage</strong></td><td class="formula" style="padding:4px 8px">log(1 + L)</td><td>Compressed leverage scale. Reduces outlier dominance while preserving rank order, so a few extreme performers do not distort cohort analysis.</td></tr>
-<tr><td><strong>Construction</strong></td><td class="formula" style="padding:4px 8px">W / (W + I)</td><td>Ratio of new context built to new context built plus fresh input. Higher = more original context construction; lower = more reliance on fresh typing. Captures whether an operator builds reusable scaffolding or re-enters material from scratch.</td></tr>
+<tr><td><strong>Yield (Υ)</strong></td><td class="formula" style="padding:4px 8px">(R × O) / I²</td><td>Combined reuse and output relationship — how much reusable signal the operator creates from each unit of input. The signature Upsilon metric. Higher = more signal compounding per unit of fresh input.</td></tr>
+<tr><td><strong>SNR</strong></td><td class="formula" style="padding:4px 8px">O / (I + O)</td><td>Output share of fresh input plus output. Signal-to-noise ratio for productive generation. Higher = more signal, less noise in the token flow.</td></tr>
+<tr><td><strong>Velocity</strong></td><td class="formula" style="padding:4px 8px">O / I</td><td>Output per fresh input. How productively the operator converts input to output. Higher = more output generated per unit of new input.</td></tr>
+<tr><td><strong>Leverage</strong></td><td class="formula" style="padding:4px 8px">R / I</td><td>Cache reuse per fresh input. Higher = more efficient context reuse; the operator is getting more mileage out of established context rather than retyping fresh instructions.</td></tr>
+<tr><td><strong>10xDEV</strong></td><td class="formula" style="padding:4px 8px">log₁₀(Leverage)</td><td>Logarithmic cascade summary. Compressed leverage scale for cohort comparison. Reduces outlier dominance while preserving rank order.</td></tr>
+<tr><td><strong>Scale V</strong></td><td class="formula" style="padding:4px 8px">log₁₀(I + O + W + R)</td><td>Log token volume. The usage dimension for divergence analysis. Captures the scale of the operator's total token economy.</td></tr>
+<tr><td><strong>Construction</strong></td><td class="formula" style="padding:4px 8px">W / R</td><td>Ratio of new context built to context reused. Higher = more original context construction; lower = more reliance on existing cache. Captures whether an operator builds reusable scaffolding or re-enters material from scratch.</td></tr>
+<tr><td><strong>Efficiency</strong></td><td class="formula" style="padding:4px 8px">(R + W + O) / I / 4</td><td>Display diagnostic. Combines cache read, cache write, and output relative to input, normalized by 4. Used for dashboard display and quick scanning, not for benchmarking or decisions.</td></tr>
 </table>
-<p class="note" style="margin-top:12px">I = Input, O = Output, R = Cache Read, W = Cache Write. All metrics are computed from canonical telemetry. No prompt content is required for any metric.</p>
+<p class="note" style="margin-top:12px">I = Input, O = Output, R = Cache Read, W = Cache Write. All metrics are computed from canonical telemetry. No prompt content is required for any metric. Per TTEOP, metrics with a zero or missing denominator are <code>null</code> (displayed as N/A), not zero or infinity.</p>
 <h3>Why Yield is canonical</h3>
-<p>Yield is the canonical metric because it is the only one of the five that accounts for the full token flow — input, output, reused context, and built context — in a single ratio. It answers the most direct operational question: of everything that moved through the AI layer, how much became productive output? A high-yield operator converts a large share of their token budget into useful generation. A low-yield operator spends most of their budget on input overhead, context reprocessing, or cache construction that never converts to output. The other four metrics explain why yield is high or low — leverage tells you whether context reuse is the driver, construction tells you whether scaffolding is the driver, Token SNR tells you whether noise is the driver. Yield is the headline; the rest is the diagnosis.</p>
+<p>Yield is the canonical metric because it is the only one of the eight that combines cache reuse and output generation into a single ratio normalized by input. It answers the most direct operational question: how much reusable signal does the operator create from each unit of fresh input? A high-yield operator compounds cache reuse and output generation efficiently. A low-yield operator spends most of their input on overhead that never converts to reusable output. The other seven metrics explain why yield is high or low — Leverage tells you whether context reuse is the driver, Construction tells you whether scaffolding is the driver, SNR tells you whether noise is the driver. Yield is the headline; the rest is the diagnosis.</p>
 <h3>Each metric is a different lens</h3>
-<p>Two operators with identical Yield can have radically different operating styles. One may achieve high Yield through aggressive context reuse (high Leverage, low Construction). The other may achieve it through original scaffolding built once and reused often (high Construction, high Leverage). Both are productive; they are productive in different ways. The five-metric profile preserves that distinction where a single score would flatten it. This is why MO§ES™ reports the full profile rather than collapsing to one number for diagnostic purposes — and why the composite score, where used, is explicitly labeled DEVELOPMENTAL and never used for personnel decisions.</p>
+<p>Two operators with identical Yield can have radically different operating styles. One may achieve high Yield through aggressive context reuse (high Leverage, low Construction). The other may achieve it through original scaffolding built once and reused often (high Construction, high Leverage). Both are productive; they are productive in different ways. The eight-metric profile preserves that distinction where a single score would flatten it. This is why Upsilon reports the full profile rather than collapsing to one number for diagnostic purposes — and why the composite score, where used, is explicitly labeled DEVELOPMENTAL and never used for personnel decisions.</p>
 </section>
 
 <!-- ═══ 4. COMPLIANCE ALIGNMENT ═══ -->
@@ -323,7 +326,7 @@
 <section class="dark">
 <div class="eyebrow">Next Step</div>
 <h2>See the full methodology.</h2>
-<p class="sec-intro" style="color:#ccc">The four-token-count, five-metric framework is documented in full — including percentile-band benchmarking, cohort analysis, intervention testing, governance labels, and falsifiability. The methodology page is the canonical reference for how every metric is defined, computed, and interpreted.</p>
+<p class="sec-intro" style="color:#ccc">The four-token-count, eight-metric framework is documented in full — including percentile-band benchmarking, cohort analysis, intervention testing, governance labels, and falsifiability. The methodology page is the canonical reference for how every metric is defined, computed, and interpreted.</p>
 <div style="margin-top:16px">
 <a class="btn" href="../methodology">Read the Methodology</a>
 <a class="btn-outline" href="../pilot" style="color:#e8e6e0;border-color:#888">Start a 30-Day Pilot</a>
