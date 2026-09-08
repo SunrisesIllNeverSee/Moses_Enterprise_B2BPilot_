@@ -95,6 +95,56 @@ class TestPilotState(unittest.TestCase):
         self.assertEqual(sm2.current_state, PilotState.INSTRUMENTED)
         self.assertEqual(len(sm2.history), 1)
 
+    def test_checkpoint_and_resume(self):
+        """Durable execution (HRN-010): checkpoint to disk, resume after crash."""
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as f:
+            ckpt_path = f.name
+        os.unlink(ckpt_path)  # remove so resume starts fresh
+        try:
+            # No checkpoint → fresh state machine
+            sm = PilotStateMachine.resume(ckpt_path)
+            self.assertEqual(sm.current_state, PilotState.DEFINED)
+            # Transition with checkpoint
+            sm.transition_to(PilotState.INSTRUMENTED, checkpoint_path=ckpt_path)
+            sm.transition_to(PilotState.BASELINED, checkpoint_path=ckpt_path)
+            self.assertEqual(sm.current_state, PilotState.BASELINED)
+            # Simulate crash: resume from disk
+            sm2 = PilotStateMachine.resume(ckpt_path)
+            self.assertEqual(sm2.current_state, PilotState.BASELINED)
+            self.assertEqual(len(sm2.history), 2)
+            self.assertEqual(sm2.pilot_id, sm.pilot_id)
+            # Continue from resumed state
+            sm2.transition_to(PilotState.DIAGNOSED, checkpoint_path=ckpt_path)
+            self.assertEqual(sm2.current_state, PilotState.DIAGNOSED)
+            # Verify the resumed history carried forward
+            sm3 = PilotStateMachine.resume(ckpt_path)
+            self.assertEqual(len(sm3.history), 3)
+            self.assertEqual(sm3.current_state, PilotState.DIAGNOSED)
+        finally:
+            if os.path.exists(ckpt_path):
+                os.unlink(ckpt_path)
+
+    def test_resume_nonexistent_returns_fresh(self):
+        """Resume with no checkpoint file returns a fresh DEFINED state machine."""
+        import tempfile
+        ckpt = os.path.join(tempfile.gettempdir(), "nonexistent_ckpt_12345.json")
+        self.assertFalse(os.path.exists(ckpt))
+        sm = PilotStateMachine.resume(ckpt)
+        self.assertEqual(sm.current_state, PilotState.DEFINED)
+
+    def test_resume_corrupted_raises(self):
+        """Resume with a corrupted checkpoint raises ValueError."""
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix=".json", mode="w", delete=False) as f:
+            f.write("{not valid json")
+            ckpt_path = f.name
+        try:
+            with self.assertRaises(ValueError):
+                PilotStateMachine.resume(ckpt_path)
+        finally:
+            os.unlink(ckpt_path)
+
 
 class TestSuccessCriteria(unittest.TestCase):
     """Tests for SuccessCriterion, SuccessCriteria, and evaluation."""
