@@ -258,6 +258,17 @@ pilot/
 │   ├── OPEN_QUESTIONS.md              ← unresolved design questions
 │   └── DECISION_LOG.md                ← consequential decisions
 │
+├── operations/                        ← NON-CANONICAL operational runbooks
+│   ├── PILOT_RUNBOOK.md               ← day-to-day pilot operations
+│   ├── PILOT_CADENCE.md                ← cadence and timing
+│   ├── PRE_PILOT_CHECKLIST.md         ← pre-pilot readiness
+│   ├── PILOT_LAUNCH_CHECKLIST.md      ← launch readiness
+│   ├── PILOT_CLOSEOUT_CHECKLIST.md    ← closeout steps
+│   ├── INTERVENTION_RUNBOOK.md        ← intervention procedures
+│   ├── GATE_REVIEW_RUNBOOK.md         ← gate review procedures
+│   ├── CUSTOMER_INTAKE.md             ← customer intake process
+│   └── FIRST_CUSTOMER_READINESS.md    ← first customer readiness
+│
 └── review/
     └── IMPLEMENTATION_REVIEW_MEMO.md  ← final review memo
 ```

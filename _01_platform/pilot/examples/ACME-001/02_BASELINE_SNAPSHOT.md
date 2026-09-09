@@ -78,7 +78,7 @@ Source: `src/metrics/registry.py`, `demo_data/metric_registry.json`
 | Reference ID | public_field | `ReferencePopulation.reference_id` |
 | Version | public_field_2026-08-17 | `ReferencePopulation.version` |
 | Synthetic | true | `ReferencePopulation.synthetic` |
-| Description | Synthetic reference field derived from the acme_50 cohort. Placeholder — replace with real external reference field before production use. | `demo_data/reference_field.json` |
+| Description | **SYNTHETIC / NOT PRODUCTION.** Synthetic reference field derived from the acme_50 cohort. For real customer pilots, an external reference field is required. | `demo_data/reference_field.json` |
 
 > **Known limitation:** The reference field is synthetic, derived from
 > the demo cohort itself. This means benchmarking compares operators
